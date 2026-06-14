@@ -2,8 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Footer from "@/components/common/Footer";
 import Header from "@/components/common/marketing/Header";
+import Footer from "@/components/common/marketing/Footer";
 
 export default function MarketingLayout({
   children,
