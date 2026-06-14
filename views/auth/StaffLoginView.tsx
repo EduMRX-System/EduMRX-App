@@ -11,14 +11,11 @@ import { toast } from "react-toastify";
 import {
   Sparkles,
   Shield,
-  Users,
   BarChart3,
   Zap,
   Lock,
-  GraduationCap,
   Building2,
   Clock,
-  Link,
 } from "lucide-react";
 
 import { API } from "@/services/api";
@@ -28,6 +25,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useUIStore } from "@/store/useUIStore";
 import Image from "next/image";
 import { LogoIcons } from "@/constants/icons";
+import Link from "next/link";
 
 type StaffRole = "director" | "manager";
 
@@ -137,19 +135,6 @@ export default function StaffLoginView() {
           className="absolute top-1/3 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"
         />
 
-        {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="relative z-10 flex items-center gap-3"
-        >
-          <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
-            <GraduationCap className="w-7 h-7 text-white" />
-          </div>
-
-        </motion.div>
-
         {/* Center content */}
         <div className="relative z-10 space-y-20">
           <div className="">
@@ -171,6 +156,7 @@ export default function StaffLoginView() {
               )}
             </Link>
           </div>
+
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
