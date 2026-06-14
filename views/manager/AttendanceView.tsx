@@ -1,0 +1,5 @@
+export default function AttendanceView() {
+  return (
+    <div>AttendanceView</div>
+  )
+}

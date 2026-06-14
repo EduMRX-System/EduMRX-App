@@ -1,0 +1,52 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@variant dark (&:where(.dark, .dark *));
+
+
+@import "tailwindcss";
+/* Yoki @tailwind base; @tailwind components; @tailwind utilities; versiyaga qarab */
+
+/* Butun loyiha uchun custom scrollbar stillari */
+@layer utilities {
+
+    /* Webkit brauzerlar uchun (Chrome, Safari, Edge, Opera) */
+    ::-webkit-scrollbar {
+        width: 6px;
+        /* Scrollbar qalinligi */
+        height: 6px;
+        /* Gorizontal scrollbar qalinligi */
+    }
+
+    /* Scrollbar harakatlanadigan yo'lakcha (Track) */
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    /* Scrollbarning ushlagichi (Thumb) - Light Mode uchun */
+    ::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        /* slate-300 */
+        border-radius: 9999px;
+    }
+
+    /* Scrollbarning ushlagichi ustiga sichqoncha kelganda */
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #94a3b8;
+        /* slate-400 */
+    }
+
+    /* Dark Mode uchun scrollbar ushlagichi (Thumb) */
+    .dark ::-webkit-scrollbar-thumb {
+        background-color: #334155;
+        /* slate-700 */
+    }
+
+    .dark ::-webkit-scrollbar-thumb:hover {
+        background-color: #475569;
+        /* slate-600 */
+    }
+}
