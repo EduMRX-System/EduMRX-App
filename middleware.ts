@@ -56,6 +56,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(`/${subdomain}`, request.url));
   }
 
+  // login.edumrx.uz
+  if (subdomain === "login") {
+    // Root → /login ga rewrite
+    if (pathname === "/") {
+      return NextResponse.rewrite(new URL("/login", request.url));
+    }
+    return NextResponse.next();
+  }
+
   return NextResponse.next();
 }
 
