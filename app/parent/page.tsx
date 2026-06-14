@@ -1,7 +1,3 @@
-import React from 'react'
+import DashboardView from "@/views/parent/DashboardView";
 
-export default function page() {
-  return (
-    <div>page</div>
-  )
-}
+export default DashboardView

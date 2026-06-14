@@ -1,7 +1,3 @@
-import React from 'react'
+import SettingsView from "@/views/director/SettingsView";
 
-export default function page() {
-  return (
-    <div>page</div>
-  )
-}
+export default SettingsView

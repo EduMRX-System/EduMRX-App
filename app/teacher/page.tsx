@@ -1,5 +1,3 @@
-export default function page() {
-  return (
-    <div>page</div>
-  )
-}
+import DashboardView from "@/views/teacher/DashboardView";
+
+export default DashboardView
