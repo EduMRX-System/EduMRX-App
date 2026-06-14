@@ -18,12 +18,16 @@ import {
   GraduationCap,
   Building2,
   Clock,
+  Link,
 } from "lucide-react";
 
 import { API } from "@/services/api";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 import { useAuthStore } from "@/store/authStore";
+import { useUIStore } from "@/store/useUIStore";
+import Image from "next/image";
+import { LogoIcons } from "@/constants/icons";
 
 type StaffRole = "director" | "manager";
 
@@ -49,6 +53,7 @@ const ROLE_INFO: Record<StaffRole, { label: string; uz: string }> = {
 
 export default function StaffLoginView() {
   const { t } = useTranslation();
+  const { theme, setTheme } = useUIStore();
   const { login } = useAuthStore();
 
   const [role, setRole] = useState<StaffRole>("director");
@@ -142,10 +147,14 @@ export default function StaffLoginView() {
           <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
             <GraduationCap className="w-7 h-7 text-white" />
           </div>
-          <div>
-            <h1 className="text-2xl font-black text-white tracking-tight">EduMRX</h1>
-            <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest">Ta'lim boshqaruv platformasi</p>
-          </div>
+          <Link href="/" className="mb-5 block">
+            {
+              theme == "dark" ?
+                <Image src={LogoIcons.logoDark} width={250} height={350} alt="EduMRX Logo" />
+                :
+                <Image src={LogoIcons.logo} width={250} height={350} alt="EduMRX Logo" />
+            }
+          </Link>
         </motion.div>
 
         {/* Center content */}
@@ -231,8 +240,8 @@ export default function StaffLoginView() {
                 key={r}
                 onClick={() => setRole(r)}
                 className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${role === r
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
-                    : "text-slate-500 hover:text-slate-300"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
+                  : "text-slate-500 hover:text-slate-300"
                   }`}
               >
                 {ROLE_INFO[r].uz}

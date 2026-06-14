@@ -13,8 +13,12 @@ import {
   ArrowRight,
 
 } from "lucide-react";
+import Image from "next/image";
+import { LogoIcons } from "@/constants/icons";
+import { useUIStore } from "@/store/useUIStore";
 
 export default function Footer() {
+  const { theme, setTheme } = useUIStore();
   const { t } = useTranslation();
   const year = new Date().getFullYear();
 
@@ -87,14 +91,16 @@ export default function Footer() {
         <div className="py-12 grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand col */}
           <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                <GraduationCap className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-black text-lg tracking-tight text-slate-900 dark:text-white">
-                EduMRX
-              </span>
-            </Link>
+            <div className="mb-2">
+              <Link href="/" className="mb-5 block">
+                {
+                  theme == "dark" ?
+                    <Image src={LogoIcons.logoDark} width={250} height={350} alt="EduMRX Logo" />
+                    :
+                    <Image src={LogoIcons.logo} width={250} height={350} alt="EduMRX Logo" />
+                }
+              </Link>
+            </div>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mb-5">
               {t("footer.brand_desc", "O'zbekistondagi yetakchi ta'lim markazlari boshqaruv tizimi. Biznesingizni professional darajaga olib chiqing.")}
             </p>

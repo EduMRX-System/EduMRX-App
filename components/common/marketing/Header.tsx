@@ -16,6 +16,8 @@ import {
     ArrowRight,
 } from "lucide-react";
 import { useUIStore } from "@/store/useUIStore";
+import Image from "next/image";
+import { LogoIcons } from "@/constants/icons";
 
 const LANGUAGES = [
     { code: "uz", label: "O'zbek", flag: "🇺🇿" },
@@ -80,16 +82,12 @@ export default function Header() {
                     <nav className="px-3 sm:px-4 h-14 flex items-center justify-between gap-2">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-2 group shrink-0 pl-1">
-                            <motion.div
-                                whileHover={{ rotate: -8, scale: 1.08 }}
-                                transition={{ type: "spring", stiffness: 400 }}
-                                className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-500/30"
-                            >
-                                <GraduationCap className="w-[18px] h-[18px] text-white" />
-                            </motion.div>
-                            <span className="font-black text-base tracking-tight text-slate-900 dark:text-white">
-                                EduMRX
-                            </span>
+                            {
+                                theme == "dark" ?
+                                    <Image src={LogoIcons.logoDark} width={150} height={250} alt="EduMRX Logo" />
+                                    :
+                                    <Image src={LogoIcons.logo} width={150} height={250} alt="EduMRX Logo" />
+                            }
                         </Link>
 
                         {/* Desktop nav - center */}
