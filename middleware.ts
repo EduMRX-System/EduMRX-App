@@ -20,24 +20,29 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get("host") || "";
   const pathname = request.nextUrl.pathname;
   const subdomain = getSubdomain(host);
-
   const token = request.cookies.get("access_token")?.value;
 
-  if (pathname.startsWith("/login")) {
-    if (token) return NextResponse.redirect(new URL("/", request.url));
-    return NextResponse.next();
-  }
-
+  // Main site (edumrx.uz) — hech narsa qilmaymiz
   if (!subdomain || !SUBDOMAIN_ROLE_MAP[subdomain]) {
     return NextResponse.next();
   }
 
+  // Subdomain da login page — token bor bo'lsa dashboard ga
+  if (pathname.startsWith("/login")) {
+    if (token) {
+      return NextResponse.redirect(new URL(`/${subdomain}`, request.url));
+    }
+    return NextResponse.next();
+  }
+
+  // Token yo'q → login ga
   if (!token) {
     return NextResponse.redirect(
       new URL("https://edumrx.uz/login", request.url),
     );
   }
 
+  // Root → subdomain dashboard ga
   if (pathname === "/") {
     return NextResponse.redirect(new URL(`/${subdomain}`, request.url));
   }
