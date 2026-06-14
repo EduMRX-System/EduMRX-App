@@ -147,18 +147,31 @@ export default function StaffLoginView() {
           <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
             <GraduationCap className="w-7 h-7 text-white" />
           </div>
-          <Link href="/" className="mb-5 block">
-            {
-              theme == "dark" ?
-                <Image src={LogoIcons.logoDark} width={250} height={350} alt="EduMRX Logo" />
-                :
-                <Image src={LogoIcons.logo} width={250} height={350} alt="EduMRX Logo" />
-            }
-          </Link>
+
         </motion.div>
 
         {/* Center content */}
-        <div className="relative z-10 space-y-8">
+        <div className="relative z-10 space-y-20">
+          <div className="">
+            <Link href="/" className="">
+              {theme == "dark" ? (
+                <Image
+                  src={LogoIcons.logoDark}
+                  width={250}
+                  height={62}
+                  alt="EduMRX Logo"
+                />
+              ) : (
+                <Image
+                  src={LogoIcons.logo}
+                  width={250}
+                  height={62}
+                  alt="EduMRX Logo"
+                />
+              )}
+            </Link>
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -17,16 +17,16 @@ import {
     Star,
     CreditCard,
     Clock,
-    Link,
 } from "lucide-react";
 
 import { API } from "@/services/api";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 import { useAuthStore } from "@/store/authStore";
-import Image from "next/image";
 import { useUIStore } from "@/store/useUIStore";
 import { LogoIcons } from "@/constants/icons";
+import Link from "next/link";
+import Image from "next/image";
 
 type StudentRole = "student_user" | "parent" | "teacher";
 
@@ -139,26 +139,30 @@ export default function StudentLoginView() {
                     className="absolute top-1/3 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"
                 />
 
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative z-10 flex items-center gap-3"
-                >
-                    <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
-                        <GraduationCap className="w-7 h-7 text-white" />
-                    </div>
-                    <Link href="/" className="mb-5 block">
-                        {
-                            theme == "dark" ?
-                                <Image src={LogoIcons.logoDark} width={250} height={350} alt="EduMRX Logo" />
-                                :
-                                <Image src={LogoIcons.logo} width={250} height={350} alt="EduMRX Logo" />
-                        }
-                    </Link>
-                </motion.div>
 
-                <div className="relative z-10 space-y-8">
+
+
+                <div className="relative z-10 space-y-20">
+                    <div className="">
+                        <Link href="/" className="">
+                            {theme == "dark" ? (
+                                <Image
+                                    src={LogoIcons.logoDark}
+                                    width={250}
+                                    height={62}
+                                    alt="EduMRX Logo"
+                                />
+                            ) : (
+                                <Image
+                                    src={LogoIcons.logo}
+                                    width={250}
+                                    height={62}
+                                    alt="EduMRX Logo"
+                                />
+                            )}
+                        </Link>
+                    </div>
+
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -210,6 +214,8 @@ export default function StudentLoginView() {
                     ))}
                 </motion.div>
             </div>
+
+
 
             {/* RIGHT: Form */}
             <div className="w-full lg:w-[520px] flex flex-col justify-center p-8 sm:p-12 bg-slate-950 relative">
