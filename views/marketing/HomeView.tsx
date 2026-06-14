@@ -64,8 +64,12 @@ export default function HomeView() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {panels.map((panel, idx) => (
-            <Link key={panel.slug} href={`/login?role=${panel.slug}`}>
+          {panels.map((panel) => (
+            <Link key={panel.slug} href={
+              process.env.NODE_ENV === "production"
+                ? "https://login.edumrx.uz"
+                : "/login"
+            }>
               <motion.div
                 whileHover={{ y: -3, transition: { duration: 0.2 } }}
                 className="group p-5 rounded-xl border border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-950 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 flex flex-col justify-between min-h-[190px] transition-colors cursor-pointer"

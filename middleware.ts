@@ -22,27 +22,36 @@ export function middleware(request: NextRequest) {
   const subdomain = getSubdomain(host);
   const token = request.cookies.get("access_token")?.value;
 
-  // Main site (edumrx.uz) — hech narsa qilmaymiz
-  if (!subdomain || !SUBDOMAIN_ROLE_MAP[subdomain]) {
-    return NextResponse.next();
-  }
-
-  // Subdomain da login page — token bor bo'lsa dashboard ga
-  if (pathname.startsWith("/login")) {
-    if (token) {
-      return NextResponse.redirect(new URL(`/${subdomain}`, request.url));
+  // ==================
+  // 1. login.edumrx.uz
+  // ==================
+  if (subdomain === "login") {
+    // Token bor bo'lsa — login ga kirmasin
+    if (token && pathname === "/") {
+      return NextResponse.redirect(new URL("https://edumrx.uz", request.url));
     }
     return NextResponse.next();
   }
 
-  // Token yo'q → login ga
+  // ==================
+  // 2. Main site (edumrx.uz)
+  // ==================
+  if (!subdomain || !SUBDOMAIN_ROLE_MAP[subdomain]) {
+    return NextResponse.next();
+  }
+
+  // ==================
+  // 3. Token yo'q → login.edumrx.uz ga
+  // ==================
   if (!token) {
     return NextResponse.redirect(
-      new URL("https://edumrx.uz/login", request.url),
+      new URL("https://login.edumrx.uz", request.url),
     );
   }
 
-  // Root → subdomain dashboard ga
+  // ==================
+  // 4. Root → subdomain dashboard ga
+  // ==================
   if (pathname === "/") {
     return NextResponse.redirect(new URL(`/${subdomain}`, request.url));
   }
