@@ -26,14 +26,21 @@ export function middleware(request: NextRequest) {
   // 1. login.edumrx.uz
   // ==================
   if (subdomain === "login") {
-    // Token bor bo'lsa — dashboard ga (login kerak emas)
-    if (token) {
+    // Token bor bo'lsa — kirmasin
+    if (token && (pathname === "/" || pathname === "/staff")) {
       return NextResponse.redirect(new URL("https://edumrx.uz", request.url));
     }
-    // Root → /login pageni ko'rsat (URL o'zgarmaydi)
+
+    // /staff → staff login page
+    if (pathname === "/staff") {
+      return NextResponse.rewrite(new URL("/staff-login", request.url));
+    }
+
+    // / → student login page
     if (pathname === "/") {
       return NextResponse.rewrite(new URL("/login", request.url));
     }
+
     return NextResponse.next();
   }
 
@@ -48,6 +55,13 @@ export function middleware(request: NextRequest) {
   // 3. Token yo'q → login.edumrx.uz ga
   // ==================
   if (!token) {
+    // Director/Manager → staff login ga
+    if (subdomain === "director" || subdomain === "manager") {
+      return NextResponse.redirect(
+        new URL("https://login.edumrx.uz/staff", request.url),
+      );
+    }
+    // Student/Parent/Teacher → oddiy login ga
     return NextResponse.redirect(
       new URL("https://login.edumrx.uz", request.url),
     );

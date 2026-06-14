@@ -1,3 +1,3 @@
-import LoginView from "@/views/auth/LoginView";
+import StudentLoginView from "@/views/auth/StudentLoginView";
 
-export default LoginView;
+export default StudentLoginView;

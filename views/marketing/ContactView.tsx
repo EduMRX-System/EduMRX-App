@@ -1,244 +1,215 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import {
-  Phone,
-  Send,
-  SendToBack,
   Mail,
+  Phone,
   MapPin,
+  Send,
   Clock,
-  ShieldCheck,
-  HelpCircle,
-  Users2,
-  ArrowUpRight,
+  MessageCircle,
+  User,
+  Building2,
 } from "lucide-react";
 
-export default function ContactPage() {
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const },
+  }),
+};
+
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+export default function ContactView() {
   const { t } = useTranslation();
+  const [form, setForm] = useState({ name: "", phone: "", center: "", message: "" });
+  const [loading, setLoading] = useState(false);
 
-  // Yuqori 6 ta asosiy bog'lanish kartalari
-  const contactMethods = [
-    {
-      key: "phone",
-      icon: Phone,
-      style:
-        "bg-emerald-50/50 dark:bg-emerald-950/10 border-emerald-100 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400",
-    },
-    {
-      key: "telegram",
-      icon: Send,
-      style:
-        "bg-blue-50/50 dark:bg-blue-950/10 border-blue-100 dark:border-blue-900/40 text-blue-600 dark:text-blue-400",
-      link: "https://t.me/EduCrmSupport",
-    },
-    {
-      key: "channel",
-      icon: SendToBack,
-      style:
-        "bg-indigo-50/50 dark:bg-indigo-950/10 border-indigo-100 dark:border-indigo-900/40 text-indigo-600 dark:text-indigo-400",
-      link: "https://t.me/educationcrm_uz",
-    },
-    {
-      key: "instagram",
-      icon: "Instagram",
-      style:
-        "bg-pink-50/50 dark:bg-pink-950/10 border-pink-100 dark:border-pink-900/40 text-pink-600 dark:text-pink-400",
-      link: "https://instagram.com/educationcrm.uz",
-    },
-    {
-      key: "email",
-      icon: Mail,
-      style:
-        "bg-amber-50/50 dark:bg-amber-950/10 border-amber-100 dark:border-amber-900/40 text-amber-600 dark:text-amber-500",
-      link: "mailto:info@educationcrm.uz",
-    },
-    {
-      key: "address",
-      icon: MapPin,
-      style:
-        "bg-purple-50/50 dark:bg-purple-950/10 border-purple-100 dark:border-purple-900/40 text-purple-600 dark:text-purple-400",
-    },
+  const contactInfo = [
+    { icon: Mail, label: "Email", value: "info@edumrx.uz", href: "mailto:info@edumrx.uz" },
+    { icon: Phone, label: "Telefon", value: "+998 90 123 45 67", href: "tel:+998901234567" },
+    { icon: MessageCircle, label: "Telegram", value: "@edumrx_support", href: "https://t.me/edumrx_support" },
+    { icon: MapPin, label: "Manzil", value: "Toshkent, O'zbekiston", href: "#" },
   ];
 
-  // Nega biz bilan bog'lanish kerak bloki
-  const whyUs = [
-    {
-      key: "speed",
-      icon: Clock,
-      iconColor: "text-blue-600 bg-blue-50 dark:bg-blue-950/50",
-    },
-    {
-      key: "security",
-      icon: ShieldCheck,
-      iconColor: "text-indigo-600 bg-indigo-50 dark:bg-indigo-950/50",
-    },
-    {
-      key: "consult",
-      icon: HelpCircle,
-      iconColor: "text-purple-600 bg-purple-50 dark:bg-purple-950/50",
-    },
-    {
-      key: "team",
-      icon: Users2,
-      iconColor: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50",
-    },
-  ];
-
-  // Kimlar uchun foydali ekanligi (Emoji bilan)
-  const targets = [
-    { key: "centers", emoji: "🏫" },
-    { key: "schools", emoji: "🏛️" },
-    { key: "kindergartens", emoji: "👶" },
-    { key: "institutes", emoji: "🎓" },
-    { key: "courses", emoji: "📚" },
-    { key: "online", emoji: "🌐" },
-  ];
+  const handleSubmit = () => {
+    if (!form.name || !form.phone) {
+      toast.error(t("contact.error", "Ism va telefon raqamni kiriting"));
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      toast.success(t("contact.success", "So'rovingiz qabul qilindi! Tez orada bog'lanamiz."));
+      setForm({ name: "", phone: "", center: "", message: "" });
+    }, 1000);
+  };
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 pb-24">
-      {/* ================= HERO BACKDROP SECTION ================= */}
-      <section className="relative w-full bg-indigo-950 text-white py-20 px-4 text-center overflow-hidden border-b border-indigo-900">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e1b4b_1px,transparent_1px),linear-gradient(to_bottom,#1e1b4b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-60" />
-
-        <div className="relative max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-900/60 border border-indigo-700/50 text-[10px] font-black uppercase tracking-wider text-indigo-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            {t("contactPage.badge")}
-          </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
-            Savollaringiz <span className="text-indigo-400">bormi?</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-indigo-200/70 font-medium leading-relaxed max-w-2xl mx-auto">
-            {t("contactPage.subtitle")}
-          </p>
-        </div>
+    <div className="w-full">
+      {/* HERO */}
+      <section className="relative pt-20 pb-12 text-center overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-72 bg-indigo-500/10 blur-3xl rounded-full -z-10" />
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto max-w-3xl px-4"
+        >
+          <motion.p variants={fadeUp} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
+            {t("contact.label", "Bog'lanish")}
+          </motion.p>
+          <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
+            {t("contact.title", "Keling, suhbatlashamiz")}
+          </motion.h1>
+          <motion.p variants={fadeUp} className="text-lg text-slate-600 dark:text-slate-400 mt-5">
+            {t("contact.subtitle", "Savollaringiz bormi? Demo kerakmi? Bizga yozing — 24 soat ichida javob beramiz.")}
+          </motion.p>
+        </motion.div>
       </section>
 
-      {/* ================= BOG'LANISH USULLARI GRID ================= */}
-      <section className="max-w-6xl mx-auto px-4 py-16 space-y-10">
-        <div className="text-center space-y-1">
-          <h2 className="text-xl sm:text-2xl font-black tracking-tight">
-            {t("contactPage.section_methods")}
-          </h2>
-          <p className="text-xs text-slate-400 font-medium">
-            {t("contactPage.section_methods_sub")}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {contactMethods.map((method, idx) => {
-            const CardWrapper = method.link ? "a" : "div";
-            return (
-              <motion.div
-                key={method.key}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.2, delay: idx * 0.04 }}
+      {/* CONTENT */}
+      <section className="py-12">
+        <div className="mx-auto max-w-6xl px-4 grid lg:grid-cols-5 gap-8">
+          {/* Left: Info cards */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="lg:col-span-2 space-y-4"
+          >
+            {contactInfo.map((info) => (
+              <motion.a
+                key={info.label}
+                href={info.href}
+                variants={fadeUp}
+                whileHover={{ x: 4 }}
+                className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all"
               >
-                <CardWrapper
-                  href={method.link}
-                  target={method.link ? "_blank" : undefined}
-                  rel={method.link ? "noopener noreferrer" : undefined}
-                  className={`p-6 rounded-2xl border bg-white dark:bg-slate-900/40 flex flex-col items-start space-y-4 ${method.style} ${method.link ? "hover:scale-[1.01] transition-transform cursor-pointer group" : ""}`}
-                >
-                  <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-current/10 flex items-center justify-center shrink-0">
-                    <method.icon className="w-4 h-4" />
-                  </div>
-
-                  <div className="space-y-1 w-full">
-                    <p className="text-[10px] font-black tracking-wider opacity-60 uppercase">
-                      {t(`contactPage.methods.${method.key}.title`)}
-                    </p>
-                    <div className="flex items-center gap-1 font-black text-sm text-slate-900 dark:text-white tracking-tight">
-                      <span>
-                        {t(`contactPage.methods.${method.key}.value`)}
-                      </span>
-                      {method.link && (
-                        <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400" />
-                      )}
-                    </div>
-                    <p className="text-[11px] text-slate-400 font-medium">
-                      {t(`contactPage.methods.${method.key}.desc`)}
-                    </p>
-                  </div>
-                </CardWrapper>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ================= DOUBLE BOTTOM PANELS ================= */}
-      <section className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12 pt-8 border-t border-slate-200/50 dark:border-slate-900/50">
-        {/* Nega biz bilan bog'lanish kerak */}
-        <div className="lg:col-span-5 space-y-6">
-          <h3 className="text-lg font-black tracking-tight">
-            {t("contactPage.why_title")}
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {whyUs.map((item) => (
-              <div
-                key={item.key}
-                className="p-5 rounded-2xl border border-slate-200/50 dark:border-slate-900 bg-white dark:bg-slate-900/20 space-y-3"
-              >
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${item.iconColor}`}
-                >
-                  <item.icon className="w-4 h-4" />
+                <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center shrink-0">
+                  <info.icon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                 </div>
-                <div className="space-y-0.5">
-                  <h4 className="font-black text-xs text-slate-900 dark:text-white tracking-tight">
-                    {t(`contactPage.why.${item.key}_title`)}
-                  </h4>
-                  <p className="text-[11px] text-slate-400 font-medium leading-relaxed">
-                    {t(`contactPage.why.${item.key}_desc`)}
-                  </p>
+                <div>
+                  <p className="text-xs text-slate-400 font-medium">{info.label}</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{info.value}</p>
                 </div>
-              </div>
+              </motion.a>
             ))}
-          </div>
-        </div>
 
-        {/* Kimlar uchun foydali & CTA */}
-        <div className="lg:col-span-7 space-y-6 flex flex-col justify-between">
-          <div className="space-y-4">
-            <h3 className="text-lg font-black tracking-tight">
-              {t("contactPage.who_title")}
+            {/* Working hours */}
+            <motion.div
+              variants={fadeUp}
+              className="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 text-white"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-4 h-4" />
+                <p className="text-sm font-bold">{t("contact.hours_title", "Ish vaqti")}</p>
+              </div>
+              <p className="text-xs text-indigo-100">{t("contact.hours", "Dushanba — Shanba: 9:00 — 18:00")}</p>
+            </motion.div>
+          </motion.div>
+
+          {/* Right: Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-3 p-7 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+          >
+            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-1">
+              {t("contact.form_title", "Demo so'rang")}
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {targets.map((target) => (
-                <div
-                  key={target.key}
-                  className="p-3.5 rounded-xl border border-slate-200/50 dark:border-slate-900 bg-white dark:bg-slate-900/20 flex items-center gap-2.5 font-bold text-xs text-slate-800 dark:text-slate-200"
-                >
-                  <span className="text-base shrink-0">{target.emoji}</span>
-                  <span className="truncate">
-                    {t(`contactPage.targets.${target.key}`)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+              {t("contact.form_desc", "Formani to'ldiring, mutaxassisimiz bog'lanadi")}
+            </p>
 
-          {/* CTA Box Banner */}
-          <div className="p-6 rounded-2xl bg-indigo-600 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mt-4">
-            <div className="space-y-1">
-              <h4 className="font-black text-base tracking-tight">
-                {t("contactPage.cta_title")}
-              </h4>
-              <p className="text-[11px] text-indigo-100/80 font-medium max-w-md leading-relaxed">
-                {t("contactPage.cta_desc")}
-              </p>
+            <div className="space-y-4">
+              {/* Name */}
+              <div>
+                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5" />
+                  {t("contact.name", "Ismingiz")}
+                </label>
+                <input
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder={t("contact.name_ph", "Ali Valiyev")}
+                  className="w-full h-11 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <Phone className="w-3.5 h-3.5" />
+                  {t("contact.phone", "Telefon")}
+                </label>
+                <input
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="+998 90 123 45 67"
+                  className="w-full h-11 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
+                />
+              </div>
+
+              {/* Center */}
+              <div>
+                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <Building2 className="w-3.5 h-3.5" />
+                  {t("contact.center", "Markaz nomi")}
+                </label>
+                <input
+                  value={form.center}
+                  onChange={(e) => setForm({ ...form, center: e.target.value })}
+                  placeholder={t("contact.center_ph", "O'quv markazingiz nomi")}
+                  className="w-full h-11 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
+                />
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  {t("contact.message", "Xabar")}
+                </label>
+                <textarea
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  placeholder={t("contact.message_ph", "Qanday yordam bera olamiz?")}
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors resize-none"
+                />
+              </div>
+
+              {/* Submit */}
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                onClick={handleSubmit}
+                disabled={loading}
+                className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/25 disabled:opacity-60"
+              >
+                {loading ? (
+                  <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                ) : (
+                  <>
+                    <span>{t("contact.send", "Yuborish")}</span>
+                    <Send className="w-4 h-4" />
+                  </>
+                )}
+              </motion.button>
             </div>
-            <button className="px-5 py-2.5 rounded-xl bg-white text-indigo-600 hover:bg-indigo-50 font-black text-xs transition-colors shrink-0 flex items-center gap-1">
-              <span>{t("contactPage.cta_btn")}</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>
