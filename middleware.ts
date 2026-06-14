@@ -26,9 +26,13 @@ export function middleware(request: NextRequest) {
   // 1. login.edumrx.uz
   // ==================
   if (subdomain === "login") {
-    // Token bor bo'lsa — login ga kirmasin
-    if (token && pathname === "/") {
+    // Token bor bo'lsa — dashboard ga (login kerak emas)
+    if (token) {
       return NextResponse.redirect(new URL("https://edumrx.uz", request.url));
+    }
+    // Root → /login pageni ko'rsat (URL o'zgarmaydi)
+    if (pathname === "/") {
+      return NextResponse.rewrite(new URL("/login", request.url));
     }
     return NextResponse.next();
   }
@@ -54,15 +58,6 @@ export function middleware(request: NextRequest) {
   // ==================
   if (pathname === "/") {
     return NextResponse.redirect(new URL(`/${subdomain}`, request.url));
-  }
-
-  // login.edumrx.uz
-  if (subdomain === "login") {
-    // Root → /login ga rewrite
-    if (pathname === "/") {
-      return NextResponse.rewrite(new URL("/login", request.url));
-    }
-    return NextResponse.next();
   }
 
   return NextResponse.next();
