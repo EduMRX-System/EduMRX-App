@@ -41,15 +41,15 @@ const nextConfig: any = {
   },
 
   async rewrites() {
+    const isDev = process.env.NODE_ENV === "development";
+
     return [
-      // API proxy
       {
         source: "/api/:path*",
-        destination: "https://www.edumrx.uz/api/:path*",
+        destination: isDev
+          ? "https://edumrx-1.onrender.com/api/:path*"
+          : "https://www.edumrx.uz/api/:path*",
       },
-
-      // Localhost da subdomain simulatsiyasi
-      // admin.localhost:3000 → /admin
       {
         source: "/:path*",
         has: [{ type: "host", value: "admin.localhost" }],

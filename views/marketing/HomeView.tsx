@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import ScrollReveal from "@/components/common/marketing/ScrollReveal";
 
+
 // ─── Animation presets ──────────────────────────────────
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -49,9 +50,20 @@ const stagger = {
 
 
 export default function HomeView() {
+  const [isLocal, setIsLocal] = useState(false);
+
+
   const { t } = useTranslation();
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -40]);
+
+  useEffect(() => {
+    setIsLocal(window.location.hostname.includes("localhost"));
+  }, []);
+
+  const loginBase = isLocal
+    ? "http://login.localhost:3000"
+    : "https://login.edumrx.uz";
 
   // Asosiy features (ta'lim CRM)
   const features = [
@@ -329,15 +341,13 @@ export default function HomeView() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
           >
             {panels.map((panel) => {
-              const loginBase =
-                typeof window !== "undefined" && window.location.hostname === "localhost"
-                  ? ""
-                  : "https://login.edumrx.uz";
+              const path = panel.loginUrl === "/staff" ? "/staff" : "/";
+              const href = `${loginBase}${path}`;
 
               return (
                 <motion.a
                   key={panel.title}
-                  href={`${loginBase}${panel.loginUrl === "/" ? "/login" : panel.loginUrl}`}
+                  href={href}
                   variants={fadeUp}
                   whileHover={{ y: -6 }}
                   className="group relative p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden transition-all hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-700 cursor-pointer block"

@@ -16,7 +16,11 @@ import {
   Lock,
   Building2,
   Clock,
+  Sun,
+  Moon,
 } from "lucide-react";
+
+import { getSubdomainUrl, getCookieOptions } from "@/utils/redirect";
 
 import { API } from "@/services/api";
 import { PhoneInput } from "@/components/ui/PhoneInput";
@@ -66,17 +70,18 @@ export default function StaffLoginView() {
     defaultValues: { phone: "", password: "" },
   });
 
+  const isLocal =
+    typeof window !== "undefined" && window.location.hostname.includes("localhost");
+
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
   const { mutate: loginStaff, isPending } = useMutation({
     mutationFn: (body: FormData) =>
       API.post("auth/login/", { ...body, phone: `+${body.phone}` }),
     onSuccess: (res) => {
       const { user, access_token, refresh_token, message } = res.data;
 
-      const isLocalhost = window.location.hostname === "localhost";
-      const cookieOptions = isLocalhost
-        ? `path=/; max-age=${7 * 24 * 60 * 60}; samesite=lax`
-        : `path=/; domain=.edumrx.uz; secure; samesite=none; max-age=${7 * 24 * 60 * 60}`;
-
+      const cookieOptions = getCookieOptions();
       document.cookie = `access_token=${access_token}; ${cookieOptions}`;
       document.cookie = `refresh_token=${refresh_token}; ${cookieOptions}`;
       document.cookie = `user=${encodeURIComponent(JSON.stringify({ ...user, role: user?.role || role }))}; ${cookieOptions}`;
@@ -84,14 +89,14 @@ export default function StaffLoginView() {
       login({ ...user, role: user?.role || role }, { access_token, refresh_token });
       toast.success(message || "Muvaffaqiyatli kirdingiz");
 
-      if (isLocalhost) {
+      if (window.location.hostname === "localhost") {
         toast.info(`✅ Role: ${role}`);
         return;
       }
 
       const redirectMap: Record<StaffRole, string> = {
-        director: "https://director.edumrx.uz",
-        manager: "https://manager.edumrx.uz",
+        director: getSubdomainUrl("director"),
+        manager: getSubdomainUrl("manager"),
       };
       window.location.href = redirectMap[role];
     },
@@ -119,7 +124,7 @@ export default function StaffLoginView() {
   ];
 
   return (
-    <div className="min-h-screen w-full flex bg-slate-950 overflow-hidden">
+    <div className="min-h-screen w-full flex bg-white dark:bg-slate-950 overflow-hidden transition-colors">
 
       {/* LEFT: Branding (gradient) */}
       <div className="hidden lg:flex flex-1 relative flex-col justify-between p-12 overflow-hidden">
@@ -137,26 +142,18 @@ export default function StaffLoginView() {
 
         {/* Center content */}
         <div className="relative z-10 space-y-20">
-          <div className="">
-            <Link href="/" className="">
-              {theme == "dark" ? (
-                <Image
-                  src={LogoIcons.logoDark}
-                  width={250}
-                  height={62}
-                  alt="EduMRX Logo"
-                />
-              ) : (
-                <Image
-                  src={LogoIcons.logo}
-                  width={250}
-                  height={62}
-                  alt="EduMRX Logo"
-                />
-              )}
+          {/* Logo + theme toggle */}
+          <div className="flex items-center justify-between">
+            <Link href="/">
+              <Image
+                src={LogoIcons.logoDark}
+                width={250}
+                height={62}
+                alt="EduMRX Logo"
+              />
             </Link>
-          </div>
 
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -213,8 +210,18 @@ export default function StaffLoginView() {
       </div>
 
       {/* RIGHT: Form */}
-      <div className="w-full lg:w-[520px] flex flex-col justify-center p-8 sm:p-12 bg-slate-950 relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-3xl rounded-full" />
+      <div className="w-full lg:w-[520px] flex flex-col justify-center p-8 sm:p-12 bg-white dark:bg-slate-950 relative transition-colors">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-3xl rounded-full pointer-events-none" />
+
+        {/* Theme toggle — form tepasida (mobil va light uchun) */}
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="absolute top-6 right-6 z-20 w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+          aria-label="Toggle theme"
+        >
+          {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
 
         <motion.div
           initial={{ opacity: 0, x: 20 }}
@@ -223,24 +230,24 @@ export default function StaffLoginView() {
           className="relative z-10 w-full max-w-sm mx-auto space-y-6"
         >
           {/* Role badge */}
-          <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-700/50 flex items-center justify-center gap-2.5">
+          <div className="p-4 rounded-2xl bg-slate-100 dark:bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center">
               <Shield className="w-4.5 h-4.5 text-white" />
             </div>
-            <span className="text-sm font-black text-indigo-400 tracking-widest">
+            <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 tracking-widest">
               {ROLE_INFO[role].label}
             </span>
           </div>
 
           {/* Role tabs */}
-          <div className="p-1 rounded-xl bg-slate-900 flex gap-1 border border-slate-800">
+          <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-900 flex gap-1 border border-slate-200 dark:border-slate-800">
             {(["director", "manager"] as StaffRole[]).map((r) => (
               <button
                 key={r}
                 onClick={() => setRole(r)}
                 className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${role === r
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
-                  : "text-slate-500 hover:text-slate-300"
+                  : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                   }`}
               >
                 {ROLE_INFO[r].uz}
@@ -250,16 +257,16 @@ export default function StaffLoginView() {
 
           {/* Welcome */}
           <div>
-            <h2 className="text-3xl font-black text-white tracking-tight">Xush kelibsiz!</h2>
-            <p className="text-sm text-slate-400 mt-1">
-              <span className="text-indigo-400 font-bold">{ROLE_INFO[role].uz}</span> sifatida tizimga kiring
+            <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Xush kelibsiz!</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+              <span className="text-indigo-600 dark:text-indigo-400 font-bold">{ROLE_INFO[role].uz}</span> sifatida tizimga kiring
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit((d) => loginStaff(d))} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-300">Telefon raqami</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Telefon raqami</label>
               <Controller
                 name="phone"
                 control={control}
@@ -270,12 +277,12 @@ export default function StaffLoginView() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-300">Parol</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Parol</label>
               <PasswordInput register={register("password")} error={errors.password?.message} />
             </div>
 
             <div className="text-right">
-              <button type="button" className="text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
+              <button type="button" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors">
                 Parolni unutdingizmi?
               </button>
             </div>
@@ -298,10 +305,10 @@ export default function StaffLoginView() {
             </motion.button>
           </form>
 
-          <p className="text-xs text-slate-500 text-center leading-relaxed">
+          <p className="text-xs text-slate-400 dark:text-slate-500 text-center leading-relaxed">
             Tizimga kirish orqali siz bizning{" "}
-            <span className="text-indigo-400 font-semibold">shartlar</span> va{" "}
-            <span className="text-indigo-400 font-semibold">maxfiylik siyosati</span>ni qabul qilasiz
+            <span className="text-indigo-600 dark:text-indigo-400 font-semibold">shartlar</span> va{" "}
+            <span className="text-indigo-600 dark:text-indigo-400 font-semibold">maxfiylik siyosati</span>ni qabul qilasiz
           </p>
         </motion.div>
       </div>
