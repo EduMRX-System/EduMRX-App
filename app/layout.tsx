@@ -9,6 +9,8 @@ import "leaflet/dist/leaflet.css";
 import ThemeInitializer from "@/components/ThemeInitializer";
 import LanguageInitializer from "@/components/LanguageInitializer";
 import { cn } from "@/lib/utils";
+import TokenSync from "@/components/auth/TokenSync";
+
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -17,11 +19,6 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-export const viewport: Viewport = {
-  themeColor: "#4F46E5",
-  width: "device-width",
-  initialScale: 1,
-};
 
 const SITE_URL = "https://edumrx.uz";
 const SITE_NAME = "EduMRX";
@@ -136,6 +133,15 @@ export const metadata: Metadata = {
 };
 
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#4F46E5",
+};
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -147,6 +153,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body className={`${inter.variable} antialiased`}>
+        <TokenSync />
         <ThemeInitializer />
         <LanguageInitializer />
         <Provider>{children}</Provider>

@@ -92,17 +92,17 @@ export default function StudentLoginView() {
             login({ ...user, role: user?.role || role }, { access_token, refresh_token });
             toast.success(message || "Muvaffaqiyatli kirdingiz");
 
-            if (window.location.hostname === "localhost") {
-                toast.info(`✅ Role: ${role}`);
-                return;
-            }
+            // student_user → "student" subdomain, qolganlar o'z nomi bilan
+            const targetRole = (user?.role || role) as StudentRole;
+            const sub = targetRole === "student_user" ? "student" : targetRole;
+            const base = getSubdomainUrl(sub);
+            const isLocal = window.location.hostname.includes("localhost");
 
-            const redirectMap: Record<StudentRole, string> = {
-                student_user: getSubdomainUrl("student"),
-                parent: getSubdomainUrl("parent"),
-                teacher: getSubdomainUrl("teacher"),
-            };
-            window.location.href = redirectMap[role];
+            const url = isLocal
+                ? `${base}/?at=${encodeURIComponent(access_token)}&rt=${encodeURIComponent(refresh_token)}`
+                : base;
+
+            window.location.replace(url);
         },
         onError: (err: AxiosErrorResponse) => {
             const e = err?.response?.data;

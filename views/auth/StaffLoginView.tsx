@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 
 import { getSubdomainUrl, getCookieOptions } from "@/utils/redirect";
-
 import { API } from "@/services/api";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import { PasswordInput } from "@/components/ui/PasswordInput";
@@ -70,9 +69,6 @@ export default function StaffLoginView() {
     defaultValues: { phone: "", password: "" },
   });
 
-  const isLocal =
-    typeof window !== "undefined" && window.location.hostname.includes("localhost");
-
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   const { mutate: loginStaff, isPending } = useMutation({
@@ -89,16 +85,16 @@ export default function StaffLoginView() {
       login({ ...user, role: user?.role || role }, { access_token, refresh_token });
       toast.success(message || "Muvaffaqiyatli kirdingiz");
 
-      if (window.location.hostname === "localhost") {
-        toast.info(`✅ Role: ${role}`);
-        return;
-      }
+      const targetRole = (user?.role || role) as StaffRole;
+      const base = getSubdomainUrl(targetRole);
+      const isLocal = window.location.hostname.includes("localhost");
 
-      const redirectMap: Record<StaffRole, string> = {
-        director: getSubdomainUrl("director"),
-        manager: getSubdomainUrl("manager"),
-      };
-      window.location.href = redirectMap[role];
+      const url = isLocal
+        ? `${base}/?at=${encodeURIComponent(access_token)}&rt=${encodeURIComponent(refresh_token)}`
+        : base;
+
+      // replace() — orqaga qaytib bo'lmaydi (login history'dan o'chadi)
+      window.location.replace(url);
     },
     onError: (err: AxiosErrorResponse) => {
       const e = err?.response?.data;
@@ -128,29 +124,20 @@ export default function StaffLoginView() {
 
       {/* LEFT: Branding (gradient) */}
       <div className="hidden lg:flex flex-1 relative flex-col justify-between p-12 overflow-hidden">
-        {/* Gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-800 via-slate-900 to-violet-800" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(16,185,129,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(139,92,246,0.2),transparent_50%)]" />
 
-        {/* Animated glow */}
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/3 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"
         />
 
-        {/* Center content */}
         <div className="relative z-10 space-y-20">
-          {/* Logo + theme toggle */}
           <div className="flex items-center justify-between">
             <Link href="/">
-              <Image
-                src={LogoIcons.logoDark}
-                width={250}
-                height={62}
-                alt="EduMRX Logo"
-              />
+              <Image src={LogoIcons.logoDark} width={250} height={62} alt="EduMRX Logo" />
             </Link>
 
           </div>
@@ -168,7 +155,6 @@ export default function StaffLoginView() {
             </p>
           </motion.div>
 
-          {/* Feature cards */}
           <motion.div
             initial="hidden"
             animate="visible"
@@ -190,7 +176,6 @@ export default function StaffLoginView() {
           </motion.div>
         </div>
 
-        {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -213,7 +198,6 @@ export default function StaffLoginView() {
       <div className="w-full lg:w-[520px] flex flex-col justify-center p-8 sm:p-12 bg-white dark:bg-slate-950 relative transition-colors">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-3xl rounded-full pointer-events-none" />
 
-        {/* Theme toggle — form tepasida (mobil va light uchun) */}
         <button
           type="button"
           onClick={toggleTheme}
@@ -229,7 +213,6 @@ export default function StaffLoginView() {
           transition={{ duration: 0.5 }}
           className="relative z-10 w-full max-w-sm mx-auto space-y-6"
         >
-          {/* Role badge */}
           <div className="p-4 rounded-2xl bg-slate-100 dark:bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center">
               <Shield className="w-4.5 h-4.5 text-white" />
@@ -239,7 +222,6 @@ export default function StaffLoginView() {
             </span>
           </div>
 
-          {/* Role tabs */}
           <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-900 flex gap-1 border border-slate-200 dark:border-slate-800">
             {(["director", "manager"] as StaffRole[]).map((r) => (
               <button
@@ -255,7 +237,6 @@ export default function StaffLoginView() {
             ))}
           </div>
 
-          {/* Welcome */}
           <div>
             <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Xush kelibsiz!</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -263,7 +244,6 @@ export default function StaffLoginView() {
             </p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit((d) => loginStaff(d))} className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Telefon raqami</label>

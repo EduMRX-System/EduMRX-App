@@ -77,7 +77,7 @@ export interface ILearningCenter {
   address: string;
   longitude: string;
   latitude: string;
-  status: "active" | "inactive" | "pending";
+  status: "active" | "inactive";
   plan: string;
   director: string;
   director_name: string;

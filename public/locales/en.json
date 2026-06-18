@@ -1,48 +1,315 @@
 {
-  "home": {
-    "badge": "#1 Education CRM platform in Uzbekistan",
-    "title_1": "Digitize your",
-    "title_2": "learning center",
-    "subtitle": "Students, attendance, payments and reports — all in one secure system. Manage your center at a professional level.",
-    "cta_primary": "Try for free",
-    "cta_secondary": "Request demo",
-    "trust": "No credit card required · 14 days free",
-    "features_label": "Features",
-    "features_title": "All tools for your center",
-    "features_desc": "All the functions you need to run your education business gathered in one platform.",
-    "panels_label": "Roles",
-    "panels_title": "A dedicated panel for every user",
-    "why_label": "Why choose us",
-    "why_title": "Reliable and secure platform",
-    "cta_title": "Start today, feel the difference",
-    "cta_desc": "Thousands of learning centers have taken their business to a professional level with EduMRX. Now it's your turn.",
-    "cta_button": "Start for free"
+  "marketing": {
+    "about": {
+      "label": "About us",
+      "title": "Building the future of education together",
+      "subtitle": "EduMRX is a team dedicated to empowering education centers in Uzbekistan with modern technology.",
+      "journey": "Our journey",
+      "cta_title": "Become part of our story",
+      "cta_button": "Contact us",
+      "stats": {
+        "users": "Active users",
+        "centers": "Partner centers",
+        "satisfaction": "Satisfaction rate",
+        "growth": "Average growth"
+      },
+      "values": {
+        "mission": {
+          "title": "Our mission",
+          "desc": "To digitize education centers and increase their efficiency."
+        },
+        "vision": {
+          "title": "Our vision",
+          "desc": "To become the leading education technology platform in Central Asia."
+        },
+        "values": {
+          "title": "Our values",
+          "desc": "Trust, transparency and commitment to our clients' success."
+        }
+      },
+      "timeline": {
+        "start": {
+          "title": "The beginning",
+          "desc": "The EduMRX idea was born and the first prototype was built."
+        },
+        "first_clients": {
+          "title": "First clients",
+          "desc": "More than 50 education centers joined the platform."
+        },
+        "expansion": {
+          "title": "Expansion",
+          "desc": "We reached 200+ centers and 10,000+ active users."
+        }
+      }
+    },
+
+    "contact": {
+      "label": "Contact",
+      "title": "Let's have a chat",
+      "subtitle": "Have questions? Need a demo? Write to us — we'll respond within 24 hours.",
+      "error": "Please enter your name and phone number",
+      "success": "Your request has been received! We'll get in touch shortly.",
+      "info": {
+        "email": "Email",
+        "phone": "Phone",
+        "telegram": "Telegram",
+        "address": "Address"
+      },
+      "hours_title": "Working hours",
+      "hours": "Monday — Saturday: 9:00 — 18:00",
+      "form_title": "Request a demo",
+      "form_desc": "Fill out the form and our specialist will reach out",
+      "name": "Your name",
+      "name_ph": "John Smith",
+      "phone": "Phone",
+      "center": "Center name",
+      "center_ph": "Your education center's name",
+      "message": "Message",
+      "message_ph": "How can we help?",
+      "send": "Send"
+    },
+
+    "features": {
+      "label": "Features",
+      "title": "Every tool your center needs",
+      "subtitle": "From student management to financial analytics — all the functions your business needs.",
+      "highlights_title": "And many more advantages",
+      "cta_title": "Try everything for free",
+      "cta_button": "Get started",
+      "categories": {
+        "academic": {
+          "title": "Academic process",
+          "desc": "Manage students, groups and classes",
+          "items": {
+            "students": {
+              "title": "Student database",
+              "desc": "Manage admissions, profiles and archives"
+            },
+            "groups": {
+              "title": "Groups and courses",
+              "desc": "Groups, schedules and teacher assignment"
+            },
+            "attendance": {
+              "title": "Digital attendance",
+              "desc": "Real-time attendance and statistics"
+            },
+            "rooms": {
+              "title": "Room management",
+              "desc": "Control of classrooms and occupancy"
+            }
+          }
+        },
+        "finance": {
+          "title": "Finance",
+          "desc": "Payments, debtors and expenses",
+          "items": {
+            "payments": {
+              "title": "Payment system",
+              "desc": "Accept and track payments"
+            },
+            "debtors": {
+              "title": "Debtor tracking",
+              "desc": "Automatic list of debtors"
+            },
+            "payment_types": {
+              "title": "Payment types",
+              "desc": "Configure various payment methods"
+            },
+            "expenses": {
+              "title": "Expense tracking",
+              "desc": "Manage your center's expenses"
+            }
+          }
+        },
+        "marketing": {
+          "title": "Marketing & Communication",
+          "desc": "Leads, SMS and Telegram integration",
+          "items": {
+            "sms": {
+              "title": "Auto SMS",
+              "desc": "Automatic notifications and reminders"
+            },
+            "telegram": {
+              "title": "Telegram bot",
+              "desc": "A bot for students and parents"
+            },
+            "leads": {
+              "title": "Lead management",
+              "desc": "Work with potential clients"
+            },
+            "notifications": {
+              "title": "Notifications",
+              "desc": "Real-time push notifications"
+            }
+          }
+        },
+        "analytics": {
+          "title": "Analytics & Reports",
+          "desc": "Deep statistics and business analysis",
+          "items": {
+            "overview": {
+              "title": "General analysis",
+              "desc": "Revenue and growth metrics"
+            },
+            "payment_analysis": {
+              "title": "Payment analysis",
+              "desc": "Analysis of financial flow"
+            },
+            "coins": {
+              "title": "Coin system",
+              "desc": "Motivate your students"
+            },
+            "holidays": { "title": "Holidays", "desc": "Configure days off" }
+          }
+        }
+      },
+      "highlights": {
+        "multibranch": "Multi-branch support",
+        "security": "Bank-grade security",
+        "pwa": "Mobile apps (PWA)",
+        "realtime": "Real-time data",
+        "languages": "Interface in 3 languages",
+        "support": "24/7 technical support"
+      }
+    },
+
+    "pricing": {
+      "label": "Pricing",
+      "title": "Choose the plan that fits you",
+      "subtitle": "A plan that matches your center's size. Change it anytime.",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "popular": "Popular",
+      "currency": "UZS/mo",
+      "per_year": "UZS/year",
+      "choose": "Choose",
+      "faq_title": "Frequently asked questions",
+      "calc": {
+        "title": "Calculate your plan",
+        "subtitle": "Choose a plan based on the number of students, branches and teachers",
+        "students": "Number of students",
+        "branches": "Number of branches",
+        "teachers": "Teachers",
+        "your_plan": "Your plan",
+        "summary": "{{students}} students, {{branches}} branches, {{teachers}} teachers",
+        "monthly_label": "Monthly payment",
+        "per_month": "UZS / mo",
+        "yearly_label": "Yearly payment",
+        "discount": "10% discount",
+        "note": "Note: above {{threshold}} students, an additional {{price}} UZS is charged for each extra student"
+      },
+      "plans": {
+        "starter": { "name": "Starter", "desc": "For small centers" },
+        "pro": { "name": "Professional", "desc": "For mid-size centers" },
+        "enterprise": { "name": "Enterprise", "desc": "For large networks" }
+      },
+      "features": {
+        "students_200": "Up to 200 students",
+        "managers_5": "5 managers",
+        "attendance_payments": "Attendance and payments",
+        "basic_reports": "Basic reports",
+        "sms": "SMS notifications",
+        "telegram": "Telegram bot",
+        "coins": "Coin system",
+        "students_1000": "Up to 1000 students",
+        "unlimited_managers": "Unlimited managers",
+        "all_basic": "All basic features",
+        "deep_analytics": "Deep analytics",
+        "unlimited_students": "Unlimited students",
+        "multibranch": "Multi-branch management",
+        "all_features": "All features",
+        "custom_integrations": "Custom integrations"
+      },
+      "faq": {
+        "trial": {
+          "q": "Is there a free trial period?",
+          "a": "Yes, a 14-day free trial is available for all plans. No credit card required."
+        },
+        "change_plan": {
+          "q": "Can I change my plan later?",
+          "a": "Of course. You can upgrade or downgrade your plan at any time."
+        },
+        "payment": {
+          "q": "How is payment made?",
+          "a": "You can pay via Click, Payme and bank transfers."
+        },
+        "security": {
+          "q": "Is my data secure?",
+          "a": "Yes, all data is encrypted and stored on secure servers."
+        }
+      }
+    }
   },
-  "nav": {
-    "home": "Home",
-    "features": "Features",
-    "pricing": "Pricing",
-    "about": "About",
-    "contact": "Contact",
-    "login": "Sign in"
+
+  "director": {
+    "dashboard": {
+      "stats": {
+        "payments": "To'lovlar",
+        "payments_desc": "Jami to'lovlar soni",
+        "types": "To'lov turlari",
+        "types_desc": "Mavjud to'lov turlari",
+        "students": "O'quvchilar",
+        "students_desc": "Jami o'quvchilar",
+        "revenue": "Daromad",
+        "revenue_desc": "Umumiy daromad"
+      },
+      "quick_actions": {
+        "analytics": "Analitika",
+        "branches": "Filiallar",
+        "managers": "Menejerlar",
+        "payments": "To'lovlar",
+        "marketing": "Marketing",
+        "holidays": "Bayram kunlari"
+      },
+      "charts": {
+        "monthly": "Oylik to'lovlar dinamikasi"
+      },
+      "recent": {
+        "title": "So'nggi to'lovlar",
+        "view_all": "Barchasini ko'rish",
+        "no_data": "Hozircha to'lovlar yo'q"
+      }
+    },
+    "analytics": {
+      "title": "Filial tahlili",
+      "subtitle": "Har bir filial bo'yicha oylik o'quvchilar kelishi, ketishi va to'lovlar",
+      "export": "Hisobotni yuklash",
+      "years": {
+        "2026": "2026-yil",
+        "2025": "2025-yil",
+        "2024": "2024-yil",
+        "2023": "2023-yil"
+      },
+      "empty": {
+        "title": "Hali birorta ham filial mavjud emas",
+        "desc": "Filial tahlillarini ko'rish uchun avval tizimga kamida bitta o'quv markazi filialini qo'shishingiz zarur.",
+        "add_btn": "Yangi filial qo'shish"
+      },
+      "cards": {
+        "incoming": "Kelgan o'quvchilar",
+        "outgoing": "Ketgan o'quvchilar",
+        "net_growth": "Sof o'sish",
+        "total_revenue": "Jami to'lovlar"
+      },
+      "charts": {
+        "flow_title": "O'quvchilar kelib-ketishi",
+        "revenue_title": "Oylik to'lovlar",
+        "currency": "UZS",
+        "legend_in": "Kelgan",
+        "legend_out": "Ketgan"
+      }
+    }
   },
-  "footer": {
-    "product": "Product",
-    "company": "Company",
-    "support": "Support",
-    "updates": "Updates",
-    "docs": "Documentation",
-    "blog": "Blog",
-    "careers": "Careers",
-    "help": "Help center",
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "security": "Security",
-    "location": "Tashkent, Uzbekistan",
-    "brand_desc": "The leading education center management system in Uzbekistan. Take your business to a professional level.",
-    "cta_title": "Digitize your center today",
-    "cta_desc": "14 days free · No credit card required",
-    "cta_button": "Get started",
-    "rights": "All rights reserved."
+
+  "brand": {
+    "name": "EduMRX"
+  },
+  "header": {
+    "page": "Sahifa",
+    "user_name": "Foydalanuvchi",
+    "admin": "Admin"
+  },
+  "sidebar": {
+    "logout": "Chiqish"
   }
 }

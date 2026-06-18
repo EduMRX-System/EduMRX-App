@@ -1,15 +1,63 @@
+// constants/navigation.ts
+import {
+  LayoutDashboard,
+  BarChart3,
+  TrendingUp,
+  Users,
+  Building2,
+  CreditCard,
+  Wallet,
+  Bell,
+  Settings,
+  User,
+  type LucideIcon,
+  ClipboardCheck,
+  UserCog,
+  GraduationCap,
+} from "lucide-react";
+
 export interface NavItem {
   title: string;
   href: string;
-  icon: string;
+  icon: LucideIcon;
 }
 
-export const ADMIN_MENU: NavItem[] = [
-  { title: "Asosiy Dashboard", href: "/admin", icon: "LayoutDashboard" },
-  { title: "O'quv Markazlar", href: "/admin/centers", icon: "Building" },
-  { title: "Direktorlar", href: "/admin/directors", icon: "UserCheck" },
-  { title: "O'qituvchilar", href: "/admin/teachers", icon: "GraduationCap" },
-  { title: "O'quvchilar", href: "/admin/students", icon: "Users" },
-  { title: "Moliya", href: "/admin/financial", icon: "Wallet" },
-  { title: "Sozlamalar", href: "/admin/settings", icon: "Settings" },
+export const directorMenu: NavItem[] = [
+  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "Analitika", href: "/analytics", icon: BarChart3 },
+  { title: "Filial tahlili", href: "/branch-analytics", icon: TrendingUp },
+
+  { title: "O'quvchilar", href: "/students", icon: GraduationCap },
+  { title: "O'qituvchilar", href: "/teachers", icon: UserCog },
+  { title: "Davomat", href: "/attendance", icon: ClipboardCheck },
+
+  { title: "Menejerlar", href: "/managers", icon: Users },
+  { title: "Filiallar", href: "/branches", icon: Building2 },
+  { title: "To'lovlar", href: "/payments", icon: CreditCard },
+  { title: "Xarajatlar", href: "/expenses", icon: Wallet },
+  { title: "Markaz sozlamalari", href: "/settings", icon: Settings },
+  { title: "Profil", href: "/profile", icon: User },
+];
+
+// ─── MANAGER (namuna — moslang) ─────────────────────────
+export const managerMenu: NavItem[] = [
+  { title: "Dashboard", href: "/manager", icon: LayoutDashboard },
+  { title: "O'quvchilar", href: "/manager/students", icon: Users },
+  { title: "Guruhlar", href: "/manager/groups", icon: Building2 },
+  { title: "To'lovlar", href: "/manager/payments", icon: CreditCard },
+  { title: "Profil", href: "/manager/profile", icon: User },
+];
+
+// ─── TEACHER (namuna) ───────────────────────────────────
+export const teacherMenu: NavItem[] = [
+  { title: "Dashboard", href: "/teacher", icon: LayoutDashboard },
+  { title: "Guruhlarim", href: "/teacher/groups", icon: Users },
+  { title: "Profil", href: "/teacher/profile", icon: User },
+];
+
+// ─── STUDENT (namuna) ───────────────────────────────────
+export const studentMenu: NavItem[] = [
+  { title: "Dashboard", href: "/student", icon: LayoutDashboard },
+  { title: "To'lovlarim", href: "/student/payments", icon: CreditCard },
+  { title: "Profil", href: "/student/profile", icon: User },
 ];

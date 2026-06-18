@@ -24,28 +24,15 @@ const SUBDOMAIN_ROLE_MAP: Record<string, string> = {
 
 function getSubdomain(host: string): string | null {
   const hostname = host.split(":")[0];
-
   if (hostname.endsWith(".localhost")) {
     return hostname.replace(".localhost", "") || null;
   }
   if (hostname === "localhost" || hostname === "127.0.0.1") {
     return null;
   }
-
   const parts = hostname.split(".");
   if (parts.length >= 3) return parts[0];
   return null;
-}
-
-function buildUrl(subdomain: string, path: string, host: string): string {
-  const isLocal = host.includes("localhost");
-  const port = isLocal ? ":3000" : "";
-  const protocol = isLocal ? "http" : "https";
-  const domain = isLocal ? "localhost" : "edumrx.uz";
-  const fullHost = subdomain
-    ? `${subdomain}.${domain}${port}`
-    : `${domain}${port}`;
-  return `${protocol}://${fullHost}${path}`;
 }
 
 export function middleware(request: NextRequest) {
@@ -53,21 +40,19 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const subdomain = getSubdomain(host);
   const token = request.cookies.get("access_token")?.value;
+  const validToken = token ? isTokenValid(token) : false;
 
-  // DEBUG — keyin o'chirish kerak
-  console.log("[MW]", {
-    host,
-    pathname,
-    subdomain,
-    hasToken: !!token,
-    tokenValid: token ? isTokenValid(token) : null,
-  });
+  // Token query param bilan kelyapti (TokenSync o'qiydi) — aralashmaymiz
+  const hasTokenParam = request.nextUrl.searchParams.has("at");
 
-  // 1. login subdomain
+  // ═══════════════════════════════════════════════════
+  // 1. LOGIN subdomain (login.edumrx.uz / login.localhost)
+  // ═══════════════════════════════════════════════════
   if (subdomain === "login") {
-    if (token && isTokenValid(token) && (pathname === "/" || pathname === "/staff")) {
-      return NextResponse.redirect(new URL(buildUrl("", "/", host)));
-    }
+    // /staff → staff login, / → student login (URL o'zgarmaydi, rewrite)
+    // Eslatma: token bor bo'lsa ham bu yerda redirect qilmaymiz —
+    // login sahifasi o'zi (frontend) kerakli dashboardga yuboradi.
+    // Bu loop oldini oladi.
     if (pathname === "/staff") {
       return NextResponse.rewrite(new URL("/staff-login", request.url));
     }
@@ -77,23 +62,39 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Main site
+  // ═══════════════════════════════════════════════════
+  // 2. Subdomain emas (edumrx.uz, localhost) → marketing sayt
+  // ═══════════════════════════════════════════════════
   if (!subdomain || !SUBDOMAIN_ROLE_MAP[subdomain]) {
     return NextResponse.next();
   }
 
-  // 3. Token yo'q → login ga
-  if (!token) {
-    if (subdomain === "director" || subdomain === "manager") {
-      return NextResponse.redirect(new URL(buildUrl("login", "/staff", host)));
-    }
-    return NextResponse.redirect(new URL(buildUrl("login", "/", host)));
+  // ═══════════════════════════════════════════════════
+  // 3. Dashboard subdomain (director.edumrx.uz, student.localhost...)
+  // ═══════════════════════════════════════════════════
+
+  // Token query bilan kelyapti — TokenSync ishlasin, o'tkazib yubor
+  if (hasTokenParam) {
+    return NextResponse.next();
   }
 
-  // 4. Root → dashboard
-  if (pathname === "/") {
+  // Token yo'q → tegishli login sahifaga
+  if (!validToken) {
+    const isStaff = subdomain === "director" || subdomain === "manager";
+    const loginHost = host.includes("localhost")
+      ? "http://login.localhost:3000"
+      : "https://login.edumrx.uz";
     return NextResponse.redirect(
-      new URL(buildUrl(subdomain, `/${subdomain}`, host)),
+      new URL(isStaff ? `${loginHost}/staff` : `${loginHost}/`),
+    );
+  }
+
+  // Token bor → dashboard'ni ko'rsat (URL o'zgarmaydi, rewrite)
+  // director.edumrx.uz/  →  ichki /director sahifasi
+  // director.edumrx.uz/groups  →  ichki /director/groups
+  if (!pathname.startsWith(`/${subdomain}`)) {
+    return NextResponse.rewrite(
+      new URL(`/${subdomain}${pathname === "/" ? "" : pathname}`, request.url),
     );
   }
 

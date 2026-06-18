@@ -56,7 +56,7 @@ export default function NotFound() {
 
                 <div className="pt-8 border-t border-slate-200/60">
                     <p className="text-xs text-slate-400 font-semibold tracking-wider uppercase">
-                        eduX boshqaruv tizimi
+                        eduMRX boshqaruv tizimi
                     </p>
                 </div>
 

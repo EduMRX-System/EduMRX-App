@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -34,22 +33,22 @@ export default function AboutView() {
   const { t } = useTranslation();
 
   const values = [
-    { icon: Target, title: "Maqsadimiz", desc: "Ta'lim markazlarini raqamlashtirib, ularning samaradorligini oshirish." },
-    { icon: Eye, title: "Vizyonimiz", desc: "Markaziy Osiyodagi yetakchi ta'lim texnologiyalari platformasiga aylanish." },
-    { icon: Heart, title: "Qadriyatlarimiz", desc: "Ishonch, shaffoflik va mijozlar muvaffaqiyatiga sodiqlik." },
+    { icon: Target, key: "mission" },
+    { icon: Eye, key: "vision" },
+    { icon: Heart, key: "values" },
   ];
 
   const stats = [
-    { icon: Users, value: "10,000+", label: "Faol foydalanuvchilar" },
-    { icon: Building2, value: "200+", label: "Hamkor markazlar" },
-    { icon: Award, value: "99.9%", label: "Mamnunlik darajasi" },
-    { icon: TrendingUp, value: "3x", label: "O'rtacha o'sish" },
+    { icon: Users, value: "10,000+", key: "users" },
+    { icon: Building2, value: "200+", key: "centers" },
+    { icon: Award, value: "99.9%", key: "satisfaction" },
+    { icon: TrendingUp, value: "3x", key: "growth" },
   ];
 
   const timeline = [
-    { year: "2024", title: "Boshlanish", desc: "EduMRX g'oyasi tug'ildi va birinchi prototip yaratildi." },
-    { year: "2025", title: "Birinchi mijozlar", desc: "50 dan ortiq ta'lim markazi platformaga qo'shildi." },
-    { year: "2026", title: "Kengayish", desc: "200+ markaz va 10,000+ faol foydalanuvchiga yetdik." },
+    { year: "2024", key: "start" },
+    { year: "2025", key: "first_clients" },
+    { year: "2026", key: "expansion" },
   ];
 
   return (
@@ -64,13 +63,13 @@ export default function AboutView() {
           className="mx-auto max-w-3xl px-4"
         >
           <motion.p variants={fadeUp} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
-            {t("about.label", "Biz haqimizda")}
+            {t("marketing.about.label")}
           </motion.p>
           <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-            {t("about.title", "Ta'lim kelajagini birga quramiz")}
+            {t("marketing.about.title")}
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg text-slate-600 dark:text-slate-400 mt-5">
-            {t("about.subtitle", "EduMRX — O'zbekistondagi ta'lim markazlarini zamonaviy texnologiyalar bilan kuchaytirishga bag'ishlangan jamoa.")}
+            {t("marketing.about.subtitle")}
           </motion.p>
         </motion.div>
       </section>
@@ -86,7 +85,7 @@ export default function AboutView() {
         >
           {stats.map((stat) => (
             <motion.div
-              key={stat.label}
+              key={stat.key}
               variants={fadeUp}
               className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center"
             >
@@ -94,7 +93,7 @@ export default function AboutView() {
                 <stat.icon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <p className="text-2xl font-black text-slate-900 dark:text-white">{stat.value}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{stat.label}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t(`marketing.about.stats.${stat.key}`)}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -112,15 +111,15 @@ export default function AboutView() {
           >
             {values.map((value) => (
               <motion.div
-                key={value.title}
+                key={value.key}
                 variants={fadeUp}
                 className="p-7 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
               >
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center mb-4 shadow-lg">
                   <value.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-black text-slate-900 dark:text-white mb-2">{value.title}</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{value.desc}</p>
+                <h3 className="text-lg font-black text-slate-900 dark:text-white mb-2">{t(`marketing.about.values.${value.key}.title`)}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{t(`marketing.about.values.${value.key}.desc`)}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -137,7 +136,7 @@ export default function AboutView() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl font-black text-slate-900 dark:text-white">
-              {t("about.journey", "Bizning yo'limiz")}
+              {t("marketing.about.journey")}
             </h2>
           </motion.div>
 
@@ -160,8 +159,8 @@ export default function AboutView() {
                   </div>
                   <div className="pt-1">
                     <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{item.year}</span>
-                    <h3 className="text-lg font-black text-slate-900 dark:text-white">{item.title}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{item.desc}</p>
+                    <h3 className="text-lg font-black text-slate-900 dark:text-white">{t(`marketing.about.timeline.${item.key}.title`)}</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{t(`marketing.about.timeline.${item.key}.desc`)}</p>
                   </div>
                 </motion.div>
               ))}
@@ -170,7 +169,7 @@ export default function AboutView() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA */} 
       <section className="py-20">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <motion.div
@@ -180,13 +179,13 @@ export default function AboutView() {
             className="space-y-6"
           >
             <h2 className="text-3xl font-black text-slate-900 dark:text-white">
-              {t("about.cta_title", "Bizning hikoyamizning bir qismi bo'ling")}
+              {t("marketing.about.cta_title")}
             </h2>
             <Link
               href="/contact"
               className="group inline-flex h-12 px-8 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-indigo-500/25 hover:-translate-y-0.5"
             >
-              <span>{t("about.cta_button", "Biz bilan bog'laning")}</span>
+              <span>{t("marketing.about.cta_button")}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </motion.div>

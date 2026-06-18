@@ -35,21 +35,21 @@ export default function ContactView() {
   const [loading, setLoading] = useState(false);
 
   const contactInfo = [
-    { icon: Mail, label: "Email", value: "info@edumrx.uz", href: "mailto:info@edumrx.uz" },
-    { icon: Phone, label: "Telefon", value: "+998 90 123 45 67", href: "tel:+998901234567" },
-    { icon: MessageCircle, label: "Telegram", value: "@edumrx_support", href: "https://t.me/edumrx_support" },
-    { icon: MapPin, label: "Manzil", value: "Toshkent, O'zbekiston", href: "#" },
+    { icon: Mail, key: "email", value: "info@edumrx.uz", href: "mailto:info@edumrx.uz" },
+    { icon: Phone, key: "phone", value: "+998 90 123 45 67", href: "tel:+998901234567" },
+    { icon: MessageCircle, key: "telegram", value: "@edumrx_support", href: "https://t.me/edumrx_support" },
+    { icon: MapPin, key: "address", value: "Toshkent, O'zbekiston", href: "#" },
   ];
 
   const handleSubmit = () => {
     if (!form.name || !form.phone) {
-      toast.error(t("contact.error", "Ism va telefon raqamni kiriting"));
+      toast.error(t("marketing.contact.error"));
       return;
     }
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      toast.success(t("contact.success", "So'rovingiz qabul qilindi! Tez orada bog'lanamiz."));
+      toast.success(t("marketing.contact.success"));
       setForm({ name: "", phone: "", center: "", message: "" });
     }, 1000);
   };
@@ -66,13 +66,13 @@ export default function ContactView() {
           className="mx-auto max-w-3xl px-4"
         >
           <motion.p variants={fadeUp} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
-            {t("contact.label", "Bog'lanish")}
+            {t("marketing.contact.label")}
           </motion.p>
           <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
-            {t("contact.title", "Keling, suhbatlashamiz")}
+            {t("marketing.contact.title")}
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg text-slate-600 dark:text-slate-400 mt-5">
-            {t("contact.subtitle", "Savollaringiz bormi? Demo kerakmi? Bizga yozing — 24 soat ichida javob beramiz.")}
+            {t("marketing.contact.subtitle")}
           </motion.p>
         </motion.div>
       </section>
@@ -90,7 +90,7 @@ export default function ContactView() {
           >
             {contactInfo.map((info) => (
               <motion.a
-                key={info.label}
+                key={info.key}
                 href={info.href}
                 variants={fadeUp}
                 whileHover={{ x: 4 }}
@@ -100,7 +100,7 @@ export default function ContactView() {
                   <info.icon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-400 font-medium">{info.label}</p>
+                  <p className="text-xs text-slate-400 font-medium">{t(`marketing.contact.info.${info.key}`)}</p>
                   <p className="text-sm font-bold text-slate-900 dark:text-white">{info.value}</p>
                 </div>
               </motion.a>
@@ -113,9 +113,9 @@ export default function ContactView() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4" />
-                <p className="text-sm font-bold">{t("contact.hours_title", "Ish vaqti")}</p>
+                <p className="text-sm font-bold">{t("marketing.contact.hours_title")}</p>
               </div>
-              <p className="text-xs text-indigo-100">{t("contact.hours", "Dushanba — Shanba: 9:00 — 18:00")}</p>
+              <p className="text-xs text-indigo-100">{t("marketing.contact.hours")}</p>
             </motion.div>
           </motion.div>
 
@@ -127,10 +127,10 @@ export default function ContactView() {
             className="lg:col-span-3 p-7 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
           >
             <h3 className="text-xl font-black text-slate-900 dark:text-white mb-1">
-              {t("contact.form_title", "Demo so'rang")}
+              {t("marketing.contact.form_title")}
             </h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-              {t("contact.form_desc", "Formani to'ldiring, mutaxassisimiz bog'lanadi")}
+              {t("marketing.contact.form_desc")}
             </p>
 
             <div className="space-y-4">
@@ -138,12 +138,12 @@ export default function ContactView() {
               <div>
                 <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                   <User className="w-3.5 h-3.5" />
-                  {t("contact.name", "Ismingiz")}
+                  {t("marketing.contact.name")}
                 </label>
                 <input
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder={t("contact.name_ph", "Ali Valiyev")}
+                  placeholder={t("marketing.contact.name_ph")}
                   className="w-full h-11 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
                 />
               </div>
@@ -152,7 +152,7 @@ export default function ContactView() {
               <div>
                 <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5" />
-                  {t("contact.phone", "Telefon")}
+                  {t("marketing.contact.phone")}
                 </label>
                 <input
                   value={form.phone}
@@ -166,12 +166,12 @@ export default function ContactView() {
               <div>
                 <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                   <Building2 className="w-3.5 h-3.5" />
-                  {t("contact.center", "Markaz nomi")}
+                  {t("marketing.contact.center")}
                 </label>
                 <input
                   value={form.center}
                   onChange={(e) => setForm({ ...form, center: e.target.value })}
-                  placeholder={t("contact.center_ph", "O'quv markazingiz nomi")}
+                  placeholder={t("marketing.contact.center_ph")}
                   className="w-full h-11 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
                 />
               </div>
@@ -180,12 +180,12 @@ export default function ContactView() {
               <div>
                 <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                   <MessageCircle className="w-3.5 h-3.5" />
-                  {t("contact.message", "Xabar")}
+                  {t("marketing.contact.message")}
                 </label>
                 <textarea
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  placeholder={t("contact.message_ph", "Qanday yordam bera olamiz?")}
+                  placeholder={t("marketing.contact.message_ph")}
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors resize-none"
                 />
@@ -203,7 +203,7 @@ export default function ContactView() {
                   <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                 ) : (
                   <>
-                    <span>{t("contact.send", "Yuborish")}</span>
+                    <span>{t("marketing.contact.send")}</span>
                     <Send className="w-4 h-4" />
                   </>
                 )}

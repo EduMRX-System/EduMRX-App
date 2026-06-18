@@ -173,7 +173,7 @@ export default function EditStudentModal({ student, onClose }: EditStudentModalP
 
     const { mutate: updateStudent, isPending } = useMutation({
         mutationFn: async (payload: IEditStudentPayload) => {
-            return await API.put(`students/${student.id}/`, payload);
+            return await API.put(`director/students/${student.id}/`, payload);
         },
         onSuccess: () => {
             toast.success(t("students.toast.editSuccess", "Talaba ma'lumotlari muvaffaqiyatli yangilandi"));

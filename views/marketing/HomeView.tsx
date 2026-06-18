@@ -52,7 +52,6 @@ const stagger = {
 export default function HomeView() {
   const [isLocal, setIsLocal] = useState(false);
 
-
   const { t } = useTranslation();
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -40]);
@@ -65,40 +64,40 @@ export default function HomeView() {
     ? "http://login.localhost:3000"
     : "https://login.edumrx.uz";
 
-  // Asosiy features (ta'lim CRM)
+  // Asosiy features (ta'lim CRM) — matnlar i18n'dan
   const features = [
-    { icon: Users, key: "students", title: "O'quvchilar bazasi", desc: "Barcha o'quvchilar ma'lumotlari, qabul jarayoni va arxiv bitta joyda." },
-    { icon: GraduationCap, key: "groups", title: "Guruh va kurslar", desc: "Guruhlarni boshqarish, dars jadvali va o'qituvchi biriktirish." },
-    { icon: ClipboardCheck, key: "attendance", title: "Elektron davomat", desc: "Real vaqtda davomat olish, statistika va avtomatik hisobotlar." },
-    { icon: CreditCard, key: "payments", title: "To'lovlar tizimi", desc: "To'lovlarni kuzatish, qarzdorlar nazorati va moliyaviy oqim." },
-    { icon: BarChart3, key: "analytics", title: "Chuqur analitika", desc: "Daromad, o'sish va o'qituvchilar reytingi bo'yicha to'liq tahlil." },
-    { icon: MessageCircle, key: "sms", title: "Avto SMS xabarlar", desc: "Ota-onalarga avtomatik xabarnomalar, to'lov eslatmalari." },
-    { icon: Bot, key: "telegram", title: "Telegram bot", desc: "Talaba va ota-onalar uchun integratsiyalashgan Telegram bot." },
-    { icon: Coins, key: "coins", title: "Coin motivatsiya", desc: "O'quvchilarni rag'batlantirish uchun coin va mukofot tizimi." },
+    { icon: Users, key: "students" },
+    { icon: GraduationCap, key: "groups" },
+    { icon: ClipboardCheck, key: "attendance" },
+    { icon: CreditCard, key: "payments" },
+    { icon: BarChart3, key: "analytics" },
+    { icon: MessageCircle, key: "sms" },
+    { icon: Bot, key: "telegram" },
+    { icon: Coins, key: "coins" },
   ];
 
   // Statistika
   const stats = [
-    { value: "10,000+", label: "Faol o'quvchilar" },
-    { value: "200+", label: "O'quv markazlari" },
-    { value: "99.9%", label: "Uptime kafolati" },
-    { value: "24/7", label: "Texnik yordam" },
+    { value: "10,000+", key: "students" },
+    { value: "200+", key: "centers" },
+    { value: "99.9%", key: "uptime" },
+    { value: "24/7", key: "support" },
   ];
 
   // Role panellari
   const panels = [
-    { icon: Shield, title: "Director", desc: "To'liq nazorat, moliya auditi va strategik hisobotlar.", color: "from-indigo-500 to-blue-600", loginUrl: "/staff" },
-    { icon: Users, title: "Manager", desc: "O'quvchilar qabuli, guruhlar va kundalik operatsiyalar.", color: "from-violet-500 to-purple-600", loginUrl: "/staff" },
-    { icon: GraduationCap, title: "Teacher", desc: "Dars jadvali, davomat va o'quvchilar baholash.", color: "from-blue-500 to-cyan-600", loginUrl: "/" },
-    { icon: MessageCircle, title: "Student & Parent", desc: "O'zlashtirish, to'lovlar va uy vazifalari.", color: "from-emerald-500 to-teal-600", loginUrl: "/" },
+    { icon: Shield, key: "director", color: "from-indigo-500 to-blue-600", loginUrl: "/staff" },
+    { icon: Users, key: "manager", color: "from-violet-500 to-purple-600", loginUrl: "/staff" },
+    { icon: GraduationCap, key: "teacher", color: "from-blue-500 to-cyan-600", loginUrl: "/" },
+    { icon: MessageCircle, key: "student", color: "from-emerald-500 to-teal-600", loginUrl: "/" },
   ];
 
   // Afzalliklar
   const benefits = [
-    { icon: Lock, title: "Bank darajasidagi xavfsizlik", desc: "Ma'lumotlaringiz shifrlangan va himoyalangan." },
-    { icon: Zap, title: "Yashin tezligida ishlash", desc: "Optimallashtirilgan tizim — kechikishlarsiz." },
-    { icon: Globe, title: "Istalgan joydan kirish", desc: "Bulutli platforma — kompyuter va telefondan." },
-    { icon: Building2, title: "Multi-filial qo'llab-quvvatlash", desc: "Bir nechta filialni bitta panelda boshqaring." },
+    { icon: Lock, key: "security" },
+    { icon: Zap, key: "speed" },
+    { icon: Globe, key: "access" },
+    { icon: Building2, key: "multibranch" },
   ];
 
   return (
@@ -131,7 +130,7 @@ export default function HomeView() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-800/50">
                 <Sparkles className="w-3.5 h-3.5" />
                 <ScrollReveal direction="up" delay={0.1}>
-                  <span>{t("home.badge", "O'zbekistondagi #1 ta'lim CRM platformasi")}</span>
+                  <span>{t("marketing.home.badge")}</span>
                 </ScrollReveal>
               </div>
             </motion.div>
@@ -141,11 +140,11 @@ export default function HomeView() {
               variants={fadeUp}
               className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.05]"
             >
-              {t("home.title_1", "Ta'lim markazingizni")}
+              {t("marketing.home.title_1")}
               <br />
               <span className="relative inline-block">
                 <span className="relative z-10 bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
-                  {t("home.title_2", "raqamlashtiring")}
+                  {t("marketing.home.title_2")}
                 </span>
                 <motion.span
                   initial={{ scaleX: 0 }}
@@ -161,7 +160,7 @@ export default function HomeView() {
               variants={fadeUp}
               className="max-w-2xl text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed"
             >
-              {t("home.subtitle", "O'quvchilar, davomat, to'lovlar va hisobotlar — barchasi bitta xavfsiz tizimda. Markazingizni professional darajada boshqaring.")}
+              {t("marketing.home.subtitle")}
             </motion.p>
 
             {/* CTA buttons */}
@@ -170,21 +169,21 @@ export default function HomeView() {
                 href="/pricing"
                 className="group inline-flex h-12 px-7 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
               >
-                <span>{t("home.cta_primary", "Bepul sinab ko'rish")}</span>
+                <span>{t("marketing.home.cta_primary")}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
               <Link
                 href="/contact"
                 className="inline-flex h-12 px-7 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm font-bold rounded-xl items-center gap-2 transition-all border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5"
               >
-                <span>{t("home.cta_secondary", "Demo so'rash")}</span>
+                <span>{t("marketing.home.cta_secondary")}</span>
               </Link>
             </motion.div>
 
             {/* Trust line */}
             <motion.div variants={fadeUp} className="flex items-center gap-2 pt-4 text-xs text-slate-500 dark:text-slate-500">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              <span>{t("home.trust", "Kredit karta talab qilinmaydi · 14 kun bepul")}</span>
+              <span>{t("marketing.home.trust")}</span>
             </motion.div>
           </motion.div>
         </motion.div>
@@ -214,12 +213,12 @@ export default function HomeView() {
             {/* Dashboard content */}
             <div className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-4 bg-gradient-to-br from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
               {[
-                { label: "Jami daromad", value: "₊245M", trend: "+12.5%", icon: TrendingUp },
-                { label: "Faol o'quvchilar", value: "1,284", trend: "+8.2%", icon: Users },
-                { label: "Bu oy to'lovlar", value: "892", trend: "+15.3%", icon: CreditCard },
+                { labelKey: "revenue", value: "₊245M", trend: "+12.5%", icon: TrendingUp },
+                { labelKey: "active_students", value: "1,284", trend: "+8.2%", icon: Users },
+                { labelKey: "month_payments", value: "892", trend: "+15.3%", icon: CreditCard },
               ].map((card, i) => (
                 <motion.div
-                  key={card.label}
+                  key={card.labelKey}
                   initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -235,7 +234,7 @@ export default function HomeView() {
                     </span>
                   </div>
                   <p className="text-2xl font-black text-slate-900 dark:text-white">{card.value}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{card.label}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{t(`marketing.home.mockup.${card.labelKey}`)}</p>
                 </motion.div>
               ))}
             </div>
@@ -253,12 +252,12 @@ export default function HomeView() {
           className="mx-auto max-w-5xl px-4 grid grid-cols-2 md:grid-cols-4 gap-8"
         >
           {stats.map((stat) => (
-            <motion.div key={stat.label} variants={fadeUp} className="text-center">
+            <motion.div key={stat.key} variants={fadeUp} className="text-center">
               <p className="text-3xl sm:text-4xl font-black bg-gradient-to-br from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
                 {stat.value}
               </p>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">
-                {stat.label}
+                {t(`marketing.home.stats.${stat.key}`)}
               </p>
             </motion.div>
           ))}
@@ -276,13 +275,13 @@ export default function HomeView() {
             className="text-center max-w-2xl mx-auto mb-16"
           >
             <motion.p variants={fadeUp} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
-              {t("home.features_label", "Imkoniyatlar")}
+              {t("marketing.home.features_label")}
             </motion.p>
             <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
-              {t("home.features_title", "Markaz uchun barcha vositalar")}
+              {t("marketing.home.features_title")}
             </motion.h2>
             <motion.p variants={fadeUp} className="text-base text-slate-600 dark:text-slate-400 mt-4">
-              {t("home.features_desc", "Ta'lim biznesingizni boshqarish uchun kerakli barcha funksiyalar bitta platformada jamlangan.")}
+              {t("marketing.home.features_desc")}
             </motion.p>
           </motion.div>
 
@@ -304,10 +303,10 @@ export default function HomeView() {
                   <feature.icon className="w-5 h-5 text-indigo-600 dark:text-indigo-400 group-hover:text-white transition-colors" />
                 </div>
                 <h3 className="font-bold text-base text-slate-900 dark:text-white mb-1.5">
-                  {feature.title}
+                  {t(`marketing.home.features.${feature.key}.title`)}
                 </h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                  {feature.desc}
+                  {t(`marketing.home.features.${feature.key}.desc`)}
                 </p>
               </motion.div>
             ))}
@@ -326,10 +325,10 @@ export default function HomeView() {
             className="text-center max-w-2xl mx-auto mb-16"
           >
             <motion.p variants={fadeUp} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
-              {t("home.panels_label", "Rollar")}
+              {t("marketing.home.panels_label")}
             </motion.p>
             <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
-              {t("home.panels_title", "Har bir foydalanuvchi uchun alohida panel")}
+              {t("marketing.home.panels_title")}
             </motion.h2>
           </motion.div>
 
@@ -346,7 +345,7 @@ export default function HomeView() {
 
               return (
                 <motion.a
-                  key={panel.title}
+                  key={panel.key}
                   href={href}
                   variants={fadeUp}
                   whileHover={{ y: -6 }}
@@ -360,15 +359,15 @@ export default function HomeView() {
                   </div>
 
                   <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">
-                    {panel.title}
+                    {t(`marketing.home.panels.${panel.key}.title`)}
                   </h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-                    {panel.desc}
+                    {t(`marketing.home.panels.${panel.key}.desc`)}
                   </p>
 
                   {/* Hover da chiqadigan "Kirish" */}
                   <div className="flex items-center gap-1.5 text-sm font-bold text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-                    <span>Kirish</span>
+                    <span>{t("marketing.home.panels.enter")}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                   </div>
 
@@ -394,21 +393,21 @@ export default function HomeView() {
             viewport={{ once: true }}
           >
             <motion.p variants={fadeUp} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
-              {t("home.why_label", "Nega aynan biz")}
+              {t("marketing.home.why_label")}
             </motion.p>
             <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-8">
-              {t("home.why_title", "Ishonchli va xavfsiz platforma")}
+              {t("marketing.home.why_title")}
             </motion.h2>
 
             <div className="space-y-5">
               {benefits.map((benefit) => (
-                <motion.div key={benefit.title} variants={fadeUp} className="flex gap-4">
+                <motion.div key={benefit.key} variants={fadeUp} className="flex gap-4">
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center shrink-0">
                     <benefit.icon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-base text-slate-900 dark:text-white">{benefit.title}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{benefit.desc}</p>
+                    <h3 className="font-bold text-base text-slate-900 dark:text-white">{t(`marketing.home.benefits.${benefit.key}.title`)}</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{t(`marketing.home.benefits.${benefit.key}.desc`)}</p>
                   </div>
                 </motion.div>
               ))}
@@ -431,23 +430,23 @@ export default function HomeView() {
                     <Shield className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-white font-bold">SSL Shifrlangan</p>
-                    <p className="text-indigo-200 text-xs">256-bit himoya</p>
+                    <p className="text-white font-bold">{t("marketing.home.visual.ssl_title")}</p>
+                    <p className="text-indigo-200 text-xs">{t("marketing.home.visual.ssl_desc")}</p>
                   </div>
                 </div>
 
                 {/* Mini stats */}
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { icon: Bell, label: "Bildirishnomalar", value: "Real-time" },
-                    { icon: Calendar, label: "Dars jadvali", value: "Avtomatik" },
-                    { icon: Coins, label: "Coin tizimi", value: "Faol" },
-                    { icon: BarChart3, label: "Hisobotlar", value: "Jonli" },
+                    { icon: Bell, key: "notifications" },
+                    { icon: Calendar, key: "schedule" },
+                    { icon: Coins, key: "coins" },
+                    { icon: BarChart3, key: "reports" },
                   ].map((item) => (
-                    <div key={item.label} className="p-3 rounded-xl bg-white/10 backdrop-blur border border-white/10">
+                    <div key={item.key} className="p-3 rounded-xl bg-white/10 backdrop-blur border border-white/10">
                       <item.icon className="w-4 h-4 text-indigo-200 mb-2" />
-                      <p className="text-white text-sm font-bold">{item.value}</p>
-                      <p className="text-indigo-200 text-[10px]">{item.label}</p>
+                      <p className="text-white text-sm font-bold">{t(`marketing.home.visual.${item.key}.value`)}</p>
+                      <p className="text-indigo-200 text-[10px]">{t(`marketing.home.visual.${item.key}.label`)}</p>
                     </div>
                   ))}
                 </div>
@@ -480,16 +479,16 @@ export default function HomeView() {
 
             <div className="relative z-10 flex flex-col items-center gap-6">
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-                {t("home.cta_title", "Bugun boshlang, farqni his qiling")}
+                {t("marketing.home.cta_title")}
               </h2>
               <p className="text-slate-300 max-w-lg">
-                {t("home.cta_desc", "Minglab o'quv markazlari EduMRX bilan o'z biznesini professional darajaga olib chiqdi. Endi navbat sizda.")}
+                {t("marketing.home.cta_desc")}
               </p>
               <Link
                 href="/pricing"
                 className="group inline-flex h-12 px-8 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-indigo-500/30 hover:-translate-y-0.5"
               >
-                <span>{t("home.cta_button", "Bepul boshlash")}</span>
+                <span>{t("marketing.home.cta_button")}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>

@@ -44,37 +44,15 @@ const nextConfig: any = {
     const isDev = process.env.NODE_ENV === "development";
 
     return [
+      // API proxy — CORS ni chetlab o'tish uchun
       {
         source: "/api/:path*",
         destination: isDev
           ? "https://edumrx-1.onrender.com/api/:path*"
           : "https://www.edumrx.uz/api/:path*",
       },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "admin.localhost" }],
-        destination: "/admin/:path*",
-      },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "director.localhost" }],
-        destination: "/director/:path*",
-      },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "manager.localhost" }],
-        destination: "/manager/:path*",
-      },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "teacher.localhost" }],
-        destination: "/teacher/:path*",
-      },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "student.localhost" }],
-        destination: "/student/:path*",
-      },
+      // Subdomain → path rewrite'lar OLIB TASHLANDI.
+      // Endi middleware.ts subdomain'ni o'zi /director, /student ga rewrite qiladi.
     ];
   },
 };

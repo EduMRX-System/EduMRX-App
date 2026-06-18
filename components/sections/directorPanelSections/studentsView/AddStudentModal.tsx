@@ -89,7 +89,7 @@ export default function AddStudentModal({ onClose }: AddStudentModalProps) {
 
     const { mutate: addStudent, isPending } = useMutation({
         mutationFn: async (body: FormData) => {
-            const res = await API.post("super-admin/students/", body, {
+            const res = await API.post("director/students/", body, {
                 headers: {
                     "Content-Type": "application/json",
                 },

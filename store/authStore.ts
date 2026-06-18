@@ -36,12 +36,10 @@ const COOKIE_DOMAIN = ".edumrx.uz";
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 kun
 
 function setCookie(name: string, value: string) {
-  const isLocalhost = window.location.hostname === "localhost";
-
-  const cookieOptions = isLocalhost
-    ? `path=/; max-age=${COOKIE_MAX_AGE}; samesite=lax` // localhost uchun
-    : `path=/; domain=.edumrx.uz; secure; samesite=none; max-age=${COOKIE_MAX_AGE}`; // production uchun
-
+  const isLocal = window.location.hostname.includes("localhost");
+  const cookieOptions = isLocal
+    ? `path=/; max-age=${COOKIE_MAX_AGE}; samesite=lax`
+    : `path=/; domain=.edumrx.uz; secure; samesite=none; max-age=${COOKIE_MAX_AGE}`;
   document.cookie = `${name}=${encodeURIComponent(value)}; ${cookieOptions}`;
 }
 
@@ -52,7 +50,11 @@ function getCookie(name: string): string | null {
 }
 
 function deleteCookie(name: string) {
-  document.cookie = `${name}=; path=/; domain=${COOKIE_DOMAIN}; max-age=0`;
+  const isLocal =
+    typeof window !== "undefined" &&
+    window.location.hostname.includes("localhost");
+  const domainPart = isLocal ? "" : `domain=${COOKIE_DOMAIN}; `;
+  document.cookie = `${name}=; path=/; ${domainPart}max-age=0`;
 }
 
 function clearAuthCookies() {
