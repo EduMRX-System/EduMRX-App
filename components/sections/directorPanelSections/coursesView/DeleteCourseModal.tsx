@@ -6,6 +6,7 @@ import { API } from "@/services/api";
 import { AlertTriangle, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { Course } from "@/types/course";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     course: Course;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function DeleteCourseModal({ course, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -28,11 +30,11 @@ export default function DeleteCourseModal({ course, onClose }: Props) {
             await API.delete(`director/courses/${course.id}/`);
         },
         onSuccess: () => {
-            toast.success("Kurs o'chirildi");
+            toast.success(t("director.courses.toast.deleted"));
             queryClient.invalidateQueries({ queryKey: ["courses"] });
             onClose();
         },
-        onError: () => toast.error("O'chirishda xatolik yuz berdi"),
+        onError: () => toast.error(t("director.courses.toast.delete_error")),
     });
 
     return (
@@ -57,9 +59,9 @@ export default function DeleteCourseModal({ course, onClose }: Props) {
                         <AlertTriangle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
                     </div>
                     <div>
-                        <h3 className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">Kursni o'chirish</h3>
+                        <h3 className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">{t("director.courses.delete.title")}</h3>
                         <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                            <span className="font-semibold text-slate-900 dark:text-slate-100">{course.name}</span> kursini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.
+                            {t("director.courses.delete.desc", { name: course.name })}
                         </p>
                     </div>
                 </div>
@@ -71,7 +73,7 @@ export default function DeleteCourseModal({ course, onClose }: Props) {
                         disabled={isPending}
                         className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors disabled:opacity-50"
                     >
-                        Bekor qilish
+                        {t("common.cancel")}
                     </button>
                     <button
                         type="button"
@@ -80,7 +82,7 @@ export default function DeleteCourseModal({ course, onClose }: Props) {
                         className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                     >
                         {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                        O'chirish
+                        {t("common.delete")}
                     </button>
                 </div>
             </div>

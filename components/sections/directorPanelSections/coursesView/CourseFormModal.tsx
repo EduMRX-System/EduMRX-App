@@ -6,6 +6,7 @@ import { API } from "@/services/api";
 import { X, Loader2, BookOpen, ChevronDown, Check } from "lucide-react";
 import { toast } from "react-toastify";
 import { STATUS_OPTIONS, type Course, type CourseStatus, type CoursePayload } from "@/types/course";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     course?: Course | null;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function CourseFormModal({ course, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!course;
     const [isMounted, setIsMounted] = useState(false);
@@ -52,7 +54,7 @@ export default function CourseFormModal({ course, onClose }: Props) {
             return res.data;
         },
         onSuccess: () => {
-            toast.success(isEdit ? "Kurs yangilandi" : "Kurs qo'shildi");
+            toast.success(t(isEdit ? "director.courses.toast.updated" : "director.courses.toast.created"));
             queryClient.invalidateQueries({ queryKey: ["courses"] });
             onClose();
         },
@@ -65,17 +67,17 @@ export default function CourseFormModal({ course, onClose }: Props) {
                     return toast.error(`${firstKey}: ${typeof text === "string" ? text.replace(/["']/g, "") : text}`);
                 }
             }
-            toast.error("Xatolik yuz berdi");
+            toast.error(t("director.courses.toast.error_generic"));
         },
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.name.trim()) return toast.error("Kurs nomini kiriting");
+        if (!formData.name.trim()) return toast.error(t("director.courses.toast.error_name"));
         if (!formData.duration_months || Number(formData.duration_months) <= 0)
-            return toast.error("Davomiylikni kiriting (oy)");
+            return toast.error(t("director.courses.toast.error_duration"));
         if (formData.price === "" || Number(formData.price) < 0)
-            return toast.error("Narxni kiriting");
+            return toast.error(t("director.courses.toast.error_price"));
         saveCourse();
     };
 
@@ -110,18 +112,18 @@ export default function CourseFormModal({ course, onClose }: Props) {
                 </div>
 
                 <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
-                    {isEdit ? "Kursni tahrirlash" : "Yangi kurs qo'shish"}
+                    {isEdit ? t("director.courses.form.title_edit") : t("director.courses.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Nom */}
                     <div>
-                        <label className={labelCls}>Kurs nomi *</label>
+                        <label className={labelCls}>{t("director.courses.form.name_label")}</label>
                         <input
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-                            placeholder="Masalan: Frontend dasturlash"
+                            placeholder={t("director.courses.form.name_placeholder")}
                             className={inputCls}
                             required
                         />
@@ -129,11 +131,11 @@ export default function CourseFormModal({ course, onClose }: Props) {
 
                     {/* Tavsif */}
                     <div>
-                        <label className={labelCls}>Tavsif</label>
+                        <label className={labelCls}>{t("director.courses.form.desc_label")}</label>
                         <textarea
                             value={formData.description}
                             onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
-                            placeholder="Kurs haqida qisqacha..."
+                            placeholder={t("director.courses.form.desc_placeholder")}
                             rows={3}
                             className="border rounded-lg w-full px-3 py-2.5 text-[14px] outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
                         />
@@ -142,7 +144,7 @@ export default function CourseFormModal({ course, onClose }: Props) {
                     {/* Davomiylik + Narx */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Davomiylik (oy) *</label>
+                            <label className={labelCls}>{t("director.courses.form.duration_label")}</label>
                             <input
                                 type="number"
                                 min={1}
@@ -154,7 +156,7 @@ export default function CourseFormModal({ course, onClose }: Props) {
                             />
                         </div>
                         <div>
-                            <label className={labelCls}>Narx (so'm) *</label>
+                            <label className={labelCls}>{t("director.courses.form.price_label")}</label>
                             <input
                                 type="number"
                                 min={0}
@@ -170,14 +172,14 @@ export default function CourseFormModal({ course, onClose }: Props) {
 
                     {/* Status */}
                     <div ref={statusRef} className="relative">
-                        <label className={labelCls}>Holati *</label>
+                        <label className={labelCls}>{t("director.courses.form.status_label")}</label>
                         <div
                             onClick={() => setIsStatusOpen(!isStatusOpen)}
                             className="border border-slate-200 dark:border-slate-700 rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                         >
                             <div className="flex items-center gap-2">
                                 <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
-                                <span>{currentStatus.label}</span>
+                                <span>{currentStatus.value === "active" ? t("common.active") : t("common.inactive")}</span>
                             </div>
                             <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
                         </div>
@@ -196,7 +198,7 @@ export default function CourseFormModal({ course, onClose }: Props) {
                                         >
                                             <div className="flex items-center gap-2">
                                                 <span className={`w-2 h-2 rounded-full ${option.color}`} />
-                                                <span>{option.label}</span>
+                                                <span>{option.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                             </div>
                                             {isSel && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
                                         </div>
@@ -213,7 +215,7 @@ export default function CourseFormModal({ course, onClose }: Props) {
                             onClick={onClose}
                             className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors"
                         >
-                            Bekor qilish
+                            {t("common.cancel")}
                         </button>
                         <button
                             type="submit"
@@ -221,7 +223,7 @@ export default function CourseFormModal({ course, onClose }: Props) {
                             className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? "Saqlash" : "Yaratish"}
+                            {isEdit ? t("common.save") : t("common.create")}
                         </button>
                     </div>
                 </form>
