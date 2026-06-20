@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Phone, Mail, Building2, FileText, Edit3, Trash2 } from "lucide-react";
 import { formatPhoneView, type IManager } from "@/types/manager";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     manager: IManager;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function ManagerRow({ manager, onEdit, onDelete }: Props) {
+    const { t } = useTranslation();
     const u = manager.user ?? (manager as any);
     const initial = (u.full_name || "M").charAt(0).toUpperCase();
 
@@ -66,10 +68,10 @@ export default function ManagerRow({ manager, onEdit, onDelete }: Props) {
             {/* Actions */}
             <td className="py-4 px-5 text-right">
                 <div className="flex items-center justify-end gap-2">
-                    <button onClick={() => onEdit(manager)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-400 transition-all cursor-pointer" title="Tahrirlash">
+                    <button onClick={() => onEdit(manager)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-400 transition-all cursor-pointer" title={t("common.edit")}>
                         <Edit3 className="w-4 h-4" />
                     </button>
-                    <button onClick={() => onDelete(manager)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 dark:hover:text-red-400 transition-all cursor-pointer" title="O'chirish">
+                    <button onClick={() => onDelete(manager)} className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 dark:hover:text-red-400 transition-all cursor-pointer" title={t("common.delete")}>
                         <Trash2 className="w-4 h-4" />
                     </button>
                 </div>

@@ -8,101 +8,47 @@
       "cta_primary": "Bepul sinab ko'rish",
       "cta_secondary": "Demo so'rash",
       "trust": "Kredit karta talab qilinmaydi · 14 kun bepul",
-
       "mockup": {
         "revenue": "Jami daromad",
         "active_students": "Faol o'quvchilar",
         "month_payments": "Bu oy to'lovlar"
       },
-
       "stats": {
         "students": "Faol o'quvchilar",
         "centers": "O'quv markazlari",
         "uptime": "Uptime kafolati",
         "support": "Texnik yordam"
       },
-
       "features_label": "Imkoniyatlar",
       "features_title": "Markaz uchun barcha vositalar",
       "features_desc": "Ta'lim biznesingizni boshqarish uchun kerakli barcha funksiyalar bitta platformada jamlangan.",
       "features": {
-        "students": {
-          "title": "O'quvchilar bazasi",
-          "desc": "Barcha o'quvchilar ma'lumotlari, qabul jarayoni va arxiv bitta joyda."
-        },
-        "groups": {
-          "title": "Guruh va kurslar",
-          "desc": "Guruhlarni boshqarish, dars jadvali va o'qituvchi biriktirish."
-        },
-        "attendance": {
-          "title": "Elektron davomat",
-          "desc": "Real vaqtda davomat olish, statistika va avtomatik hisobotlar."
-        },
-        "payments": {
-          "title": "To'lovlar tizimi",
-          "desc": "To'lovlarni kuzatish, qarzdorlar nazorati va moliyaviy oqim."
-        },
-        "analytics": {
-          "title": "Chuqur analitika",
-          "desc": "Daromad, o'sish va o'qituvchilar reytingi bo'yicha to'liq tahlil."
-        },
-        "sms": {
-          "title": "Avto SMS xabarlar",
-          "desc": "Ota-onalarga avtomatik xabarnomalar, to'lov eslatmalari."
-        },
-        "telegram": {
-          "title": "Telegram bot",
-          "desc": "Talaba va ota-onalar uchun integratsiyalashgan Telegram bot."
-        },
-        "coins": {
-          "title": "Coin motivatsiya",
-          "desc": "O'quvchilarni rag'batlantirish uchun coin va mukofot tizimi."
-        }
+        "students": { "title": "O'quvchilar bazasi", "desc": "Barcha o'quvchilar ma'lumotlari, qabul jarayoni va arxiv bitta joyda." },
+        "groups": { "title": "Guruh va kurslar", "desc": "Guruhlarni boshqarish, dars jadvali va o'qituvchi biriktirish." },
+        "attendance": { "title": "Elektron davomat", "desc": "Real vaqtda davomat olish, statistika va avtomatik hisobotlar." },
+        "payments": { "title": "To'lovlar tizimi", "desc": "To'lovlarni kuzatish, qarzdorlar nazorati va moliyaviy oqim." },
+        "analytics": { "title": "Chuqur analitika", "desc": "Daromad, o'sish va o'qituvchilar reytingi bo'yicha to'liq tahlil." },
+        "sms": { "title": "Avto SMS xabarlar", "desc": "Ota-onalarga avtomatik xabarnomalar, to'lov eslatmalari." },
+        "telegram": { "title": "Telegram bot", "desc": "Talaba va ota-onalar uchun integratsiyalashgan Telegram bot." },
+        "coins": { "title": "Coin motivatsiya", "desc": "O'quvchilarni rag'batlantirish uchun coin va mukofot tizimi." }
       },
-
       "panels_label": "Rollar",
       "panels_title": "Har bir foydalanuvchi uchun alohida panel",
       "panels": {
         "enter": "Kirish",
-        "director": {
-          "title": "Director",
-          "desc": "To'liq nazorat, moliya auditi va strategik hisobotlar."
-        },
-        "manager": {
-          "title": "Manager",
-          "desc": "O'quvchilar qabuli, guruhlar va kundalik operatsiyalar."
-        },
-        "teacher": {
-          "title": "Teacher",
-          "desc": "Dars jadvali, davomat va o'quvchilar baholash."
-        },
-        "student": {
-          "title": "Student & Parent",
-          "desc": "O'zlashtirish, to'lovlar va uy vazifalari."
-        }
+        "director": { "title": "Director", "desc": "To'liq nazorat, moliya auditi va strategik hisobotlar." },
+        "manager": { "title": "Manager", "desc": "O'quvchilar qabuli, guruhlar va kundalik operatsiyalar." },
+        "teacher": { "title": "Teacher", "desc": "Dars jadvali, davomat va o'quvchilar baholash." },
+        "student": { "title": "Student & Parent", "desc": "O'zlashtirish, to'lovlar va uy vazifalari." }
       },
-
       "why_label": "Nega aynan biz",
       "why_title": "Ishonchli va xavfsiz platforma",
       "benefits": {
-        "security": {
-          "title": "Bank darajasidagi xavfsizlik",
-          "desc": "Ma'lumotlaringiz shifrlangan va himoyalangan."
-        },
-        "speed": {
-          "title": "Yashin tezligida ishlash",
-          "desc": "Optimallashtirilgan tizim — kechikishlarsiz."
-        },
-        "access": {
-          "title": "Istalgan joydan kirish",
-          "desc": "Bulutli platforma — kompyuter va telefondan."
-        },
-        "multibranch": {
-          "title": "Multi-filial qo'llab-quvvatlash",
-          "desc": "Bir nechta filialni bitta panelda boshqaring."
-        }
+        "security": { "title": "Bank darajasidagi xavfsizlik", "desc": "Ma'lumotlaringiz shifrlangan va himoyalangan." },
+        "speed": { "title": "Yashin tezligida ishlash", "desc": "Optimallashtirilgan tizim — kechikishlarsiz." },
+        "access": { "title": "Istalgan joydan kirish", "desc": "Bulutli platforma — kompyuter va telefondan." },
+        "multibranch": { "title": "Multi-filial qo'llab-quvvatlash", "desc": "Bir nechta filialni bitta panelda boshqaring." }
       },
-
       "visual": {
         "ssl_title": "SSL Shifrlangan",
         "ssl_desc": "256-bit himoya",
@@ -111,11 +57,539 @@
         "coins": { "label": "Coin tizimi", "value": "Faol" },
         "reports": { "label": "Hisobotlar", "value": "Jonli" }
       },
-
       "cta_title": "Bugun boshlang, farqni his qiling",
       "cta_desc": "Minglab o'quv markazlari EduMRX bilan o'z biznesini professional darajaga olib chiqdi. Endi navbat sizda.",
       "cta_button": "Bepul boshlash"
     }
+  },
+
+  "common": {
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "create": "Yaratish",
+    "search": "Qidirish",
+    "prev": "Oldingi",
+    "next": "Keyingi",
+    "active": "Faol",
+    "inactive": "Nofaol",
+    "loading": "Yuklanmoqda...",
+    "error_load": "Ma'lumotlarni yuklashda xatolik yuz berdi",
+    "error_failed": "Ma'lumotlarni yuklab bo'lmadi",
+    "error_generic": "Xatolik yuz berdi",
+    "deleting": "O'chirilmoqda...",
+    "back": "Orqaga",
+    "optional": "ixtiyoriy",
+    "irreversible": "Bu amalni qaytarib bo'lmaydi.",
+    "actions": "Amallar",
+    "phone": "Telefon",
+    "email": "Email",
+    "branch": "Filial",
+    "note": "Izoh",
+    "first_name": "Ism",
+    "last_name": "Familiya",
+    "password": "Parol",
+    "status": "Holati",
+    "view_all": "Barchasi",
+    "page_of": "{{page}} / {{total}}",
+    "page_label": "{{page}}-sahifa",
+    "delete_confirm_suffix": "O'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.",
+    "no_results": "Topilmadi",
+    "enter": "Kiriting"
+  },
+
+  "director": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "learning": "O'quv",
+      "students": "O'quvchilar",
+      "teachers": "O'qituvchilar",
+      "lessons_group": "Darslar",
+      "courses": "Kurslar",
+      "groups": "Guruhlar",
+      "schedule": "Dars jadvali",
+      "attendance": "Davomat",
+      "analytics_group": "Analitika",
+      "analytics": "Umumiy analitika",
+      "branch_analytics": "Filial tahlili",
+      "management": "Boshqaruv",
+      "rooms": "Xonalar",
+      "managers": "Menejerlar",
+      "branches": "Filiallar",
+      "finance": "Moliya",
+      "payments": "To'lovlar",
+      "expenses": "Xarajatlar",
+      "profile": "Profil",
+      "collapse": "Yig'ish",
+      "expand": "Yoyish"
+    },
+
+    "dashboard": {
+      "title": "Xush kelibsiz 👋",
+      "subtitle": "Ta'lim markazingiz holati va statistikalar",
+      "stats": {
+        "payments_title": "To'lovlar",
+        "payments_desc": "Jami to'lovlar soni",
+        "payment_types_title": "To'lov turlari",
+        "payment_types_desc": "Mavjud to'lov turlari",
+        "students_title": "O'quvchilar",
+        "students_desc": "Jami o'quvchilar",
+        "revenue_title": "Daromad",
+        "revenue_desc": "Umumiy daromad"
+      },
+      "quick_actions": "Tezkor amallar",
+      "quick": {
+        "analytics": "Analitika",
+        "analytics_desc": "Hisobotlar va statistika",
+        "branches": "Filiallar",
+        "managers": "Menejerlar",
+        "payments": "To'lovlar",
+        "payments_desc": "Moliyaviy hisobotlar"
+      },
+      "recent_payments": "So'nggi to'lovlar",
+      "recent_payments_desc": "Tizimdagi oxirgi qabul qilingan to'lovlar",
+      "payment_method": {
+        "cash": "Naqd"
+      },
+      "chart": {
+        "title": "Oylik Daromad Trendi",
+        "desc": "Top 5 o'quv markazlari kesimida (mln so'm)",
+        "total": "Jami:",
+        "months_12": "12 oy",
+        "center": "Markaz {{num}}"
+      }
+    },
+
+    "managers": {
+      "title": "Menejerlar",
+      "count": "{{count}} ta menejer",
+      "add_btn": "Yangi menejer",
+      "search_placeholder": "Menejer qidirish...",
+      "table": {
+        "name": "Menejer",
+        "contact": "Aloqa",
+        "branch": "Filial",
+        "note": "Izoh",
+        "actions": "Amallar"
+      },
+      "empty": {
+        "title": "Menejer topilmadi",
+        "desc": "Yangi menejer qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi menejer qo'shish",
+        "title_edit": "Menejerni tahrirlash",
+        "branch_placeholder": "Filialni tanlang...",
+        "password_label": "Parol",
+        "password_label_edit": "Parol (o'zgartirish uchun)",
+        "password_placeholder_edit": "Bo'sh qoldirsangiz o'zgarmaydi",
+        "note_label": "Izoh (ixtiyoriy)",
+        "note_placeholder": "Menejer haqida qo'shimcha..."
+      },
+      "delete": {
+        "title": "Menejerni o'chirish",
+        "desc": "Rostdan ham \"{{name}}\" menejerini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "Menejer qo'shildi",
+        "updated": "Menejer yangilandi",
+        "deleted": "Menejer o'chirildi",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik"
+      }
+    },
+
+    "branches": {
+      "title": "Filiallar",
+      "count": "{{count}} ta filial",
+      "add_btn": "Yangi filial",
+      "search_placeholder": "Filial qidirish...",
+      "table": {
+        "name": "Filial",
+        "status": "Holati",
+        "phone": "Telefon",
+        "address": "Manzil",
+        "actions": "Amallar"
+      },
+      "empty": {
+        "title": "Filial topilmadi",
+        "desc": "Yangi filial qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi filial qo'shish",
+        "title_edit": "Filialni tahrirlash",
+        "name_label": "Filial nomi *",
+        "name_placeholder": "Masalan: Chilonzor filiali",
+        "phone_label": "Telefon *",
+        "address_label": "Manzil va xaritadagi joylashuv *",
+        "address_placeholder": "Manzilni kiriting yoki xaritadan tanlang...",
+        "status_label": "Holati *",
+        "map_loading": "Xarita yuklanmoqda",
+        "map_error": "Xaritani yuklashda xatolik"
+      },
+      "delete": {
+        "title": "Filialni o'chirish",
+        "desc": "\"{{name}}\" filialini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "Filial qo'shildi",
+        "updated": "Filial yangilandi",
+        "deleted": "Filial o'chirildi",
+        "error_name": "Filial nomini kiriting",
+        "error_location": "Iltimos, xaritadan joylashuvni tanlang",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik yuz berdi"
+      }
+    },
+
+    "courses": {
+      "title": "Kurslar",
+      "count": "{{count}} ta kurs",
+      "add_btn": "Yangi kurs",
+      "search_placeholder": "Kurs qidirish...",
+      "table": {
+        "name": "Kurs",
+        "duration": "Davomiylik",
+        "price": "Narx",
+        "status": "Holati",
+        "actions": "Amallar"
+      },
+      "duration_months": "{{count}} oy",
+      "empty": {
+        "title": "Kurs topilmadi",
+        "desc": "Yangi kurs qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi kurs qo'shish",
+        "title_edit": "Kursni tahrirlash",
+        "name_label": "Kurs nomi *",
+        "name_placeholder": "Masalan: Frontend dasturlash",
+        "desc_label": "Tavsif",
+        "desc_placeholder": "Kurs haqida qisqacha...",
+        "duration_label": "Davomiylik (oy) *",
+        "price_label": "Narx (so'm) *",
+        "status_label": "Holati *"
+      },
+      "delete": {
+        "title": "Kursni o'chirish",
+        "desc": "\"{{name}}\" kursini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "Kurs qo'shildi",
+        "updated": "Kurs yangilandi",
+        "deleted": "Kurs o'chirildi",
+        "error_name": "Kurs nomini kiriting",
+        "error_duration": "Davomiylikni kiriting (oy)",
+        "error_price": "Narxni kiriting",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik yuz berdi"
+      }
+    },
+
+    "rooms": {
+      "title": "Xonalar",
+      "count": "{{count}} ta xona",
+      "add_btn": "Yangi xona",
+      "search_placeholder": "Xona qidirish...",
+      "table": {
+        "name": "Xona",
+        "capacity": "Sig'imi",
+        "actions": "Amallar"
+      },
+      "capacity_seats": "{{count}} o'rin",
+      "empty": {
+        "title": "Xona topilmadi",
+        "desc": "Yangi xona qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi xona qo'shish",
+        "title_edit": "Xonani tahrirlash",
+        "name_label": "Xona nomi *",
+        "name_placeholder": "Masalan: 101-xona",
+        "capacity_label": "Sig'imi (o'rin) *"
+      },
+      "delete": {
+        "title": "Xonani o'chirish",
+        "desc": "\"{{name}}\" xonasini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "Xona qo'shildi",
+        "updated": "Xona yangilandi",
+        "deleted": "Xona o'chirildi",
+        "error_name": "Xona nomini kiriting",
+        "error_capacity": "Sig'imni kiriting",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik yuz berdi"
+      }
+    },
+
+    "groups": {
+      "title": "Guruhlar",
+      "count": "{{count}} ta guruh",
+      "add_btn": "Yangi guruh",
+      "search_placeholder": "Guruh qidirish...",
+      "table": {
+        "name": "Guruh",
+        "teacher": "O'qituvchi",
+        "room": "Xona",
+        "schedule": "Jadval",
+        "students": "O'quvchilar",
+        "status": "Holati",
+        "actions": "Amallar"
+      },
+      "empty": {
+        "title": "Guruh topilmadi",
+        "desc": "Yangi guruh qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi guruh qo'shish",
+        "title_edit": "Guruhni tahrirlash",
+        "name_label": "Guruh nomi *",
+        "name_placeholder": "Masalan: Frontend-01",
+        "course_label": "Kurs",
+        "teacher_label": "O'qituvchi",
+        "room_label": "Xona",
+        "status_label": "Holati *",
+        "start_date_label": "Boshlanish sanasi *",
+        "end_date_label": "Tugash sanasi *",
+        "lesson_days_label": "Dars kunlari *",
+        "lesson_start_label": "Dars boshlanishi *",
+        "lesson_end_label": "Dars tugashi *"
+      },
+      "delete": {
+        "title": "Guruhni o'chirish",
+        "desc": "\"{{name}}\" guruhini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "Guruh qo'shildi",
+        "updated": "Guruh yangilandi",
+        "deleted": "Guruh o'chirildi",
+        "error_name": "Guruh nomini kiriting",
+        "error_course": "Kursni tanlang",
+        "error_teacher": "O'qituvchini tanlang",
+        "error_room": "Xonani tanlang",
+        "error_dates": "Sanalarni kiriting",
+        "error_days": "Dars kunlarini tanlang",
+        "error_time": "Dars vaqtini kiriting",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik yuz berdi"
+      }
+    },
+
+    "lessons": {
+      "title": "Dars jadvali",
+      "count": "{{count}} ta dars",
+      "add_btn": "Yangi dars",
+      "search_placeholder": "Dars qidirish...",
+      "table": {
+        "topic": "Mavzu",
+        "group": "Guruh",
+        "date": "Sana",
+        "time": "Vaqt",
+        "actions": "Amallar"
+      },
+      "empty": {
+        "title": "Dars topilmadi",
+        "desc": "Yangi dars qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi dars qo'shish",
+        "title_edit": "Darsni tahrirlash",
+        "group_label": "Guruh",
+        "group_placeholder": "Guruhni tanlang...",
+        "date_label": "Sana *",
+        "topic_label": "Mavzu *",
+        "topic_placeholder": "Masalan: React Hooks",
+        "start_time_label": "Boshlanish vaqti *",
+        "end_time_label": "Tugash vaqti *",
+        "note_label": "Izoh (ixtiyoriy)",
+        "note_placeholder": "Dars haqida qo'shimcha..."
+      },
+      "delete": {
+        "title": "Darsni o'chirish",
+        "desc": "\"{{name}}\" darsini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "Dars qo'shildi",
+        "updated": "Dars yangilandi",
+        "deleted": "Dars o'chirildi",
+        "error_group": "Guruhni tanlang",
+        "error_date": "Sanani kiriting",
+        "error_time": "Vaqtni kiriting",
+        "error_topic": "Mavzuni kiriting",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik yuz berdi"
+      }
+    },
+
+    "teachers": {
+      "title": "O'qituvchilar",
+      "count": "{{count}} ta o'qituvchi",
+      "add_btn": "Yangi o'qituvchi",
+      "search_placeholder": "O'qituvchi qidirish...",
+      "table": {
+        "name": "O'qituvchi",
+        "contact": "Aloqa",
+        "specialization": "Mutaxassislik / Tajriba",
+        "salary": "Maosh",
+        "actions": "Amallar"
+      },
+      "experience_years": "{{count}} yil tajriba",
+      "salary_unit": "so'm",
+      "page_label": "{{page}}-sahifa",
+      "empty": {
+        "title": "O'qituvchi topilmadi",
+        "desc": "Birinchi profilni yarating"
+      },
+      "form": {
+        "title_add": "Yangi o'qituvchi qo'shish",
+        "title_edit": "O'qituvchini tahrirlash",
+        "branch_placeholder": "Filialni tanlang...",
+        "dob_label": "Tug'ilgan sana *",
+        "specialization_label": "Mutaxassislik *",
+        "experience_label": "Tajriba (yil) *",
+        "salary_label": "Maosh *",
+        "bio_label": "Biografiya *",
+        "bio_placeholder": "O'qituvchi haqida qisqacha..."
+      },
+      "delete": {
+        "title": "O'qituvchini o'chirish",
+        "desc": "Rostdan ham \"{{name}}\" profilini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "O'qituvchi qo'shildi",
+        "updated": "O'qituvchi yangilandi",
+        "deleted": "O'qituvchi o'chirildi",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik"
+      }
+    },
+
+    "students": {
+      "title": "Talabalar",
+      "count": "{{count}} ta talaba",
+      "add_btn": "Yangi talaba",
+      "search_placeholder": "Talabalarni qidirish...",
+      "table": {
+        "name": "Talaba",
+        "contact": "Aloqa",
+        "branch": "Filial",
+        "dob": "Tug'ilgan sana",
+        "actions": "Amallar"
+      },
+      "empty": {
+        "title": "Talaba topilmadi",
+        "desc": "Yangi talaba qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi talaba qo'shish",
+        "title_edit": "Talabani tahrirlash",
+        "branch_placeholder": "Filialni tanlang...",
+        "dob_label": "Tug'ilgan sana *",
+        "note_label": "Izoh (ixtiyoriy)",
+        "note_placeholder": "Talaba haqida qo'shimcha...",
+        "status_label": "Holati *"
+      },
+      "delete": {
+        "title": "Talabani o'chirish",
+        "confirm": "Rostdan ham \"{{name}}\" ismli talabani tizimdan butunlay o'chirmoqchimisiz?",
+        "warning": "Ogohlantirish: Bu amalni qaytarib bo'lmaydi va talabaga tegishli barcha ma'lumotlar o'chib ketadi."
+      },
+      "toast": {
+        "created": "Talaba qo'shildi",
+        "updated": "Talaba yangilandi",
+        "deleted": "Talaba o'chirildi",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik"
+      }
+    },
+
+    "profile": {
+      "appearance": {
+        "title": "Ko'rinish",
+        "desc": "Ilova mavzusini tanlang",
+        "modal_title": "Ko'rinish",
+        "modal_desc": "O'zingizga qulay mavzuni tanlang",
+        "light": "Kunduzgi",
+        "dark": "Tungi",
+        "current_light": "Kunduzgi rejim",
+        "current_dark": "Tungi rejim"
+      },
+      "language": {
+        "title": "Til",
+        "desc": "Interfeys tilini tanlang",
+        "modal_title": "Tilni o'zgartirish",
+        "modal_desc": "Interfeys uchun tilni tanlang"
+      },
+      "password": {
+        "title": "Parol",
+        "desc": "Hisobingiz parolini o'zgartiring",
+        "change": "O'zgartirish",
+        "modal_title": "Parolni o'zgartirish",
+        "modal_desc": "Parolni o'zgartirish uchun joriy parolni kiriting",
+        "current_label": "Joriy parol",
+        "new_label": "Yangi parol",
+        "confirm_label": "Parolni tasdiqlang",
+        "update_btn": "O'zgartirish",
+        "placeholder": "Kiriting"
+      },
+      "locations": {
+        "title": "Filiallar manzili",
+        "desc": "Markaz filiallarini xaritada ko'ring",
+        "back": "Orqaga",
+        "page_title": "Filiallarimiz",
+        "page_subtitle": "Filiallarimiz Dushanbadan-Shanbagacha, 9:00 dan 20:00 gacha ishlaydi",
+        "map_placeholder": "Xarita",
+        "map_coming_soon": "Yandex Maps tez orada ulanadi"
+      },
+      "logout": {
+        "title": "Chiqish",
+        "desc": "Hisobingizdan xavfsiz chiqing",
+        "confirm_title": "Tizimdan chiqish",
+        "confirm_desc": "Rostdan ham hisobingizdan chiqmoqchimisiz? Qayta kirish uchun parol kerak bo'ladi.",
+        "confirm_btn": "Ha, chiqish"
+      },
+      "role": {
+        "director": "Direktor",
+        "manager": "Menejer",
+        "teacher": "O'qituvchi",
+        "student": "O'quvchi",
+        "parent": "Ota-ona"
+      },
+      "toast": {
+        "password_changed": "Parol o'zgartirildi",
+        "password_error": "Parolni o'zgartirib bo'lmadi. Joriy parolni tekshiring"
+      }
+    },
+
+    "analytics": {
+      "title": "Filial Tahlili",
+      "subtitle": "Filial bo'yicha o'quvchilar va daromad tahlili",
+      "export": "Eksport",
+      "years": {
+        "2026": "2026 yil",
+        "2025": "2025 yil",
+        "2024": "2024 yil",
+        "2023": "2023 yil"
+      },
+      "empty": {
+        "title": "Filiallar topilmadi",
+        "desc": "Tahlil uchun avval filial qo'shing",
+        "add_btn": "Yangi filial"
+      },
+      "cards": {
+        "incoming": "Kelgan o'quvchilar",
+        "outgoing": "Ketgan o'quvchilar",
+        "net_growth": "Sof o'sish",
+        "total_revenue": "Jami tushum"
+      },
+      "charts": {
+        "flow_title": "O'quvchilar oqimi",
+        "legend_in": "Kelgan",
+        "legend_out": "Ketgan",
+        "revenue_title": "Daromad trendi"
+      }
+    }
   }
-  
 }

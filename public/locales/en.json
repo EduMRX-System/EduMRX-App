@@ -14,32 +14,14 @@
         "growth": "Average growth"
       },
       "values": {
-        "mission": {
-          "title": "Our mission",
-          "desc": "To digitize education centers and increase their efficiency."
-        },
-        "vision": {
-          "title": "Our vision",
-          "desc": "To become the leading education technology platform in Central Asia."
-        },
-        "values": {
-          "title": "Our values",
-          "desc": "Trust, transparency and commitment to our clients' success."
-        }
+        "mission": { "title": "Our mission", "desc": "To digitize education centers and increase their efficiency." },
+        "vision": { "title": "Our vision", "desc": "To become the leading education technology platform in Central Asia." },
+        "values": { "title": "Our values", "desc": "Trust, transparency and commitment to our clients' success." }
       },
       "timeline": {
-        "start": {
-          "title": "The beginning",
-          "desc": "The EduMRX idea was born and the first prototype was built."
-        },
-        "first_clients": {
-          "title": "First clients",
-          "desc": "More than 50 education centers joined the platform."
-        },
-        "expansion": {
-          "title": "Expansion",
-          "desc": "We reached 200+ centers and 10,000+ active users."
-        }
+        "start": { "title": "The beginning", "desc": "The EduMRX idea was born and the first prototype was built." },
+        "first_clients": { "title": "First clients", "desc": "More than 50 education centers joined the platform." },
+        "expansion": { "title": "Expansion", "desc": "We reached 200+ centers and 10,000+ active users." }
       }
     },
 
@@ -81,84 +63,39 @@
           "title": "Academic process",
           "desc": "Manage students, groups and classes",
           "items": {
-            "students": {
-              "title": "Student database",
-              "desc": "Manage admissions, profiles and archives"
-            },
-            "groups": {
-              "title": "Groups and courses",
-              "desc": "Groups, schedules and teacher assignment"
-            },
-            "attendance": {
-              "title": "Digital attendance",
-              "desc": "Real-time attendance and statistics"
-            },
-            "rooms": {
-              "title": "Room management",
-              "desc": "Control of classrooms and occupancy"
-            }
+            "students": { "title": "Student database", "desc": "Manage admissions, profiles and archives" },
+            "groups": { "title": "Groups and courses", "desc": "Groups, schedules and teacher assignment" },
+            "attendance": { "title": "Digital attendance", "desc": "Real-time attendance and statistics" },
+            "rooms": { "title": "Room management", "desc": "Control of classrooms and occupancy" }
           }
         },
         "finance": {
           "title": "Finance",
           "desc": "Payments, debtors and expenses",
           "items": {
-            "payments": {
-              "title": "Payment system",
-              "desc": "Accept and track payments"
-            },
-            "debtors": {
-              "title": "Debtor tracking",
-              "desc": "Automatic list of debtors"
-            },
-            "payment_types": {
-              "title": "Payment types",
-              "desc": "Configure various payment methods"
-            },
-            "expenses": {
-              "title": "Expense tracking",
-              "desc": "Manage your center's expenses"
-            }
+            "payments": { "title": "Payment system", "desc": "Accept and track payments" },
+            "debtors": { "title": "Debtor tracking", "desc": "Automatic list of debtors" },
+            "payment_types": { "title": "Payment types", "desc": "Configure various payment methods" },
+            "expenses": { "title": "Expense tracking", "desc": "Manage your center's expenses" }
           }
         },
         "marketing": {
           "title": "Marketing & Communication",
           "desc": "Leads, SMS and Telegram integration",
           "items": {
-            "sms": {
-              "title": "Auto SMS",
-              "desc": "Automatic notifications and reminders"
-            },
-            "telegram": {
-              "title": "Telegram bot",
-              "desc": "A bot for students and parents"
-            },
-            "leads": {
-              "title": "Lead management",
-              "desc": "Work with potential clients"
-            },
-            "notifications": {
-              "title": "Notifications",
-              "desc": "Real-time push notifications"
-            }
+            "sms": { "title": "Auto SMS", "desc": "Automatic notifications and reminders" },
+            "telegram": { "title": "Telegram bot", "desc": "A bot for students and parents" },
+            "leads": { "title": "Lead management", "desc": "Work with potential clients" },
+            "notifications": { "title": "Notifications", "desc": "Real-time push notifications" }
           }
         },
         "analytics": {
           "title": "Analytics & Reports",
           "desc": "Deep statistics and business analysis",
           "items": {
-            "overview": {
-              "title": "General analysis",
-              "desc": "Revenue and growth metrics"
-            },
-            "payment_analysis": {
-              "title": "Payment analysis",
-              "desc": "Analysis of financial flow"
-            },
-            "coins": {
-              "title": "Coin system",
-              "desc": "Motivate your students"
-            },
+            "overview": { "title": "General analysis", "desc": "Revenue and growth metrics" },
+            "payment_analysis": { "title": "Payment analysis", "desc": "Analysis of financial flow" },
+            "coins": { "title": "Coin system", "desc": "Motivate your students" },
             "holidays": { "title": "Holidays", "desc": "Configure days off" }
           }
         }
@@ -221,82 +158,540 @@
         "custom_integrations": "Custom integrations"
       },
       "faq": {
-        "trial": {
-          "q": "Is there a free trial period?",
-          "a": "Yes, a 14-day free trial is available for all plans. No credit card required."
-        },
-        "change_plan": {
-          "q": "Can I change my plan later?",
-          "a": "Of course. You can upgrade or downgrade your plan at any time."
-        },
-        "payment": {
-          "q": "How is payment made?",
-          "a": "You can pay via Click, Payme and bank transfers."
-        },
-        "security": {
-          "q": "Is my data secure?",
-          "a": "Yes, all data is encrypted and stored on secure servers."
-        }
+        "trial": { "q": "Is there a free trial period?", "a": "Yes, a 14-day free trial is available for all plans. No credit card required." },
+        "change_plan": { "q": "Can I change my plan later?", "a": "Of course. You can upgrade or downgrade your plan at any time." },
+        "payment": { "q": "How is payment made?", "a": "You can pay via Click, Payme and bank transfers." },
+        "security": { "q": "Is my data secure?", "a": "Yes, all data is encrypted and stored on secure servers." }
       }
     }
   },
 
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "prev": "Previous",
+    "next": "Next",
+    "active": "Active",
+    "inactive": "Inactive",
+    "loading": "Loading...",
+    "error_load": "Failed to load data",
+    "error_failed": "Could not load data",
+    "error_generic": "An error occurred",
+    "deleting": "Deleting...",
+    "back": "Back",
+    "optional": "optional",
+    "irreversible": "This action cannot be undone.",
+    "actions": "Actions",
+    "phone": "Phone",
+    "email": "Email",
+    "branch": "Branch",
+    "note": "Note",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "password": "Password",
+    "status": "Status",
+    "view_all": "View all",
+    "page_of": "{{page}} / {{total}}",
+    "page_label": "Page {{page}}",
+    "delete_confirm_suffix": "Delete? This action cannot be undone.",
+    "no_results": "Not found",
+    "enter": "Enter"
+  },
+
   "director": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "learning": "Learning",
+      "students": "Students",
+      "teachers": "Teachers",
+      "lessons_group": "Lessons",
+      "courses": "Courses",
+      "groups": "Groups",
+      "schedule": "Schedule",
+      "attendance": "Attendance",
+      "analytics_group": "Analytics",
+      "analytics": "Overview",
+      "branch_analytics": "Branch Analysis",
+      "management": "Management",
+      "rooms": "Rooms",
+      "managers": "Managers",
+      "branches": "Branches",
+      "finance": "Finance",
+      "payments": "Payments",
+      "expenses": "Expenses",
+      "profile": "Profile",
+      "collapse": "Collapse",
+      "expand": "Expand"
+    },
+
     "dashboard": {
+      "title": "Welcome 👋",
+      "subtitle": "Your education center status and statistics",
       "stats": {
-        "payments": "To'lovlar",
-        "payments_desc": "Jami to'lovlar soni",
-        "types": "To'lov turlari",
-        "types_desc": "Mavjud to'lov turlari",
-        "students": "O'quvchilar",
-        "students_desc": "Jami o'quvchilar",
-        "revenue": "Daromad",
-        "revenue_desc": "Umumiy daromad"
+        "payments_title": "Payments",
+        "payments_desc": "Total number of payments",
+        "payment_types_title": "Payment types",
+        "payment_types_desc": "Available payment types",
+        "students_title": "Students",
+        "students_desc": "Total students",
+        "revenue_title": "Revenue",
+        "revenue_desc": "Total revenue"
       },
-      "quick_actions": {
-        "analytics": "Analitika",
-        "branches": "Filiallar",
-        "managers": "Menejerlar",
-        "payments": "To'lovlar",
-        "marketing": "Marketing",
-        "holidays": "Bayram kunlari"
+      "quick_actions": "Quick actions",
+      "quick": {
+        "analytics": "Analytics",
+        "analytics_desc": "Reports and statistics",
+        "branches": "Branches",
+        "managers": "Managers",
+        "payments": "Payments",
+        "payments_desc": "Financial reports"
       },
-      "charts": {
-        "monthly": "Oylik to'lovlar dinamikasi"
+      "recent_payments": "Recent payments",
+      "recent_payments_desc": "Latest payments received in the system",
+      "payment_method": {
+        "cash": "Cash"
       },
-      "recent": {
-        "title": "So'nggi to'lovlar",
-        "view_all": "Barchasini ko'rish",
-        "no_data": "Hozircha to'lovlar yo'q"
+      "chart": {
+        "title": "Monthly Revenue Trend",
+        "desc": "Top 5 education centers (mln UZS)",
+        "total": "Total:",
+        "months_12": "12 months",
+        "center": "Center {{num}}"
       }
     },
-    "analytics": {
-      "title": "Filial tahlili",
-      "subtitle": "Har bir filial bo'yicha oylik o'quvchilar kelishi, ketishi va to'lovlar",
-      "export": "Hisobotni yuklash",
-      "years": {
-        "2026": "2026-yil",
-        "2025": "2025-yil",
-        "2024": "2024-yil",
-        "2023": "2023-yil"
+
+    "managers": {
+      "title": "Managers",
+      "count": "{{count}} manager(s)",
+      "add_btn": "New manager",
+      "search_placeholder": "Search manager...",
+      "table": {
+        "name": "Manager",
+        "contact": "Contact",
+        "branch": "Branch",
+        "note": "Note",
+        "actions": "Actions"
       },
       "empty": {
-        "title": "Hali birorta ham filial mavjud emas",
-        "desc": "Filial tahlillarini ko'rish uchun avval tizimga kamida bitta o'quv markazi filialini qo'shishingiz zarur.",
-        "add_btn": "Yangi filial qo'shish"
+        "title": "No managers found",
+        "desc": "Add a new manager to get started"
+      },
+      "form": {
+        "title_add": "Add manager",
+        "title_edit": "Edit manager",
+        "branch_placeholder": "Select branch...",
+        "password_label": "Password",
+        "password_label_edit": "Password (to change)",
+        "password_placeholder_edit": "Leave blank to keep unchanged",
+        "note_label": "Note (optional)",
+        "note_placeholder": "Additional information about the manager..."
+      },
+      "delete": {
+        "title": "Delete manager",
+        "desc": "Are you sure you want to delete manager \"{{name}}\"? This action cannot be undone."
+      },
+      "toast": {
+        "created": "Manager added",
+        "updated": "Manager updated",
+        "deleted": "Manager deleted",
+        "error_generic": "An error occurred",
+        "delete_error": "Error while deleting"
+      }
+    },
+
+    "branches": {
+      "title": "Branches",
+      "count": "{{count}} branch(es)",
+      "add_btn": "New branch",
+      "search_placeholder": "Search branch...",
+      "table": {
+        "name": "Branch",
+        "status": "Status",
+        "phone": "Phone",
+        "address": "Address",
+        "actions": "Actions"
+      },
+      "empty": {
+        "title": "No branches found",
+        "desc": "Add a new branch to get started"
+      },
+      "form": {
+        "title_add": "Add branch",
+        "title_edit": "Edit branch",
+        "name_label": "Branch name *",
+        "name_placeholder": "E.g.: Chilonzor branch",
+        "phone_label": "Phone *",
+        "address_label": "Address and map location *",
+        "address_placeholder": "Enter address or select on map...",
+        "status_label": "Status *",
+        "map_loading": "Loading map",
+        "map_error": "Error loading map"
+      },
+      "delete": {
+        "title": "Delete branch",
+        "desc": "Are you sure you want to delete branch \"{{name}}\"? This action cannot be undone."
+      },
+      "toast": {
+        "created": "Branch added",
+        "updated": "Branch updated",
+        "deleted": "Branch deleted",
+        "error_name": "Enter branch name",
+        "error_location": "Please select a location on the map",
+        "error_generic": "An error occurred",
+        "delete_error": "Error while deleting"
+      }
+    },
+
+    "courses": {
+      "title": "Courses",
+      "count": "{{count}} course(s)",
+      "add_btn": "New course",
+      "search_placeholder": "Search course...",
+      "table": {
+        "name": "Course",
+        "duration": "Duration",
+        "price": "Price",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "duration_months": "{{count}} mo.",
+      "empty": {
+        "title": "No courses found",
+        "desc": "Add a new course to get started"
+      },
+      "form": {
+        "title_add": "Add course",
+        "title_edit": "Edit course",
+        "name_label": "Course name *",
+        "name_placeholder": "E.g.: Frontend development",
+        "desc_label": "Description",
+        "desc_placeholder": "Brief description of the course...",
+        "duration_label": "Duration (months) *",
+        "price_label": "Price (UZS) *",
+        "status_label": "Status *"
+      },
+      "delete": {
+        "title": "Delete course",
+        "desc": "Are you sure you want to delete course \"{{name}}\"? This action cannot be undone."
+      },
+      "toast": {
+        "created": "Course added",
+        "updated": "Course updated",
+        "deleted": "Course deleted",
+        "error_name": "Enter course name",
+        "error_duration": "Enter duration (months)",
+        "error_price": "Enter price",
+        "error_generic": "An error occurred",
+        "delete_error": "Error while deleting"
+      }
+    },
+
+    "rooms": {
+      "title": "Rooms",
+      "count": "{{count}} room(s)",
+      "add_btn": "New room",
+      "search_placeholder": "Search room...",
+      "table": {
+        "name": "Room",
+        "capacity": "Capacity",
+        "actions": "Actions"
+      },
+      "capacity_seats": "{{count}} seats",
+      "empty": {
+        "title": "No rooms found",
+        "desc": "Add a new room to get started"
+      },
+      "form": {
+        "title_add": "Add room",
+        "title_edit": "Edit room",
+        "name_label": "Room name *",
+        "name_placeholder": "E.g.: Room 101",
+        "capacity_label": "Capacity (seats) *"
+      },
+      "delete": {
+        "title": "Delete room",
+        "desc": "Are you sure you want to delete room \"{{name}}\"? This action cannot be undone."
+      },
+      "toast": {
+        "created": "Room added",
+        "updated": "Room updated",
+        "deleted": "Room deleted",
+        "error_name": "Enter room name",
+        "error_capacity": "Enter capacity",
+        "error_generic": "An error occurred",
+        "delete_error": "Error while deleting"
+      }
+    },
+
+    "groups": {
+      "title": "Groups",
+      "count": "{{count}} group(s)",
+      "add_btn": "New group",
+      "search_placeholder": "Search group...",
+      "table": {
+        "name": "Group",
+        "teacher": "Teacher",
+        "room": "Room",
+        "schedule": "Schedule",
+        "students": "Students",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "empty": {
+        "title": "No groups found",
+        "desc": "Add a new group to get started"
+      },
+      "form": {
+        "title_add": "Add group",
+        "title_edit": "Edit group",
+        "name_label": "Group name *",
+        "name_placeholder": "E.g.: Frontend-01",
+        "course_label": "Course",
+        "teacher_label": "Teacher",
+        "room_label": "Room",
+        "status_label": "Status *",
+        "start_date_label": "Start date *",
+        "end_date_label": "End date *",
+        "lesson_days_label": "Lesson days *",
+        "lesson_start_label": "Lesson start *",
+        "lesson_end_label": "Lesson end *"
+      },
+      "delete": {
+        "title": "Delete group",
+        "desc": "Are you sure you want to delete group \"{{name}}\"? This action cannot be undone."
+      },
+      "toast": {
+        "created": "Group added",
+        "updated": "Group updated",
+        "deleted": "Group deleted",
+        "error_name": "Enter group name",
+        "error_course": "Select a course",
+        "error_teacher": "Select a teacher",
+        "error_room": "Select a room",
+        "error_dates": "Enter dates",
+        "error_days": "Select lesson days",
+        "error_time": "Enter lesson time",
+        "error_generic": "An error occurred",
+        "delete_error": "Error while deleting"
+      }
+    },
+
+    "lessons": {
+      "title": "Lesson schedule",
+      "count": "{{count}} lesson(s)",
+      "add_btn": "New lesson",
+      "search_placeholder": "Search lesson...",
+      "table": {
+        "topic": "Topic",
+        "group": "Group",
+        "date": "Date",
+        "time": "Time",
+        "actions": "Actions"
+      },
+      "empty": {
+        "title": "No lessons found",
+        "desc": "Add a new lesson to get started"
+      },
+      "form": {
+        "title_add": "Add lesson",
+        "title_edit": "Edit lesson",
+        "group_label": "Group",
+        "group_placeholder": "Select group...",
+        "date_label": "Date *",
+        "topic_label": "Topic *",
+        "topic_placeholder": "E.g.: React Hooks",
+        "start_time_label": "Start time *",
+        "end_time_label": "End time *",
+        "note_label": "Note (optional)",
+        "note_placeholder": "Additional information about the lesson..."
+      },
+      "delete": {
+        "title": "Delete lesson",
+        "desc": "Are you sure you want to delete lesson \"{{name}}\"? This action cannot be undone."
+      },
+      "toast": {
+        "created": "Lesson added",
+        "updated": "Lesson updated",
+        "deleted": "Lesson deleted",
+        "error_group": "Select a group",
+        "error_date": "Enter date",
+        "error_time": "Enter time",
+        "error_topic": "Enter topic",
+        "error_generic": "An error occurred",
+        "delete_error": "Error while deleting"
+      }
+    },
+
+    "teachers": {
+      "title": "Teachers",
+      "count": "{{count}} teacher(s)",
+      "add_btn": "New teacher",
+      "search_placeholder": "Search teacher...",
+      "table": {
+        "name": "Teacher",
+        "contact": "Contact",
+        "specialization": "Specialization / Experience",
+        "salary": "Salary",
+        "actions": "Actions"
+      },
+      "experience_years": "{{count}} yr. exp.",
+      "salary_unit": "UZS",
+      "page_label": "Page {{page}}",
+      "empty": {
+        "title": "No teachers found",
+        "desc": "Create the first profile"
+      },
+      "form": {
+        "title_add": "Add teacher",
+        "title_edit": "Edit teacher",
+        "branch_placeholder": "Select branch...",
+        "dob_label": "Date of birth *",
+        "specialization_label": "Specialization *",
+        "experience_label": "Experience (years) *",
+        "salary_label": "Salary *",
+        "bio_label": "Biography *",
+        "bio_placeholder": "Brief description of the teacher..."
+      },
+      "delete": {
+        "title": "Delete teacher",
+        "desc": "Are you sure you want to delete profile \"{{name}}\"? This action cannot be undone."
+      },
+      "toast": {
+        "created": "Teacher added",
+        "updated": "Teacher updated",
+        "deleted": "Teacher deleted",
+        "error_generic": "An error occurred",
+        "delete_error": "Error while deleting"
+      }
+    },
+
+    "students": {
+      "title": "Students",
+      "count": "{{count}} student(s)",
+      "add_btn": "New student",
+      "search_placeholder": "Search student...",
+      "table": {
+        "name": "Student",
+        "contact": "Contact",
+        "branch": "Branch",
+        "dob": "Date of birth",
+        "actions": "Actions"
+      },
+      "empty": {
+        "title": "No students found",
+        "desc": "Add a new student to get started"
+      },
+      "form": {
+        "title_add": "Add student",
+        "title_edit": "Edit student",
+        "branch_placeholder": "Select branch...",
+        "dob_label": "Date of birth *",
+        "note_label": "Note (optional)",
+        "note_placeholder": "Additional information about the student...",
+        "status_label": "Status *"
+      },
+      "delete": {
+        "title": "Delete student",
+        "confirm": "Are you sure you want to permanently delete student \"{{name}}\" from the system?",
+        "warning": "Warning: this action cannot be undone — all student data will be deleted."
+      },
+      "toast": {
+        "created": "Student added",
+        "updated": "Student updated",
+        "deleted": "Student deleted",
+        "error_generic": "An error occurred",
+        "delete_error": "Error while deleting"
+      }
+    },
+
+    "profile": {
+      "appearance": {
+        "title": "Appearance",
+        "desc": "Choose the app theme",
+        "modal_title": "Appearance",
+        "modal_desc": "Choose a theme that works for you",
+        "light": "Light",
+        "dark": "Dark",
+        "current_light": "Light mode",
+        "current_dark": "Dark mode"
+      },
+      "language": {
+        "title": "Language",
+        "desc": "Choose the interface language",
+        "modal_title": "Change language",
+        "modal_desc": "Choose the interface language"
+      },
+      "password": {
+        "title": "Password",
+        "desc": "Change your account password",
+        "change": "Change",
+        "modal_title": "Change password",
+        "modal_desc": "Enter your current password to change it",
+        "current_label": "Current password",
+        "new_label": "New password",
+        "confirm_label": "Confirm password",
+        "update_btn": "Change",
+        "placeholder": "Enter"
+      },
+      "locations": {
+        "title": "Branch locations",
+        "desc": "View center branches on the map",
+        "back": "Back",
+        "page_title": "Our branches",
+        "page_subtitle": "Our branches are open Monday–Saturday, 9:00 AM to 8:00 PM",
+        "map_placeholder": "Map",
+        "map_coming_soon": "Yandex Maps coming soon"
+      },
+      "logout": {
+        "title": "Logout",
+        "desc": "Safely sign out of your account",
+        "confirm_title": "Sign out",
+        "confirm_desc": "Are you sure you want to sign out? You'll need your password to sign back in.",
+        "confirm_btn": "Yes, sign out"
+      },
+      "role": {
+        "director": "Director",
+        "manager": "Manager",
+        "teacher": "Teacher",
+        "student": "Student",
+        "parent": "Parent"
+      },
+      "toast": {
+        "password_changed": "Password changed",
+        "password_error": "Could not change password. Check your current password"
+      }
+    },
+
+    "analytics": {
+      "title": "Branch Analysis",
+      "subtitle": "Student and revenue analysis by branch",
+      "export": "Export",
+      "years": {
+        "2026": "2026",
+        "2025": "2025",
+        "2024": "2024",
+        "2023": "2023"
+      },
+      "empty": {
+        "title": "No branches found",
+        "desc": "Add a branch first to view analytics",
+        "add_btn": "New branch"
       },
       "cards": {
-        "incoming": "Kelgan o'quvchilar",
-        "outgoing": "Ketgan o'quvchilar",
-        "net_growth": "Sof o'sish",
-        "total_revenue": "Jami to'lovlar"
+        "incoming": "Incoming students",
+        "outgoing": "Outgoing students",
+        "net_growth": "Net growth",
+        "total_revenue": "Total revenue"
       },
       "charts": {
-        "flow_title": "O'quvchilar kelib-ketishi",
-        "revenue_title": "Oylik to'lovlar",
-        "currency": "UZS",
-        "legend_in": "Kelgan",
-        "legend_out": "Ketgan"
+        "flow_title": "Student flow",
+        "legend_in": "Incoming",
+        "legend_out": "Outgoing",
+        "revenue_title": "Revenue trend"
       }
     }
   },
@@ -305,11 +700,11 @@
     "name": "EduMRX"
   },
   "header": {
-    "page": "Sahifa",
-    "user_name": "Foydalanuvchi",
+    "page": "Page",
+    "user_name": "User",
     "admin": "Admin"
   },
   "sidebar": {
-    "logout": "Chiqish"
+    "logout": "Logout"
   }
 }

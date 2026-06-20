@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { useBranchOptions } from "@/hooks/useBranches";
 import { formatUzPhone, splitFullName, type IManager } from "@/types/manager";
 import SearchSelect from "@/components/ui/SearchSelect";
+import { useTranslation } from "react-i18next";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -37,6 +38,7 @@ interface Props {
 }
 
 export default function ManagerFormModal({ manager, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!manager;
     const [isMounted, setIsMounted] = useState(false);
@@ -90,7 +92,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                 : (await API.post("director/admins/", payload)).data;
         },
         onSuccess: (data: any) => {
-            toast.success(data?.message || (isEdit ? "Menejer yangilandi" : "Menejer qo'shildi"));
+            toast.success(data?.message || t(isEdit ? "director.managers.toast.updated" : "director.managers.toast.created"));
             queryClient.invalidateQueries({ queryKey: ["managers"] });
             onClose();
         },
@@ -103,7 +105,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                     return toast.error(`${k}: ${typeof text === "string" ? text.replace(/["']/g, "") : text}`);
                 }
             }
-            toast.error("Xatolik yuz berdi");
+            toast.error(t("director.managers.toast.error_generic"));
         },
     });
 
@@ -137,19 +139,19 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                 </div>
 
                 <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
-                    {isEdit ? "Menejerni tahrirlash" : "Yangi menejer qo'shish"}
+                    {isEdit ? t("director.managers.form.title_edit") : t("director.managers.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit((d) => saveManager(d))} className="space-y-4">
                     {/* Ism + Familiya */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Ism *</label>
+                            <label className={labelCls}>{t("common.first_name")} *</label>
                             <input {...register("first_name")} placeholder="Jasur" className={fieldCls(!!errors.first_name)} />
                             {errors.first_name && <p className={errCls}>{errors.first_name.message}</p>}
                         </div>
                         <div>
-                            <label className={labelCls}>Familiya *</label>
+                            <label className={labelCls}>{t("common.last_name")} *</label>
                             <input {...register("last_name")} placeholder="Karimov" className={fieldCls(!!errors.last_name)} />
                             {errors.last_name && <p className={errCls}>{errors.last_name.message}</p>}
                         </div>
@@ -157,12 +159,12 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
 
                     {/* Filial */}
                     <SearchSelect
-                        label="Filial"
+                        label={t("common.branch")}
                         required
                         value={watch("center") || ""}
                         options={branches}
                         loading={branchesLoading}
-                        placeholder="Filialni tanlang..."
+                        placeholder={t("director.managers.form.branch_placeholder")}
                         error={errors.center?.message}
                         onChange={(id) => setValue("center", id, { shouldValidate: true })}
                     />
@@ -170,7 +172,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                     {/* Telefon + Email */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Telefon *</label>
+                            <label className={labelCls}>{t("common.phone")} *</label>
                             <div className="relative flex items-center">
                                 <span className="absolute left-3 text-sm font-semibold text-slate-700 dark:text-slate-300 pointer-events-none select-none">+998</span>
                                 <input type="tel" value={phoneDisplay} onChange={handlePhoneChange} placeholder="90-123-45-67" className={`${fieldCls(!!errors.phone)} pl-[55px]`} />
@@ -178,7 +180,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                             {errors.phone && <p className={errCls}>{errors.phone.message}</p>}
                         </div>
                         <div>
-                            <label className={labelCls}>Email *</label>
+                            <label className={labelCls}>{t("common.email")} *</label>
                             <input {...register("email")} type="email" placeholder="manager@example.com" className={fieldCls(!!errors.email)} />
                             {errors.email && <p className={errCls}>{errors.email.message}</p>}
                         </div>
@@ -187,13 +189,13 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                     {/* Parol */}
                     <div>
                         <label className={labelCls}>
-                            Parol {isEdit ? "(o'zgartirish uchun)" : "*"}
+                            {isEdit ? t("director.managers.form.password_label_edit") : `${t("common.password")} *`}
                         </label>
                         <div className="relative flex items-center">
                             <input
                                 {...register("password")}
                                 type={showPassword ? "text" : "password"}
-                                placeholder={isEdit ? "Bo'sh qoldirsangiz o'zgarmaydi" : "••••••"}
+                                placeholder={isEdit ? t("director.managers.form.password_placeholder_edit") : "••••••"}
                                 className={`${fieldCls(!!errors.password)} pr-10`}
                             />
                             <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">
@@ -205,11 +207,11 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
 
                     {/* Izoh */}
                     <div>
-                        <label className={labelCls}>Izoh (ixtiyoriy)</label>
+                        <label className={labelCls}>{t("director.managers.form.note_label")}</label>
                         <textarea
                             {...register("notes")}
                             rows={2}
-                            placeholder="Menejer haqida qo'shimcha..."
+                            placeholder={t("director.managers.form.note_placeholder")}
                             className="border rounded-lg w-full px-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                         />
                     </div>
@@ -217,11 +219,11 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                     {/* Tugmalar */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
                         <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors">
-                            Bekor qilish
+                            {t("common.cancel")}
                         </button>
                         <button type="submit" disabled={isPending} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? "Saqlash" : "Yaratish"}
+                            {isEdit ? t("common.save") : t("common.create")}
                         </button>
                     </div>
                 </form>

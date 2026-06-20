@@ -7,11 +7,13 @@ import type { IManager } from "@/types/manager";
 import ManagerFormModal from "@/components/sections/directorPanelSections/managerView/ManagerFormModal.tsx";
 import DeleteManagerModal from "@/components/sections/directorPanelSections/managerView/DeleteAdminModal";
 import ManagerRow from "@/components/sections/directorPanelSections/managerView/ManagerRow";
+import { useTranslation } from "react-i18next";
 
 
 const PAGE_SIZE = 10;
 
 export default function ManagersView() {
+    const { t } = useTranslation();
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     const [addOpen, setAddOpen] = useState(false);
@@ -28,11 +30,11 @@ export default function ManagersView() {
             {/* Header */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Menejerlar</h1>
-                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{count} ta menejer</p>
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t("director.managers.title")}</h1>
+                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{t("director.managers.count", { count })}</p>
                 </div>
                 <button onClick={() => setAddOpen(true)} className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">
-                    <Plus className="h-4 w-4" /> Yangi menejer
+                    <Plus className="h-4 w-4" /> {t("director.managers.add_btn")}
                 </button>
             </div>
 
@@ -42,7 +44,7 @@ export default function ManagersView() {
                 <input
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                    placeholder="Menejer qidirish..."
+                    placeholder={t("director.managers.search_placeholder")}
                     className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 />
             </div>
@@ -53,11 +55,11 @@ export default function ManagersView() {
                     <table className="w-full text-left text-sm">
                         <thead>
                             <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-600 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-400">
-                                <th className="py-3.5 px-5 font-semibold">Menejer</th>
-                                <th className="py-3.5 px-5 font-semibold">Aloqa</th>
-                                <th className="py-3.5 px-5 font-semibold">Filial</th>
-                                <th className="py-3.5 px-5 font-semibold">Izoh</th>
-                                <th className="py-3.5 px-5 text-right font-semibold">Amallar</th>
+                                <th className="py-3.5 px-5 font-semibold">{t("director.managers.table.name")}</th>
+                                <th className="py-3.5 px-5 font-semibold">{t("director.managers.table.contact")}</th>
+                                <th className="py-3.5 px-5 font-semibold">{t("director.managers.table.branch")}</th>
+                                <th className="py-3.5 px-5 font-semibold">{t("director.managers.table.note")}</th>
+                                <th className="py-3.5 px-5 text-right font-semibold">{t("director.managers.table.actions")}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -82,15 +84,15 @@ export default function ManagersView() {
                                 <tr>
                                     <td colSpan={5} className="py-12 text-center">
                                         <AlertCircle className="mx-auto h-9 w-9 text-rose-500" />
-                                        <p className="mt-2 text-sm font-semibold text-rose-600">Ma'lumotlarni yuklab bo'lmadi</p>
+                                        <p className="mt-2 text-sm font-semibold text-rose-600">{t("common.error_failed")}</p>
                                     </td>
                                 </tr>
                             ) : managers.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="py-16 text-center">
                                         <UserCog className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-slate-600" />
-                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">Menejer topilmadi</p>
-                                        <p className="mt-1 text-sm text-slate-400">Yangi menejer qo'shib boshlang</p>
+                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{t("director.managers.empty.title")}</p>
+                                        <p className="mt-1 text-sm text-slate-400">{t("director.managers.empty.desc")}</p>
                                     </td>
                                 </tr>
                             ) : (
@@ -111,10 +113,10 @@ export default function ManagersView() {
                         </span>
                         <div className="flex gap-2">
                             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={!data?.previous} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
-                                <ChevronLeft className="h-4 w-4" /> Oldingi
+                                <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
                             </button>
                             <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={!data?.next} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
-                                Keyingi <ChevronRight className="h-4 w-4" />
+                                {t("common.next")} <ChevronRight className="h-4 w-4" />
                             </button>
                         </div>
                     </div>
