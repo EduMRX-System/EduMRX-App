@@ -4,6 +4,7 @@ import { Trash2, Edit3, Mail, Phone, Calendar, GraduationCap } from "lucide-reac
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { formatPhoneView, type IStudent } from "@/types/student";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     student: IStudent;
@@ -18,6 +19,7 @@ const statusStyles: Record<string, string> = {
 };
 
 export default function StudentItem({ student, onEdit, onDelete }: Props) {
+    const { t } = useTranslation();
     const router = useRouter();
     const initial = student.full_name?.slice(0, 2) || "ST";
 
@@ -87,12 +89,14 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
                 <div className="flex items-center justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                     <button
                         onClick={(e) => { e.stopPropagation(); onEdit(student); }}
+                        title={t("common.edit")}
                         className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 border border-transparent hover:border-indigo-100 dark:hover:border-indigo-900/50 transition-all cursor-pointer bg-transparent"
                     >
                         <Edit3 className="w-4 h-4" />
                     </button>
                     <button
                         onClick={(e) => { e.stopPropagation(); onDelete(student); }}
+                        title={t("common.delete")}
                         className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 border border-transparent hover:border-red-100 dark:hover:border-red-900/50 transition-all cursor-pointer bg-transparent"
                     >
                         <Trash2 className="w-4 h-4" />

@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { STATUS_OPTIONS, formatUzPhone, splitFullName, type IStudent } from "@/types/student";
 import SearchSelect from "@/components/ui/SearchSelect";
 import { useBranchOptions } from "@/hooks/useBranches";
+import { useTranslation } from "react-i18next";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -39,6 +40,7 @@ interface Props {
 }
 
 export default function StudentFormModal({ student, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!student;
     const [isMounted, setIsMounted] = useState(false);
@@ -106,7 +108,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                 : (await API.post("director/students/", payload)).data;
         },
         onSuccess: (data: any) => {
-            toast.success(data?.message || (isEdit ? "Talaba yangilandi" : "Talaba qo'shildi"));
+            toast.success(data?.message || t(isEdit ? "director.students.toast.updated" : "director.students.toast.created"));
             queryClient.invalidateQueries({ queryKey: ["students-list"] });
             onClose();
         },
@@ -119,7 +121,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                     return toast.error(`${k}: ${typeof text === "string" ? text.replace(/["']/g, "") : text}`);
                 }
             }
-            toast.error("Xatolik yuz berdi");
+            toast.error(t("director.students.toast.error_generic"));
         },
     });
 
@@ -154,19 +156,19 @@ export default function StudentFormModal({ student, onClose }: Props) {
                 </div>
 
                 <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
-                    {isEdit ? "Talabani tahrirlash" : "Yangi talaba qo'shish"}
+                    {isEdit ? t("director.students.form.title_edit") : t("director.students.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit((d) => saveStudent(d))} className="space-y-4">
                     {/* Ism + Familiya */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Ism *</label>
+                            <label className={labelCls}>{t("common.first_name")} *</label>
                             <input {...register("first_name")} placeholder="Ali" className={fieldCls(!!errors.first_name)} />
                             {errors.first_name && <p className={errCls}>{errors.first_name.message}</p>}
                         </div>
                         <div>
-                            <label className={labelCls}>Familiya *</label>
+                            <label className={labelCls}>{t("common.last_name")} *</label>
                             <input {...register("last_name")} placeholder="Valiyev" className={fieldCls(!!errors.last_name)} />
                             {errors.last_name && <p className={errCls}>{errors.last_name.message}</p>}
                         </div>
@@ -175,7 +177,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                     {/* Telefon + Email */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Telefon *</label>
+                            <label className={labelCls}>{t("common.phone")} *</label>
                             <div className="relative flex items-center">
                                 <span className="absolute left-3 text-sm font-semibold text-slate-700 dark:text-slate-300 pointer-events-none select-none">+998</span>
                                 <input type="tel" value={phoneDisplay} onChange={handlePhoneChange} placeholder="90-123-45-67" className={`${fieldCls(!!errors.phone)} pl-[55px]`} />
@@ -183,7 +185,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                             {errors.phone && <p className={errCls}>{errors.phone.message}</p>}
                         </div>
                         <div>
-                            <label className={labelCls}>Email *</label>
+                            <label className={labelCls}>{t("common.email")} *</label>
                             <input {...register("email")} type="email" placeholder="student@example.com" className={fieldCls(!!errors.email)} />
                             {errors.email && <p className={errCls}>{errors.email.message}</p>}
                         </div>
@@ -193,7 +195,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {!isEdit && (
                             <div>
-                                <label className={labelCls}>Parol *</label>
+                                <label className={labelCls}>{t("common.password")} *</label>
                                 <div className="relative flex items-center">
                                     <input {...register("password")} type={showPassword ? "text" : "password"} placeholder="••••••" className={`${fieldCls(!!errors.password)} pr-10`} />
                                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">
@@ -204,7 +206,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                             </div>
                         )}
                         <div className={isEdit ? "md:col-span-2" : ""}>
-                            <label className={labelCls}>Tug'ilgan sana *</label>
+                            <label className={labelCls}>{t("director.students.form.dob_label")}</label>
                             <input {...register("date_of_birth")} type="date" className={fieldCls(!!errors.date_of_birth)} />
                             {errors.date_of_birth && <p className={errCls}>{errors.date_of_birth.message}</p>}
                         </div>
@@ -213,25 +215,25 @@ export default function StudentFormModal({ student, onClose }: Props) {
                     {/* Filial + Status */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <SearchSelect
-                            label="Filial"
+                            label={t("common.branch")}
                             required
                             value={watch("center") || ""}
                             options={branches}
                             loading={branchesLoading}
-                            placeholder="Filialni tanlang..."
+                            placeholder={t("director.students.form.branch_placeholder")}
                             error={errors.center?.message}
                             onChange={(id) => setValue("center", id, { shouldValidate: true })}
                         />
 
                         <div ref={statusRef} className="relative">
-                            <label className={labelCls}>Holati *</label>
+                            <label className={labelCls}>{t("director.students.form.status_label")}</label>
                             <div
                                 onClick={() => setIsStatusOpen(!isStatusOpen)}
                                 className="border border-slate-200 dark:border-slate-700 rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                             >
                                 <div className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
-                                    <span>{currentStatus.label}</span>
+                                    <span>{currentStatus.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
                             </div>
@@ -247,7 +249,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <span className={`w-2 h-2 rounded-full ${option.color}`} />
-                                                    <span>{option.label}</span>
+                                                    <span>{option.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                                 </div>
                                                 {isSel && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
                                             </div>
@@ -260,13 +262,13 @@ export default function StudentFormModal({ student, onClose }: Props) {
 
                     {/* Izoh */}
                     <div>
-                        <label className={labelCls}>Izoh (ixtiyoriy)</label>
+                        <label className={labelCls}>{t("director.students.form.note_label")}</label>
                         <div className="relative">
                             <Notebook className="absolute left-3 top-3 w-4 h-4 text-slate-400 pointer-events-none" />
                             <textarea
                                 {...register("notes")}
                                 rows={2}
-                                placeholder="Talaba haqida qo'shimcha..."
+                                placeholder={t("director.students.form.note_placeholder")}
                                 className="border rounded-lg w-full pl-10 pr-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400"
                             />
                         </div>
@@ -275,11 +277,11 @@ export default function StudentFormModal({ student, onClose }: Props) {
                     {/* Tugmalar */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
                         <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors">
-                            Bekor qilish
+                            {t("common.cancel")}
                         </button>
                         <button type="submit" disabled={isPending} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? "Saqlash" : "Yaratish"}
+                            {isEdit ? t("common.save") : t("common.create")}
                         </button>
                     </div>
                 </form>
