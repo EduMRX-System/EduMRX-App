@@ -6,6 +6,7 @@ import { API } from "@/services/api";
 import { X, Loader2, DoorOpen } from "lucide-react";
 import { toast } from "react-toastify";
 import { Room, RoomPayload } from "@/types/room";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     room?: Room | null;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function RoomFormModal({ room, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!room;
     const [isMounted, setIsMounted] = useState(false);
@@ -35,7 +37,7 @@ export default function RoomFormModal({ room, onClose }: Props) {
                 : (await API.post("director/rooms/", payload)).data;
         },
         onSuccess: () => {
-            toast.success(isEdit ? "Xona yangilandi" : "Xona qo'shildi");
+            toast.success(t(isEdit ? "director.rooms.toast.updated" : "director.rooms.toast.created"));
             queryClient.invalidateQueries({ queryKey: ["rooms"] });
             onClose();
         },
@@ -48,14 +50,14 @@ export default function RoomFormModal({ room, onClose }: Props) {
                     return toast.error(`${k}: ${typeof text === "string" ? text.replace(/["']/g, "") : text}`);
                 }
             }
-            toast.error("Xatolik yuz berdi");
+            toast.error(t("director.rooms.toast.error_generic"));
         },
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.name.trim()) return toast.error("Xona nomini kiriting");
-        if (!formData.capacity || Number(formData.capacity) <= 0) return toast.error("Sig'imni kiriting");
+        if (!formData.name.trim()) return toast.error(t("director.rooms.toast.error_name"));
+        if (!formData.capacity || Number(formData.capacity) <= 0) return toast.error(t("director.rooms.toast.error_capacity"));
         saveRoom();
     };
 
@@ -85,24 +87,24 @@ export default function RoomFormModal({ room, onClose }: Props) {
                 </div>
 
                 <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
-                    {isEdit ? "Xonani tahrirlash" : "Yangi xona qo'shish"}
+                    {isEdit ? t("director.rooms.form.title_edit") : t("director.rooms.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className={labelCls}>Xona nomi *</label>
+                        <label className={labelCls}>{t("director.rooms.form.name_label")}</label>
                         <input
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-                            placeholder="Masalan: 101-xona"
+                            placeholder={t("director.rooms.form.name_placeholder")}
                             className={inputCls}
                             required
                         />
                     </div>
 
                     <div>
-                        <label className={labelCls}>Sig'imi (o'rin) *</label>
+                        <label className={labelCls}>{t("director.rooms.form.capacity_label")}</label>
                         <input
                             type="number"
                             min={1}
@@ -120,7 +122,7 @@ export default function RoomFormModal({ room, onClose }: Props) {
                             onClick={onClose}
                             className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors"
                         >
-                            Bekor qilish
+                            {t("common.cancel")}
                         </button>
                         <button
                             type="submit"
@@ -128,7 +130,7 @@ export default function RoomFormModal({ room, onClose }: Props) {
                             className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? "Saqlash" : "Yaratish"}
+                            {isEdit ? t("common.save") : t("common.create")}
                         </button>
                     </div>
                 </form>

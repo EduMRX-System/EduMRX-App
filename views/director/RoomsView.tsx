@@ -7,11 +7,13 @@ import { useRooms } from "@/hooks/useRooms";
 import RoomRow from "@/components/sections/directorPanelSections/RoomsView/RoomRow";
 import RoomFormModal from "@/components/sections/directorPanelSections/RoomsView/RoomFormModal";
 import DeleteRoomModal from "@/components/sections/directorPanelSections/RoomsView/DeleteRoomModal";
+import { useTranslation } from "react-i18next";
 
 
 const PAGE_SIZE = 10;
 
 export default function RoomsView() {
+    const { t } = useTranslation();
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     const [addOpen, setAddOpen] = useState(false);
@@ -28,14 +30,14 @@ export default function RoomsView() {
             {/* Header */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Xonalar</h1>
-                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{count} ta xona</p>
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t("director.rooms.title")}</h1>
+                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{t("director.rooms.count", { count })}</p>
                 </div>
                 <button
                     onClick={() => setAddOpen(true)}
                     className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
                 >
-                    <Plus className="h-4 w-4" /> Yangi xona
+                    <Plus className="h-4 w-4" /> {t("director.rooms.add_btn")}
                 </button>
             </div>
 
@@ -45,7 +47,7 @@ export default function RoomsView() {
                 <input
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                    placeholder="Xona qidirish..."
+                    placeholder={t("director.rooms.search_placeholder")}
                     className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 />
             </div>
@@ -56,9 +58,9 @@ export default function RoomsView() {
                     <table className="w-full text-left text-sm">
                         <thead>
                             <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                                <th className="px-5 py-3 font-medium">Xona</th>
-                                <th className="px-5 py-3 font-medium">Sig'imi</th>
-                                <th className="px-5 py-3 text-right font-medium">Amallar</th>
+                                <th className="px-5 py-3 font-medium">{t("director.rooms.table.name")}</th>
+                                <th className="px-5 py-3 font-medium">{t("director.rooms.table.capacity")}</th>
+                                <th className="px-5 py-3 text-right font-medium">{t("director.rooms.table.actions")}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -74,13 +76,13 @@ export default function RoomsView() {
                                     </tr>
                                 ))
                             ) : isError ? (
-                                <tr><td colSpan={3} className="px-5 py-12 text-center text-sm text-rose-500">Ma'lumotlarni yuklashda xatolik yuz berdi.</td></tr>
+                                <tr><td colSpan={3} className="px-5 py-12 text-center text-sm text-rose-500">{t("common.error_load")}</td></tr>
                             ) : rooms.length === 0 ? (
                                 <tr>
                                     <td colSpan={3} className="px-5 py-16 text-center">
                                         <DoorOpen className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-slate-600" />
-                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">Xona topilmadi</p>
-                                        <p className="mt-1 text-sm text-slate-400">Yangi xona qo'shib boshlang</p>
+                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{t("director.rooms.empty.title")}</p>
+                                        <p className="mt-1 text-sm text-slate-400">{t("director.rooms.empty.desc")}</p>
                                     </td>
                                 </tr>
                             ) : (
@@ -101,10 +103,10 @@ export default function RoomsView() {
                         </span>
                         <div className="flex gap-2">
                             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={!data?.previous} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
-                                <ChevronLeft className="h-4 w-4" /> Oldingi
+                                <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
                             </button>
                             <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={!data?.next} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
-                                Keyingi <ChevronRight className="h-4 w-4" />
+                                {t("common.next")} <ChevronRight className="h-4 w-4" />
                             </button>
                         </div>
                     </div>

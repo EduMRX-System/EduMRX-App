@@ -6,6 +6,7 @@ import { API } from "@/services/api";
 import { AlertTriangle, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { Room } from "@/types/room";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     room: Room;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function DeleteRoomModal({ room, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -28,11 +30,11 @@ export default function DeleteRoomModal({ room, onClose }: Props) {
             await API.delete(`director/rooms/${room.id}/`);
         },
         onSuccess: () => {
-            toast.success("Xona o'chirildi");
+            toast.success(t("director.rooms.toast.deleted"));
             queryClient.invalidateQueries({ queryKey: ["rooms"] });
             onClose();
         },
-        onError: () => toast.error("O'chirishda xatolik yuz berdi"),
+        onError: () => toast.error(t("director.rooms.toast.delete_error")),
     });
 
     return (
@@ -53,20 +55,20 @@ export default function DeleteRoomModal({ room, onClose }: Props) {
                         <AlertTriangle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
                     </div>
                     <div>
-                        <h3 className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">Xonani o'chirish</h3>
+                        <h3 className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">{t("director.rooms.delete.title")}</h3>
                         <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                            <span className="font-semibold text-slate-900 dark:text-slate-100">{room.name}</span> xonasini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.
+                            {t("director.rooms.delete.desc", { name: room.name })}
                         </p>
                     </div>
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-3">
                     <button type="button" onClick={onClose} disabled={isPending} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors disabled:opacity-50">
-                        Bekor qilish
+                        {t("common.cancel")}
                     </button>
                     <button type="button" onClick={() => deleteRoom()} disabled={isPending} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                         {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                        O'chirish
+                        {isPending ? t("common.deleting") : t("common.delete")}
                     </button>
                 </div>
             </div>

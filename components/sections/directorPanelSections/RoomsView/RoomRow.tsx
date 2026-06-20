@@ -2,6 +2,7 @@
 
 import { Room } from "@/types/room";
 import { DoorOpen, Users, Pencil, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     room: Room;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function RoomRow({ room, onEdit, onDelete }: Props) {
+    const { t } = useTranslation();
     return (
         <tr className="transition hover:bg-slate-50 dark:hover:bg-slate-800/50">
             {/* Xona */}
@@ -26,7 +28,7 @@ export default function RoomRow({ room, onEdit, onDelete }: Props) {
             <td className="px-5 py-3.5">
                 <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
                     <Users className="h-3.5 w-3.5 text-slate-400" />
-                    {room.capacity} o'rin
+                    {t("director.rooms.capacity_seats", { count: room.capacity })}
                 </span>
             </td>
 
@@ -36,14 +38,14 @@ export default function RoomRow({ room, onEdit, onDelete }: Props) {
                     <button
                         onClick={() => onEdit(room)}
                         className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-indigo-600 dark:hover:bg-slate-800 dark:hover:text-indigo-400"
-                        title="Tahrirlash"
+                        title={t("common.edit")}
                     >
                         <Pencil className="h-4 w-4" />
                     </button>
                     <button
                         onClick={() => onDelete(room)}
                         className="rounded-lg p-2 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
-                        title="O'chirish"
+                        title={t("common.delete")}
                     >
                         <Trash2 className="h-4 w-4" />
                     </button>
