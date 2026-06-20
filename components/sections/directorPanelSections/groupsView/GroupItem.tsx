@@ -2,13 +2,15 @@
 
 import { Group, lessonDaysLabel, parseLessonDays, STATUS_OPTIONS, toHHMM } from "@/types/group";
 import { Users2, Pencil, Trash2, Clock, GraduationCap } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 function StatusBadge({ status }: { status: Group["status"] }) {
+    const { t } = useTranslation();
     const opt = STATUS_OPTIONS.find((o) => o.value === status) ?? STATUS_OPTIONS[0];
     return (
         <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium bg-slate-50 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
             <span className={`h-1.5 w-1.5 rounded-full ${opt.color}`} />
-            {opt.label}
+            {status === "active" ? t("common.active") : t("common.inactive")}
         </span>
     );
 }
@@ -20,6 +22,7 @@ interface Props {
 }
 
 export default function GroupItem({ group, onEdit, onDelete }: Props) {
+    const { t } = useTranslation();
     const days = lessonDaysLabel(parseLessonDays(group.lesson_days));
     const time = `${toHHMM(group.lesson_start_time)}–${toHHMM(group.lesson_end_time)}`;
 
@@ -69,14 +72,14 @@ export default function GroupItem({ group, onEdit, onDelete }: Props) {
                     <button
                         onClick={() => onEdit(group)}
                         className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-indigo-600 dark:hover:bg-slate-800 dark:hover:text-indigo-400"
-                        title="Tahrirlash"
+                        title={t("common.edit")}
                     >
                         <Pencil className="h-4 w-4" />
                     </button>
                     <button
                         onClick={() => onDelete(group)}
                         className="rounded-lg p-2 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
-                        title="O'chirish"
+                        title={t("common.delete")}
                     >
                         <Trash2 className="h-4 w-4" />
                     </button>

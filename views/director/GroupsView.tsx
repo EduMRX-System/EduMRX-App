@@ -7,11 +7,13 @@ import DeleteGroupModal from "@/components/sections/directorPanelSections/groups
 import GroupFormModal from "@/components/sections/directorPanelSections/groupsView/GroupFormModal";
 import { Group } from "@/types/group";
 import { useGroups } from "@/hooks/useGroups";
+import { useTranslation } from "react-i18next";
 
 
 const PAGE_SIZE = 10;
 
 export default function GroupsView() {
+    const { t } = useTranslation();
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     const [addOpen, setAddOpen] = useState(false);
@@ -29,15 +31,15 @@ export default function GroupsView() {
             {/* Header */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Guruhlar</h1>
-                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{count} ta guruh</p>
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t("director.groups.title")}</h1>
+                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{t("director.groups.count", { count })}</p>
                 </div>
                 <button
                     onClick={() => setAddOpen(true)}
                     className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
                 >
                     <Plus className="h-4 w-4" />
-                    Yangi guruh
+                    {t("director.groups.add_btn")}
                 </button>
             </div>
 
@@ -47,7 +49,7 @@ export default function GroupsView() {
                 <input
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                    placeholder="Guruh qidirish..."
+                    placeholder={t("director.groups.search_placeholder")}
                     className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 />
             </div>
@@ -58,13 +60,13 @@ export default function GroupsView() {
                     <table className="w-full text-left text-sm">
                         <thead>
                             <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                                <th className="px-5 py-3 font-medium">Guruh</th>
-                                <th className="px-5 py-3 font-medium">O'qituvchi</th>
-                                <th className="px-5 py-3 font-medium">Xona</th>
-                                <th className="px-5 py-3 font-medium">Jadval</th>
-                                <th className="px-5 py-3 font-medium">O'quvchilar</th>
-                                <th className="px-5 py-3 font-medium">Holati</th>
-                                <th className="px-5 py-3 text-right font-medium">Amallar</th>
+                                <th className="px-5 py-3 font-medium">{t("director.groups.table.name")}</th>
+                                <th className="px-5 py-3 font-medium">{t("director.groups.table.teacher")}</th>
+                                <th className="px-5 py-3 font-medium">{t("director.groups.table.room")}</th>
+                                <th className="px-5 py-3 font-medium">{t("director.groups.table.schedule")}</th>
+                                <th className="px-5 py-3 font-medium">{t("director.groups.table.students")}</th>
+                                <th className="px-5 py-3 font-medium">{t("director.groups.table.status")}</th>
+                                <th className="px-5 py-3 text-right font-medium">{t("director.groups.table.actions")}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -73,15 +75,15 @@ export default function GroupsView() {
                             ) : isError ? (
                                 <tr>
                                     <td colSpan={7} className="px-5 py-12 text-center text-sm text-rose-500">
-                                        Ma'lumotlarni yuklashda xatolik yuz berdi.
+                                        {t("common.error_load")}
                                     </td>
                                 </tr>
                             ) : groups.length === 0 ? (
                                 <tr>
                                     <td colSpan={7} className="px-5 py-16 text-center">
                                         <Users2 className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-slate-600" />
-                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">Guruh topilmadi</p>
-                                        <p className="mt-1 text-sm text-slate-400">Yangi guruh qo'shib boshlang</p>
+                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{t("director.groups.empty.title")}</p>
+                                        <p className="mt-1 text-sm text-slate-400">{t("director.groups.empty.desc")}</p>
                                     </td>
                                 </tr>
                             ) : (
@@ -106,14 +108,14 @@ export default function GroupsView() {
                                 disabled={!data?.previous}
                                 className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             >
-                                <ChevronLeft className="h-4 w-4" /> Oldingi
+                                <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
                             </button>
                             <button
                                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                                 disabled={!data?.next}
                                 className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             >
-                                Keyingi <ChevronRight className="h-4 w-4" />
+                                {t("common.next")} <ChevronRight className="h-4 w-4" />
                             </button>
                         </div>
                     </div>

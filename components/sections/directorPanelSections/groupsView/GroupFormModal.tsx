@@ -20,6 +20,7 @@ import {
     type GroupPayload,
 } from "@/types/group";
 import SearchSelect from "./SearchSelect";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     group?: Group | null; // berilsa — tahrirlash
@@ -27,6 +28,7 @@ interface Props {
 }
 
 export default function GroupFormModal({ group, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!group;
     const [isMounted, setIsMounted] = useState(false);
@@ -88,7 +90,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
             return res.data;
         },
         onSuccess: () => {
-            toast.success(isEdit ? "Guruh yangilandi" : "Guruh qo'shildi");
+            toast.success(t(isEdit ? "director.groups.toast.updated" : "director.groups.toast.created"));
             queryClient.invalidateQueries({ queryKey: ["groups"] });
             onClose();
         },
@@ -101,19 +103,19 @@ export default function GroupFormModal({ group, onClose }: Props) {
                     return toast.error(`${firstKey}: ${typeof text === "string" ? text.replace(/["']/g, "") : text}`);
                 }
             }
-            toast.error("Xatolik yuz berdi");
+            toast.error(t("director.groups.toast.error_generic"));
         },
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.name.trim()) return toast.error("Guruh nomini kiriting");
-        if (!formData.course) return toast.error("Kursni tanlang");
-        if (!formData.teacher) return toast.error("O'qituvchini tanlang");
-        if (!formData.room) return toast.error("Xonani tanlang");
-        if (!formData.start_date || !formData.end_date) return toast.error("Sanalarni kiriting");
-        if (formData.lesson_days.length === 0) return toast.error("Dars kunlarini tanlang");
-        if (!formData.lesson_start_time || !formData.lesson_end_time) return toast.error("Dars vaqtini kiriting");
+        if (!formData.name.trim()) return toast.error(t("director.groups.toast.error_name"));
+        if (!formData.course) return toast.error(t("director.groups.toast.error_course"));
+        if (!formData.teacher) return toast.error(t("director.groups.toast.error_teacher"));
+        if (!formData.room) return toast.error(t("director.groups.toast.error_room"));
+        if (!formData.start_date || !formData.end_date) return toast.error(t("director.groups.toast.error_dates"));
+        if (formData.lesson_days.length === 0) return toast.error(t("director.groups.toast.error_days"));
+        if (!formData.lesson_start_time || !formData.lesson_end_time) return toast.error(t("director.groups.toast.error_time"));
         saveGroup();
     };
 
@@ -148,18 +150,18 @@ export default function GroupFormModal({ group, onClose }: Props) {
                 </div>
 
                 <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
-                    {isEdit ? "Guruhni tahrirlash" : "Yangi guruh qo'shish"}
+                    {isEdit ? t("director.groups.form.title_edit") : t("director.groups.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Nom */}
                     <div>
-                        <label className={labelCls}>Guruh nomi *</label>
+                        <label className={labelCls}>{t("director.groups.form.name_label")}</label>
                         <input
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-                            placeholder="Masalan: Frontend-01"
+                            placeholder={t("director.groups.form.name_placeholder")}
                             className={inputCls}
                             required
                         />
@@ -168,7 +170,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                     {/* Kurs + O'qituvchi */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <SearchSelect
-                            label="Kurs"
+                            label={t("director.groups.form.course_label")}
                             required
                             value={formData.course}
                             options={courses}
@@ -176,7 +178,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                             onChange={(id) => setFormData((p) => ({ ...p, course: id }))}
                         />
                         <SearchSelect
-                            label="O'qituvchi"
+                            label={t("director.groups.form.teacher_label")}
                             required
                             value={formData.teacher}
                             options={teachers}
@@ -188,7 +190,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                     {/* Xona + Status */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <SearchSelect
-                            label="Xona"
+                            label={t("director.groups.form.room_label")}
                             required
                             value={formData.room}
                             options={rooms}
@@ -197,14 +199,14 @@ export default function GroupFormModal({ group, onClose }: Props) {
                         />
 
                         <div ref={statusRef} className="relative">
-                            <label className={labelCls}>Holati *</label>
+                            <label className={labelCls}>{t("director.groups.form.status_label")}</label>
                             <div
                                 onClick={() => setIsStatusOpen(!isStatusOpen)}
                                 className="border border-slate-200 dark:border-slate-700 rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                             >
                                 <div className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
-                                    <span>{currentStatus.label}</span>
+                                    <span>{currentStatus.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
                             </div>
@@ -223,7 +225,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <span className={`w-2 h-2 rounded-full ${option.color}`} />
-                                                    <span>{option.label}</span>
+                                                    <span>{option.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                                 </div>
                                                 {isSel && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
                                             </div>
@@ -237,7 +239,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                     {/* Sanalar */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Boshlanish sanasi *</label>
+                            <label className={labelCls}>{t("director.groups.form.start_date_label")}</label>
                             <input
                                 type="date"
                                 value={formData.start_date}
@@ -247,7 +249,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                             />
                         </div>
                         <div>
-                            <label className={labelCls}>Tugash sanasi *</label>
+                            <label className={labelCls}>{t("director.groups.form.end_date_label")}</label>
                             <input
                                 type="date"
                                 value={formData.end_date}
@@ -260,7 +262,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
 
                     {/* Dars kunlari */}
                     <div>
-                        <label className={labelCls}>Dars kunlari *</label>
+                        <label className={labelCls}>{t("director.groups.form.lesson_days_label")}</label>
                         <div className="flex flex-wrap gap-2">
                             {WEEKDAYS.map((d) => {
                                 const active = formData.lesson_days.includes(d.value);
@@ -285,7 +287,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                     {/* Vaqt */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Dars boshlanishi *</label>
+                            <label className={labelCls}>{t("director.groups.form.lesson_start_label")}</label>
                             <input
                                 type="time"
                                 value={formData.lesson_start_time}
@@ -295,7 +297,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                             />
                         </div>
                         <div>
-                            <label className={labelCls}>Dars tugashi *</label>
+                            <label className={labelCls}>{t("director.groups.form.lesson_end_label")}</label>
                             <input
                                 type="time"
                                 value={formData.lesson_end_time}
@@ -313,7 +315,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                             onClick={onClose}
                             className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors"
                         >
-                            Bekor qilish
+                            {t("common.cancel")}
                         </button>
                         <button
                             type="submit"
@@ -321,7 +323,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
                             className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? "Saqlash" : "Yaratish"}
+                            {isEdit ? t("common.save") : t("common.create")}
                         </button>
                     </div>
                 </form>
