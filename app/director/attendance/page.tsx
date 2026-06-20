@@ -1,3 +1,3 @@
-import AttendanceView from "@/views/manager/AttendanceView";
+import AttendanceView from "@/views/director/AttendanceView";
 
 export default AttendanceView

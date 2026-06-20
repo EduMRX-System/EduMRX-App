@@ -5,13 +5,18 @@ import LeftComponent from "@/components/common/LeftComponent";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useUIStore } from "@/store/useUIStore";
 import { directorMenu } from "@/constants/navigation";
+import DirectorNav from "@/components/sections/directorPanelSections/navbar/DirectorNav";
 
 export default function DirectorLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isSidebarOpen, setSidebarOpen } = useUIStore();
+  const { isSidebarOpen, setSidebarOpen, isSidebarCollapsed, setSidebarCollapsed, theme } = useUIStore();
+
+  const handleNavigate = () => {
+    setSidebarOpen(false);   // mobil drawer yopiladi
+  };
 
   return (
     <ProtectedRoute>
@@ -34,15 +39,15 @@ export default function DirectorLayout({
     ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
   `}
         >
-          <LeftComponent menuItems={directorMenu} roleTitle="Director" />
+
+          <DirectorNav onNavigate={handleNavigate} />
         </div>
 
         {/* MAIN CONTENT */}
         <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden transition-all duration-300">
           {/* HEADER — floating sidebar bilan moslab, ozgina padding bilan */}
-          <div className="px-3 pt-3">
-            <Header menuItems={directorMenu} />
-          </div>
+          <Header menuItems={directorMenu} />
+
 
           <main className="px-3 pb-3 pt-4 md:px-5 md:pb-5 flex-1 overflow-y-auto transition-all duration-300">
             <div className="w-full h-full overflow-y-auto">

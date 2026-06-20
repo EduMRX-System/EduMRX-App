@@ -1,264 +1,132 @@
 "use client";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { API } from "@/services/api";
-import {
-    GraduationCap,
-    Phone,
-    Mail,
-    Building2,
-    Plus,
-    Trash2,
-    Edit3,
-    Loader2,
-    AlertCircle,
-    Briefcase,
-    Star,
-} from "lucide-react";
-import { toast } from "react-toastify";
 import { useState } from "react";
-import Title from "@/components/ui/Title";
-import Text from "@/components/ui/Text";
-import Image from "next/image";
-import { ITeacher } from "@/types";
-import AddTeacherModal from "@/components/sections/directorPanelSections/teachersView/AddTeacherModal";
-import EditTeacherModal from "@/components/sections/directorPanelSections/teachersView/EditTeacherModal";
+import { Plus, Search, GraduationCap, ChevronLeft, ChevronRight, Loader2, AlertCircle } from "lucide-react";
+import { useTeachers } from "@/hooks/useTeachers";
+import type { ITeacher } from "@/types/teacher";
+import TeacherFormModal from "@/components/sections/directorPanelSections/teachersView/TeacherFormModal";
 import DeleteTeacherModal from "@/components/sections/directorPanelSections/teachersView/DeleteTeacherModal";
+import TeacherRow from "@/components/sections/directorPanelSections/teachersView/TeacherRow";
+
+
+const PAGE_SIZE = 10;
 
 export default function TeachersView() {
-    const queryClient = useQueryClient();
-    const [isAddOpen, setIsAddOpen] = useState(false);
-    const [editingTeacher, setEditingTeacher] = useState<ITeacher | null>(null);
-    const [deletingTeacher, setDeletingTeacher] = useState<ITeacher | null>(null);
+    const [page, setPage] = useState(1);
+    const [search, setSearch] = useState("");
+    const [addOpen, setAddOpen] = useState(false);
+    const [editing, setEditing] = useState<ITeacher | null>(null);
+    const [deleting, setDeleting] = useState<ITeacher | null>(null);
 
-    const {
-        data: teachers,
-        isLoading,
-        isError,
-        error,
-    } = useQuery<ITeacher[]>({
-        queryKey: ["teachers"],
-        queryFn: async () => {
-            const res = await API.get("super-admin/teachers/");
-            return res?.data?.results || res?.data || [];
-        },
-    });
+    const { data, isLoading, isError, isFetching } = useTeachers({ page, pageSize: PAGE_SIZE, search });
 
-    const { mutate: deleteTeacher, isPending: isDeletePending } = useMutation({
-        mutationFn: async (id: string) => {
-            await API.delete(`super-admin/teachers/${id}/`);
-        },
-        onSuccess: () => {
-            toast.success("Teacher successfully deleted");
-            queryClient.invalidateQueries({ queryKey: ["teachers"] });
-            setDeletingTeacher(null);
-        },
-        onError: (err: any) => {
-            toast.error(err?.response?.data?.message || "Error deleting teacher");
-        },
-    });
-
-    const formatPhoneView = (phone: string) => {
-        const clean = phone.replace(/\D/g, "");
-        if (clean.length === 12) {
-            return `+998 (${clean.slice(3, 5)}) ${clean.slice(5, 8)}-${clean.slice(8, 10)}-${clean.slice(10)}`;
-        }
-        return phone;
-    };
+    const teachers = data?.results ?? [];
+    const count = data?.count ?? 0;
+    const showPagination = !!(data?.next || data?.previous);
 
     return (
-        <div className="w-full">
+        <div className="space-y-6">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <Title text="Teachers" />
-                    <Text text="Manage educator profiles, specializations, and center assignments." />
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">O'qituvchilar</h1>
+                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{count} ta o'qituvchi</p>
                 </div>
                 <button
-                    onClick={() => setIsAddOpen(true)}
-                    className="inline-flex items-center justify-center gap-2 h-10 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-lg shadow-sm transition-colors cursor-pointer shrink-0"
+                    onClick={() => setAddOpen(true)}
+                    className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
                 >
-                    <Plus className="w-4 h-4" /> Add Teacher
+                    <Plus className="h-4 w-4" /> Yangi o'qituvchi
                 </button>
             </div>
 
-            {isLoading && (
-                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-slate-100 shadow-sm">
-                    <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
-                    <p className="text-sm text-slate-500 mt-3 font-medium">
-                        Loading teachers list...
-                    </p>
-                </div>
-            )}
-
-            {isError && (
-                <div className="flex flex-col items-center justify-center py-12 px-4 bg-red-50/50 rounded-xl border border-red-100 text-center">
-                    <AlertCircle className="w-10 h-10 text-red-500 mb-3" />
-                    <h3 className="text-base font-semibold text-red-900">
-                        Failed to load data
-                    </h3>
-                    <p className="text-sm text-red-600 mt-1 max-w-md">
-                        {(error as any)?.message || "Connection error with backend."}
-                    </p>
-                </div>
-            )}
-
-            {!isLoading && !isError && (!teachers || teachers.length === 0) && (
-                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-dashed border-slate-300 text-center">
-                    <div className="p-3 bg-slate-50 rounded-full text-slate-400 mb-4">
-                        <GraduationCap className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-base font-semibold text-slate-900">
-                        No teachers found
-                    </h3>
-                    <p className="text-sm text-slate-500 mt-1 max-w-xs">
-                        There are no records available. Create the first profile.
-                    </p>
-                    <button
-                        onClick={() => setIsAddOpen(true)}
-                        className="mt-4 inline-flex items-center gap-2 h-9 px-4 bg-white border border-slate-200 text-slate-700 rounded-lg text-xs font-semibold shadow-sm hover:bg-slate-50 transition-all cursor-pointer"
-                    >
-                        <Plus className="w-3.5 h-3.5" /> Add Teacher
-                    </button>
-                </div>
-            )}
+            {/* Search */}
+            <div className="relative max-w-sm">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                    value={search}
+                    onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                    placeholder="O'qituvchi qidirish..."
+                    className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+                />
+            </div>
 
             {/* Table */}
-            {!isLoading && !isError && teachers && teachers.length > 0 && (
-                <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="bg-slate-50 border-b border-slate-100 text-slate-600 text-xs font-semibold uppercase tracking-wider">
-                                    <th className="py-3.5 px-5">Teacher Details</th>
-                                    <th className="py-3.5 px-5">Contact Info</th>
-                                    <th className="py-3.5 px-5">Specialization / Experience</th>
-                                    <th className="py-3.5 px-5">Learning Center</th>
-                                    <th className="py-3.5 px-5 text-right">Actions</th>
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm">
+                        <thead>
+                            <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-600 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-400">
+                                <th className="py-3.5 px-5 font-semibold">O'qituvchi</th>
+                                <th className="py-3.5 px-5 font-semibold">Aloqa</th>
+                                <th className="py-3.5 px-5 font-semibold">Mutaxassislik / Tajriba</th>
+                                <th className="py-3.5 px-5 font-semibold">Maosh</th>
+                                <th className="py-3.5 px-5 text-right font-semibold">Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                            {isLoading ? (
+                                <tr>
+                                    <td colSpan={5} className="py-16 text-center">
+                                        <Loader2 className="mx-auto h-7 w-7 animate-spin text-indigo-600" />
+                                        <p className="mt-3 text-sm text-slate-500">Yuklanmoqda...</p>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
-                                {teachers.map((teacher) => {
-                                    const initial = (teacher.full_name || "N")
-                                        .charAt(0)
-                                        .toUpperCase();
-
-                                    {
-                                        console.log(teacher);
-                                    }
-
-                                    return (
-                                        <tr
-                                            key={teacher.id}
-                                            className="hover:bg-slate-50/50 transition-colors group"
-                                        >
-                                            <td className="py-4 px-5">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden shrink-0">
-                                                        {teacher.avatar ? (
-                                                            <Image
-                                                                src={teacher.avatar}
-                                                                alt={teacher.full_name}
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        ) : (
-                                                            <span className="font-semibold text-slate-500 text-sm">
-                                                                {initial}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div>
-                                                        <div className="font-semibold text-slate-900 leading-tight">
-                                                            {teacher.full_name}
-                                                        </div>
-                                                        <div className="text-[11px] text-slate-400 mt-0.5">
-                                                            ID: {teacher.id.slice(0, 8)}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-
-                                            <td className="py-4 px-5">
-                                                <div className="space-y-1 text-xs">
-                                                    <div className="flex items-center gap-2 text-slate-600">
-                                                        <Phone className="w-3.5 h-3.5 text-slate-400" />
-                                                        <span>{formatPhoneView(teacher.phone)}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2 text-slate-600">
-                                                        <Mail className="w-3.5 h-3.5 text-slate-400" />
-                                                        <span className="truncate max-w-[160px]">
-                                                            {teacher.email}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-
-                                            <td className="py-4 px-5">
-                                                <div className="space-y-1 text-xs">
-                                                    <div className="flex items-center gap-1.5 text-slate-700 font-medium">
-                                                        <Briefcase className="w-3.5 h-3.5 text-slate-400" />
-                                                        <span>{teacher.specialization || "—"}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-1.5 text-slate-500">
-                                                        <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                                                        <span>{teacher.experience} years exp</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-
-                                            <td className="py-4 px-5">
-                                                <div className="flex items-center gap-1.5 text-xs text-slate-600 max-w-[180px]">
-                                                    <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                                                    <span className="truncate">
-                                                        {teacher.center_name || "—"}
-                                                    </span>
-                                                </div>
-                                            </td>
-
-                                            <td className="py-4 px-5 text-right">
-                                                <div className="flex items-center justify-end gap-2">
-                                                    <button
-                                                        onClick={() => setEditingTeacher(teacher)}
-                                                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all cursor-pointer"
-                                                        title="Edit"
-                                                    >
-                                                        <Edit3 className="w-4 h-4" />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => setDeletingTeacher(teacher)} // Eski handleDelete o'rniga stateni yangilaymiz
-                                                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-100 transition-all cursor-pointer"
-                                                        title="Delete"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                            ) : isError ? (
+                                <tr>
+                                    <td colSpan={5} className="py-12 text-center">
+                                        <AlertCircle className="mx-auto h-9 w-9 text-rose-500" />
+                                        <p className="mt-2 text-sm font-semibold text-rose-600">Ma'lumotlarni yuklab bo'lmadi</p>
+                                    </td>
+                                </tr>
+                            ) : teachers.length === 0 ? (
+                                <tr>
+                                    <td colSpan={5} className="py-16 text-center">
+                                        <GraduationCap className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-slate-600" />
+                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">O'qituvchi topilmadi</p>
+                                        <p className="mt-1 text-sm text-slate-400">Birinchi profilni yarating</p>
+                                    </td>
+                                </tr>
+                            ) : (
+                                teachers.map((t) => (
+                                    <TeacherRow key={t.id} teacher={t} onEdit={setEditing} onDelete={setDeleting} />
+                                ))
+                            )}
+                        </tbody>
+                    </table>
                 </div>
-            )}
 
-            {isAddOpen && <AddTeacherModal onClose={() => setIsAddOpen(false)} />}
+                {/* Pagination */}
+                {!isLoading && teachers.length > 0 && showPagination && (
+                    <div className="flex items-center justify-between border-t border-slate-200 px-5 py-3 dark:border-slate-800">
+                        <span className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                            {isFetching && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+                            {page}-sahifa
+                        </span>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                                disabled={!data?.previous}
+                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                            >
+                                <ChevronLeft className="h-4 w-4" /> Oldingi
+                            </button>
+                            <button
+                                onClick={() => setPage((p) => p + 1)}
+                                disabled={!data?.next}
+                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                            >
+                                Keyingi <ChevronRight className="h-4 w-4" />
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
 
-            {editingTeacher && (
-                <EditTeacherModal
-                    teacher={editingTeacher}
-                    onClose={() => setEditingTeacher(null)}
-                />
-            )}
-
-            {deletingTeacher && (
-                <DeleteTeacherModal
-                    teacherName={deletingTeacher.full_name}
-                    isPending={isDeletePending}
-                    onConfirm={() => deleteTeacher(deletingTeacher.id)}
-                    onClose={() => setDeletingTeacher(null)}
-                />
-            )}
+            {/* Modals */}
+            {addOpen && <TeacherFormModal onClose={() => setAddOpen(false)} />}
+            {editing && <TeacherFormModal teacher={editing} onClose={() => setEditing(null)} />}
+            {deleting && <DeleteTeacherModal teacher={deleting} onClose={() => setDeleting(null)} />}
         </div>
     );
 }

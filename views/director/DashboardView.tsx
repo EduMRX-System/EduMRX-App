@@ -1,6 +1,8 @@
 "use client"
 
 import FinancialChart from '@/components/sections/directorPanelSections/FinancialChart';
+import Text from '@/components/ui/Text';
+import Title from '@/components/ui/Title';
 import {
   DollarSign, CreditCard, GraduationCap, Wallet,
   ChartColumn, Building, Users, Megaphone,
@@ -99,8 +101,8 @@ const DirectorDashboard = () => {
       <div className="space-y-6 w-full ">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Xush kelibsiz 👋</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Ta'lim markazingiz holati va statistikalar</p>
+          <Title text="Xush kelibsiz 👋" />
+          <Text text="Ta'lim markazingiz holati va statistikalar" />
         </div>
 
         {/* Stats Grid */}
@@ -152,7 +154,7 @@ const DirectorDashboard = () => {
               <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
                 Tizimdagi oxirgi qabul qilingan to'lovlar
               </p>
-            </div>    
+            </div>
             <button className="flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors cursor-pointer group">
               Barchasi
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

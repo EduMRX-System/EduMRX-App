@@ -1,5 +1,7 @@
+import ComingSoon from "@/components/ComingSoon";
+
 export default function AttendanceView() {
   return (
-    <div>AttendanceView</div>
+    <ComingSoon />
   )
 }

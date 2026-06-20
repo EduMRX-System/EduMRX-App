@@ -1,6 +1,8 @@
 "use client";
 
+import { LogoIcons } from "@/constants/icons";
 import { useAuthStore } from "@/store/authStore";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -128,7 +130,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
                             {/* Badge with scan effect */}
                             <div className="relative w-[68px] h-[68px] rounded-[20px] bg-gradient-to-br from-indigo-600 to-violet-700 flex items-center justify-center shadow-xl shadow-indigo-500/40 overflow-hidden">
-                                <span className="text-white font-black text-2xl tracking-tight">EX</span>
+                                <Image src={LogoIcons.icon192} alt="EduMRX - mini logo"/>
 
                                 {/* Scan line sweeping across badge */}
                                 <div className="absolute inset-x-0 h-8 bg-gradient-to-b from-transparent via-white/30 to-transparent" style={{ animation: "scan 2s ease-in-out infinite" }} />

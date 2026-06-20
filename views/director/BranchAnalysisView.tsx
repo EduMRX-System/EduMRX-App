@@ -12,6 +12,8 @@ import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis,
   CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import Title from '@/components/ui/Title';
+import Text from '@/components/ui/Text';
 
 // PULLARNI FORMATLASH UCHUN HELPER
 const formatUZS = (amount: number) => {
@@ -106,8 +108,8 @@ export default function BranchAnalyticsView() {
       {/* ── HEADER BLOCK ── */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">{t('director.analytics.title')}</h1>
-          <p className="text-xs font-medium text-slate-400 mt-1">{t('director.analytics.subtitle')}</p>
+          <Title text={t('director.analytics.title')} />
+          <Text text={t('director.analytics.title')} />
         </div>
 
         <div className="flex items-center gap-2.5 flex-wrap">
@@ -139,8 +141,8 @@ export default function BranchAnalyticsView() {
             key={branch.id}
             onClick={() => setSelectedBranchId(branch.id)}
             className={`px-5 py-2.5 text-sm font-bold rounded-full whitespace-nowrap transition-all duration-300 cursor-pointer ${selectedBranchId === branch.id
-                ? 'bg-[#5B4DF6] text-white shadow-md' // Rasmdagi binafsha rang
-                : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800/50'
+              ? 'bg-[#5B4DF6] text-white shadow-md' // Rasmdagi binafsha rang
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800/50'
               }`}
           >
             {branch.name}

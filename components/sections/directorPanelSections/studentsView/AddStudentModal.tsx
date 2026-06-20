@@ -161,7 +161,7 @@ export default function AddStudentModal({ onClose }: AddStudentModalProps) {
     const { data: centersData, isLoading: isCentersLoading } = useQuery<IAPIResponse<ILearningCenter>>({
         queryKey: ["centers-list", centerPage, debouncedCenterSearch],
         queryFn: async () => {
-            const res = await API.get("super-admin/centers/", {
+            const res = await API.get("center/branches/", {
                 params: {
                     page: centerPage,
                     search: debouncedCenterSearch,

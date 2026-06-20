@@ -1,224 +1,18 @@
-.range-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 8px;
-    border-radius: 9999px;
-    outline: none;
-    cursor: pointer;
-    background: linear-gradient(to right,
-            var(--accent) 0%,
-            var(--accent) var(--fill),
-            rgb(226 232 240) var(--fill),
-            rgb(226 232 240) 100%);
-}
-
-.dark .range-slider {
-    background: linear-gradient(to right,
-            var(--accent) 0%,
-            var(--accent) var(--fill),
-            rgb(51 65 85) var(--fill),
-            rgb(51 65 85) 100%);
-}
-
-.range-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid var(--accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-    transition: transform 0.15s ease;
-}
-
-.range-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
-}
-
-.range-slider::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid var(--accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-}
-
-.range-slider::-moz-range-track {
-    height: 8px;
-    border-radius: 9999px;
-    background: transparent;
-}
-
+/* ============ IMPORTS (eng tepada bo'lishi SHART) ============ */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* ============ DARK VARIANT (bittasi yetarli) ============ */
+@custom-variant dark (&:where(.dark, .dark *));
 
-@keyframes loadingbar {
-    0% {
-        transform: translateX(-100%);
-    }
-
-    100% {
-        transform: translateX(300%);
-    }
-}
-
-@custom-variant dark (&:is(.dark *));
-
-@variant dark (&:where(.dark, .dark *));
-
-
-@import "tailwindcss";
-/* Yoki @tailwind base; @tailwind components; @tailwind utilities; versiyaga qarab */
-
-/* Butun loyiha uchun custom scrollbar stillari */
-@layer utilities {
-
-    /* Webkit brauzerlar uchun (Chrome, Safari, Edge, Opera) */
-    ::-webkit-scrollbar {
-        width: 6px;
-        /* Scrollbar qalinligi */
-        height: 6px;
-        /* Gorizontal scrollbar qalinligi */
-    }
-
-    /* Scrollbar harakatlanadigan yo'lakcha (Track) */
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    /* Scrollbarning ushlagichi (Thumb) - Light Mode uchun */
-    ::-webkit-scrollbar-thumb {
-        background-color: #cbd5e1;
-        /* slate-300 */
-        border-radius: 9999px;
-    }
-
-    /* Scrollbarning ushlagichi ustiga sichqoncha kelganda */
-    ::-webkit-scrollbar-thumb:hover {
-        background-color: #94a3b8;
-        /* slate-400 */
-    }
-
-    /* Dark Mode uchun scrollbar ushlagichi (Thumb) */
-    .dark ::-webkit-scrollbar-thumb {
-        background-color: #334155;
-        /* slate-700 */
-    }
-
-    .dark ::-webkit-scrollbar-thumb:hover {
-        background-color: #475569;
-        /* slate-600 */
-    }
-}
-
-
-
-
-
-
-
-
-.range-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 8px;
-    border-radius: 9999px;
-    outline: none;
-    cursor: pointer;
-    background: linear-gradient(to right,
-            var(--accent) 0%,
-            var(--accent) var(--fill),
-            rgb(226 232 240) var(--fill),
-            rgb(226 232 240) 100%);
-}
-
-.dark .range-slider {
-    background: linear-gradient(to right,
-            var(--accent) 0%,
-            var(--accent) var(--fill),
-            rgb(51 65 85) var(--fill),
-            rgb(51 65 85) 100%);
-}
-
-.range-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid var(--accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-    transition: transform 0.15s ease;
-}
-
-.range-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
-}
-
-.range-slider::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid var(--accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-}
-
-.range-slider::-moz-range-track {
-    height: 8px;
-    border-radius: 9999px;
-    background: transparent;
-}
-
-
-@keyframes loadingbar {
-    0% {
-        transform: translateX(-100%);
-    }
-
-    100% {
-        transform: translateX(300%);
-    }
-}
-
-
-
-
-
-
-
-
-
-
-/* h-screen ni dvh bilan almashtirish */
-.h-screen {
-    height: 100dvh;
-}
-
+/* ============ BASE ============ */
 html,
 body {
-    overflow-x: hidden;
-    overscroll-behavior: none;
-}
-
-
-
-html,
-body {
-    overflow-x: hidden;
     overscroll-behavior-y: none;
 }
 
-/* iOS input zoom oldini olish — barcha input/textarea/select */
+/* iOS input zoom oldini olish */
 input,
 textarea,
 select {
@@ -226,8 +20,102 @@ select {
 }
 
 /* Mobil viewport balandligi (klaviatura sakrashini oldini oladi) */
-@supports (height: 100dvh) {
-    .h-screen {
-        height: 100dvh;
+.h-screen {
+    height: 100dvh;
+}
+
+/* ============ SCROLLBAR ============ */
+@layer utilities {
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1; /* slate-300 */
+        border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #94a3b8; /* slate-400 */
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+        background-color: #334155; /* slate-700 */
+    }
+
+    .dark ::-webkit-scrollbar-thumb:hover {
+        background-color: #475569; /* slate-600 */
+    }
+}
+
+/* ============ RANGE SLIDER ============ */
+.range-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 9999px;
+    outline: none;
+    cursor: pointer;
+    background: linear-gradient(to right,
+            var(--accent) 0%,
+            var(--accent) var(--fill),
+            rgb(226 232 240) var(--fill),
+            rgb(226 232 240) 100%);
+}
+
+.dark .range-slider {
+    background: linear-gradient(to right,
+            var(--accent) 0%,
+            var(--accent) var(--fill),
+            rgb(51 65 85) var(--fill),
+            rgb(51 65 85) 100%);
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.range-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+.range-slider::-moz-range-track {
+    height: 8px;
+    border-radius: 9999px;
+    background: transparent;
+}
+
+/* ============ KEYFRAMES ============ */
+@keyframes loadingbar {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(300%);
     }
 }
