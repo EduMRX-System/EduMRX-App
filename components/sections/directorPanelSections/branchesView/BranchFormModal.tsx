@@ -11,6 +11,7 @@ import { formatUzPhone } from "@/utils/formatters";
 import { useUIStore } from "@/store/useUIStore";
 import type { Branch, BranchStatus, BranchPayload } from "@/types/branch";
 import { parseCoordinates } from "@/types/branch";
+import { useTranslation } from "react-i18next";
 
 // ═════════════════════════════════════════════════════════════════
 // PHONE INPUT
@@ -22,6 +23,7 @@ interface PhoneInputProps {
 }
 
 const PhoneInput = ({ value, onChange, error }: PhoneInputProps) => {
+    const { t } = useTranslation();
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let raw = e.target.value.replace(/\D/g, "");
         if (raw.startsWith("998") && raw.length > 3) raw = raw.slice(3);
@@ -32,7 +34,7 @@ const PhoneInput = ({ value, onChange, error }: PhoneInputProps) => {
     return (
         <div>
             <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">
-                Telefon *
+                {t("common.phone")} *
             </label>
             <div className="relative flex items-center">
                 <div className="absolute left-3 flex items-center gap-3 pointer-events-none select-none">
@@ -112,6 +114,7 @@ interface BranchFormModalProps {
 }
 
 export default function BranchFormModal({ branch, onClose }: BranchFormModalProps) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!branch;
     const [isMounted, setIsMounted] = useState(false);
@@ -313,7 +316,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
             return res.data;
         },
         onSuccess: () => {
-            toast.success(isEdit ? "Filial yangilandi" : "Filial qo'shildi");
+            toast.success(t(isEdit ? "director.branches.toast.updated" : "director.branches.toast.created"));
             queryClient.invalidateQueries({ queryKey: ["branches"] });
             onClose();
         },
@@ -326,15 +329,15 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                     return toast.error(`${firstKey}: ${typeof text === "string" ? text.replace(/["']/g, "") : text}`);
                 }
             }
-            toast.error("Xatolik yuz berdi");
+            toast.error(t("director.branches.toast.error_generic"));
         },
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.name.trim()) return toast.error("Filial nomini kiriting");
+        if (!formData.name.trim()) return toast.error(t("director.branches.toast.error_name"));
         if (!formData.latitude || !formData.longitude) {
-            return toast.error("Iltimos, xaritadan joylashuvni tanlang");
+            return toast.error(t("director.branches.toast.error_location"));
         }
         saveBranch();
     };
@@ -371,18 +374,18 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                 </div>
 
                 <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
-                    {isEdit ? "Filialni tahrirlash" : "Yangi filial qo'shish"}
+                    {isEdit ? t("director.branches.form.title_edit") : t("director.branches.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Nom */}
                     <div>
-                        <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">Filial nomi *</label>
+                        <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">{t("director.branches.form.name_label")}</label>
                         <input
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                            placeholder="Masalan: Chilonzor filiali"
+                            placeholder={t("director.branches.form.name_placeholder")}
                             className={inputCls}
                             required
                         />
@@ -396,14 +399,14 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                         />
 
                         <div ref={statusDropdownRef} className="relative">
-                            <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">Holati *</label>
+                            <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">{t("director.branches.form.status_label")}</label>
                             <div
                                 onClick={() => setIsStatusOpen(!isStatusOpen)}
                                 className="border border-slate-200 dark:border-slate-700 rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                             >
                                 <div className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
-                                    <span>{currentStatus.label}</span>
+                                    <span>{currentStatus.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
                             </div>
@@ -423,7 +426,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <span className={`w-2 h-2 rounded-full ${option.color}`} />
-                                                    <span>{option.label}</span>
+                                                    <span>{option.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                                 </div>
                                                 {isSelected && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
                                             </div>
@@ -438,7 +441,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                     <div>
                         <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 font-semibold flex items-center gap-1.5">
                             <MapPin className="w-3.5 h-3.5 text-indigo-500" />
-                            Manzil va xaritadagi joylashuv *
+                            {t("director.branches.form.address_label")}
                         </label>
 
                         <div className="relative mb-2" ref={suggestionsRef}>
@@ -448,7 +451,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                                     type="text"
                                     value={addressSearchQuery}
                                     onChange={(e) => handleAddressSearch(e.target.value)}
-                                    placeholder="Manzilni kiriting yoki xaritadan tanlang..."
+                                    placeholder={t("director.branches.form.address_placeholder")}
                                     className={`${inputCls} pl-9`}
                                 />
                                 {isSearchingAddress && <Loader2 className="absolute right-3 w-3.5 h-3.5 text-indigo-400 animate-spin" />}
@@ -480,7 +483,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                             {(mapLoading || mapError) && (
                                 <div className="absolute inset-0 z-10 bg-slate-100 dark:bg-slate-800 flex flex-col items-center justify-center gap-2">
                                     {mapError
-                                        ? <span className="text-xs text-red-500 font-semibold">Xaritani yuklashda xatolik</span>
+                                        ? <span className="text-xs text-red-500 font-semibold">{t("director.branches.form.map_error")}</span>
                                         : <Loader2 className="w-6 h-6 text-indigo-500 animate-spin" />}
                                 </div>
                             )}
@@ -503,7 +506,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                             onClick={onClose}
                             className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors"
                         >
-                            Bekor qilish
+                            {t("common.cancel")}
                         </button>
                         <button
                             type="submit"
@@ -511,7 +514,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                             className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? "Saqlash" : "Yaratish"}
+                            {isEdit ? t("common.save") : t("common.create")}
                         </button>
                     </div>
                 </form>

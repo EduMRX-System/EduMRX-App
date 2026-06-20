@@ -6,6 +6,7 @@ import { API } from "@/services/api";
 import { AlertTriangle, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 import type { Branch } from "@/types/branch";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     branch: Branch;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function DeleteBranchModal({ branch, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -28,11 +30,11 @@ export default function DeleteBranchModal({ branch, onClose }: Props) {
             await API.delete(`center/branches/${branch.id}/`);
         },
         onSuccess: () => {
-            toast.success("Filial o'chirildi");
+            toast.success(t("director.branches.toast.deleted"));
             queryClient.invalidateQueries({ queryKey: ["branches"] });
             onClose();
         },
-        onError: () => toast.error("O'chirishda xatolik yuz berdi"),
+        onError: () => toast.error(t("director.branches.toast.delete_error")),
     });
 
     return (
@@ -59,10 +61,10 @@ export default function DeleteBranchModal({ branch, onClose }: Props) {
                     </div>
                     <div>
                         <h3 className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">
-                            Filialni o'chirish
+                            {t("director.branches.delete.title")}
                         </h3>
                         <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                            <span className="font-semibold text-slate-900 dark:text-slate-100">{branch.name}</span> filialini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.
+                            {t("director.branches.delete.desc", { name: branch.name })}
                         </p>
                     </div>
                 </div>
@@ -74,7 +76,7 @@ export default function DeleteBranchModal({ branch, onClose }: Props) {
                         disabled={isPending}
                         className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors disabled:opacity-50"
                     >
-                        Bekor qilish
+                        {t("common.cancel")}
                     </button>
                     <button
                         type="button"
@@ -83,7 +85,7 @@ export default function DeleteBranchModal({ branch, onClose }: Props) {
                         className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                     >
                         {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                        O'chirish
+                        {t("common.delete")}
                     </button>
                 </div>
             </div>

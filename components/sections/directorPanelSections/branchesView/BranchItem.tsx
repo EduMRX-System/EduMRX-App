@@ -2,8 +2,10 @@
 
 import { Building2, MapPin, Pencil, Trash2, Users, GraduationCap, DoorOpen } from "lucide-react";
 import type { Branch } from "@/types/branch";
+import { useTranslation } from "react-i18next";
 
 function StatusBadge({ status }: { status: Branch["status"] }) {
+    const { t } = useTranslation();
     const active = status === "active";
     return (
         <span
@@ -13,7 +15,7 @@ function StatusBadge({ status }: { status: Branch["status"] }) {
                 }`}
         >
             <span className={`h-1.5 w-1.5 rounded-full ${active ? "bg-emerald-500" : "bg-rose-500"}`} />
-            {active ? "Faol" : "Nofaol"}
+            {active ? t("common.active") : t("common.inactive")}
         </span>
     );
 }
@@ -25,6 +27,7 @@ interface Props {
 }
 
 export default function BranchItem({ branch, onEdit, onDelete }: Props) {
+    const { t } = useTranslation();
     const s = branch.stats;
 
     return (
@@ -78,14 +81,14 @@ export default function BranchItem({ branch, onEdit, onDelete }: Props) {
                     <button
                         onClick={() => onEdit(branch)}
                         className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-indigo-600 dark:hover:bg-slate-800 dark:hover:text-indigo-400"
-                        title="Tahrirlash"
+                        title={t("common.edit")}
                     >
                         <Pencil className="h-4 w-4" />
                     </button>
                     <button
                         onClick={() => onDelete(branch)}
                         className="rounded-lg p-2 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
-                        title="O'chirish"
+                        title={t("common.delete")}
                     >
                         <Trash2 className="h-4 w-4" />
                     </button>
