@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Phone, Mail, Briefcase, Star, Wallet, Edit3, Trash2 } from "lucide-react";
 import { formatPhoneView, type ITeacher } from "@/types/teacher";
+import { useTranslation } from "react-i18next";
 
 function formatSalary(salary?: string): string {
     if (!salary) return "—";
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function TeacherRow({ teacher, onEdit, onDelete }: Props) {
+    const { t } = useTranslation();
     // GET'da user nested; eski flat shaklni ham qo'llaymiz
     const u = teacher.user ?? (teacher as any);
     const initial = (u.full_name || "N").charAt(0).toUpperCase();
@@ -64,7 +66,7 @@ export default function TeacherRow({ teacher, onEdit, onDelete }: Props) {
                     </div>
                     <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                         <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                        <span>{teacher.experience ?? 0} yil tajriba</span>
+                        <span>{t("director.teachers.experience_years", { count: teacher.experience ?? 0 })}</span>
                     </div>
                 </div>
             </td>
@@ -83,14 +85,14 @@ export default function TeacherRow({ teacher, onEdit, onDelete }: Props) {
                     <button
                         onClick={() => onEdit(teacher)}
                         className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-400 transition-all cursor-pointer"
-                        title="Tahrirlash"
+                        title={t("common.edit")}
                     >
                         <Edit3 className="w-4 h-4" />
                     </button>
                     <button
                         onClick={() => onDelete(teacher)}
                         className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 dark:hover:text-red-400 transition-all cursor-pointer"
-                        title="O'chirish"
+                        title={t("common.delete")}
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>

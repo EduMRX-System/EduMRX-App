@@ -7,11 +7,12 @@ import type { ITeacher } from "@/types/teacher";
 import TeacherFormModal from "@/components/sections/directorPanelSections/teachersView/TeacherFormModal";
 import DeleteTeacherModal from "@/components/sections/directorPanelSections/teachersView/DeleteTeacherModal";
 import TeacherRow from "@/components/sections/directorPanelSections/teachersView/TeacherRow";
-
+import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 10;
 
 export default function TeachersView() {
+    const { t } = useTranslation();
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     const [addOpen, setAddOpen] = useState(false);
@@ -29,14 +30,14 @@ export default function TeachersView() {
             {/* Header */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">O'qituvchilar</h1>
-                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{count} ta o'qituvchi</p>
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t("director.teachers.title")}</h1>
+                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{t("director.teachers.count", { count })}</p>
                 </div>
                 <button
                     onClick={() => setAddOpen(true)}
                     className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
                 >
-                    <Plus className="h-4 w-4" /> Yangi o'qituvchi
+                    <Plus className="h-4 w-4" /> {t("director.teachers.add_btn")}
                 </button>
             </div>
 
@@ -46,7 +47,7 @@ export default function TeachersView() {
                 <input
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                    placeholder="O'qituvchi qidirish..."
+                    placeholder={t("director.teachers.search_placeholder")}
                     className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 />
             </div>
@@ -57,11 +58,11 @@ export default function TeachersView() {
                     <table className="w-full text-left text-sm">
                         <thead>
                             <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-600 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-400">
-                                <th className="py-3.5 px-5 font-semibold">O'qituvchi</th>
-                                <th className="py-3.5 px-5 font-semibold">Aloqa</th>
-                                <th className="py-3.5 px-5 font-semibold">Mutaxassislik / Tajriba</th>
-                                <th className="py-3.5 px-5 font-semibold">Maosh</th>
-                                <th className="py-3.5 px-5 text-right font-semibold">Amallar</th>
+                                <th className="py-3.5 px-5 font-semibold">{t("director.teachers.table.name")}</th>
+                                <th className="py-3.5 px-5 font-semibold">{t("director.teachers.table.contact")}</th>
+                                <th className="py-3.5 px-5 font-semibold">{t("director.teachers.table.specialization")}</th>
+                                <th className="py-3.5 px-5 font-semibold">{t("director.teachers.table.salary")}</th>
+                                <th className="py-3.5 px-5 text-right font-semibold">{t("director.teachers.table.actions")}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -69,27 +70,27 @@ export default function TeachersView() {
                                 <tr>
                                     <td colSpan={5} className="py-16 text-center">
                                         <Loader2 className="mx-auto h-7 w-7 animate-spin text-indigo-600" />
-                                        <p className="mt-3 text-sm text-slate-500">Yuklanmoqda...</p>
+                                        <p className="mt-3 text-sm text-slate-500">{t("common.loading")}</p>
                                     </td>
                                 </tr>
                             ) : isError ? (
                                 <tr>
                                     <td colSpan={5} className="py-12 text-center">
                                         <AlertCircle className="mx-auto h-9 w-9 text-rose-500" />
-                                        <p className="mt-2 text-sm font-semibold text-rose-600">Ma'lumotlarni yuklab bo'lmadi</p>
+                                        <p className="mt-2 text-sm font-semibold text-rose-600">{t("common.error_failed")}</p>
                                     </td>
                                 </tr>
                             ) : teachers.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="py-16 text-center">
                                         <GraduationCap className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-slate-600" />
-                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">O'qituvchi topilmadi</p>
-                                        <p className="mt-1 text-sm text-slate-400">Birinchi profilni yarating</p>
+                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{t("director.teachers.empty.title")}</p>
+                                        <p className="mt-1 text-sm text-slate-400">{t("director.teachers.empty.desc")}</p>
                                     </td>
                                 </tr>
                             ) : (
-                                teachers.map((t) => (
-                                    <TeacherRow key={t.id} teacher={t} onEdit={setEditing} onDelete={setDeleting} />
+                                teachers.map((teacher) => (
+                                    <TeacherRow key={teacher.id} teacher={teacher} onEdit={setEditing} onDelete={setDeleting} />
                                 ))
                             )}
                         </tbody>
@@ -101,7 +102,7 @@ export default function TeachersView() {
                     <div className="flex items-center justify-between border-t border-slate-200 px-5 py-3 dark:border-slate-800">
                         <span className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                             {isFetching && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                            {page}-sahifa
+                            {t("director.teachers.page_label", { page })}
                         </span>
                         <div className="flex gap-2">
                             <button
@@ -109,14 +110,14 @@ export default function TeachersView() {
                                 disabled={!data?.previous}
                                 className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             >
-                                <ChevronLeft className="h-4 w-4" /> Oldingi
+                                <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
                             </button>
                             <button
                                 onClick={() => setPage((p) => p + 1)}
                                 disabled={!data?.next}
                                 className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             >
-                                Keyingi <ChevronRight className="h-4 w-4" />
+                                {t("common.next")} <ChevronRight className="h-4 w-4" />
                             </button>
                         </div>
                     </div>

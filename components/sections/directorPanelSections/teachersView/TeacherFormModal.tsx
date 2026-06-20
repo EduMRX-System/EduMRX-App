@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { formatUzPhone, splitFullName, type ITeacher } from "@/types/teacher";
 import SearchSelect from "@/components/ui/SearchSelect";
 import { useBranchOptions } from "@/hooks/useBranchOptions";
+import { useTranslation } from "react-i18next";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -41,6 +42,7 @@ interface Props {
 }
 
 export default function TeacherFormModal({ teacher, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!teacher;
     const [isMounted, setIsMounted] = useState(false);
@@ -108,11 +110,11 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
             return res.data;
         },
         onSuccess: (data: any) => {
-            toast.success(data?.message || (isEdit ? "O'qituvchi yangilandi" : "O'qituvchi qo'shildi"));
+            toast.success(data?.message || t(isEdit ? "director.teachers.toast.updated" : "director.teachers.toast.created"));
             queryClient.invalidateQueries({ queryKey: ["teachers"] });
             onClose();
         },
-        onError: (err: any) => toast.error(err?.response?.data?.message || "Xatolik yuz berdi"),
+        onError: (err: any) => toast.error(err?.response?.data?.message || t("director.teachers.toast.error_generic")),
     });
 
     const fieldCls = (hasError?: boolean) =>
@@ -147,19 +149,19 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                 </div>
 
                 <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
-                    {isEdit ? "O'qituvchini tahrirlash" : "Yangi o'qituvchi qo'shish"}
+                    {isEdit ? t("director.teachers.form.title_edit") : t("director.teachers.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit((d) => saveTeacher(d))} className="space-y-4">
                     {/* Ism + Familiya */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Ism *</label>
+                            <label className={labelCls}>{t("common.first_name")} *</label>
                             <input {...register("first_name")} placeholder="Botir" className={fieldCls(!!errors.first_name)} />
                             {errors.first_name && <p className={errCls}>{errors.first_name.message}</p>}
                         </div>
                         <div>
-                            <label className={labelCls}>Familiya *</label>
+                            <label className={labelCls}>{t("common.last_name")} *</label>
                             <input {...register("last_name")} placeholder="Abbosov" className={fieldCls(!!errors.last_name)} />
                             {errors.last_name && <p className={errCls}>{errors.last_name.message}</p>}
                         </div>
@@ -167,12 +169,12 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
 
                     {/* Filial */}
                     <SearchSelect
-                        label="Filial"
+                        label={t("common.branch")}
                         required
                         value={watch("centers") || ""}
                         options={branchOptions}
                         loading={branchesLoading}
-                        placeholder="Filialni tanlang..."
+                        placeholder={t("director.teachers.form.branch_placeholder")}
                         error={errors.centers?.message}
                         onChange={(id) => setValue("centers", id, { shouldValidate: true })}
                     />
@@ -180,7 +182,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                     {/* Telefon + Email */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Telefon *</label>
+                            <label className={labelCls}>{t("common.phone")} *</label>
                             <div className="relative flex items-center">
                                 <span className="absolute left-3 text-sm font-semibold text-slate-700 dark:text-slate-300 pointer-events-none select-none">+998</span>
                                 <input
@@ -194,7 +196,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                             {errors.phone && <p className={errCls}>{errors.phone.message}</p>}
                         </div>
                         <div>
-                            <label className={labelCls}>Email *</label>
+                            <label className={labelCls}>{t("common.email")} *</label>
                             <input {...register("email")} type="email" placeholder="teacher@example.com" className={fieldCls(!!errors.email)} />
                             {errors.email && <p className={errCls}>{errors.email.message}</p>}
                         </div>
@@ -204,7 +206,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {!isEdit && (
                             <div>
-                                <label className={labelCls}>Parol *</label>
+                                <label className={labelCls}>{t("common.password")} *</label>
                                 <div className="relative flex items-center">
                                     <input
                                         {...register("password")}
@@ -220,7 +222,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                             </div>
                         )}
                         <div className={isEdit ? "sm:col-span-2" : ""}>
-                            <label className={labelCls}>Tug'ilgan sana *</label>
+                            <label className={labelCls}>{t("director.teachers.form.dob_label")}</label>
                             <input {...register("date_of_birth")} type="date" className={fieldCls(!!errors.date_of_birth)} />
                             {errors.date_of_birth && <p className={errCls}>{errors.date_of_birth.message}</p>}
                         </div>
@@ -229,12 +231,12 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                     {/* Mutaxassislik + Tajriba */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Mutaxassislik *</label>
+                            <label className={labelCls}>{t("director.teachers.form.specialization_label")}</label>
                             <input {...register("specialization")} placeholder="Senior Python Developer" className={fieldCls(!!errors.specialization)} />
                             {errors.specialization && <p className={errCls}>{errors.specialization.message}</p>}
                         </div>
                         <div>
-                            <label className={labelCls}>Tajriba (yil) *</label>
+                            <label className={labelCls}>{t("director.teachers.form.experience_label")}</label>
                             <input {...register("experience")} type="number" className={fieldCls(!!errors.experience)} />
                             {errors.experience && <p className={errCls}>{errors.experience.message}</p>}
                         </div>
@@ -242,21 +244,21 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
 
                     {/* Maosh */}
                     <div>
-                        <label className={labelCls}>Maosh *</label>
+                        <label className={labelCls}>{t("director.teachers.form.salary_label")}</label>
                         <div className="relative flex items-center">
                             <input {...register("salary")} type="number" placeholder="12000000" className={`${fieldCls(!!errors.salary)} pr-16`} />
-                            <span className="absolute right-3 text-sm font-semibold text-slate-400 pointer-events-none select-none">so'm</span>
+                            <span className="absolute right-3 text-sm font-semibold text-slate-400 pointer-events-none select-none">{t("director.teachers.salary_unit")}</span>
                         </div>
                         {errors.salary && <p className={errCls}>{errors.salary.message}</p>}
                     </div>
 
                     {/* Bio */}
                     <div>
-                        <label className={labelCls}>Biografiya *</label>
+                        <label className={labelCls}>{t("director.teachers.form.bio_label")}</label>
                         <textarea
                             {...register("bio")}
                             rows={3}
-                            placeholder="O'qituvchi haqida qisqacha..."
+                            placeholder={t("director.teachers.form.bio_placeholder")}
                             className={`border rounded-lg w-full p-3 text-[14px] outline-none transition-all resize-none bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 ${errors.bio ? "border-red-300 dark:border-red-800" : "border-slate-200 dark:border-slate-700 focus:border-indigo-400"}`}
                         />
                         {errors.bio && <p className={errCls}>{errors.bio.message}</p>}
@@ -269,7 +271,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                             onClick={onClose}
                             className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors"
                         >
-                            Bekor qilish
+                            {t("common.cancel")}
                         </button>
                         <button
                             type="submit"
@@ -277,7 +279,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                             className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? "Saqlash" : "Yaratish"}
+                            {isEdit ? t("common.save") : t("common.create")}
                         </button>
                     </div>
                 </form>

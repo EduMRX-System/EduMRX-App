@@ -6,6 +6,7 @@ import { API } from "@/services/api";
 import { AlertTriangle, X, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import type { ITeacher } from "@/types/teacher";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     teacher: ITeacher;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function DeleteTeacherModal({ teacher, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -28,11 +30,11 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
             await API.delete(`director/teachers/${teacher.id}/`);
         },
         onSuccess: () => {
-            toast.success("O'qituvchi o'chirildi");
+            toast.success(t("director.teachers.toast.deleted"));
             queryClient.invalidateQueries({ queryKey: ["teachers"] });
             onClose();
         },
-        onError: (err: any) => toast.error(err?.response?.data?.message || "O'chirishda xatolik"),
+        onError: (err: any) => toast.error(err?.response?.data?.message || t("director.teachers.toast.delete_error")),
     });
 
     return (
@@ -59,9 +61,9 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
                     <AlertTriangle className="w-5 h-5" />
                 </div>
 
-                <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-2">O'qituvchini o'chirish</h3>
+                <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-2">{t("director.teachers.delete.title")}</h3>
                 <p className="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
-                    Rostdan ham <span className="font-semibold text-slate-800 dark:text-slate-200">"{teacher.user?.full_name}"</span> profilini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.
+                    {t("director.teachers.delete.desc", { name: teacher.user?.full_name })}
                 </p>
 
                 <div className="flex flex-col sm:flex-row sm:justify-end gap-3">
@@ -71,7 +73,7 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
                         onClick={onClose}
                         className="h-10 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer order-2 sm:order-1"
                     >
-                        Bekor qilish
+                        {t("common.cancel")}
                     </button>
                     <button
                         type="button"
@@ -79,7 +81,7 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
                         onClick={() => deleteTeacher()}
                         className="h-10 px-4 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer order-1 sm:order-2"
                     >
-                        {isPending ? (<><Loader2 className="w-4 h-4 animate-spin" /> O'chirilmoqda...</>) : "O'chirish"}
+                        {isPending ? (<><Loader2 className="w-4 h-4 animate-spin" /> {t("common.deleting")}</>) : t("common.delete")}
                     </button>
                 </div>
             </div>
