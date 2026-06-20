@@ -1,7 +1,10 @@
+import ProtectedRoute from "@/components/ProtectedRoute";
+
 export default function TeacherLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <ProtectedRoute allowedRoles="manager">{children}</ProtectedRoute>
+
 }

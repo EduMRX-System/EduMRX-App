@@ -11,6 +11,7 @@ import {
   Clock,
   ArrowUpRight
 } from 'lucide-react';
+import Link from 'next/link';
 
 const recentPayments = [
   {
@@ -79,12 +80,10 @@ const DirectorDashboard = () => {
   ];
 
   const quickActions = [
-    { name: "Analitika", desc: "Hisobotlar va statistika", icon: <ChartColumn size={18} />, color: "text-blue-500", bg: "bg-blue-500/10" },
-    { name: "Filiallar", desc: "3 ta filial", icon: <Building size={18} />, color: "text-cyan-500", bg: "bg-cyan-500/10" },
-    { name: "Menejerlar", desc: "12 ta menejer", icon: <Users size={18} />, color: "text-teal-500", bg: "bg-teal-500/10" },
-    { name: "To'lovlar", desc: "Moliyaviy hisobotlar", icon: <DollarSign size={18} />, color: "text-green-500", bg: "bg-green-500/10" },
-    { name: "Marketing", desc: "Marketing bo'limi", icon: <Megaphone size={18} />, color: "text-violet-500", bg: "bg-violet-500/10" },
-    { name: "Bayram kunlari", desc: "Dam olish kunlari", icon: <PartyPopper size={18} />, color: "text-rose-500", bg: "bg-rose-500/10" },
+    { name: "Analitika", desc: "Hisobotlar va statistika", icon: <ChartColumn size={18} />, color: "text-blue-500", bg: "bg-blue-500/10", link: "/analytics" },
+    { name: "Filiallar", desc: "3 ta filial", icon: <Building size={18} />, color: "text-cyan-500", bg: "bg-cyan-500/10", link: "/branches" },
+    { name: "Menejerlar", desc: "12 ta menejer", icon: <Users size={18} />, color: "text-teal-500", bg: "bg-teal-500/10", link: "/managers" },
+    { name: "To'lovlar", desc: "Moliyaviy hisobotlar", icon: <DollarSign size={18} />, color: "text-green-500", bg: "bg-green-500/10", link: "/payments" },
   ];
 
   const data = [
@@ -123,9 +122,9 @@ const DirectorDashboard = () => {
         {/* Quick Actions */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
           <h2 className="font-bold text-slate-900 dark:text-white mb-4">Tezkor amallar</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {quickActions.map((action, i) => (
-              <a key={i} className="flex flex-col gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group cursor-pointer" href="#">
+              <Link href={action.link} key={i} className="flex flex-col gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group cursor-pointer">
                 <div className={`flex justify-between items-start`}>
                   <div className={`p-2 rounded-lg ${action.bg} ${action.color}`}>{action.icon}</div>
                   <ArrowRight size={16} className="text-slate-300 group-hover:text-blue-500 transition-colors" />
@@ -134,7 +133,7 @@ const DirectorDashboard = () => {
                   <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{action.name}</h3>
                   <p className="text-[11px] text-slate-400">{action.desc}</p>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

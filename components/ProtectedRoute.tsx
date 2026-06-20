@@ -4,25 +4,87 @@ import { LogoIcons } from "@/constants/icons";
 import { useAuthStore } from "@/store/authStore";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+// Role → subdomen yorlig'i (host'dagi 1-bo'lak shunga almashtiriladi)
+const ROLE_SUBDOMAIN: Record<string, string> = {
+    super_admin: "admin",
+    director: "director",
+    manager: "manager",
+    teacher: "teacher",
+    student: "student",
+    parent: "parent",
+};
+
+function panelUrlForRole(role: string): string | null {
+    const sub = ROLE_SUBDOMAIN[role];
+    if (!sub || typeof window === "undefined") return null;
+    const { protocol, host } = window.location; 
+    const parts = host.split(".");
+    if (parts.length < 2) return null; // subdomen yo'q — aniqlab bo'lmaydi
+    parts[0] = sub; // 1-bo'lak (subdomen) ni role subdomeniga almashtiramiz
+    return `${protocol}//${parts.join(".")}`;
+}
+
+// Joriy subdomen role'ga mos keladimi (allaqachon to'g'ri paneldamizmi)
+function isOnRolePanel(role: string): boolean {
+    const sub = ROLE_SUBDOMAIN[role];
+    if (!sub || typeof window === "undefined") return false;
+    return window.location.host.split(".")[0] === sub;
+}
+
+interface Props {
+    children: React.ReactNode;
+    // Shu panelga ruxsat etilgan role(lar). Director paneli uchun: "director"
+    allowedRoles?: string | string[];
+}
+
+export default function ProtectedRoute({ children, allowedRoles }: Props) {
     const router = useRouter();
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const isInitialized = useAuthStore((state) => state.isInitialized);
     const initAuth = useAuthStore((state) => state.initAuth);
+    const user = useAuthStore((state) => state.user);
+    const role = user?.role;
+
+    const [redirecting, setRedirecting] = useState(false);
+
+    const allowed = useMemo(
+        () => (allowedRoles ? (Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles]) : null),
+        [allowedRoles]
+    );
+
+    // bu panelga mos kelmaydigan role
+    const isWrongPanel = !!(allowed && role && !allowed.includes(role));
 
     useEffect(() => {
         initAuth();
     }, []);
 
     useEffect(() => {
-        if (isInitialized && !isAuthenticated) {
+        if (!isInitialized) return;
+
+        // 1) Umuman kirmagan
+        if (!isAuthenticated) {
             toast.warn("Siz tizimga kirmagansiz yoki seans muddati tugagan!");
             router.push("/login");
+            return;
         }
-    }, [isInitialized, isAuthenticated, router]);
+
+        // 2) Kirgan, lekin boshqa panelга tegishli → o'z paneliga yuboramiz
+        if (isWrongPanel && role) {
+            const home = panelUrlForRole(role);
+            if (home && !isOnRolePanel(role)) {
+                setRedirecting(true);
+                toast.info("Siz o'z panelingizga yo'naltirilmoqdasiz...");
+                window.location.href = home; // cross-subdomain → to'liq redirect
+            } else {
+                // panel topilmasa, xavfsizlik uchun login'ga
+                router.push("/login");
+            }
+        }
+    }, [isInitialized, isAuthenticated, isWrongPanel, role, router]);
 
     const messages = [
         "Xavfsiz ulanish o'rnatilmoqda",
@@ -37,7 +99,8 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
         return () => clearInterval(id);
     }, []);
 
-    if (!isInitialized) {
+    // Yuklash / tekshirish / redirect davomida — loader ko'rsatamiz (kontent "miltillamasligi" uchun)
+    if (!isInitialized || redirecting || isWrongPanel) {
         return (
             <div className="relative flex h-screen w-full flex-col items-center justify-center bg-white dark:bg-slate-950 overflow-hidden transition-colors duration-300">
                 {/* Ambient glow */}
@@ -130,7 +193,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
                             {/* Badge with scan effect */}
                             <div className="relative w-[68px] h-[68px] rounded-[20px] bg-gradient-to-br from-indigo-600 to-violet-700 flex items-center justify-center shadow-xl shadow-indigo-500/40 overflow-hidden">
-                                <Image src={LogoIcons.icon192} alt="EduMRX - mini logo"/>
+                                <Image src={LogoIcons.icon192} alt="EduMRX - mini logo" />
 
                                 {/* Scan line sweeping across badge */}
                                 <div className="absolute inset-x-0 h-8 bg-gradient-to-b from-transparent via-white/30 to-transparent" style={{ animation: "scan 2s ease-in-out infinite" }} />
@@ -162,7 +225,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
                             className="text-[13px] font-medium text-slate-500 dark:text-slate-400 text-center"
                             style={{ animation: "msg-in 0.4s ease-out" }}
                         >
-                            {messages[msgIndex]}
+                            {redirecting ? "Panelingizga yo'naltirilmoqda" : messages[msgIndex]}
                         </p>
                     </div>
 
@@ -172,40 +235,13 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
                             <span
                                 key={i}
                                 className={`h-1.5 rounded-full transition-all duration-500 ${i === msgIndex
-                                        ? "w-7 bg-gradient-to-r from-indigo-500 to-violet-500"
-                                        : "w-1.5 bg-slate-200 dark:bg-slate-700"
+                                    ? "w-7 bg-gradient-to-r from-indigo-500 to-violet-500"
+                                    : "w-1.5 bg-slate-200 dark:bg-slate-700"
                                     }`}
                             />
                         ))}
                     </div>
                 </div>
-
-                <style jsx>{`
-          @keyframes spin-cw {
-            to { transform: rotate(360deg); }
-          }
-          @keyframes spin-ccw {
-            to { transform: rotate(-360deg); }
-          }
-          @keyframes scan {
-            0% { transform: translateY(-32px); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(68px); opacity: 0; }
-          }
-          @keyframes seal-pop {
-            0%, 30% { transform: scale(0); opacity: 0; }
-            45% { transform: scale(1.2); opacity: 1; }
-            55%, 90% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-          }
-          @keyframes msg-in {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          @media (prefers-reduced-motion: reduce) {
-            * { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; }
-          }
-        `}</style>
             </div>
         );
     }

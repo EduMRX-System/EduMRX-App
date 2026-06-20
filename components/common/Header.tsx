@@ -192,7 +192,7 @@ export default function Header({ menuItems = [] }: HeaderProps) {
                     <div className="w-px h-7 bg-slate-200 dark:bg-slate-800 mx-2" />
 
                     {/* User */}
-                    <Link href="/settings" className="flex items-center gap-3">
+                    <Link href="/profile" className="flex items-center gap-3">
                         <div className="text-right hidden sm:block">
                             <p className="text-[12px] font-medium text-slate-900 dark:text-white leading-none">
                                 {user?.full_name || t("header.user_name")}
