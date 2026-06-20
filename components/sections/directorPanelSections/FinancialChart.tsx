@@ -3,6 +3,7 @@
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Calendar, ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // Backenddan kelishi kerak bo'lgan data formati (quyida tushuntirilgan)
 const data = [
@@ -21,6 +22,7 @@ const data = [
 ];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
+    const { t } = useTranslation();
     if (active && payload && payload.length) {
         return (
             <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 p-4 rounded-xl shadow-xl transition-colors">
@@ -30,7 +32,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
                         <div key={index} className="flex items-center justify-between gap-6">
                             <div className="flex items-center gap-2">
                                 <span className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: item.color }} />
-                                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Markaz {5 - index}</span>
+                                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{t("director.dashboard.chart.center", { num: 5 - index })}</span>
                             </div>
                             <span className="text-sm font-bold text-slate-900 dark:text-white">{item.value}M UZS</span>
                         </div>
@@ -43,25 +45,27 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function FinancialTrendChart() {
+    const { t } = useTranslation();
+
     return (
         <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6 shadow-sm transition-colors">
 
             {/* ── HEADER QISMI ── */}
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
                 <div>
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-1 transition-colors">Oylik Daromad Trendi</h2>
-                    <p className="text-sm font-medium text-slate-400 dark:text-slate-500">Top 5 o'quv markazlari kesimida (mln so'm)</p>
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-1 transition-colors">{t("director.dashboard.chart.title")}</h2>
+                    <p className="text-sm font-medium text-slate-400 dark:text-slate-500">{t("director.dashboard.chart.desc")}</p>
                 </div>
 
                 <div className="flex items-center gap-3">
                     <div className="bg-indigo-50 dark:bg-indigo-950/40 px-4 py-2 rounded-xl border border-indigo-100 dark:border-indigo-900/50 transition-colors">
-                        <span className="text-xs font-semibold text-indigo-400 dark:text-indigo-500 mr-1.5">Jami:</span>
+                        <span className="text-xs font-semibold text-indigo-400 dark:text-indigo-500 mr-1.5">{t("director.dashboard.chart.total")}</span>
                         <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">3324M UZS</span>
                     </div>
 
                     <button className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
                         <Calendar className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
-                        <span className="text-sm font-semibold">12 oy</span>
+                        <span className="text-sm font-semibold">{t("director.dashboard.chart.months_12")}</span>
                         <ChevronDown className="w-4 h-4 text-slate-400" />
                     </button>
                 </div>
@@ -94,7 +98,6 @@ export default function FinancialTrendChart() {
                             </linearGradient>
                         </defs>
 
-                        {/* Setka qorong'u rejimga moslandi */}
                         <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-100 dark:stroke-slate-800" />
 
                         <XAxis
