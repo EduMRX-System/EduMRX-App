@@ -6,6 +6,7 @@ import { API } from "@/services/api";
 import { AlertTriangle, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 import type { Lesson } from "@/types/lesson";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     lesson: Lesson;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function DeleteLessonModal({ lesson, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -28,11 +30,11 @@ export default function DeleteLessonModal({ lesson, onClose }: Props) {
             await API.delete(`director/lessons/${lesson.id}/`);
         },
         onSuccess: () => {
-            toast.success("Dars o'chirildi");
+            toast.success(t("director.lessons.toast.deleted"));
             queryClient.invalidateQueries({ queryKey: ["lessons"] });
             onClose();
         },
-        onError: () => toast.error("O'chirishda xatolik yuz berdi"),
+        onError: () => toast.error(t("director.lessons.toast.delete_error")),
     });
 
     return (
@@ -48,20 +50,20 @@ export default function DeleteLessonModal({ lesson, onClose }: Props) {
                         <AlertTriangle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
                     </div>
                     <div>
-                        <h3 className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">Darsni o'chirish</h3>
+                        <h3 className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">{t("director.lessons.delete.title")}</h3>
                         <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                            <span className="font-semibold text-slate-900 dark:text-slate-100">{lesson.topic || lesson.group_name}</span> darsini o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.
+                            {t("director.lessons.delete.desc", { name: lesson.topic || lesson.group_name })}
                         </p>
                     </div>
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-3">
                     <button type="button" onClick={onClose} disabled={isPending} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors disabled:opacity-50">
-                        Bekor qilish
+                        {t("common.cancel")}
                     </button>
                     <button type="button" onClick={() => deleteLesson()} disabled={isPending} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                         {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                        O'chirish
+                        {isPending ? t("common.deleting") : t("common.delete")}
                     </button>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 
 import { CalendarDays, Users2, Clock, Pencil, Trash2 } from "lucide-react";
 import { toHHMM, type Lesson } from "@/types/lesson";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     lesson: Lesson;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function LessonRow({ lesson, onEdit, onDelete }: Props) {
+    const { t } = useTranslation();
     const time = `${toHHMM(lesson.start_time)}–${toHHMM(lesson.end_time)}`;
 
     return (
@@ -51,10 +53,10 @@ export default function LessonRow({ lesson, onEdit, onDelete }: Props) {
             {/* Amallar */}
             <td className="px-5 py-3.5">
                 <div className="flex justify-end gap-1">
-                    <button onClick={() => onEdit(lesson)} className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-indigo-600 dark:hover:bg-slate-800 dark:hover:text-indigo-400" title="Tahrirlash">
+                    <button onClick={() => onEdit(lesson)} className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-indigo-600 dark:hover:bg-slate-800 dark:hover:text-indigo-400" title={t("common.edit")}>
                         <Pencil className="h-4 w-4" />
                     </button>
-                    <button onClick={() => onDelete(lesson)} className="rounded-lg p-2 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400" title="O'chirish">
+                    <button onClick={() => onDelete(lesson)} className="rounded-lg p-2 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400" title={t("common.delete")}>
                         <Trash2 className="h-4 w-4" />
                     </button>
                 </div>

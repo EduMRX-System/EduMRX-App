@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useGroupOptions } from "@/hooks/useLessons";
 import { toHHMM, type Lesson, type LessonPayload } from "@/types/lesson";
 import SearchSelect from "@/components/ui/SearchSelect";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     lesson?: Lesson | null;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function LessonFormModal({ lesson, onClose }: Props) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!lesson;
     const [isMounted, setIsMounted] = useState(false);
@@ -47,7 +49,7 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                 : (await API.post("director/lessons/", payload)).data;
         },
         onSuccess: () => {
-            toast.success(isEdit ? "Dars yangilandi" : "Dars qo'shildi");
+            toast.success(t(isEdit ? "director.lessons.toast.updated" : "director.lessons.toast.created"));
             queryClient.invalidateQueries({ queryKey: ["lessons"] });
             onClose();
         },
@@ -60,16 +62,16 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                     return toast.error(`${k}: ${typeof text === "string" ? text.replace(/["']/g, "") : text}`);
                 }
             }
-            toast.error("Xatolik yuz berdi");
+            toast.error(t("director.lessons.toast.error_generic"));
         },
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.group) return toast.error("Guruhni tanlang");
-        if (!formData.date) return toast.error("Sanani kiriting");
-        if (!formData.start_time || !formData.end_time) return toast.error("Vaqtni kiriting");
-        if (!formData.topic.trim()) return toast.error("Mavzuni kiriting");
+        if (!formData.group) return toast.error(t("director.lessons.toast.error_group"));
+        if (!formData.date) return toast.error(t("director.lessons.toast.error_date"));
+        if (!formData.start_time || !formData.end_time) return toast.error(t("director.lessons.toast.error_time"));
+        if (!formData.topic.trim()) return toast.error(t("director.lessons.toast.error_topic"));
         saveLesson();
     };
 
@@ -101,25 +103,25 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                 </div>
 
                 <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
-                    {isEdit ? "Darsni tahrirlash" : "Yangi dars qo'shish"}
+                    {isEdit ? t("director.lessons.form.title_edit") : t("director.lessons.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Guruh */}
                     <SearchSelect
-                        label="Guruh"
+                        label={t("director.lessons.form.group_label")}
                         required
                         value={formData.group}
                         options={groups}
                         loading={groupsLoading}
-                        placeholder="Guruhni tanlang..."
+                        placeholder={t("director.lessons.form.group_placeholder")}
                         onChange={(id) => setFormData((p) => ({ ...p, group: id }))}
                     />
 
                     {/* Sana + Mavzu */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Sana *</label>
+                            <label className={labelCls}>{t("director.lessons.form.date_label")}</label>
                             <input
                                 type="date"
                                 value={formData.date}
@@ -129,12 +131,12 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                             />
                         </div>
                         <div>
-                            <label className={labelCls}>Mavzu *</label>
+                            <label className={labelCls}>{t("director.lessons.form.topic_label")}</label>
                             <input
                                 type="text"
                                 value={formData.topic}
                                 onChange={(e) => setFormData((p) => ({ ...p, topic: e.target.value }))}
-                                placeholder="Masalan: React Hooks"
+                                placeholder={t("director.lessons.form.topic_placeholder")}
                                 className={inputCls}
                                 required
                             />
@@ -144,7 +146,7 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                     {/* Vaqt */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>Boshlanish vaqti *</label>
+                            <label className={labelCls}>{t("director.lessons.form.start_time_label")}</label>
                             <input
                                 type="time"
                                 value={formData.start_time}
@@ -154,7 +156,7 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                             />
                         </div>
                         <div>
-                            <label className={labelCls}>Tugash vaqti *</label>
+                            <label className={labelCls}>{t("director.lessons.form.end_time_label")}</label>
                             <input
                                 type="time"
                                 value={formData.end_time}
@@ -167,12 +169,12 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
 
                     {/* Izoh */}
                     <div>
-                        <label className={labelCls}>Izoh (ixtiyoriy)</label>
+                        <label className={labelCls}>{t("director.lessons.form.note_label")}</label>
                         <textarea
                             value={formData.notes}
                             onChange={(e) => setFormData((p) => ({ ...p, notes: e.target.value }))}
                             rows={2}
-                            placeholder="Dars haqida qo'shimcha..."
+                            placeholder={t("director.lessons.form.note_placeholder")}
                             className="border rounded-lg w-full px-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                         />
                     </div>
@@ -180,11 +182,11 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                     {/* Tugmalar */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
                         <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors">
-                            Bekor qilish
+                            {t("common.cancel")}
                         </button>
                         <button type="submit" disabled={isPending} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? "Saqlash" : "Yaratish"}
+                            {isEdit ? t("common.save") : t("common.create")}
                         </button>
                     </div>
                 </form>
