@@ -451,7 +451,8 @@
       "legal_privacy": "privacy policy",
       "legal_suffix": "",
       "error_check": "Please check your information",
-      "error_generic": "An error occurred"
+      "error_generic": "An error occurred",
+      "go_back": "Go back"
     },
     "login": {
       "heading": "Track your\nlearning journey",
@@ -518,6 +519,19 @@
         "phone_invalid": "Enter a complete phone number",
         "password_required": "Password is required"
       }
+    },
+    "choose": {
+      "title": "Choose your profile",
+      "subtitle": "Select a profile type to continue",
+      "student": {
+        "label": "Student",
+        "desc": "Schedule, homework and payments"
+      },
+      "staff": {
+        "label": "Staff",
+        "desc": "Management, teaching and analytics"
+      },
+      "next": "Continue"
     }
   },
   "director": {

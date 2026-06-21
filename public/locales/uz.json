@@ -451,7 +451,8 @@
       "legal_privacy": "maxfiylik siyosati",
       "legal_suffix": "ni qabul qilasiz",
       "error_check": "Ma'lumotlarni tekshiring",
-      "error_generic": "Xatolik yuz berdi"
+      "error_generic": "Xatolik yuz berdi",
+      "go_back": "Orqaga"
     },
     "login": {
       "heading": "Bilimingizni\nkuzatib boring",
@@ -518,6 +519,19 @@
         "phone_invalid": "To'liq raqam kiriting",
         "password_required": "Parol majburiy"
       }
+    },
+    "choose": {
+      "title": "Profilingizni tanlang",
+      "subtitle": "Davom etish uchun profil turini tanlang",
+      "student": {
+        "label": "O'quvchi",
+        "desc": "Dars jadvali, uy vazifasi va to'lovlar"
+      },
+      "staff": {
+        "label": "Xodim",
+        "desc": "Boshqaruv, o'qitish va analitika"
+      },
+      "next": "Davom etish"
     }
   },
   "director": {
