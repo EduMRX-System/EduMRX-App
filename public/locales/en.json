@@ -1,5 +1,14 @@
 {
   "marketing": {
+    "nav": {
+      "home": "Home",
+      "features": "Features",
+      "pricing": "Pricing",
+      "about": "About",
+      "contact": "Contact",
+      "login": "Sign In"
+    },
+
     "about": {
       "label": "About us",
       "title": "Building the future of education together",
@@ -14,14 +23,32 @@
         "growth": "Average growth"
       },
       "values": {
-        "mission": { "title": "Our mission", "desc": "To digitize education centers and increase their efficiency." },
-        "vision": { "title": "Our vision", "desc": "To become the leading education technology platform in Central Asia." },
-        "values": { "title": "Our values", "desc": "Trust, transparency and commitment to our clients' success." }
+        "mission": {
+          "title": "Our mission",
+          "desc": "To digitize education centers and increase their efficiency."
+        },
+        "vision": {
+          "title": "Our vision",
+          "desc": "To become the leading education technology platform in Central Asia."
+        },
+        "values": {
+          "title": "Our values",
+          "desc": "Trust, transparency and commitment to our clients' success."
+        }
       },
       "timeline": {
-        "start": { "title": "The beginning", "desc": "The EduMRX idea was born and the first prototype was built." },
-        "first_clients": { "title": "First clients", "desc": "More than 50 education centers joined the platform." },
-        "expansion": { "title": "Expansion", "desc": "We reached 200+ centers and 10,000+ active users." }
+        "start": {
+          "title": "The beginning",
+          "desc": "The EduMRX idea was born and the first prototype was built."
+        },
+        "first_clients": {
+          "title": "First clients",
+          "desc": "More than 50 education centers joined the platform."
+        },
+        "expansion": {
+          "title": "Expansion",
+          "desc": "We reached 200+ centers and 10,000+ active users."
+        }
       }
     },
 
@@ -63,39 +90,84 @@
           "title": "Academic process",
           "desc": "Manage students, groups and classes",
           "items": {
-            "students": { "title": "Student database", "desc": "Manage admissions, profiles and archives" },
-            "groups": { "title": "Groups and courses", "desc": "Groups, schedules and teacher assignment" },
-            "attendance": { "title": "Digital attendance", "desc": "Real-time attendance and statistics" },
-            "rooms": { "title": "Room management", "desc": "Control of classrooms and occupancy" }
+            "students": {
+              "title": "Student database",
+              "desc": "Manage admissions, profiles and archives"
+            },
+            "groups": {
+              "title": "Groups and courses",
+              "desc": "Groups, schedules and teacher assignment"
+            },
+            "attendance": {
+              "title": "Digital attendance",
+              "desc": "Real-time attendance and statistics"
+            },
+            "rooms": {
+              "title": "Room management",
+              "desc": "Control of classrooms and occupancy"
+            }
           }
         },
         "finance": {
           "title": "Finance",
           "desc": "Payments, debtors and expenses",
           "items": {
-            "payments": { "title": "Payment system", "desc": "Accept and track payments" },
-            "debtors": { "title": "Debtor tracking", "desc": "Automatic list of debtors" },
-            "payment_types": { "title": "Payment types", "desc": "Configure various payment methods" },
-            "expenses": { "title": "Expense tracking", "desc": "Manage your center's expenses" }
+            "payments": {
+              "title": "Payment system",
+              "desc": "Accept and track payments"
+            },
+            "debtors": {
+              "title": "Debtor tracking",
+              "desc": "Automatic list of debtors"
+            },
+            "payment_types": {
+              "title": "Payment types",
+              "desc": "Configure various payment methods"
+            },
+            "expenses": {
+              "title": "Expense tracking",
+              "desc": "Manage your center's expenses"
+            }
           }
         },
         "marketing": {
           "title": "Marketing & Communication",
           "desc": "Leads, SMS and Telegram integration",
           "items": {
-            "sms": { "title": "Auto SMS", "desc": "Automatic notifications and reminders" },
-            "telegram": { "title": "Telegram bot", "desc": "A bot for students and parents" },
-            "leads": { "title": "Lead management", "desc": "Work with potential clients" },
-            "notifications": { "title": "Notifications", "desc": "Real-time push notifications" }
+            "sms": {
+              "title": "Auto SMS",
+              "desc": "Automatic notifications and reminders"
+            },
+            "telegram": {
+              "title": "Telegram bot",
+              "desc": "A bot for students and parents"
+            },
+            "leads": {
+              "title": "Lead management",
+              "desc": "Work with potential clients"
+            },
+            "notifications": {
+              "title": "Notifications",
+              "desc": "Real-time push notifications"
+            }
           }
         },
         "analytics": {
           "title": "Analytics & Reports",
           "desc": "Deep statistics and business analysis",
           "items": {
-            "overview": { "title": "General analysis", "desc": "Revenue and growth metrics" },
-            "payment_analysis": { "title": "Payment analysis", "desc": "Analysis of financial flow" },
-            "coins": { "title": "Coin system", "desc": "Motivate your students" },
+            "overview": {
+              "title": "General analysis",
+              "desc": "Revenue and growth metrics"
+            },
+            "payment_analysis": {
+              "title": "Payment analysis",
+              "desc": "Analysis of financial flow"
+            },
+            "coins": {
+              "title": "Coin system",
+              "desc": "Motivate your students"
+            },
             "holidays": { "title": "Holidays", "desc": "Configure days off" }
           }
         }
@@ -158,10 +230,22 @@
         "custom_integrations": "Custom integrations"
       },
       "faq": {
-        "trial": { "q": "Is there a free trial period?", "a": "Yes, a 14-day free trial is available for all plans. No credit card required." },
-        "change_plan": { "q": "Can I change my plan later?", "a": "Of course. You can upgrade or downgrade your plan at any time." },
-        "payment": { "q": "How is payment made?", "a": "You can pay via Click, Payme and bank transfers." },
-        "security": { "q": "Is my data secure?", "a": "Yes, all data is encrypted and stored on secure servers." }
+        "trial": {
+          "q": "Is there a free trial period?",
+          "a": "Yes, a 14-day free trial is available for all plans. No credit card required."
+        },
+        "change_plan": {
+          "q": "Can I change my plan later?",
+          "a": "Of course. You can upgrade or downgrade your plan at any time."
+        },
+        "payment": {
+          "q": "How is payment made?",
+          "a": "You can pay via Click, Payme and bank transfers."
+        },
+        "security": {
+          "q": "Is my data secure?",
+          "a": "Yes, all data is encrypted and stored on secure servers."
+        }
       }
     }
   },

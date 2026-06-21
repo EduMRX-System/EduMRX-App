@@ -35,13 +35,6 @@ interface ProfileData {
   avatar: string | null;
 }
 
-const ROLE_LABEL: Record<string, string> = {
-  director: "Direktor",
-  manager: "Menejer",
-  teacher: "O'qituvchi",
-  student: "O'quvchi",
-  parent: "Ota-ona",
-};
 
 type ModalType = "appearance" | "language" | "password" | null;
 
@@ -99,7 +92,7 @@ export default function ProfileView() {
             {profile.full_name}
           </p>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-            {ROLE_LABEL[profile.role] ?? profile.role}
+            {t(`director.profile.role.${profile.role}`) || profile.role}
           </p>
         </div>
 
@@ -111,25 +104,25 @@ export default function ProfileView() {
         <SettingRow
           icon={<Contrast className="w-5 h-5" />}
           iconBg="bg-emerald-500"
-          title="Ko'rinish"
-          desc="Ilova mavzusini tanlang"
-          value={theme === "dark" ? "Tungi rejim" : "Kunduzgi rejim"}
+          title={t("director.profile.appearance.title")}
+          desc={t("director.profile.appearance.desc")}
+          value={theme === "dark" ? t("director.profile.appearance.current_dark") : t("director.profile.appearance.current_light")}
           onClick={() => setModal("appearance")}
         />
         <SettingRow
           icon={<Globe className="w-5 h-5" />}
           iconBg="bg-orange-500"
-          title="Til"
-          desc="Interfeys tilini tanlang"
+          title={t("director.profile.language.title")}
+          desc={t("director.profile.language.desc")}
           value={langLabel[language] ?? "O'zbekcha"}
           onClick={() => setModal("language")}
         />
         <SettingRow
           icon={<Lock className="w-5 h-5" />}
           iconBg="bg-indigo-600"
-          title="Parol"
-          desc="Hisobingiz parolini o'zgartiring"
-          value="O'zgartirish"
+          title={t("director.profile.password.title")}
+          desc={t("director.profile.password.desc")}
+          value={t("director.profile.password.change")}
           onClick={() => setModal("password")}
         />
       </div>
@@ -139,8 +132,8 @@ export default function ProfileView() {
         <SettingRow
           icon={<MapPin className="w-5 h-5" />}
           iconBg="bg-rose-500"
-          title="Filiallar manzili"
-          desc="Markaz filiallarini xaritada ko'ring"
+          title={t("director.profile.locations.title")}
+          desc={t("director.profile.locations.desc")}
           onClick={() => router.push("/profile/locations")}
         />
       </div>
@@ -155,9 +148,9 @@ export default function ProfileView() {
             <LogOut className="w-5 h-5" />
           </span>
           <div className="flex-1">
-            <p className="text-sm font-bold text-red-600 dark:text-red-400">Chiqish</p>
+            <p className="text-sm font-bold text-red-600 dark:text-red-400">{t("director.profile.logout.title")}</p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Hisobingizdan xavfsiz chiqing
+              {t("director.profile.logout.desc")}
             </p>
           </div>
         </button>
@@ -172,10 +165,10 @@ export default function ProfileView() {
         <ConfirmModal
           icon={LogOut}
           iconBg="bg-red-500"
-          title="Tizimdan chiqish"
-          desc="Rostdan ham hisobingizdan chiqmoqchimisiz? Qayta kirish uchun parol kerak bo'ladi."
-          confirmText="Ha, chiqish"
-          cancelText="Bekor qilish"
+          title={t("director.profile.logout.confirm_title")}
+          desc={t("director.profile.logout.confirm_desc")}
+          confirmText={t("director.profile.logout.confirm_btn")}
+          cancelText={t("common.cancel")}
           confirmClass="bg-red-600 hover:bg-red-700"
           onConfirm={logout}
           onClose={() => setLogoutOpen(false)}

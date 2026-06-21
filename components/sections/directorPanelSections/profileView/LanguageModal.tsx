@@ -14,7 +14,7 @@ const LANGS = [
 ];
 
 export default function LanguageModal({ onClose }: { onClose: () => void }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { language, setLanguage } = useUIStore();
   const [selected, setSelected] = useState(language || "uz");
 
@@ -28,8 +28,8 @@ export default function LanguageModal({ onClose }: { onClose: () => void }) {
     <ModalShell
       icon={<Globe className="w-7 h-7" />}
       iconBg="bg-orange-500"
-      title="Tilni o'zgartirish"
-      desc="Interfeys uchun tilni tanlang"
+      title={t("director.profile.language.modal_title")}
+      desc={t("director.profile.language.modal_desc")}
       onClose={onClose}
       footer={
         <>
@@ -37,13 +37,13 @@ export default function LanguageModal({ onClose }: { onClose: () => void }) {
             onClick={onClose}
             className="px-5 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
-            Bekor qilish
+            {t("common.cancel")}
           </button>
           <button
             onClick={save}
             className="px-5 h-11 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition-colors"
           >
-            Saqlash
+            {t("common.save")}
           </button>
         </>
       }
