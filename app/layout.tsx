@@ -149,9 +149,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
-      <head>
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
-      </head>
       <body className={`${inter.variable} antialiased`}>
         <TokenSync />
         <ThemeInitializer />
