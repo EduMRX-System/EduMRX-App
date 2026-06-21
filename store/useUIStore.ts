@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import i18n from "@/i18n";
-import { getLangCookie, setLangCookie } from "@/lib/cookies";
+import { getLangCookie, setLangCookie, getThemeCookie, setThemeCookie } from "@/lib/cookies";
 
 interface UIState {
   theme: "light" | "dark";
@@ -21,13 +21,14 @@ interface UIState {
 export const useUIStore = create<UIState>()(
   persist(
     (set) => ({
-      theme: "light",
-      // Language comes from the shared cookie, not localStorage
+      // Both theme and language come from shared cookies (not localStorage)
+      theme: getThemeCookie(),
       language: getLangCookie(),
       isSidebarOpen: false,
       isSidebarCollapsed: false,
 
       setTheme: (theme) => {
+        setThemeCookie(theme);
         if (typeof window !== "undefined") {
           document.documentElement.classList.toggle("dark", theme === "dark");
         }
@@ -35,7 +36,6 @@ export const useUIStore = create<UIState>()(
       },
 
       setLanguage: (language) => {
-        // Cookie is the single source of truth (shared across subdomains)
         setLangCookie(language);
         i18n.changeLanguage(language);
         if (typeof window !== "undefined") {
@@ -51,10 +51,16 @@ export const useUIStore = create<UIState>()(
     }),
     {
       name: "ui-storage",
-      // language is intentionally excluded — it lives in the cookie
-      partialize: (state) => ({
-        theme: state.theme,
-        isSidebarCollapsed: state.isSidebarCollapsed,
+      // Only isSidebarCollapsed lives in localStorage; theme/language are in cookies
+      partialize: (state) => ({ isSidebarCollapsed: state.isSidebarCollapsed }),
+      // Custom merge: only apply isSidebarCollapsed from old localStorage data.
+      // Prevents stale theme/language values from a previous localStorage entry
+      // from overwriting the cookie-based initial values.
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        isSidebarCollapsed:
+          (persistedState as Partial<UIState>)?.isSidebarCollapsed ??
+          currentState.isSidebarCollapsed,
       }),
     },
   ),
