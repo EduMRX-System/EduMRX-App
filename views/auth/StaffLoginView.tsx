@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -18,6 +18,7 @@ import {
   Clock,
   Sun,
   Moon,
+  ArrowLeft,
 } from "lucide-react";
 
 import { getSubdomainUrl, getCookieOptions } from "@/utils/redirect";
@@ -30,7 +31,7 @@ import Image from "next/image";
 import { LogoIcons } from "@/constants/icons";
 import Link from "next/link";
 
-type StaffRole = "director" | "manager";
+type StaffRole = "director" | "manager" | "teacher";
 
 interface AxiosErrorResponse {
   response?: { data?: { non_field_errors?: string[];[key: string]: string[] | string | undefined } };
@@ -39,12 +40,14 @@ interface AxiosErrorResponse {
 
 type FormData = { phone: string; password: string };
 
-export default function StaffLoginView() {
+interface Props {
+  onBack?: () => void;
+}
+
+export default function StaffLoginView({ onBack }: Props) {
   const { t } = useTranslation();
   const { theme, setTheme } = useUIStore();
   const { login } = useAuthStore();
-
-  const [role, setRole] = useState<StaffRole>("director");
 
   const schema = useMemo(() =>
     yup.object({
@@ -78,12 +81,12 @@ export default function StaffLoginView() {
       const cookieOptions = getCookieOptions();
       document.cookie = `access_token=${access_token}; ${cookieOptions}`;
       document.cookie = `refresh_token=${refresh_token}; ${cookieOptions}`;
-      document.cookie = `user=${encodeURIComponent(JSON.stringify({ ...user, role: user?.role || role }))}; ${cookieOptions}`;
+      document.cookie = `user=${encodeURIComponent(JSON.stringify(user))}; ${cookieOptions}`;
 
-      login({ ...user, role: user?.role || role }, { access_token, refresh_token });
+      login(user, { access_token, refresh_token });
       toast.success(message || t("auth.staff.success"));
 
-      const targetRole = (user?.role || role) as StaffRole;
+      const targetRole = user?.role as StaffRole;
       const base = getSubdomainUrl(targetRole);
       const isLocal = window.location.hostname.includes("localhost");
 
@@ -115,8 +118,6 @@ export default function StaffLoginView() {
     { value: "1000+", key: "students" },
     { value: "24/7", key: "support", icon: Clock },
   ];
-
-  const ROLES: StaffRole[] = ["director", "manager"];
 
   return (
     <div className="min-h-screen w-full flex bg-white dark:bg-slate-950 overflow-hidden transition-colors">
@@ -198,6 +199,17 @@ export default function StaffLoginView() {
       <div className="w-full lg:w-[520px] flex flex-col justify-center p-8 sm:p-12 bg-white dark:bg-slate-950 relative transition-colors">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-3xl rounded-full pointer-events-none" />
 
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="absolute top-6 left-6 z-20 flex items-center gap-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t("auth.common.go_back")}
+          </button>
+        )}
+
         <button
           type="button"
           onClick={toggleTheme}
@@ -215,26 +227,11 @@ export default function StaffLoginView() {
         >
           <div className="p-4 rounded-2xl bg-slate-100 dark:bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center">
-              <Shield className="w-4.5 h-4.5 text-white" />
+              <Shield className="w-4 h-4 text-white" />
             </div>
             <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 tracking-widest">
-              {t(`auth.staff.roles.${role}.label`)}
+              {t("auth.choose.staff.label")}
             </span>
-          </div>
-
-          <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-900 flex gap-1 border border-slate-200 dark:border-slate-800">
-            {ROLES.map((r) => (
-              <button
-                key={r}
-                onClick={() => setRole(r)}
-                className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${role === r
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
-                  : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-                  }`}
-              >
-                {t(`auth.staff.roles.${r}.name`)}
-              </button>
-            ))}
           </div>
 
           <div>
@@ -242,10 +239,7 @@ export default function StaffLoginView() {
               {t("auth.common.welcome")}
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              <span className="text-indigo-600 dark:text-indigo-400 font-bold">
-                {t(`auth.staff.roles.${role}.name`)}
-              </span>{" "}
-              {t("auth.common.role_hint")}
+              {t("auth.staff.heading")}
             </p>
           </div>
 
