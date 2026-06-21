@@ -36,51 +36,51 @@ export const isGroup = (e: NavEntry): e is NavGroup =>
   (e as NavGroup).children !== undefined;
 
 export const directorMenu: NavEntry[] = [
-  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "director.nav.dashboard", href: "/", icon: LayoutDashboard },
 
   {
-      title: "O'quv",
+      title: "director.nav.learning",
       icon: GraduationCap,
       children: [
-          { title: "O'quvchilar", href: "/students", icon: GraduationCap },
-          { title: "O'qituvchilar", href: "/teachers", icon: UserCog },
+          { title: "director.nav.students", href: "/students", icon: GraduationCap },
+          { title: "director.nav.teachers", href: "/teachers", icon: UserCog },
       ],
   },
   {
-      title: "Darslar",
+      title: "director.nav.lessons_group",
       icon: BookOpen,
       children: [
-          { title: "Kurslar", href: "/courses", icon: BookOpen },
-          { title: "Guruhlar", href: "/groups", icon: Users2 },
-          { title: "Dars jadvali", href: "/lessons", icon: CalendarDays },
-          { title: "Davomat", href: "/attendance", icon: ClipboardCheck },
+          { title: "director.nav.courses", href: "/courses", icon: BookOpen },
+          { title: "director.nav.groups", href: "/groups", icon: Users2 },
+          { title: "director.nav.schedule", href: "/lessons", icon: CalendarDays },
+          { title: "director.nav.attendance", href: "/attendance", icon: ClipboardCheck },
       ],
   },
   {
-      title: "Analitika",
+      title: "director.nav.analytics_group",
       icon: BarChart3,
       children: [
-          { title: "Umumiy analitika", href: "/analytics", icon: BarChart3 },
-          { title: "Filial tahlili", href: "/branch-analytics", icon: TrendingUp },
+          { title: "director.nav.analytics", href: "/analytics", icon: BarChart3 },
+          { title: "director.nav.branch_analytics", href: "/branch-analytics", icon: TrendingUp },
       ],
   },
   {
-      title: "Boshqaruv",
+      title: "director.nav.management",
       icon: Briefcase,
       children: [
-          { title: "Xonalar", href: "/rooms", icon: DoorOpen },
-          { title: "Menejerlar", href: "/managers", icon: Users },
-          { title: "Filiallar", href: "/branches", icon: Building2 },
+          { title: "director.nav.rooms", href: "/rooms", icon: DoorOpen },
+          { title: "director.nav.managers", href: "/managers", icon: Users },
+          { title: "director.nav.branches", href: "/branches", icon: Building2 },
       ],
   },
   {
-      title: "Moliya",
+      title: "director.nav.finance",
       icon: Wallet,
       children: [
-          { title: "To'lovlar", href: "/payments", icon: CreditCard },
-          { title: "Xarajatlar", href: "/expenses", icon: Wallet },
+          { title: "director.nav.payments", href: "/payments", icon: CreditCard },
+          { title: "director.nav.expenses", href: "/expenses", icon: Wallet },
       ],
   },
 
-  { title: "Profil", href: "/profile", icon: User },
+  { title: "director.nav.profile", href: "/profile", icon: User },
 ];
