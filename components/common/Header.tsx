@@ -78,11 +78,6 @@ export default function Header({ menuItems = [] }: HeaderProps) {
                         <Menu className="w-6 h-6" />
                     </button>
 
-                    <div className="min-w-0">
-                        <h1 className="text-lg font-black text-slate-900 dark:text-white tracking-tight truncate leading-none">
-                            {pageTitle}
-                        </h1>
-                    </div>
                 </div>
 
                 {/* RIGHT cluster */}

@@ -29,7 +29,7 @@ export default function Footer() {
         { label: t("marketing.nav.features"), href: "/features" },
         { label: t("marketing.nav.pricing"), href: "/pricing" },
         { label: t("marketing.footer.updates"), href: "/blog" },
-        { label: t("marketing.footer.docs"), href: "https://edumrx-dev-doc.vercel.app" },
+        { label: t("marketing.footer.docs"), href: "/features" },
       ],
     },
     {
@@ -151,7 +151,7 @@ export default function Footer() {
           </p>
 
           <div className="flex items-center gap-2">
-            {socials.map((social) => (
+            {/* {socials.map((social) => (
               <a
                 key={social.label}
                 href={social.href}
@@ -162,7 +162,7 @@ export default function Footer() {
               >
                 <social.icon className="w-4 h-4" />
               </a>
-            ))}
+            ))} */}
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useUIStore } from "@/store/useUIStore";
 import { directorMenu } from "@/constants/navigation";
 import DirectorNav from "@/components/sections/directorPanelSections/navbar/DirectorNav";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 export default function DirectorLayout({
   children,
@@ -50,6 +51,7 @@ export default function DirectorLayout({
 
 
           <main className="px-3 pb-3 pt-4 md:px-5 md:pb-5 flex-1 overflow-y-auto transition-all duration-300">
+            <Breadcrumb />
             <div className="w-full h-full overflow-y-auto">
               {children}
             </div>
