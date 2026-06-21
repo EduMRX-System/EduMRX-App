@@ -215,6 +215,49 @@
           "a": "Yes, all data is protected with SSL encryption and bank-grade security."
         }
       }
+    },
+
+    "about": {
+      "label": "About Us",
+      "title": "Taking educational technology to the next level",
+      "subtitle": "EduMRX — a professional management system built for educational centers in Uzbekistan.",
+      "stats": {
+        "users": "Users",
+        "centers": "Educational centers",
+        "satisfaction": "Client satisfaction",
+        "growth": "Growth rate"
+      },
+      "values": {
+        "mission": {
+          "title": "Our mission",
+          "desc": "To expand quality education in Uzbekistan by digitizing educational centers."
+        },
+        "vision": {
+          "title": "Our vision",
+          "desc": "By 2030, implement modern management systems in every educational center in Uzbekistan."
+        },
+        "values": {
+          "title": "Our values",
+          "desc": "Innovation, reliability, and a client-focused approach are our foundation."
+        }
+      },
+      "journey": "Our journey",
+      "timeline": {
+        "start": {
+          "title": "EduMRX founded",
+          "desc": "The project began with the idea of solving management problems for educational centers."
+        },
+        "first_clients": {
+          "title": "First clients",
+          "desc": "Over 20 educational centers in Tashkent launched EduMRX."
+        },
+        "expansion": {
+          "title": "Expansion",
+          "desc": "Spread across Uzbekistan with 200+ centers and 10,000+ users."
+        }
+      },
+      "cta_title": "Join our team",
+      "cta_button": "Contact us"
     }
   },
 

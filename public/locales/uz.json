@@ -215,6 +215,49 @@
           "a": "Ha, barcha ma'lumotlar SSL shifrlash va bank darajasidagi xavfsizlik bilan himoyalangan."
         }
       }
+    },
+
+    "about": {
+      "label": "Biz haqimizda",
+      "title": "Ta'lim texnologiyalarini yangi bosqichga olib chiqamiz",
+      "subtitle": "EduMRX — O'zbekistondagi ta'lim markazlari uchun yaratilgan professional boshqaruv tizimi.",
+      "stats": {
+        "users": "Foydalanuvchilar",
+        "centers": "Ta'lim markazlari",
+        "satisfaction": "Mijozlar mamnuniyati",
+        "growth": "O'sish ko'rsatkichi"
+      },
+      "values": {
+        "mission": {
+          "title": "Bizning missiya",
+          "desc": "Ta'lim markazlarini raqamlashtirish orqali O'zbekistonda sifatli ta'limni kengaytirish."
+        },
+        "vision": {
+          "title": "Bizning vizyon",
+          "desc": "2030 yilga qadar O'zbekistondagi har bir ta'lim markazida zamonaviy boshqaruv tizimini joriy etish."
+        },
+        "values": {
+          "title": "Bizning qadriyatlar",
+          "desc": "Innovatsiya, ishonchlilik va mijozga yo'naltirilgan yondashuv — bizning asosimiz."
+        }
+      },
+      "journey": "Bizning yo'l",
+      "timeline": {
+        "start": {
+          "title": "EduMRX tashkil topdi",
+          "desc": "Ta'lim markazlari muammolarini hal qilish g'oyasi bilan loyiha boshlandi."
+        },
+        "first_clients": {
+          "title": "Dastlabki mijozlar",
+          "desc": "Toshkentdagi 20+ ta'lim markazi EduMRX ni ishga tushirdi."
+        },
+        "expansion": {
+          "title": "Kengayish",
+          "desc": "200+ markaz va 10,000+ foydalanuvchi bilan O'zbekiston bo'ylab tarqaldi."
+        }
+      },
+      "cta_title": "Bizning jamoamizga qo'shiling",
+      "cta_button": "Bog'lanish"
     }
   },
 
