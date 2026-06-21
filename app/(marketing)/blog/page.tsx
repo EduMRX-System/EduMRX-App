@@ -1,11 +1,17 @@
+import type { Metadata } from "next";
 import BlogView from "@/views/marketing/BlogView";
-import { Metadata } from "next";
 
-export const aboutMetadata: Metadata = {
-    title: "Biz haqimizda",
+export const metadata: Metadata = {
+  title: "Blog — Ta'lim va texnologiya",
+  description:
+    "EduMRX blog: o'quv markazlarini boshqarish, raqamlashtirish va ta'lim texnologiyalari haqida foydali maqolalar va yangiliklar.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    title: "EduMRX Blog — Ta'lim va texnologiya",
     description:
-        "EduMRX — O'zbekistondagi o'quv markazlarini raqamlashtirish uchun yaratilgan jamoa. Bizning vazifamiz va qadriyatlarimiz bilan tanishing.",
-    alternates: { canonical: "/about" },
+      "O'quv markazlarini boshqarish va raqamlashtirish haqida maqolalar.",
+    url: "https://edumrx.uz/blog",
+  },
 };
 
-export default BlogView
+export default BlogView;

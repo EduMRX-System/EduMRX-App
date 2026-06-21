@@ -1,16 +1,17 @@
+import type { Metadata } from "next";
 import PricingView from "@/views/marketing/PricingView";
-import { Metadata } from "next";
 
-export const pricingMetadata: Metadata = {
-    title: "Narxlar — O'quv markazi uchun tariflar",
+export const metadata: Metadata = {
+  title: "Tariflar — O'quv markazi uchun narxlar",
+  description:
+    "EduMRX tariflari: kichik markazlardan yirik tarmoqlargacha. Oylik va yillik to'lov. Bepul sinov bilan boshlang, keyin o'zingizga mos tarifni tanlang.",
+  alternates: { canonical: "/pricing" },
+  openGraph: {
+    title: "EduMRX — Tariflar va narxlar",
     description:
-        "EduMRX tariflari: kichik markazlardan yirik tarmoqlargacha. Bepul sinov bilan boshlang, keyin o'zingizga mos tarifni tanlang.",
-    alternates: { canonical: "/pricing" },
-    openGraph: {
-        title: "EduMRX narxlari — moslashuvchan tariflar",
-        description: "O'quv markazingiz hajmiga mos tarif. Bepul sinov mavjud.",
-        url: "https://edumrx.uz/pricing",
-    },
+      "O'quv markazingiz hajmiga mos moslashuvchan tariflar. 14 kun bepul sinov.",
+    url: "https://edumrx.uz/pricing",
+  },
 };
 
-export default PricingView
+export default PricingView;
