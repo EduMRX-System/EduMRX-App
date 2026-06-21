@@ -89,6 +89,65 @@
       "cta_title": "Bugun boshlang, farqni his qiling",
       "cta_desc": "Minglab o'quv markazlari EduMRX bilan o'z biznesini professional darajaga olib chiqdi. Endi navbat sizda.",
       "cta_button": "Bepul boshlash"
+    },
+
+    "features": {
+      "label": "Imkoniyatlar",
+      "title": "Barcha funksiyalar bir joyda",
+      "subtitle": "Ta'lim markazini professional darajada boshqarish uchun kerakli barcha vositalar.",
+      "categories": {
+        "academic": {
+          "title": "Ta'lim jarayoni",
+          "desc": "O'quvchilar, guruhlar va dars jadvali",
+          "items": {
+            "students": { "title": "O'quvchilar bazasi", "desc": "Qabul, arxiv va barcha shaxsiy ma'lumotlar." },
+            "groups": { "title": "Guruh va kurslar", "desc": "Guruhlarni boshqarish va o'qituvchi biriktirish." },
+            "attendance": { "title": "Elektron davomat", "desc": "Real vaqtda davomat va avtomatik hisobotlar." },
+            "rooms": { "title": "Xonalar", "desc": "Dars xonalarini boshqarish va band qilish." }
+          }
+        },
+        "finance": {
+          "title": "Moliya",
+          "desc": "To'lovlar va moliyaviy nazorat",
+          "items": {
+            "payments": { "title": "To'lovlar tizimi", "desc": "To'lovlarni kuzatish va moliyaviy oqim." },
+            "debtors": { "title": "Qarzdorlar", "desc": "Qarzdorlarni nazorat qilish va eslatma yuborish." },
+            "payment_types": { "title": "To'lov turlari", "desc": "Naqd, karta va boshqa usullar." },
+            "expenses": { "title": "Xarajatlar", "desc": "Markaz xarajatlarini kuzatish va tahlil." }
+          }
+        },
+        "marketing": {
+          "title": "Marketing va xabarnomalar",
+          "desc": "Mijozlar bilan muloqot",
+          "items": {
+            "sms": { "title": "Avto SMS", "desc": "Ota-onalarga avtomatik xabarnomalar." },
+            "telegram": { "title": "Telegram bot", "desc": "O'quvchi va ota-onalar uchun bot." },
+            "leads": { "title": "Lidlar", "desc": "Yangi mijozlarni kuzatish va konversiya." },
+            "notifications": { "title": "Bildirishnomalar", "desc": "Real vaqtda push va ichki bildirishnomalar." }
+          }
+        },
+        "analytics": {
+          "title": "Analitika",
+          "desc": "Ma'lumotlarga asoslangan qarorlar",
+          "items": {
+            "overview": { "title": "Umumiy tahlil", "desc": "Markaz ko'rsatkichlarining to'liq ko'rinishi." },
+            "payment_analysis": { "title": "To'lov tahlili", "desc": "Daromad trendlari va moliyaviy hisobotlar." },
+            "coins": { "title": "Coin statistikasi", "desc": "O'quvchilar faolligi va rag'batlantirish." },
+            "holidays": { "title": "Dam olish kunlari", "desc": "Ta'til va maxsus sanalar boshqaruvi." }
+          }
+        }
+      },
+      "highlights_title": "Nima uchun EduMRX?",
+      "highlights": {
+        "multibranch": "Bir nechta filial qo'llab-quvvatlash",
+        "security": "Bank darajasidagi xavfsizlik",
+        "pwa": "Mobil ilova (PWA)",
+        "realtime": "Real vaqt yangilanishlar",
+        "languages": "Ko'p tilli interfeys",
+        "support": "24/7 texnik yordam"
+      },
+      "cta_title": "Barcha imkoniyatlarni sinab ko'rmoqchimisiz?",
+      "cta_button": "Bepul boshlash"
     }
   },
 
