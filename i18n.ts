@@ -4,14 +4,24 @@ import en from "./public/locales/en.json";
 import uz from "./public/locales/uz.json";
 import ru from "./public/locales/ru.json";
 
+function getInitialLanguage(): string {
+  if (typeof window === "undefined") return "uz";
+  try {
+    const stored = JSON.parse(localStorage.getItem("ui-storage") ?? "{}");
+    return (stored?.state?.language as string) || "uz";
+  } catch {
+    return "uz";
+  }
+}
+
 i18n.use(initReactI18next).init({
   resources: {
-    en: { translation: en }, 
+    en: { translation: en },
     uz: { translation: uz },
     ru: { translation: ru },
   },
-  lng: "uz",
-  fallbackLng: "en",
+  lng: getInitialLanguage(),
+  fallbackLng: "uz",
   interpolation: { escapeValue: false },
 });
 

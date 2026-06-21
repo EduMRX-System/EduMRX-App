@@ -9,6 +9,26 @@
       "login": "Sign In"
     },
 
+    "footer": {
+      "product": "Product",
+      "updates": "Updates",
+      "docs": "Documentation",
+      "company": "Company",
+      "blog": "Blog",
+      "careers": "Careers",
+      "support": "Support",
+      "help": "Help Center",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "security": "Security",
+      "cta_title": "Digitize your center today",
+      "cta_desc": "14 days free · No credit card required",
+      "cta_button": "Get started",
+      "location": "Tashkent, Uzbekistan",
+      "brand_desc": "The leading education center management system in Uzbekistan. Take your business to the professional level.",
+      "rights": "All rights reserved."
+    },
+
     "about": {
       "label": "About us",
       "title": "Building the future of education together",

@@ -14,13 +14,12 @@ const LANGS = [
 ];
 
 export default function LanguageModal({ onClose }: { onClose: () => void }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { language, setLanguage } = useUIStore();
   const [selected, setSelected] = useState(language || "uz");
 
   const save = () => {
     setLanguage(selected);
-    i18n.changeLanguage(selected);
     onClose();
   };
 

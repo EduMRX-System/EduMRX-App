@@ -24,30 +24,30 @@ export default function Footer() {
 
   const columns = [
     {
-      title: t("footer.product", "Mahsulot"),
+      title: t("marketing.footer.product"),
       links: [
-        { label: t("nav.features", "Imkoniyatlar"), href: "/features" },
-        { label: t("nav.pricing", "Tariflar"), href: "/pricing" },
-        { label: t("footer.updates", "Yangilanishlar"), href: "/blog" },
-        { label: t("footer.docs", "Hujjatlar"), href: "https://edumrx-dev-doc.vercel.app" },
+        { label: t("marketing.nav.features"), href: "/features" },
+        { label: t("marketing.nav.pricing"), href: "/pricing" },
+        { label: t("marketing.footer.updates"), href: "/blog" },
+        { label: t("marketing.footer.docs"), href: "https://edumrx-dev-doc.vercel.app" },
       ],
     },
     {
-      title: t("footer.company", "Kompaniya"),
+      title: t("marketing.footer.company"),
       links: [
-        { label: t("nav.about", "Biz haqimizda"), href: "/about" },
-        { label: t("nav.contact", "Bog'lanish"), href: "/contact" },
-        { label: t("footer.blog", "Blog"), href: "/blog" },
-        { label: t("footer.careers", "Vakansiyalar"), href: "/about" },
+        { label: t("marketing.nav.about"), href: "/about" },
+        { label: t("marketing.nav.contact"), href: "/contact" },
+        { label: t("marketing.footer.blog"), href: "/blog" },
+        { label: t("marketing.footer.careers"), href: "/about" },
       ],
     },
     {
-      title: t("footer.support", "Yordam"),
+      title: t("marketing.footer.support"),
       links: [
-        { label: t("footer.help", "Yordam markazi"), href: "/contact" },
-        { label: t("footer.privacy", "Maxfiylik"), href: "/about" },
-        { label: t("footer.terms", "Shartlar"), href: "/about" },
-        { label: t("footer.security", "Xavfsizlik"), href: "/about" },
+        { label: t("marketing.footer.help"), href: "/contact" },
+        { label: t("marketing.footer.privacy"), href: "/about" },
+        { label: t("marketing.footer.terms"), href: "/about" },
+        { label: t("marketing.footer.security"), href: "/about" },
       ],
     },
   ];
@@ -72,17 +72,17 @@ export default function Footer() {
         >
           <div>
             <h3 className="text-xl font-black text-slate-900 dark:text-white">
-              {t("footer.cta_title", "Markazingizni bugun raqamlashtiring")}
+              {t("marketing.footer.cta_title")}
             </h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              {t("footer.cta_desc", "14 kun bepul · Kredit karta talab qilinmaydi")}
+              {t("marketing.footer.cta_desc")}
             </p>
           </div>
           <Link
             href="/pricing"
             className="group shrink-0 inline-flex h-11 px-6 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-indigo-500/20"
           >
-            <span>{t("footer.cta_button", "Boshlash")}</span>
+            <span>{t("marketing.footer.cta_button")}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </motion.div>
@@ -102,7 +102,7 @@ export default function Footer() {
               </Link>
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mb-5">
-              {t("footer.brand_desc", "O'zbekistondagi yetakchi ta'lim markazlari boshqaruv tizimi. Biznesingizni professional darajaga olib chiqing.")}
+              {t("marketing.footer.brand_desc")}
             </p>
 
             {/* Contact */}
@@ -117,7 +117,7 @@ export default function Footer() {
               </a>
               <div className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400">
                 <MapPin className="w-4 h-4" />
-                <span>{t("footer.location", "Toshkent, O'zbekiston")}</span>
+                <span>{t("marketing.footer.location")}</span>
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@ export default function Footer() {
         {/* Bottom: copyright + socials */}
         <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200/60 dark:border-slate-800/60">
           <p className="text-xs text-slate-400 dark:text-slate-500">
-            © {year} EduMRX. {t("footer.rights", "Barcha huquqlar himoyalangan.")}
+            © {year} EduMRX. {t("marketing.footer.rights")}
           </p>
 
           <div className="flex items-center gap-2">
