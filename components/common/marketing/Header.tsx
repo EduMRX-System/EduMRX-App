@@ -27,7 +27,7 @@ const LANGUAGES = [
 
 export default function Header() {
     const { t, i18n } = useTranslation();
-    const { theme, setTheme } = useUIStore();
+    const { setTheme, theme, setLanguage } = useUIStore();
     const pathname = usePathname();
 
     const [mounted, setMounted] = useState(false);
@@ -141,7 +141,7 @@ export default function Header() {
                                                     <button
                                                         key={lang.code}
                                                         onClick={() => {
-                                                            i18n.changeLanguage(lang.code);
+                                                            setLanguage(lang.code);
                                                             setLangOpen(false);
                                                         }}
                                                         className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium transition-colors ${i18n.language === lang.code
@@ -162,7 +162,7 @@ export default function Header() {
                             {/* Theme toggle */}
                             {mounted && (
                                 <button
-                                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                                    onClick={() => setTheme(theme == "dark" ? "light" : "dark")}
                                     className="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100/80 dark:hover:bg-slate-800/60 transition-colors"
                                 >
                                     <AnimatePresence mode="wait">

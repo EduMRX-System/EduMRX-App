@@ -34,6 +34,9 @@ export const useUIStore = create<UIState>()(
 
       setLanguage: (language) => {
         i18n.changeLanguage(language);
+        if (typeof window !== "undefined") {
+          document.documentElement.lang = language;
+        }
         set({ language });
       },
 
