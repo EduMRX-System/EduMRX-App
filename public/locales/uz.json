@@ -258,6 +258,32 @@
       },
       "cta_title": "Bizning jamoamizga qo'shiling",
       "cta_button": "Bog'lanish"
+    },
+
+    "contact": {
+      "label": "Bog'lanish",
+      "title": "Biz bilan bog'laning",
+      "subtitle": "Savol yoki takliflaringiz bo'lsa, bizga yozing — tez orada javob beramiz.",
+      "info": {
+        "email": "Email",
+        "phone": "Telefon",
+        "telegram": "Telegram",
+        "address": "Manzil"
+      },
+      "hours_title": "Ish vaqti",
+      "hours": "Dushanba – Shanba: 9:00 – 20:00",
+      "form_title": "Xabar yuboring",
+      "form_desc": "Forma to'ldiring, biz 24 soat ichida bog'lanamiz.",
+      "name": "Ism",
+      "name_ph": "Ismingizni kiriting",
+      "phone": "Telefon raqam",
+      "center": "Markaz nomi",
+      "center_ph": "Ta'lim markazingiz nomi (ixtiyoriy)",
+      "message": "Xabar",
+      "message_ph": "Savolingizni yozing...",
+      "send": "Yuborish",
+      "error": "Ism va telefon raqamni kiriting",
+      "success": "Xabaringiz yuborildi! Tez orada bog'lanamiz."
     }
   },
 

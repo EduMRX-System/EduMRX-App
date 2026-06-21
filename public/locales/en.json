@@ -258,6 +258,32 @@
       },
       "cta_title": "Join our team",
       "cta_button": "Contact us"
+    },
+
+    "contact": {
+      "label": "Contact",
+      "title": "Get in touch",
+      "subtitle": "Have questions or suggestions? Write to us — we'll respond soon.",
+      "info": {
+        "email": "Email",
+        "phone": "Phone",
+        "telegram": "Telegram",
+        "address": "Address"
+      },
+      "hours_title": "Working hours",
+      "hours": "Monday – Saturday: 9:00 AM – 8:00 PM",
+      "form_title": "Send a message",
+      "form_desc": "Fill in the form and we'll get back to you within 24 hours.",
+      "name": "Name",
+      "name_ph": "Enter your name",
+      "phone": "Phone number",
+      "center": "Center name",
+      "center_ph": "Your educational center name (optional)",
+      "message": "Message",
+      "message_ph": "Write your question...",
+      "send": "Send",
+      "error": "Please enter your name and phone number",
+      "success": "Your message has been sent! We'll get back to you soon."
     }
   },
 
