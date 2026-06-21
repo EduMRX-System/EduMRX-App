@@ -216,7 +216,7 @@ export default function BranchAnalyticsView() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.3} />
                 <XAxis dataKey="month" tickLine={false} axisLine={false} stroke="#94a3b8" />
                 <YAxis tickLine={false} axisLine={false} stroke="#94a3b8" tickFormatter={(v) => `${v / 1000000}M`} />
-                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: '1px solid #1e293b', color: '#fff' }} formatter={(value: any) => [`${value.toLocaleString()} UZS`, "Tushum"]} />
+                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: '1px solid #1e293b', color: '#fff' }} formatter={(value: any) => [`${value.toLocaleString()} UZS`, t("director.analytics.charts.revenue_label")]} />
                 <Area type="monotone" dataKey="tolov" stroke="#5B4DF6" strokeWidth={3} fillOpacity={1} fill="url(#colorTolov)" />
               </AreaChart>
             </ResponsiveContainer>
