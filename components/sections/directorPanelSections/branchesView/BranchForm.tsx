@@ -3,8 +3,7 @@
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Loader2 } from "lucide-react";
-
-
+import { useTranslation } from "react-i18next";
 
 import BranchMapPicker from "./BranchMapPicker";
 import { BranchFormValues, branchSchema } from "@/types/branch";
@@ -32,6 +31,7 @@ export default function BranchForm({
     onSubmit,
     onCancel,
 }: Props) {
+    const { t } = useTranslation();
     const {
         register,
         handleSubmit,
@@ -47,11 +47,11 @@ export default function BranchForm({
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name */}
             <div>
-                <label className={labelCls}>Filial nomi</label>
+                <label className={labelCls}>{t("director.branches.form.name_label")}</label>
                 <input
                     {...register("name")}
                     className={inputCls}
-                    placeholder="Masalan: Chilonzor filiali"
+                    placeholder={t("director.branches.form.name_placeholder")}
                 />
                 {errors.name && (
                     <p className="mt-1 text-xs text-rose-500">{errors.name.message}</p>
@@ -61,7 +61,7 @@ export default function BranchForm({
             {/* Phone + Status */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                    <label className={labelCls}>Telefon</label>
+                    <label className={labelCls}>{t("director.branches.form.phone_label")}</label>
                     <input
                         {...register("phone")}
                         className={inputCls}
@@ -72,21 +72,21 @@ export default function BranchForm({
                     )}
                 </div>
                 <div>
-                    <label className={labelCls}>Holati</label>
+                    <label className={labelCls}>{t("director.branches.form.status_label")}</label>
                     <select {...register("status")} className={inputCls}>
-                        <option value="active">Faol</option>
-                        <option value="inactive">Nofaol</option>
+                        <option value="active">{t("common.active")}</option>
+                        <option value="inactive">{t("common.inactive")}</option>
                     </select>
                 </div>
             </div>
 
             {/* Address */}
             <div>
-                <label className={labelCls}>Manzil</label>
+                <label className={labelCls}>{t("director.branches.form.address_label")}</label>
                 <input
                     {...register("address")}
                     className={inputCls}
-                    placeholder="Ko'cha, dom..."
+                    placeholder={t("director.branches.form.address_placeholder")}
                 />
                 {errors.address && (
                     <p className="mt-1 text-xs text-rose-500">{errors.address.message}</p>
@@ -95,7 +95,7 @@ export default function BranchForm({
 
             {/* Map picker */}
             <div>
-                <label className={labelCls}>Joylashuv</label>
+                <label className={labelCls}>{t("director.branches.form.location_label")}</label>
                 <Controller
                     name="lat"
                     control={control}
@@ -136,7 +136,7 @@ export default function BranchForm({
                     disabled={submitting}
                     className="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-800"
                 >
-                    Bekor qilish
+                    {t("common.cancel")}
                 </button>
                 <button
                     type="submit"
