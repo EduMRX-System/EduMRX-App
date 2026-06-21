@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -39,29 +39,25 @@ interface AxiosErrorResponse {
     message?: string;
 }
 
-const schema = yup.object({
-    phone: yup
-        .string()
-        .required("Telefon raqam majburiy")
-        .test("len", "To'liq raqam kiriting", (val) => val?.replace(/\D/g, "").length === 12),
-    password: yup.string().required("Parol majburiy"),
-});
-
-type FormData = yup.InferType<typeof schema>;
-
-const ROLE_INFO: Record<StudentRole, { label: string; uz: string; icon: any }> = {
-    student_user: { label: "O'QUVCHI PANEL", uz: "O'quvchi", icon: GraduationCap },
-    parent: { label: "OTA-ONA PANEL", uz: "Ota-ona", icon: Users },
-    teacher: { label: "O'QITUVCHI PANEL", uz: "O'qituvchi", icon: BookOpen },
-};
+type FormData = { phone: string; password: string };
 
 export default function StudentLoginView() {
     const { t } = useTranslation();
     const { theme, setTheme } = useUIStore();
-
     const { login } = useAuthStore();
 
     const [role, setRole] = useState<StudentRole>("student_user");
+
+    const schema = useMemo(() =>
+        yup.object({
+            phone: yup
+                .string()
+                .required(t("auth.login.validation.phone_required"))
+                .test("len", t("auth.login.validation.phone_invalid"), (val) => val?.replace(/\D/g, "").length === 12),
+            password: yup.string().required(t("auth.login.validation.password_required")),
+        }),
+        [t]
+    );
 
     const {
         register,
@@ -90,15 +86,14 @@ export default function StudentLoginView() {
             document.cookie = `user=${encodeURIComponent(JSON.stringify({ ...user, role: user?.role || role }))}; ${cookieOptions}`;
 
             login({ ...user, role: user?.role || role }, { access_token, refresh_token });
-            toast.success(message || "Muvaffaqiyatli kirdingiz");
+            toast.success(message || t("auth.login.success"));
 
-            // student_user → "student" subdomain, qolganlar o'z nomi bilan
             const targetRole = (user?.role || role) as StudentRole;
             const sub = targetRole === "student_user" ? "student" : targetRole;
             const base = getSubdomainUrl(sub);
-            const isLocal = window.location.hostname.includes("localhost");
+            const isLocalNow = window.location.hostname.includes("localhost");
 
-            const url = isLocal
+            const url = isLocalNow
                 ? `${base}/?at=${encodeURIComponent(access_token)}&rt=${encodeURIComponent(refresh_token)}`
                 : base;
 
@@ -109,25 +104,31 @@ export default function StudentLoginView() {
             if (e?.non_field_errors?.[0]) toast.error(e.non_field_errors[0]);
             else if (e && typeof e === "object") {
                 const v = e[Object.keys(e)[0]];
-                toast.error(Array.isArray(v) ? v[0] : "Ma'lumotlarni tekshiring");
-            } else toast.error(err?.message || "Xatolik yuz berdi");
+                toast.error(Array.isArray(v) ? v[0] : t("auth.common.error_check"));
+            } else toast.error(err?.message || t("auth.common.error_generic"));
         },
     });
 
     const features = [
-        { icon: ClipboardCheck, text: "Davomat monitoringi" },
-        { icon: Star, text: "Baholar va reyting" },
-        { icon: BookOpen, text: "Uy vazifalari" },
-        { icon: CreditCard, text: "To'lovlar tarixi" },
+        { icon: ClipboardCheck, key: "attendance" },
+        { icon: Star, key: "grades" },
+        { icon: BookOpen, key: "homework" },
+        { icon: CreditCard, key: "payments" },
     ];
 
     const stats = [
-        { value: "10K+", label: "O'quvchilar" },
-        { value: "500+", label: "Ustozlar" },
-        { value: "24/7", label: "Yordam", icon: Clock },
+        { value: "10K+", key: "students" },
+        { value: "500+", key: "teachers" },
+        { value: "24/7", key: "support", icon: Clock },
     ];
 
-    const RoleIcon = ROLE_INFO[role].icon;
+    const ROLES: StudentRole[] = ["student_user", "parent", "teacher"];
+    const roleIconMap: Record<StudentRole, React.ElementType> = {
+        student_user: GraduationCap,
+        parent: Users,
+        teacher: BookOpen,
+    };
+    const RoleIcon = roleIconMap[role];
 
     return (
         <div className="min-h-screen w-full flex bg-white dark:bg-slate-950 overflow-hidden transition-colors">
@@ -145,7 +146,6 @@ export default function StudentLoginView() {
                 />
 
                 <div className="relative z-10 space-y-20">
-                    {/* Logo + theme toggle */}
                     <div className="flex items-center justify-between">
                         <Link href="/">
                             <Image
@@ -155,8 +155,6 @@ export default function StudentLoginView() {
                                 alt="EduMRX Logo"
                             />
                         </Link>
-
-
                     </div>
 
                     <motion.div
@@ -165,10 +163,10 @@ export default function StudentLoginView() {
                         transition={{ duration: 0.6, delay: 0.1 }}
                     >
                         <h2 className="text-4xl font-black text-white leading-tight tracking-tight">
-                            Bilimingizni<br />kuzatib boring
+                            {t("auth.login.heading")}
                         </h2>
                         <p className="text-white/70 text-sm mt-4 max-w-md leading-relaxed">
-                            Dars jadvali, davomat, baholar va to'lovlar — barchasi bir joyda. O'qish jarayonini real vaqtda kuzating.
+                            {t("auth.login.desc")}
                         </p>
                     </motion.div>
 
@@ -180,14 +178,16 @@ export default function StudentLoginView() {
                     >
                         {features.map((f) => (
                             <motion.div
-                                key={f.text}
+                                key={f.key}
                                 variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
                                 className="flex items-center gap-3 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
                             >
                                 <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
                                     <f.icon className="w-4 h-4 text-white/80" />
                                 </div>
-                                <span className="text-sm font-semibold text-white/90">{f.text}</span>
+                                <span className="text-sm font-semibold text-white/90">
+                                    {t(`auth.login.features.${f.key}`)}
+                                </span>
                             </motion.div>
                         ))}
                     </motion.div>
@@ -200,12 +200,12 @@ export default function StudentLoginView() {
                     className="relative z-10 grid grid-cols-3 gap-3 max-w-lg"
                 >
                     {stats.map((s) => (
-                        <div key={s.label} className="p-5 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 text-center">
+                        <div key={s.key} className="p-5 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 text-center">
                             <div className="flex items-center justify-center gap-1.5">
                                 {s.icon && <s.icon className="w-5 h-5 text-white/80" />}
                                 <span className="text-2xl font-black text-white">{s.value}</span>
                             </div>
-                            <p className="text-[11px] text-white/60 mt-1">{s.label}</p>
+                            <p className="text-[11px] text-white/60 mt-1">{t(`auth.login.stats.${s.key}`)}</p>
                         </div>
                     ))}
                 </motion.div>
@@ -215,7 +215,6 @@ export default function StudentLoginView() {
             <div className="w-full lg:w-[520px] flex flex-col justify-center p-8 sm:p-12 bg-white dark:bg-slate-950 relative transition-colors">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-3xl rounded-full pointer-events-none" />
 
-                {/* Theme toggle — form tepasida (mobil va light uchun) */}
                 <button
                     type="button"
                     onClick={toggleTheme}
@@ -237,13 +236,13 @@ export default function StudentLoginView() {
                             <RoleIcon className="w-[18px] h-[18px] text-white" />
                         </div>
                         <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 tracking-widest">
-                            {ROLE_INFO[role].label}
+                            {t(`auth.login.roles.${role}.label`)}
                         </span>
                     </div>
 
                     {/* Role tabs */}
                     <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-900 flex gap-1 border border-slate-200 dark:border-slate-800">
-                        {(["student_user", "parent", "teacher"] as StudentRole[]).map((r) => (
+                        {ROLES.map((r) => (
                             <button
                                 key={r}
                                 onClick={() => setRole(r)}
@@ -252,23 +251,30 @@ export default function StudentLoginView() {
                                     : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                                     }`}
                             >
-                                {ROLE_INFO[r].uz}
+                                {t(`auth.login.roles.${r}.name`)}
                             </button>
                         ))}
                     </div>
 
                     {/* Welcome */}
                     <div>
-                        <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Xush kelibsiz!</h2>
+                        <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                            {t("auth.common.welcome")}
+                        </h2>
                         <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                            <span className="text-indigo-600 dark:text-indigo-400 font-bold">{ROLE_INFO[role].uz}</span> sifatida tizimga kiring
+                            <span className="text-indigo-600 dark:text-indigo-400 font-bold">
+                                {t(`auth.login.roles.${role}.name`)}
+                            </span>{" "}
+                            {t("auth.common.role_hint")}
                         </p>
                     </div>
 
                     {/* Form */}
                     <form onSubmit={handleSubmit((d) => loginUser(d))} className="space-y-4">
                         <div className="space-y-1.5">
-                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Telefon raqami</label>
+                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                {t("auth.common.phone_label")}
+                            </label>
                             <Controller
                                 name="phone"
                                 control={control}
@@ -279,13 +285,15 @@ export default function StudentLoginView() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Parol</label>
+                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                {t("auth.common.password_label")}
+                            </label>
                             <PasswordInput register={register("password")} error={errors.password?.message} />
                         </div>
 
                         <div className="text-right">
                             <button type="button" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors">
-                                Parolni unutdingizmi?
+                                {t("auth.common.forgot_password")}
                             </button>
                         </div>
 
@@ -301,16 +309,22 @@ export default function StudentLoginView() {
                             ) : (
                                 <>
                                     <Sparkles className="w-4 h-4" />
-                                    <span>Tizimga kirish</span>
+                                    <span>{t("auth.common.submit")}</span>
                                 </>
                             )}
                         </motion.button>
                     </form>
 
                     <p className="text-xs text-slate-400 dark:text-slate-500 text-center leading-relaxed">
-                        Tizimga kirish orqali siz bizning{" "}
-                        <span className="text-indigo-600 dark:text-indigo-400 font-semibold">shartlar</span> va{" "}
-                        <span className="text-indigo-600 dark:text-indigo-400 font-semibold">maxfiylik siyosati</span>ni qabul qilasiz
+                        {t("auth.common.legal_prefix")}{" "}
+                        <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
+                            {t("auth.common.legal_terms")}
+                        </span>{" "}
+                        {t("auth.common.legal_and")}{" "}
+                        <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
+                            {t("auth.common.legal_privacy")}
+                        </span>
+                        {t("auth.common.legal_suffix")}
                     </p>
                 </motion.div>
             </div>

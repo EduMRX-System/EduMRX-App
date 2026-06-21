@@ -328,6 +328,75 @@
     "enter": "Kiriting"
   },
 
+  "auth": {
+    "common": {
+      "welcome": "Xush kelibsiz!",
+      "role_hint": "sifatida tizimga kiring",
+      "phone_label": "Telefon raqami",
+      "password_label": "Parol",
+      "forgot_password": "Parolni unutdingizmi?",
+      "submit": "Tizimga kirish",
+      "legal_prefix": "Tizimga kirish orqali siz bizning",
+      "legal_terms": "shartlar",
+      "legal_and": "va",
+      "legal_privacy": "maxfiylik siyosati",
+      "legal_suffix": "ni qabul qilasiz",
+      "error_check": "Ma'lumotlarni tekshiring",
+      "error_generic": "Xatolik yuz berdi"
+    },
+    "login": {
+      "heading": "Bilimingizni\nkuzatib boring",
+      "desc": "Dars jadvali, davomat, baholar va to'lovlar — barchasi bir joyda. O'qish jarayonini real vaqtda kuzating.",
+      "features": {
+        "attendance": "Davomat monitoringi",
+        "grades": "Baholar va reyting",
+        "homework": "Uy vazifalari",
+        "payments": "To'lovlar tarixi"
+      },
+      "stats": {
+        "students": "O'quvchilar",
+        "teachers": "Ustozlar",
+        "support": "Yordam"
+      },
+      "roles": {
+        "student_user": { "label": "O'QUVCHI PANEL", "name": "O'quvchi" },
+        "parent": { "label": "OTA-ONA PANEL", "name": "Ota-ona" },
+        "teacher": { "label": "O'QITUVCHI PANEL", "name": "O'qituvchi" }
+      },
+      "success": "Muvaffaqiyatli kirdingiz",
+      "validation": {
+        "phone_required": "Telefon raqam majburiy",
+        "phone_invalid": "To'liq raqam kiriting",
+        "password_required": "Parol majburiy"
+      }
+    },
+    "staff": {
+      "heading": "O'quv markazingizni\nraqamlashtiring",
+      "desc": "Zamonaviy boshqaruv tizimi bilan o'quv jarayonlarini avtomatlashtiring. Hisobotlar, davomat va to'lovlar — barchasi bitta platformada.",
+      "features": {
+        "analytics": "Real-vaqt analitika",
+        "multibranch": "Multi-filial nazorati",
+        "payments": "Tezkor to'lovlar",
+        "security": "Xavfsiz ma'lumotlar"
+      },
+      "stats": {
+        "centers": "Ta'lim markazlari",
+        "students": "O'quvchilar",
+        "support": "Qo'llab-quvvatlash"
+      },
+      "roles": {
+        "director": { "label": "DIREKTOR PANEL", "name": "Direktor" },
+        "manager": { "label": "MENEJER PANEL", "name": "Menejer" }
+      },
+      "success": "Muvaffaqiyatli kirdingiz",
+      "validation": {
+        "phone_required": "Telefon raqam majburiy",
+        "phone_invalid": "To'liq raqam kiriting",
+        "password_required": "Parol majburiy"
+      }
+    }
+  },
+
   "director": {
     "nav": {
       "dashboard": "Dashboard",

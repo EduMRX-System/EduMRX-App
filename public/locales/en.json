@@ -328,6 +328,75 @@
     "enter": "Enter"
   },
 
+  "auth": {
+    "common": {
+      "welcome": "Welcome!",
+      "role_hint": "sign in as",
+      "phone_label": "Phone number",
+      "password_label": "Password",
+      "forgot_password": "Forgot password?",
+      "submit": "Sign in",
+      "legal_prefix": "By signing in, you agree to our",
+      "legal_terms": "terms",
+      "legal_and": "and",
+      "legal_privacy": "privacy policy",
+      "legal_suffix": "",
+      "error_check": "Please check your information",
+      "error_generic": "An error occurred"
+    },
+    "login": {
+      "heading": "Track your\nlearning journey",
+      "desc": "Class schedule, attendance, grades, and payments — all in one place. Monitor your learning in real time.",
+      "features": {
+        "attendance": "Attendance monitoring",
+        "grades": "Grades and ratings",
+        "homework": "Homework",
+        "payments": "Payment history"
+      },
+      "stats": {
+        "students": "Students",
+        "teachers": "Teachers",
+        "support": "Support"
+      },
+      "roles": {
+        "student_user": { "label": "STUDENT PANEL", "name": "Student" },
+        "parent": { "label": "PARENT PANEL", "name": "Parent" },
+        "teacher": { "label": "TEACHER PANEL", "name": "Teacher" }
+      },
+      "success": "Signed in successfully",
+      "validation": {
+        "phone_required": "Phone number is required",
+        "phone_invalid": "Enter a complete phone number",
+        "password_required": "Password is required"
+      }
+    },
+    "staff": {
+      "heading": "Digitize your\neducational center",
+      "desc": "Automate your educational processes with a modern management system. Reports, attendance, and payments — all in one platform.",
+      "features": {
+        "analytics": "Real-time analytics",
+        "multibranch": "Multi-branch management",
+        "payments": "Fast payments",
+        "security": "Secure data"
+      },
+      "stats": {
+        "centers": "Educational centers",
+        "students": "Students",
+        "support": "Support"
+      },
+      "roles": {
+        "director": { "label": "DIRECTOR PANEL", "name": "Director" },
+        "manager": { "label": "MANAGER PANEL", "name": "Manager" }
+      },
+      "success": "Signed in successfully",
+      "validation": {
+        "phone_required": "Phone number is required",
+        "phone_invalid": "Enter a complete phone number",
+        "password_required": "Password is required"
+      }
+    }
+  },
+
   "director": {
     "nav": {
       "dashboard": "Dashboard",
