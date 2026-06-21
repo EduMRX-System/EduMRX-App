@@ -8,7 +8,6 @@
       "contact": "Contact",
       "login": "Login"
     },
-
     "footer": {
       "product": "Product",
       "updates": "Updates",
@@ -28,7 +27,6 @@
       "brand_desc": "The leading educational center management system in Uzbekistan. Take your business to a professional level.",
       "rights": "All rights reserved."
     },
-
     "home": {
       "badge": "The #1 educational CRM platform in Uzbekistan",
       "title_1": "Digitize your",
@@ -52,45 +50,104 @@
       "features_title": "All tools for the center",
       "features_desc": "All the features you need to manage your education business are gathered in one platform.",
       "features": {
-        "students": { "title": "Student database", "desc": "All student data, admission process, and archive in one place." },
-        "groups": { "title": "Groups and courses", "desc": "Group management, class schedule, and teacher assignment." },
-        "attendance": { "title": "Electronic attendance", "desc": "Real-time attendance, statistics, and automated reports." },
-        "payments": { "title": "Payment system", "desc": "Payment tracking, debtor control, and financial flow." },
-        "analytics": { "title": "Deep analytics", "desc": "Full analysis by revenue, growth, and teacher ratings." },
-        "sms": { "title": "Auto SMS messages", "desc": "Automatic notifications and payment reminders to parents." },
-        "telegram": { "title": "Telegram bot", "desc": "Integrated Telegram bot for students and parents." },
-        "coins": { "title": "Coin motivation", "desc": "Coin and reward system to motivate students." }
+        "students": {
+          "title": "Student database",
+          "desc": "All student data, admission process, and archive in one place."
+        },
+        "groups": {
+          "title": "Groups and courses",
+          "desc": "Group management, class schedule, and teacher assignment."
+        },
+        "attendance": {
+          "title": "Electronic attendance",
+          "desc": "Real-time attendance, statistics, and automated reports."
+        },
+        "payments": {
+          "title": "Payment system",
+          "desc": "Payment tracking, debtor control, and financial flow."
+        },
+        "analytics": {
+          "title": "Deep analytics",
+          "desc": "Full analysis by revenue, growth, and teacher ratings."
+        },
+        "sms": {
+          "title": "Auto SMS messages",
+          "desc": "Automatic notifications and payment reminders to parents."
+        },
+        "telegram": {
+          "title": "Telegram bot",
+          "desc": "Integrated Telegram bot for students and parents."
+        },
+        "coins": {
+          "title": "Coin motivation",
+          "desc": "Coin and reward system to motivate students."
+        }
       },
       "panels_label": "Roles",
       "panels_title": "Separate panel for each user",
       "panels": {
         "enter": "Login",
-        "director": { "title": "Director", "desc": "Full control, financial audit, and strategic reports." },
-        "manager": { "title": "Manager", "desc": "Student admission, groups, and daily operations." },
-        "teacher": { "title": "Teacher", "desc": "Class schedule, attendance, and student evaluation." },
-        "student": { "title": "Student & Parent", "desc": "Progress, payments, and homework." }
+        "director": {
+          "title": "Director",
+          "desc": "Full control, financial audit, and strategic reports."
+        },
+        "manager": {
+          "title": "Manager",
+          "desc": "Student admission, groups, and daily operations."
+        },
+        "teacher": {
+          "title": "Teacher",
+          "desc": "Class schedule, attendance, and student evaluation."
+        },
+        "student": {
+          "title": "Student & Parent",
+          "desc": "Progress, payments, and homework."
+        }
       },
       "why_label": "Why choose us",
       "why_title": "Reliable and secure platform",
       "benefits": {
-        "security": { "title": "Bank-grade security", "desc": "Your data is encrypted and protected." },
-        "speed": { "title": "Lightning fast performance", "desc": "Optimized system — without delays." },
-        "access": { "title": "Access from anywhere", "desc": "Cloud platform — from computer and phone." },
-        "multibranch": { "title": "Multi-branch support", "desc": "Manage multiple branches in a single panel." }
+        "security": {
+          "title": "Bank-grade security",
+          "desc": "Your data is encrypted and protected."
+        },
+        "speed": {
+          "title": "Lightning fast performance",
+          "desc": "Optimized system — without delays."
+        },
+        "access": {
+          "title": "Access from anywhere",
+          "desc": "Cloud platform — from computer and phone."
+        },
+        "multibranch": {
+          "title": "Multi-branch support",
+          "desc": "Manage multiple branches in a single panel."
+        }
       },
       "visual": {
         "ssl_title": "SSL Encrypted",
         "ssl_desc": "256-bit protection",
-        "notifications": { "label": "Notifications", "value": "Real-time" },
-        "schedule": { "label": "Class schedule", "value": "Automatic" },
-        "coins": { "label": "Coin system", "value": "Active" },
-        "reports": { "label": "Reports", "value": "Live" }
+        "notifications": {
+          "label": "Notifications",
+          "value": "Real-time"
+        },
+        "schedule": {
+          "label": "Class schedule",
+          "value": "Automatic"
+        },
+        "coins": {
+          "label": "Coin system",
+          "value": "Active"
+        },
+        "reports": {
+          "label": "Reports",
+          "value": "Live"
+        }
       },
       "cta_title": "Start today, feel the difference",
       "cta_desc": "Thousands of training centers have taken their business to a professional level with EduMRX. Now it's your turn.",
       "cta_button": "Start for free"
     },
-
     "features": {
       "label": "Features",
       "title": "All features in one place",
@@ -100,40 +157,88 @@
           "title": "Academic Process",
           "desc": "Students, groups, and schedules",
           "items": {
-            "students": { "title": "Student database", "desc": "Admissions, archive, and all personal data in one place." },
-            "groups": { "title": "Groups and courses", "desc": "Group management and teacher assignment." },
-            "attendance": { "title": "Electronic attendance", "desc": "Real-time attendance tracking and automated reports." },
-            "rooms": { "title": "Rooms", "desc": "Classroom management and booking." }
+            "students": {
+              "title": "Student database",
+              "desc": "Admissions, archive, and all personal data in one place."
+            },
+            "groups": {
+              "title": "Groups and courses",
+              "desc": "Group management and teacher assignment."
+            },
+            "attendance": {
+              "title": "Electronic attendance",
+              "desc": "Real-time attendance tracking and automated reports."
+            },
+            "rooms": {
+              "title": "Rooms",
+              "desc": "Classroom management and booking."
+            }
           }
         },
         "finance": {
           "title": "Finance",
           "desc": "Payments and financial control",
           "items": {
-            "payments": { "title": "Payment system", "desc": "Payment tracking and financial flow." },
-            "debtors": { "title": "Debtors", "desc": "Monitor outstanding debts and send reminders." },
-            "payment_types": { "title": "Payment types", "desc": "Cash, card, and other payment methods." },
-            "expenses": { "title": "Expenses", "desc": "Track and analyze center expenses." }
+            "payments": {
+              "title": "Payment system",
+              "desc": "Payment tracking and financial flow."
+            },
+            "debtors": {
+              "title": "Debtors",
+              "desc": "Monitor outstanding debts and send reminders."
+            },
+            "payment_types": {
+              "title": "Payment types",
+              "desc": "Cash, card, and other payment methods."
+            },
+            "expenses": {
+              "title": "Expenses",
+              "desc": "Track and analyze center expenses."
+            }
           }
         },
         "marketing": {
           "title": "Marketing & Notifications",
           "desc": "Communicate with clients",
           "items": {
-            "sms": { "title": "Auto SMS", "desc": "Automated notifications to parents." },
-            "telegram": { "title": "Telegram bot", "desc": "Bot for students and parents." },
-            "leads": { "title": "Leads", "desc": "Track new prospects and conversions." },
-            "notifications": { "title": "Notifications", "desc": "Real-time push and in-app notifications." }
+            "sms": {
+              "title": "Auto SMS",
+              "desc": "Automated notifications to parents."
+            },
+            "telegram": {
+              "title": "Telegram bot",
+              "desc": "Bot for students and parents."
+            },
+            "leads": {
+              "title": "Leads",
+              "desc": "Track new prospects and conversions."
+            },
+            "notifications": {
+              "title": "Notifications",
+              "desc": "Real-time push and in-app notifications."
+            }
           }
         },
         "analytics": {
           "title": "Analytics",
           "desc": "Data-driven decisions",
           "items": {
-            "overview": { "title": "General analytics", "desc": "Full overview of center performance." },
-            "payment_analysis": { "title": "Payment analysis", "desc": "Revenue trends and financial reports." },
-            "coins": { "title": "Coin statistics", "desc": "Student activity and motivation tracking." },
-            "holidays": { "title": "Holidays", "desc": "Manage holidays and special dates." }
+            "overview": {
+              "title": "General analytics",
+              "desc": "Full overview of center performance."
+            },
+            "payment_analysis": {
+              "title": "Payment analysis",
+              "desc": "Revenue trends and financial reports."
+            },
+            "coins": {
+              "title": "Coin statistics",
+              "desc": "Student activity and motivation tracking."
+            },
+            "holidays": {
+              "title": "Holidays",
+              "desc": "Manage holidays and special dates."
+            }
           }
         }
       },
@@ -149,7 +254,6 @@
       "cta_title": "Want to try all the features?",
       "cta_button": "Start for free"
     },
-
     "pricing": {
       "label": "Pricing",
       "title": "Choose the right plan for you",
@@ -161,9 +265,18 @@
       "per_year": "UZS / year",
       "choose": "Choose plan",
       "plans": {
-        "starter": { "name": "Starter", "desc": "The ideal starting package for small centers" },
-        "pro": { "name": "Pro", "desc": "Wide capabilities for medium and large centers" },
-        "enterprise": { "name": "Enterprise", "desc": "Unlimited capabilities for multi-branch networks" }
+        "starter": {
+          "name": "Starter",
+          "desc": "The ideal starting package for small centers"
+        },
+        "pro": {
+          "name": "Pro",
+          "desc": "Wide capabilities for medium and large centers"
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "desc": "Unlimited capabilities for multi-branch networks"
+        }
       },
       "features": {
         "students_200": "Up to 200 students",
@@ -216,7 +329,6 @@
         }
       }
     },
-
     "about": {
       "label": "About Us",
       "title": "Taking educational technology to the next level",
@@ -259,7 +371,6 @@
       "cta_title": "Join our team",
       "cta_button": "Contact us"
     },
-
     "contact": {
       "label": "Contact",
       "title": "Get in touch",
@@ -285,13 +396,11 @@
       "error": "Please enter your name and phone number",
       "success": "Your message has been sent! We'll get back to you soon."
     },
-
     "blog": {
       "title": "Blog",
       "coming_soon": "Articles coming soon"
     }
   },
-
   "common": {
     "save": "Save",
     "cancel": "Cancel",
@@ -325,9 +434,9 @@
     "page_label": "Page {{page}}",
     "delete_confirm_suffix": "Are you sure you want to delete? This action cannot be undone.",
     "no_results": "Not found",
-    "enter": "Enter"
+    "enter": "Enter",
+    "detail": "Detail"
   },
-
   "auth": {
     "common": {
       "welcome": "Welcome!",
@@ -359,9 +468,18 @@
         "support": "Support"
       },
       "roles": {
-        "student_user": { "label": "STUDENT PANEL", "name": "Student" },
-        "parent": { "label": "PARENT PANEL", "name": "Parent" },
-        "teacher": { "label": "TEACHER PANEL", "name": "Teacher" }
+        "student_user": {
+          "label": "STUDENT PANEL",
+          "name": "Student"
+        },
+        "parent": {
+          "label": "PARENT PANEL",
+          "name": "Parent"
+        },
+        "teacher": {
+          "label": "TEACHER PANEL",
+          "name": "Teacher"
+        }
       },
       "success": "Signed in successfully",
       "validation": {
@@ -385,8 +503,14 @@
         "support": "Support"
       },
       "roles": {
-        "director": { "label": "DIRECTOR PANEL", "name": "Director" },
-        "manager": { "label": "MANAGER PANEL", "name": "Manager" }
+        "director": {
+          "label": "DIRECTOR PANEL",
+          "name": "Director"
+        },
+        "manager": {
+          "label": "MANAGER PANEL",
+          "name": "Manager"
+        }
       },
       "success": "Signed in successfully",
       "validation": {
@@ -396,7 +520,6 @@
       }
     }
   },
-
   "director": {
     "nav": {
       "dashboard": "Dashboard",
@@ -422,7 +545,6 @@
       "collapse": "Collapse",
       "expand": "Expand"
     },
-
     "dashboard": {
       "title": "Welcome 👋",
       "subtitle": "Your education center status and statistics",
@@ -458,7 +580,6 @@
         "center": "Center {{num}}"
       }
     },
-
     "managers": {
       "title": "Managers",
       "count": "{{count}} managers",
@@ -497,7 +618,6 @@
         "delete_error": "Error during deletion"
       }
     },
-
     "branches": {
       "title": "Branches",
       "count": "{{count}} branches",
@@ -524,7 +644,8 @@
         "address_placeholder": "Enter address or select from map...",
         "status_label": "Status *",
         "map_loading": "Loading map",
-        "map_error": "Error loading map"
+        "map_error": "Error loading map",
+        "location_label": "Location"
       },
       "delete": {
         "title": "Delete branch",
@@ -540,7 +661,6 @@
         "delete_error": "Error during deletion"
       }
     },
-
     "courses": {
       "title": "Courses",
       "count": "{{count}} courses",
@@ -584,7 +704,6 @@
         "delete_error": "Error during deletion"
       }
     },
-
     "rooms": {
       "title": "Rooms",
       "count": "{{count}} rooms",
@@ -621,7 +740,6 @@
         "delete_error": "Error during deletion"
       }
     },
-
     "groups": {
       "title": "Groups",
       "count": "{{count}} groups",
@@ -674,7 +792,6 @@
         "delete_error": "Error during deletion"
       }
     },
-
     "lessons": {
       "title": "Schedule",
       "count": "{{count}} lessons",
@@ -720,7 +837,6 @@
         "delete_error": "Error during deletion"
       }
     },
-
     "teachers": {
       "title": "Teachers",
       "count": "{{count}} teachers",
@@ -763,7 +879,6 @@
         "delete_error": "Error during deletion"
       }
     },
-
     "students": {
       "title": "Students",
       "count": "{{count}} students",
@@ -802,7 +917,6 @@
         "delete_error": "Error during deletion"
       }
     },
-
     "profile": {
       "appearance": {
         "title": "Appearance",
@@ -830,7 +944,14 @@
         "new_label": "New password",
         "confirm_label": "Confirm password",
         "update_btn": "Update",
-        "placeholder": "Enter"
+        "placeholder": "Enter",
+        "validation": {
+          "old_required": "Current password is required",
+          "new_required": "New password is required",
+          "new_min": "At least 8 characters",
+          "confirm_required": "Confirmation is required",
+          "confirm_match": "Passwords do not match"
+        }
       },
       "locations": {
         "title": "Branch locations",
@@ -860,16 +981,15 @@
         "password_error": "Could not change password. Check your current password"
       }
     },
-
     "analytics": {
       "title": "Branch Analytics",
       "subtitle": "Student and revenue analysis by branch",
       "export": "Export",
       "years": {
-        "2026": "2026",
-        "2025": "2025",
+        "2023": "2023",
         "2024": "2024",
-        "2023": "2023"
+        "2025": "2025",
+        "2026": "2026"
       },
       "empty": {
         "title": "No branches found",
@@ -886,7 +1006,8 @@
         "flow_title": "Student flow",
         "legend_in": "Incoming",
         "legend_out": "Outgoing",
-        "revenue_title": "Revenue trend"
+        "revenue_title": "Revenue trend",
+        "revenue_label": "Revenue"
       }
     }
   }

@@ -8,7 +8,6 @@
       "contact": "Bog'lanish",
       "login": "Kirish"
     },
-
     "footer": {
       "product": "Mahsulot",
       "updates": "Yangilanishlar",
@@ -28,7 +27,6 @@
       "brand_desc": "O'zbekistondagi yetakchi ta'lim markazlari boshqaruv tizimi. Biznesingizni professional darajaga olib chiqing.",
       "rights": "Barcha huquqlar himoyalangan."
     },
-
     "home": {
       "badge": "O'zbekistondagi #1 ta'lim CRM platformasi",
       "title_1": "Ta'lim markazingizni",
@@ -52,45 +50,104 @@
       "features_title": "Markaz uchun barcha vositalar",
       "features_desc": "Ta'lim biznesingizni boshqarish uchun kerakli barcha funksiyalar bitta platformada jamlangan.",
       "features": {
-        "students": { "title": "O'quvchilar bazasi", "desc": "Barcha o'quvchilar ma'lumotlari, qabul jarayoni va arxiv bitta joyda." },
-        "groups": { "title": "Guruh va kurslar", "desc": "Guruhlarni boshqarish, dars jadvali va o'qituvchi biriktirish." },
-        "attendance": { "title": "Elektron davomat", "desc": "Real vaqtda davomat olish, statistika va avtomatik hisobotlar." },
-        "payments": { "title": "To'lovlar tizimi", "desc": "To'lovlarni kuzatish, qarzdorlar nazorati va moliyaviy oqim." },
-        "analytics": { "title": "Chuqur analitika", "desc": "Daromad, o'sish va o'qituvchilar reytingi bo'yicha to'liq tahlil." },
-        "sms": { "title": "Avto SMS xabarlar", "desc": "Ota-onalarga avtomatik xabarnomalar, to'lov eslatmalari." },
-        "telegram": { "title": "Telegram bot", "desc": "Talaba va ota-onalar uchun integratsiyalashgan Telegram bot." },
-        "coins": { "title": "Coin motivatsiya", "desc": "O'quvchilarni rag'batlantirish uchun coin va mukofot tizimi." }
+        "students": {
+          "title": "O'quvchilar bazasi",
+          "desc": "Barcha o'quvchilar ma'lumotlari, qabul jarayoni va arxiv bitta joyda."
+        },
+        "groups": {
+          "title": "Guruh va kurslar",
+          "desc": "Guruhlarni boshqarish, dars jadvali va o'qituvchi biriktirish."
+        },
+        "attendance": {
+          "title": "Elektron davomat",
+          "desc": "Real vaqtda davomat olish, statistika va avtomatik hisobotlar."
+        },
+        "payments": {
+          "title": "To'lovlar tizimi",
+          "desc": "To'lovlarni kuzatish, qarzdorlar nazorati va moliyaviy oqim."
+        },
+        "analytics": {
+          "title": "Chuqur analitika",
+          "desc": "Daromad, o'sish va o'qituvchilar reytingi bo'yicha to'liq tahlil."
+        },
+        "sms": {
+          "title": "Avto SMS xabarlar",
+          "desc": "Ota-onalarga avtomatik xabarnomalar, to'lov eslatmalari."
+        },
+        "telegram": {
+          "title": "Telegram bot",
+          "desc": "Talaba va ota-onalar uchun integratsiyalashgan Telegram bot."
+        },
+        "coins": {
+          "title": "Coin motivatsiya",
+          "desc": "O'quvchilarni rag'batlantirish uchun coin va mukofot tizimi."
+        }
       },
       "panels_label": "Rollar",
       "panels_title": "Har bir foydalanuvchi uchun alohida panel",
       "panels": {
         "enter": "Kirish",
-        "director": { "title": "Director", "desc": "To'liq nazorat, moliya auditi va strategik hisobotlar." },
-        "manager": { "title": "Manager", "desc": "O'quvchilar qabuli, guruhlar va kundalik operatsiyalar." },
-        "teacher": { "title": "Teacher", "desc": "Dars jadvali, davomat va o'quvchilar baholash." },
-        "student": { "title": "Student & Parent", "desc": "O'zlashtirish, to'lovlar va uy vazifalari." }
+        "director": {
+          "title": "Director",
+          "desc": "To'liq nazorat, moliya auditi va strategik hisobotlar."
+        },
+        "manager": {
+          "title": "Manager",
+          "desc": "O'quvchilar qabuli, guruhlar va kundalik operatsiyalar."
+        },
+        "teacher": {
+          "title": "Teacher",
+          "desc": "Dars jadvali, davomat va o'quvchilar baholash."
+        },
+        "student": {
+          "title": "Student & Parent",
+          "desc": "O'zlashtirish, to'lovlar va uy vazifalari."
+        }
       },
       "why_label": "Nega aynan biz",
       "why_title": "Ishonchli va xavfsiz platforma",
       "benefits": {
-        "security": { "title": "Bank darajasidagi xavfsizlik", "desc": "Ma'lumotlaringiz shifrlangan va himoyalangan." },
-        "speed": { "title": "Yashin tezligida ishlash", "desc": "Optimallashtirilgan tizim — kechikishlarsiz." },
-        "access": { "title": "Istalgan joydan kirish", "desc": "Bulutli platforma — kompyuter va telefondan." },
-        "multibranch": { "title": "Multi-filial qo'llab-quvvatlash", "desc": "Bir nechta filialni bitta panelda boshqaring." }
+        "security": {
+          "title": "Bank darajasidagi xavfsizlik",
+          "desc": "Ma'lumotlaringiz shifrlangan va himoyalangan."
+        },
+        "speed": {
+          "title": "Yashin tezligida ishlash",
+          "desc": "Optimallashtirilgan tizim — kechikishlarsiz."
+        },
+        "access": {
+          "title": "Istalgan joydan kirish",
+          "desc": "Bulutli platforma — kompyuter va telefondan."
+        },
+        "multibranch": {
+          "title": "Multi-filial qo'llab-quvvatlash",
+          "desc": "Bir nechta filialni bitta panelda boshqaring."
+        }
       },
       "visual": {
         "ssl_title": "SSL Shifrlangan",
         "ssl_desc": "256-bit himoya",
-        "notifications": { "label": "Bildirishnomalar", "value": "Real-time" },
-        "schedule": { "label": "Dars jadvali", "value": "Avtomatik" },
-        "coins": { "label": "Coin tizimi", "value": "Faol" },
-        "reports": { "label": "Hisobotlar", "value": "Jonli" }
+        "notifications": {
+          "label": "Bildirishnomalar",
+          "value": "Real-time"
+        },
+        "schedule": {
+          "label": "Dars jadvali",
+          "value": "Avtomatik"
+        },
+        "coins": {
+          "label": "Coin tizimi",
+          "value": "Faol"
+        },
+        "reports": {
+          "label": "Hisobotlar",
+          "value": "Jonli"
+        }
       },
       "cta_title": "Bugun boshlang, farqni his qiling",
       "cta_desc": "Minglab o'quv markazlari EduMRX bilan o'z biznesini professional darajaga olib chiqdi. Endi navbat sizda.",
       "cta_button": "Bepul boshlash"
     },
-
     "features": {
       "label": "Imkoniyatlar",
       "title": "Barcha funksiyalar bir joyda",
@@ -100,40 +157,88 @@
           "title": "Ta'lim jarayoni",
           "desc": "O'quvchilar, guruhlar va dars jadvali",
           "items": {
-            "students": { "title": "O'quvchilar bazasi", "desc": "Qabul, arxiv va barcha shaxsiy ma'lumotlar." },
-            "groups": { "title": "Guruh va kurslar", "desc": "Guruhlarni boshqarish va o'qituvchi biriktirish." },
-            "attendance": { "title": "Elektron davomat", "desc": "Real vaqtda davomat va avtomatik hisobotlar." },
-            "rooms": { "title": "Xonalar", "desc": "Dars xonalarini boshqarish va band qilish." }
+            "students": {
+              "title": "O'quvchilar bazasi",
+              "desc": "Qabul, arxiv va barcha shaxsiy ma'lumotlar."
+            },
+            "groups": {
+              "title": "Guruh va kurslar",
+              "desc": "Guruhlarni boshqarish va o'qituvchi biriktirish."
+            },
+            "attendance": {
+              "title": "Elektron davomat",
+              "desc": "Real vaqtda davomat va avtomatik hisobotlar."
+            },
+            "rooms": {
+              "title": "Xonalar",
+              "desc": "Dars xonalarini boshqarish va band qilish."
+            }
           }
         },
         "finance": {
           "title": "Moliya",
           "desc": "To'lovlar va moliyaviy nazorat",
           "items": {
-            "payments": { "title": "To'lovlar tizimi", "desc": "To'lovlarni kuzatish va moliyaviy oqim." },
-            "debtors": { "title": "Qarzdorlar", "desc": "Qarzdorlarni nazorat qilish va eslatma yuborish." },
-            "payment_types": { "title": "To'lov turlari", "desc": "Naqd, karta va boshqa usullar." },
-            "expenses": { "title": "Xarajatlar", "desc": "Markaz xarajatlarini kuzatish va tahlil." }
+            "payments": {
+              "title": "To'lovlar tizimi",
+              "desc": "To'lovlarni kuzatish va moliyaviy oqim."
+            },
+            "debtors": {
+              "title": "Qarzdorlar",
+              "desc": "Qarzdorlarni nazorat qilish va eslatma yuborish."
+            },
+            "payment_types": {
+              "title": "To'lov turlari",
+              "desc": "Naqd, karta va boshqa usullar."
+            },
+            "expenses": {
+              "title": "Xarajatlar",
+              "desc": "Markaz xarajatlarini kuzatish va tahlil."
+            }
           }
         },
         "marketing": {
           "title": "Marketing va xabarnomalar",
           "desc": "Mijozlar bilan muloqot",
           "items": {
-            "sms": { "title": "Avto SMS", "desc": "Ota-onalarga avtomatik xabarnomalar." },
-            "telegram": { "title": "Telegram bot", "desc": "O'quvchi va ota-onalar uchun bot." },
-            "leads": { "title": "Lidlar", "desc": "Yangi mijozlarni kuzatish va konversiya." },
-            "notifications": { "title": "Bildirishnomalar", "desc": "Real vaqtda push va ichki bildirishnomalar." }
+            "sms": {
+              "title": "Avto SMS",
+              "desc": "Ota-onalarga avtomatik xabarnomalar."
+            },
+            "telegram": {
+              "title": "Telegram bot",
+              "desc": "O'quvchi va ota-onalar uchun bot."
+            },
+            "leads": {
+              "title": "Lidlar",
+              "desc": "Yangi mijozlarni kuzatish va konversiya."
+            },
+            "notifications": {
+              "title": "Bildirishnomalar",
+              "desc": "Real vaqtda push va ichki bildirishnomalar."
+            }
           }
         },
         "analytics": {
           "title": "Analitika",
           "desc": "Ma'lumotlarga asoslangan qarorlar",
           "items": {
-            "overview": { "title": "Umumiy tahlil", "desc": "Markaz ko'rsatkichlarining to'liq ko'rinishi." },
-            "payment_analysis": { "title": "To'lov tahlili", "desc": "Daromad trendlari va moliyaviy hisobotlar." },
-            "coins": { "title": "Coin statistikasi", "desc": "O'quvchilar faolligi va rag'batlantirish." },
-            "holidays": { "title": "Dam olish kunlari", "desc": "Ta'til va maxsus sanalar boshqaruvi." }
+            "overview": {
+              "title": "Umumiy tahlil",
+              "desc": "Markaz ko'rsatkichlarining to'liq ko'rinishi."
+            },
+            "payment_analysis": {
+              "title": "To'lov tahlili",
+              "desc": "Daromad trendlari va moliyaviy hisobotlar."
+            },
+            "coins": {
+              "title": "Coin statistikasi",
+              "desc": "O'quvchilar faolligi va rag'batlantirish."
+            },
+            "holidays": {
+              "title": "Dam olish kunlari",
+              "desc": "Ta'til va maxsus sanalar boshqaruvi."
+            }
           }
         }
       },
@@ -149,7 +254,6 @@
       "cta_title": "Barcha imkoniyatlarni sinab ko'rmoqchimisiz?",
       "cta_button": "Bepul boshlash"
     },
-
     "pricing": {
       "label": "Narxlar",
       "title": "Sizga mos tarif tanlang",
@@ -161,9 +265,18 @@
       "per_year": "so'm / yil",
       "choose": "Tanlash",
       "plans": {
-        "starter": { "name": "Starter", "desc": "Kichik markazlar uchun ideal boshlang'ich paket" },
-        "pro": { "name": "Pro", "desc": "O'rta va katta markazlar uchun keng imkoniyatlar" },
-        "enterprise": { "name": "Enterprise", "desc": "Ko'p filialli tarmoqlar uchun cheksiz imkoniyatlar" }
+        "starter": {
+          "name": "Starter",
+          "desc": "Kichik markazlar uchun ideal boshlang'ich paket"
+        },
+        "pro": {
+          "name": "Pro",
+          "desc": "O'rta va katta markazlar uchun keng imkoniyatlar"
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "desc": "Ko'p filialli tarmoqlar uchun cheksiz imkoniyatlar"
+        }
       },
       "features": {
         "students_200": "200 gacha o'quvchi",
@@ -216,7 +329,6 @@
         }
       }
     },
-
     "about": {
       "label": "Biz haqimizda",
       "title": "Ta'lim texnologiyalarini yangi bosqichga olib chiqamiz",
@@ -259,7 +371,6 @@
       "cta_title": "Bizning jamoamizga qo'shiling",
       "cta_button": "Bog'lanish"
     },
-
     "contact": {
       "label": "Bog'lanish",
       "title": "Biz bilan bog'laning",
@@ -285,13 +396,11 @@
       "error": "Ism va telefon raqamni kiriting",
       "success": "Xabaringiz yuborildi! Tez orada bog'lanamiz."
     },
-
     "blog": {
       "title": "Blog",
       "coming_soon": "Tez orada maqolalar chiqadi"
     }
   },
-
   "common": {
     "save": "Saqlash",
     "cancel": "Bekor qilish",
@@ -325,9 +434,9 @@
     "page_label": "{{page}}-sahifa",
     "delete_confirm_suffix": "O'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.",
     "no_results": "Topilmadi",
-    "enter": "Kiriting"
+    "enter": "Kiriting",
+    "detail": "Tafsilot"
   },
-
   "auth": {
     "common": {
       "welcome": "Xush kelibsiz!",
@@ -359,9 +468,18 @@
         "support": "Yordam"
       },
       "roles": {
-        "student_user": { "label": "O'QUVCHI PANEL", "name": "O'quvchi" },
-        "parent": { "label": "OTA-ONA PANEL", "name": "Ota-ona" },
-        "teacher": { "label": "O'QITUVCHI PANEL", "name": "O'qituvchi" }
+        "student_user": {
+          "label": "O'QUVCHI PANEL",
+          "name": "O'quvchi"
+        },
+        "parent": {
+          "label": "OTA-ONA PANEL",
+          "name": "Ota-ona"
+        },
+        "teacher": {
+          "label": "O'QITUVCHI PANEL",
+          "name": "O'qituvchi"
+        }
       },
       "success": "Muvaffaqiyatli kirdingiz",
       "validation": {
@@ -385,8 +503,14 @@
         "support": "Qo'llab-quvvatlash"
       },
       "roles": {
-        "director": { "label": "DIREKTOR PANEL", "name": "Direktor" },
-        "manager": { "label": "MENEJER PANEL", "name": "Menejer" }
+        "director": {
+          "label": "DIREKTOR PANEL",
+          "name": "Direktor"
+        },
+        "manager": {
+          "label": "MENEJER PANEL",
+          "name": "Menejer"
+        }
       },
       "success": "Muvaffaqiyatli kirdingiz",
       "validation": {
@@ -396,7 +520,6 @@
       }
     }
   },
-
   "director": {
     "nav": {
       "dashboard": "Dashboard",
@@ -422,7 +545,6 @@
       "collapse": "Yig'ish",
       "expand": "Yoyish"
     },
-
     "dashboard": {
       "title": "Xush kelibsiz 👋",
       "subtitle": "Ta'lim markazingiz holati va statistikalar",
@@ -458,7 +580,6 @@
         "center": "Markaz {{num}}"
       }
     },
-
     "managers": {
       "title": "Menejerlar",
       "count": "{{count}} ta menejer",
@@ -497,7 +618,6 @@
         "delete_error": "O'chirishda xatolik"
       }
     },
-
     "branches": {
       "title": "Filiallar",
       "count": "{{count}} ta filial",
@@ -524,7 +644,8 @@
         "address_placeholder": "Manzilni kiriting yoki xaritadan tanlang...",
         "status_label": "Holati *",
         "map_loading": "Xarita yuklanmoqda",
-        "map_error": "Xaritani yuklashda xatolik"
+        "map_error": "Xaritani yuklashda xatolik",
+        "location_label": "Joylashuv"
       },
       "delete": {
         "title": "Filialni o'chirish",
@@ -540,7 +661,6 @@
         "delete_error": "O'chirishda xatolik yuz berdi"
       }
     },
-
     "courses": {
       "title": "Kurslar",
       "count": "{{count}} ta kurs",
@@ -584,7 +704,6 @@
         "delete_error": "O'chirishda xatolik yuz berdi"
       }
     },
-
     "rooms": {
       "title": "Xonalar",
       "count": "{{count}} ta xona",
@@ -621,7 +740,6 @@
         "delete_error": "O'chirishda xatolik yuz berdi"
       }
     },
-
     "groups": {
       "title": "Guruhlar",
       "count": "{{count}} ta guruh",
@@ -674,7 +792,6 @@
         "delete_error": "O'chirishda xatolik yuz berdi"
       }
     },
-
     "lessons": {
       "title": "Dars jadvali",
       "count": "{{count}} ta dars",
@@ -720,7 +837,6 @@
         "delete_error": "O'chirishda xatolik yuz berdi"
       }
     },
-
     "teachers": {
       "title": "O'qituvchilar",
       "count": "{{count}} ta o'qituvchi",
@@ -763,7 +879,6 @@
         "delete_error": "O'chirishda xatolik"
       }
     },
-
     "students": {
       "title": "Talabalar",
       "count": "{{count}} ta talaba",
@@ -802,7 +917,6 @@
         "delete_error": "O'chirishda xatolik"
       }
     },
-
     "profile": {
       "appearance": {
         "title": "Ko'rinish",
@@ -830,7 +944,14 @@
         "new_label": "Yangi parol",
         "confirm_label": "Parolni tasdiqlang",
         "update_btn": "O'zgartirish",
-        "placeholder": "Kiriting"
+        "placeholder": "Kiriting",
+        "validation": {
+          "old_required": "Joriy parol majburiy",
+          "new_required": "Yangi parol majburiy",
+          "new_min": "Kamida 8 belgi",
+          "confirm_required": "Tasdiqlash majburiy",
+          "confirm_match": "Parollar mos kelmadi"
+        }
       },
       "locations": {
         "title": "Filiallar manzili",
@@ -860,16 +981,15 @@
         "password_error": "Parolni o'zgartirib bo'lmadi. Joriy parolni tekshiring"
       }
     },
-
     "analytics": {
       "title": "Filial Tahlili",
       "subtitle": "Filial bo'yicha o'quvchilar va daromad tahlili",
       "export": "Eksport",
       "years": {
-        "2026": "2026 yil",
-        "2025": "2025 yil",
+        "2023": "2023 yil",
         "2024": "2024 yil",
-        "2023": "2023 yil"
+        "2025": "2025 yil",
+        "2026": "2026 yil"
       },
       "empty": {
         "title": "Filiallar topilmadi",
@@ -886,7 +1006,8 @@
         "flow_title": "O'quvchilar oqimi",
         "legend_in": "Kelgan",
         "legend_out": "Ketgan",
-        "revenue_title": "Daromad trendi"
+        "revenue_title": "Daromad trendi",
+        "revenue_label": "Tushum"
       }
     }
   }
