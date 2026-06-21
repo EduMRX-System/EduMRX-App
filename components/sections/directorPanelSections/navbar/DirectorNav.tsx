@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useUIStore } from "@/store/useUIStore";
 import { LogoIcons } from "@/constants/icons"; // ← o'z yo'lingizga moslang
 import {
@@ -25,6 +26,7 @@ interface NavProps {
 }
 
 export default function DirectorNav({ onNavigate }: NavProps) {
+    const { t } = useTranslation();
     const isActive = useActive();
     const { isSidebarCollapsed, setSidebarCollapsed, theme } = useUIStore();
     const collapsed = isSidebarCollapsed;
@@ -61,7 +63,7 @@ export default function DirectorNav({ onNavigate }: NavProps) {
                 <button
                     onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
                     className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-all duration-200 cursor-pointer shrink-0"
-                    title={collapsed ? "Yoyish" : "Yig'ish"}
+                    title={collapsed ? t("director.nav.expand") : t("director.nav.collapse")}
                 >
                     {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
                 </button>
@@ -117,12 +119,13 @@ function NavItemLink({
     nested?: boolean;
     onNavigate?: () => void;
 }) {
+    const { t } = useTranslation();
     const Icon = item.icon;
     return (
         <Link
             href={item.href}
             onClick={onNavigate}
-            title={collapsed ? item.title : undefined}
+            title={collapsed ? t(item.title) : undefined}
             className={`
         group relative flex items-center rounded-xl
         transition-all duration-200 font-medium mb-1
@@ -138,13 +141,13 @@ function NavItemLink({
 
             {!collapsed && (
                 <span className="whitespace-nowrap overflow-hidden transition-all duration-300 w-auto opacity-100">
-                    {item.title}
+                    {t(item.title)}
                 </span>
             )}
 
             {collapsed && (
                 <div className="absolute left-full ml-2 px-3 py-1.5 bg-slate-900 dark:bg-slate-700 text-white text-xs font-medium rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[9999] whitespace-nowrap pointer-events-none">
-                    {item.title}
+                    {t(item.title)}
                     <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-slate-900 dark:bg-slate-700 rotate-45" />
                 </div>
             )}
@@ -166,6 +169,7 @@ function GroupItem({
     isActive: (href: string) => boolean;
     onNavigate?: () => void;
 }) {
+    const { t } = useTranslation();
     const Icon = group.icon;
     const hasActiveChild = group.children.some((c) => isActive(c.href));
 
@@ -184,7 +188,7 @@ function GroupItem({
         `}
             >
                 <Icon className="w-5 h-5 shrink-0 opacity-70 group-hover:opacity-100" />
-                <span className="flex-1 text-left whitespace-nowrap">{group.title}</span>
+                <span className="flex-1 text-left whitespace-nowrap">{t(group.title)}</span>
                 <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
             </button>
 
