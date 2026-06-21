@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -37,20 +37,7 @@ interface AxiosErrorResponse {
   message?: string;
 }
 
-const schema = yup.object({
-  phone: yup
-    .string()
-    .required("Telefon raqam majburiy")
-    .test("len", "To'liq raqam kiriting", (val) => val?.replace(/\D/g, "").length === 12),
-  password: yup.string().required("Parol majburiy"),
-});
-
-type FormData = yup.InferType<typeof schema>;
-
-const ROLE_INFO: Record<StaffRole, { label: string; uz: string }> = {
-  director: { label: "DIREKTOR PANEL", uz: "Direktor" },
-  manager: { label: "MENEJER PANEL", uz: "Menejer" },
-};
+type FormData = { phone: string; password: string };
 
 export default function StaffLoginView() {
   const { t } = useTranslation();
@@ -58,6 +45,17 @@ export default function StaffLoginView() {
   const { login } = useAuthStore();
 
   const [role, setRole] = useState<StaffRole>("director");
+
+  const schema = useMemo(() =>
+    yup.object({
+      phone: yup
+        .string()
+        .required(t("auth.staff.validation.phone_required"))
+        .test("len", t("auth.staff.validation.phone_invalid"), (val) => val?.replace(/\D/g, "").length === 12),
+      password: yup.string().required(t("auth.staff.validation.password_required")),
+    }),
+    [t]
+  );
 
   const {
     register,
@@ -83,7 +81,7 @@ export default function StaffLoginView() {
       document.cookie = `user=${encodeURIComponent(JSON.stringify({ ...user, role: user?.role || role }))}; ${cookieOptions}`;
 
       login({ ...user, role: user?.role || role }, { access_token, refresh_token });
-      toast.success(message || "Muvaffaqiyatli kirdingiz");
+      toast.success(message || t("auth.staff.success"));
 
       const targetRole = (user?.role || role) as StaffRole;
       const base = getSubdomainUrl(targetRole);
@@ -93,7 +91,6 @@ export default function StaffLoginView() {
         ? `${base}/?at=${encodeURIComponent(access_token)}&rt=${encodeURIComponent(refresh_token)}`
         : base;
 
-      // replace() — orqaga qaytib bo'lmaydi (login history'dan o'chadi)
       window.location.replace(url);
     },
     onError: (err: AxiosErrorResponse) => {
@@ -101,23 +98,25 @@ export default function StaffLoginView() {
       if (e?.non_field_errors?.[0]) toast.error(e.non_field_errors[0]);
       else if (e && typeof e === "object") {
         const v = e[Object.keys(e)[0]];
-        toast.error(Array.isArray(v) ? v[0] : "Ma'lumotlarni tekshiring");
-      } else toast.error(err?.message || "Xatolik yuz berdi");
+        toast.error(Array.isArray(v) ? v[0] : t("auth.common.error_check"));
+      } else toast.error(err?.message || t("auth.common.error_generic"));
     },
   });
 
   const features = [
-    { icon: BarChart3, text: "Real-vaqt analitika" },
-    { icon: Building2, text: "Multi-filial nazorati" },
-    { icon: Zap, text: "Tezkor to'lovlar" },
-    { icon: Lock, text: "Xavfsiz ma'lumotlar" },
+    { icon: BarChart3, key: "analytics" },
+    { icon: Building2, key: "multibranch" },
+    { icon: Zap, key: "payments" },
+    { icon: Lock, key: "security" },
   ];
 
   const stats = [
-    { value: "20+", label: "Ta'lim markazlari" },
-    { value: "1000+", label: "O'quvchilar" },
-    { value: "24/7", label: "Qo'llab-quvvatlash", icon: Clock },
+    { value: "20+", key: "centers" },
+    { value: "1000+", key: "students" },
+    { value: "24/7", key: "support", icon: Clock },
   ];
+
+  const ROLES: StaffRole[] = ["director", "manager"];
 
   return (
     <div className="min-h-screen w-full flex bg-white dark:bg-slate-950 overflow-hidden transition-colors">
@@ -139,7 +138,6 @@ export default function StaffLoginView() {
             <Link href="/">
               <Image src={LogoIcons.logoDark} width={250} height={62} alt="EduMRX Logo" />
             </Link>
-
           </div>
 
           <motion.div
@@ -148,10 +146,10 @@ export default function StaffLoginView() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <h2 className="text-4xl font-black text-white leading-tight tracking-tight">
-              O'quv markazingizni<br />raqamlashtiring
+              {t("auth.staff.heading")}
             </h2>
             <p className="text-white/70 text-sm mt-4 max-w-md leading-relaxed">
-              Zamonaviy boshqaruv tizimi bilan o'quv jarayonlarini avtomatlashtiring. Hisobotlar, davomat va to'lovlar — barchasi bitta platformada.
+              {t("auth.staff.desc")}
             </p>
           </motion.div>
 
@@ -163,14 +161,16 @@ export default function StaffLoginView() {
           >
             {features.map((f) => (
               <motion.div
-                key={f.text}
+                key={f.key}
                 variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
                 className="flex items-center gap-3 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
               >
                 <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
                   <f.icon className="w-4 h-4 text-white/80" />
                 </div>
-                <span className="text-sm font-semibold text-white/90">{f.text}</span>
+                <span className="text-sm font-semibold text-white/90">
+                  {t(`auth.staff.features.${f.key}`)}
+                </span>
               </motion.div>
             ))}
           </motion.div>
@@ -183,12 +183,12 @@ export default function StaffLoginView() {
           className="relative z-10 grid grid-cols-3 gap-3 max-w-lg"
         >
           {stats.map((s) => (
-            <div key={s.label} className="p-5 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 text-center">
+            <div key={s.key} className="p-5 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 text-center">
               <div className="flex items-center justify-center gap-1.5">
                 {s.icon && <s.icon className="w-5 h-5 text-white/80" />}
                 <span className="text-2xl font-black text-white">{s.value}</span>
               </div>
-              <p className="text-[11px] text-white/60 mt-1">{s.label}</p>
+              <p className="text-[11px] text-white/60 mt-1">{t(`auth.staff.stats.${s.key}`)}</p>
             </div>
           ))}
         </motion.div>
@@ -218,12 +218,12 @@ export default function StaffLoginView() {
               <Shield className="w-4.5 h-4.5 text-white" />
             </div>
             <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 tracking-widest">
-              {ROLE_INFO[role].label}
+              {t(`auth.staff.roles.${role}.label`)}
             </span>
           </div>
 
           <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-900 flex gap-1 border border-slate-200 dark:border-slate-800">
-            {(["director", "manager"] as StaffRole[]).map((r) => (
+            {ROLES.map((r) => (
               <button
                 key={r}
                 onClick={() => setRole(r)}
@@ -232,21 +232,28 @@ export default function StaffLoginView() {
                   : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                   }`}
               >
-                {ROLE_INFO[r].uz}
+                {t(`auth.staff.roles.${r}.name`)}
               </button>
             ))}
           </div>
 
           <div>
-            <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Xush kelibsiz!</h2>
+            <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+              {t("auth.common.welcome")}
+            </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              <span className="text-indigo-600 dark:text-indigo-400 font-bold">{ROLE_INFO[role].uz}</span> sifatida tizimga kiring
+              <span className="text-indigo-600 dark:text-indigo-400 font-bold">
+                {t(`auth.staff.roles.${role}.name`)}
+              </span>{" "}
+              {t("auth.common.role_hint")}
             </p>
           </div>
 
           <form onSubmit={handleSubmit((d) => loginStaff(d))} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Telefon raqami</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                {t("auth.common.phone_label")}
+              </label>
               <Controller
                 name="phone"
                 control={control}
@@ -257,13 +264,15 @@ export default function StaffLoginView() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Parol</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                {t("auth.common.password_label")}
+              </label>
               <PasswordInput register={register("password")} error={errors.password?.message} />
             </div>
 
             <div className="text-right">
               <button type="button" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors">
-                Parolni unutdingizmi?
+                {t("auth.common.forgot_password")}
               </button>
             </div>
 
@@ -279,16 +288,22 @@ export default function StaffLoginView() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>Tizimga kirish</span>
+                  <span>{t("auth.common.submit")}</span>
                 </>
               )}
             </motion.button>
           </form>
 
           <p className="text-xs text-slate-400 dark:text-slate-500 text-center leading-relaxed">
-            Tizimga kirish orqali siz bizning{" "}
-            <span className="text-indigo-600 dark:text-indigo-400 font-semibold">shartlar</span> va{" "}
-            <span className="text-indigo-600 dark:text-indigo-400 font-semibold">maxfiylik siyosati</span>ni qabul qilasiz
+            {t("auth.common.legal_prefix")}{" "}
+            <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
+              {t("auth.common.legal_terms")}
+            </span>{" "}
+            {t("auth.common.legal_and")}{" "}
+            <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
+              {t("auth.common.legal_privacy")}
+            </span>
+            {t("auth.common.legal_suffix")}
           </p>
         </motion.div>
       </div>
