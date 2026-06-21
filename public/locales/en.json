@@ -284,6 +284,11 @@
       "send": "Send",
       "error": "Please enter your name and phone number",
       "success": "Your message has been sent! We'll get back to you soon."
+    },
+
+    "blog": {
+      "title": "Blog",
+      "coming_soon": "Articles coming soon"
     }
   },
 

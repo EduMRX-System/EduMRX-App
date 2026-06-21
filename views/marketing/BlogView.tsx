@@ -1,16 +1,17 @@
-import React from "react";
+"use client";
 
-export default function AboutView() {
+import { useTranslation } from "react-i18next";
+
+export default function BlogView() {
+  const { t } = useTranslation();
+
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 text-left space-y-4">
+    <div className="mx-auto max-w-4xl px-4 py-16 text-center space-y-4">
       <h1 className="text-2xl font-black text-slate-900 dark:text-white">
-        Biz haqimizda
+        {t("marketing.blog.title")}
       </h1>
-      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-        EduMRX — ta'lim tizimini to'liq raqamlashtirishni maqsad qilgan
-        professional SaaS ekotizimidir. Biz zamonaviy ta'lim markazlariga barcha
-        filiallarini, guruhlarini va xodimlarini bitta markazlashgan boshqaruv
-        paneli orqali nazorat qilish imkonini beramiz.
+      <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+        {t("marketing.blog.coming_soon")}
       </p>
     </div>
   );

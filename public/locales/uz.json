@@ -284,6 +284,11 @@
       "send": "Yuborish",
       "error": "Ism va telefon raqamni kiriting",
       "success": "Xabaringiz yuborildi! Tez orada bog'lanamiz."
+    },
+
+    "blog": {
+      "title": "Blog",
+      "coming_soon": "Tez orada maqolalar chiqadi"
     }
   },
 
