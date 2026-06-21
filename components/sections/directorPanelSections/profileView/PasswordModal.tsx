@@ -1,28 +1,39 @@
 "use client";
 
 // components/profile/PasswordModal.tsx
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { API } from "@/services/api";
 import ModalShell from "./ModalShell";
 
-const schema = yup.object({
-  old_password: yup.string().required("Joriy parol majburiy"),
-  new_password: yup.string().required("Yangi parol majburiy").min(8, "Kamida 8 belgi"),
-  confirm_password: yup
-    .string()
-    .required("Tasdiqlang")
-    .oneOf([yup.ref("new_password")], "Parollar mos kelmadi"),
-});
-type Form = yup.InferType<typeof schema>;
+type Form = { old_password: string; new_password: string; confirm_password: string };
 
 export default function PasswordModal({ onClose }: { onClose: () => void }) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
+
+  const schema = useMemo(
+    () =>
+      yup.object({
+        old_password: yup.string().required(t("director.profile.password.validation.old_required")),
+        new_password: yup
+          .string()
+          .required(t("director.profile.password.validation.new_required"))
+          .min(8, t("director.profile.password.validation.new_min")),
+        confirm_password: yup
+          .string()
+          .required(t("director.profile.password.validation.confirm_required"))
+          .oneOf([yup.ref("new_password")], t("director.profile.password.validation.confirm_match")),
+      }),
+    [t]
+  );
+
   const {
     register,
     handleSubmit,
@@ -36,18 +47,18 @@ export default function PasswordModal({ onClose }: { onClose: () => void }) {
         new_password: body.new_password,
       }),
     onSuccess: () => {
-      toast.success("Parol o'zgartirildi");
+      toast.success(t("director.profile.toast.password_changed"));
       onClose();
     },
-    onError: () => toast.error("Parolni o'zgartirib bo'lmadi. Joriy parolni tekshiring"),
+    onError: () => toast.error(t("director.profile.toast.password_error")),
   });
 
   return (
     <ModalShell
       icon={<Lock className="w-7 h-7" />}
       iconBg="bg-indigo-600"
-      title="Parolni o'zgartirish"
-      desc="Parolni o'zgartirish uchun joriy parolni kiriting"
+      title={t("director.profile.password.modal_title")}
+      desc={t("director.profile.password.modal_desc")}
       onClose={onClose}
       footer={
         <>
@@ -56,7 +67,7 @@ export default function PasswordModal({ onClose }: { onClose: () => void }) {
             onClick={onClose}
             className="px-5 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
-            Bekor qilish
+            {t("common.cancel")}
           </button>
           <button
             type="submit"
@@ -65,15 +76,34 @@ export default function PasswordModal({ onClose }: { onClose: () => void }) {
             className="flex items-center gap-2 px-5 h-11 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition-colors disabled:opacity-50"
           >
             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-            O'zgartirish
+            {t("director.profile.password.update_btn")}
           </button>
         </>
       }
     >
       <form id="pw-form" onSubmit={handleSubmit((d) => change(d))} className="space-y-4 py-2">
-        <Field label="Joriy parol" show={show} error={errors.old_password?.message} register={register("old_password")} toggle={() => setShow((s) => !s)} />
-        <Field label="Yangi parol" show={show} error={errors.new_password?.message} register={register("new_password")} />
-        <Field label="Parolni tasdiqlang" show={show} error={errors.confirm_password?.message} register={register("confirm_password")} />
+        <Field
+          label={t("director.profile.password.current_label")}
+          placeholder={t("director.profile.password.placeholder")}
+          show={show}
+          error={errors.old_password?.message}
+          register={register("old_password")}
+          toggle={() => setShow((s) => !s)}
+        />
+        <Field
+          label={t("director.profile.password.new_label")}
+          placeholder={t("director.profile.password.placeholder")}
+          show={show}
+          error={errors.new_password?.message}
+          register={register("new_password")}
+        />
+        <Field
+          label={t("director.profile.password.confirm_label")}
+          placeholder={t("director.profile.password.placeholder")}
+          show={show}
+          error={errors.confirm_password?.message}
+          register={register("confirm_password")}
+        />
       </form>
     </ModalShell>
   );
@@ -81,12 +111,14 @@ export default function PasswordModal({ onClose }: { onClose: () => void }) {
 
 function Field({
   label,
+  placeholder,
   show,
   error,
   register,
   toggle,
 }: {
   label: string;
+  placeholder: string;
   show: boolean;
   error?: string;
   register: any;
@@ -101,7 +133,7 @@ function Field({
         <input
           {...register}
           type={show ? "text" : "password"}
-          placeholder="Kiriting"
+          placeholder={placeholder}
           className={`w-full h-11 px-3.5 pr-11 rounded-xl text-sm outline-none transition-all
             bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400
             border ${error ? "border-red-500/60 focus:border-red-500" : "border-slate-200 dark:border-slate-700 focus:border-indigo-500"}`}
