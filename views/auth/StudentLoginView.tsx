@@ -19,6 +19,7 @@ import {
     Clock,
     Sun,
     Moon,
+    ArrowLeft,
 } from "lucide-react";
 
 import { getSubdomainUrl, getCookieOptions } from "@/utils/redirect";
@@ -32,7 +33,7 @@ import { LogoIcons } from "@/constants/icons";
 import Link from "next/link";
 import Image from "next/image";
 
-type StudentRole = "student_user" | "parent" | "teacher";
+type StudentRole = "student_user" | "parent";
 
 interface AxiosErrorResponse {
     response?: { data?: { non_field_errors?: string[];[key: string]: string[] | string | undefined } };
@@ -41,7 +42,11 @@ interface AxiosErrorResponse {
 
 type FormData = { phone: string; password: string };
 
-export default function StudentLoginView() {
+interface Props {
+    onBack?: () => void;
+}
+
+export default function StudentLoginView({ onBack }: Props) {
     const { t } = useTranslation();
     const { theme, setTheme } = useUIStore();
     const { login } = useAuthStore();
@@ -122,11 +127,10 @@ export default function StudentLoginView() {
         { value: "24/7", key: "support", icon: Clock },
     ];
 
-    const ROLES: StudentRole[] = ["student_user", "parent", "teacher"];
+    const ROLES: StudentRole[] = ["student_user", "parent"];
     const roleIconMap: Record<StudentRole, React.ElementType> = {
         student_user: GraduationCap,
         parent: Users,
-        teacher: BookOpen,
     };
     const RoleIcon = roleIconMap[role];
 
@@ -214,6 +218,17 @@ export default function StudentLoginView() {
             {/* RIGHT: Form */}
             <div className="w-full lg:w-[520px] flex flex-col justify-center p-8 sm:p-12 bg-white dark:bg-slate-950 relative transition-colors">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-3xl rounded-full pointer-events-none" />
+
+                {onBack && (
+                    <button
+                        type="button"
+                        onClick={onBack}
+                        className="absolute top-6 left-6 z-20 flex items-center gap-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        {t("auth.common.go_back")}
+                    </button>
+                )}
 
                 <button
                     type="button"
