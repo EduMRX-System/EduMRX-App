@@ -86,10 +86,10 @@ export default function HomeView() {
 
   // Role panellari
   const panels = [
-    { icon: Shield, key: "director", color: "from-indigo-500 to-blue-600", loginUrl: "/staff" },
-    { icon: Users, key: "manager", color: "from-violet-500 to-purple-600", loginUrl: "/staff" },
-    { icon: GraduationCap, key: "teacher", color: "from-blue-500 to-cyan-600", loginUrl: "/" },
-    { icon: MessageCircle, key: "student", color: "from-emerald-500 to-teal-600", loginUrl: "/" },
+    { icon: Shield,        key: "director", color: "from-indigo-500 to-blue-600",   profile: "staff"    },
+    { icon: Users,         key: "manager",  color: "from-violet-500 to-purple-600", profile: "staff"    },
+    { icon: GraduationCap, key: "teacher",  color: "from-blue-500 to-cyan-600",     profile: "staff"    },
+    { icon: MessageCircle, key: "student",  color: "from-emerald-500 to-teal-600",  profile: "student"  },
   ];
 
   // Afzalliklar
@@ -340,8 +340,7 @@ export default function HomeView() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
           >
             {panels.map((panel) => {
-              const path = panel.loginUrl === "/staff" ? "/staff" : "/";
-              const href = `${loginBase}${path}`;
+              const href = `${loginBase}/login?profile=${panel.profile}`;
 
               return (
                 <motion.a
