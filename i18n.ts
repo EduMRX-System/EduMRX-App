@@ -5,10 +5,10 @@ import uz from "./public/locales/uz.json";
 import ru from "./public/locales/ru.json";
 
 function getInitialLanguage(): string {
-  if (typeof window === "undefined") return "uz";
+  if (typeof document === "undefined") return "uz";
   try {
-    const stored = JSON.parse(localStorage.getItem("ui-storage") ?? "{}");
-    return (stored?.state?.language as string) || "uz";
+    const match = document.cookie.match(/(^| )lang=([^;]+)/);
+    return match ? decodeURIComponent(match[2]) : "uz";
   } catch {
     return "uz";
   }

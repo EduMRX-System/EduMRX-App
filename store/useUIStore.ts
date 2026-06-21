@@ -3,27 +3,29 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import i18n from "@/i18n";
+import { getLangCookie, setLangCookie } from "@/lib/cookies";
 
 interface UIState {
   theme: "light" | "dark";
   language: string;
   isSidebarOpen: boolean;
-  isSidebarCollapsed: boolean; // 1. Yangi holat (state)
+  isSidebarCollapsed: boolean;
 
   setTheme: (theme: "light" | "dark") => void;
   setLanguage: (lang: string) => void;
   toggleSidebar: () => void;
   setSidebarOpen: (isOpen: boolean) => void;
-  setSidebarCollapsed: (isCollapsed: boolean) => void; // 2. Yangi funksiya (action)
+  setSidebarCollapsed: (isCollapsed: boolean) => void;
 }
 
 export const useUIStore = create<UIState>()(
   persist(
     (set) => ({
       theme: "light",
-      language: "uz",
+      // Language comes from the shared cookie, not localStorage
+      language: getLangCookie(),
       isSidebarOpen: false,
-      isSidebarCollapsed: false, // Default holatda sidebar ochiq turadi
+      isSidebarCollapsed: false,
 
       setTheme: (theme) => {
         if (typeof window !== "undefined") {
@@ -33,6 +35,8 @@ export const useUIStore = create<UIState>()(
       },
 
       setLanguage: (language) => {
+        // Cookie is the single source of truth (shared across subdomains)
+        setLangCookie(language);
         i18n.changeLanguage(language);
         if (typeof window !== "undefined") {
           document.documentElement.lang = language;
@@ -43,17 +47,13 @@ export const useUIStore = create<UIState>()(
       toggleSidebar: () =>
         set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
       setSidebarOpen: (isOpen) => set({ isSidebarOpen: isOpen }),
-
-      // 3. Collapse holatini o'zgartiruvchi action
-      setSidebarCollapsed: (isCollapsed) =>
-        set({ isSidebarCollapsed: isCollapsed }),
+      setSidebarCollapsed: (isCollapsed) => set({ isSidebarCollapsed: isCollapsed }),
     }),
     {
       name: "ui-storage",
-      // 4. partialize ichiga isSidebarCollapsed qo'shildi, shunda refresh bo'lganda ham yopiqligi eslab qolinadi
+      // language is intentionally excluded — it lives in the cookie
       partialize: (state) => ({
         theme: state.theme,
-        language: state.language,
         isSidebarCollapsed: state.isSidebarCollapsed,
       }),
     },
