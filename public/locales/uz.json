@@ -1,5 +1,14 @@
 {
   "marketing": {
+    "nav": {
+      "home": "Bosh sahifa",
+      "features": "Imkoniyatlar",
+      "pricing": "Tariflar",
+      "about": "Biz haqimizda",
+      "contact": "Bog'lanish",
+      "login": "Kirish"
+    },
+
     "home": {
       "badge": "O'zbekistondagi #1 ta'lim CRM platformasi",
       "title_1": "Ta'lim markazingizni",

@@ -46,11 +46,11 @@ export default function Header() {
     useEffect(() => setMobileOpen(false), [pathname]);
 
     const navLinks = [
-        { label: t("nav.home", "Bosh sahifa"), href: "/" },
-        { label: t("nav.features", "Imkoniyatlar"), href: "/features" },
-        { label: t("nav.pricing", "Tariflar"), href: "/pricing" },
-        { label: t("nav.about", "Biz haqimizda"), href: "/about" },
-        { label: t("nav.contact", "Bog'lanish"), href: "/contact" },
+        { label: t("marketing.nav.home"), href: "/" },
+        { label: t("marketing.nav.features"), href: "/features" },
+        { label: t("marketing.nav.pricing"), href: "/pricing" },
+        { label: t("marketing.nav.about"), href: "/about" },
+        { label: t("marketing.nav.contact"), href: "/contact" },
     ];
 
     const currentLang = LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
@@ -184,7 +184,7 @@ export default function Header() {
                                 href={loginUrl}
                                 className="hidden sm:inline-flex group h-8 px-3.5 ml-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-bold rounded-lg items-center gap-1 transition-all shadow-md shadow-indigo-500/25"
                             >
-                                <span>{t("nav.login", "Kirish")}</span>
+                                <span>{t("marketing.nav.login")}</span>
                                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                             </a>
 
@@ -257,7 +257,7 @@ export default function Header() {
                                     href={loginUrl}
                                     className="flex items-center justify-center gap-1.5 mt-4 h-11 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl transition-colors"
                                 >
-                                    <span>{t("nav.login", "Kirish")}</span>
+                                    <span>{t("marketing.nav.login")}</span>
                                     <ArrowRight className="w-4 h-4" />
                                 </a>
                             </div>
