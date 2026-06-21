@@ -148,6 +148,73 @@
       },
       "cta_title": "Want to try all the features?",
       "cta_button": "Start for free"
+    },
+
+    "pricing": {
+      "label": "Pricing",
+      "title": "Choose the right plan for you",
+      "subtitle": "Transparent pricing for everyone. No hidden fees.",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "popular": "Most popular",
+      "currency": "UZS / mo",
+      "per_year": "UZS / year",
+      "choose": "Choose plan",
+      "plans": {
+        "starter": { "name": "Starter", "desc": "The ideal starting package for small centers" },
+        "pro": { "name": "Pro", "desc": "Wide capabilities for medium and large centers" },
+        "enterprise": { "name": "Enterprise", "desc": "Unlimited capabilities for multi-branch networks" }
+      },
+      "features": {
+        "students_200": "Up to 200 students",
+        "managers_5": "5 managers",
+        "attendance_payments": "Attendance & payments",
+        "basic_reports": "Basic reports",
+        "sms": "SMS notifications",
+        "telegram": "Telegram bot",
+        "coins": "Coin motivation system",
+        "students_1000": "Up to 1,000 students",
+        "unlimited_managers": "Unlimited managers",
+        "all_basic": "All basic features",
+        "deep_analytics": "Deep analytics",
+        "unlimited_students": "Unlimited students",
+        "multibranch": "Multi-branch support",
+        "all_features": "All features",
+        "custom_integrations": "Custom integrations"
+      },
+      "calc": {
+        "title": "Calculate your price",
+        "subtitle": "Get a real price based on your center's size",
+        "students": "Number of students",
+        "branches": "Number of branches",
+        "teachers": "Number of teachers",
+        "your_plan": "Your plan",
+        "summary": "{{students}} students, {{branches}} branch(es), {{teachers}} teachers",
+        "monthly_label": "Monthly cost",
+        "per_month": "UZS / per month",
+        "yearly_label": "Yearly cost",
+        "discount": "10% discount applied",
+        "note": "For each student over {{threshold}} — +{{price}} UZS extra"
+      },
+      "faq_title": "Frequently asked questions",
+      "faq": {
+        "trial": {
+          "q": "Can I try for free?",
+          "a": "Yes, a 14-day free trial is available for any plan. No credit card required."
+        },
+        "change_plan": {
+          "q": "Can I change my plan?",
+          "a": "Yes, you can upgrade or downgrade your plan at any time."
+        },
+        "payment": {
+          "q": "How are payments made?",
+          "a": "You can pay via bank transfer, card, or cash."
+        },
+        "security": {
+          "q": "Is my data safe?",
+          "a": "Yes, all data is protected with SSL encryption and bank-grade security."
+        }
+      }
     }
   },
 

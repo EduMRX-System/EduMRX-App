@@ -148,6 +148,73 @@
       },
       "cta_title": "Barcha imkoniyatlarni sinab ko'rmoqchimisiz?",
       "cta_button": "Bepul boshlash"
+    },
+
+    "pricing": {
+      "label": "Narxlar",
+      "title": "Sizga mos tarif tanlang",
+      "subtitle": "Hamma uchun ochiq narxlar. Yashirin to'lovlar yo'q.",
+      "monthly": "Oylik",
+      "yearly": "Yillik",
+      "popular": "Eng mashhur",
+      "currency": "so'm / oy",
+      "per_year": "so'm / yil",
+      "choose": "Tanlash",
+      "plans": {
+        "starter": { "name": "Starter", "desc": "Kichik markazlar uchun ideal boshlang'ich paket" },
+        "pro": { "name": "Pro", "desc": "O'rta va katta markazlar uchun keng imkoniyatlar" },
+        "enterprise": { "name": "Enterprise", "desc": "Ko'p filialli tarmoqlar uchun cheksiz imkoniyatlar" }
+      },
+      "features": {
+        "students_200": "200 gacha o'quvchi",
+        "managers_5": "5 ta menejer",
+        "attendance_payments": "Davomat va to'lovlar",
+        "basic_reports": "Asosiy hisobotlar",
+        "sms": "SMS xabarlar",
+        "telegram": "Telegram bot",
+        "coins": "Coin motivatsiya tizimi",
+        "students_1000": "1000 gacha o'quvchi",
+        "unlimited_managers": "Cheksiz menejerlar",
+        "all_basic": "Barcha asosiy funksiyalar",
+        "deep_analytics": "Chuqur analitika",
+        "unlimited_students": "Cheksiz o'quvchilar",
+        "multibranch": "Multi-filial qo'llab-quvvatlash",
+        "all_features": "Barcha funksiyalar",
+        "custom_integrations": "Maxsus integratsiyalar"
+      },
+      "calc": {
+        "title": "O'z narxingizni hisoblang",
+        "subtitle": "Markaz hajmiga qarab real narxni biling",
+        "students": "O'quvchilar soni",
+        "branches": "Filiallar soni",
+        "teachers": "O'qituvchilar soni",
+        "your_plan": "Sizning rejangiz",
+        "summary": "{{students}} o'quvchi, {{branches}} filial, {{teachers}} o'qituvchi",
+        "monthly_label": "Oylik narx",
+        "per_month": "so'm / oyiga",
+        "yearly_label": "Yillik narx",
+        "discount": "10% chegirma kiritilgan",
+        "note": "{{threshold}} dan ortiq o'quvchi uchun har biri +{{price}} so'm"
+      },
+      "faq_title": "Ko'p so'raladigan savollar",
+      "faq": {
+        "trial": {
+          "q": "Bepul sinab ko'rish mumkinmi?",
+          "a": "Ha, har qanday tarif uchun 14 kunlik bepul sinov muddati mavjud. Kredit karta talab qilinmaydi."
+        },
+        "change_plan": {
+          "q": "Tarifni o'zgartirish mumkinmi?",
+          "a": "Ha, istalgan vaqtda tarifni yuqoriga yoki pastga o'zgartirish mumkin."
+        },
+        "payment": {
+          "q": "To'lov qanday amalga oshiriladi?",
+          "a": "Bank o'tkazmasi, karta yoki naqd pul orqali to'lash mumkin."
+        },
+        "security": {
+          "q": "Ma'lumotlarim xavfsizmi?",
+          "a": "Ha, barcha ma'lumotlar SSL shifrlash va bank darajasidagi xavfsizlik bilan himoyalangan."
+        }
+      }
     }
   },
 
