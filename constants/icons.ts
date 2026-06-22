@@ -15,7 +15,6 @@
 // import phoneIcon from "../public/icons/phone-icon.svg";
 // import passwordIcon from "../public/icons/password-icon.svg";
 // import plusIcon from "../public/icons/plus-icon.svg";
-// import logo from "../public/icons/site-logo.svg";
 
 // export const icons = {
 //   dashboardIcon,
@@ -50,13 +49,22 @@ import logo from "../public/icons/logo.svg";
 
 export const LogoIcons = {
   icon16,
+  
   icon180,
+
   icon192,
+
   icon32,
+
   icon48,
+
   icon512,
+
   icon96,
+
   icon,
+
   logoDark,
+
   logo,
 };
