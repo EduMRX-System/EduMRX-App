@@ -25,15 +25,13 @@ export default function Provider({ children }: { children: React.ReactNode }) {
                 position="top-right"
                 autoClose={3000}
                 hideProgressBar={false}
-                newestOnTop={true}
-                closeOnClick={true}
-                rtl={false}
-                pauseOnFocusLoss={true}
-                draggable={true}
-                pauseOnHover={true}
+                newestOnTop
+                closeOnClick
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
                 theme="colored"
-                className="w-full sm:w-[350px] p-0!"
-                toastClassName="dark:bg-slate-800! dark:text-white! rounded-xl! shadow-lg!"
+                toastClassName="rounded-xl! shadow-lg!"
             />
 
         </QueryClientProvider>

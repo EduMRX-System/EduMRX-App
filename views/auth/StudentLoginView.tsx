@@ -22,7 +22,7 @@ import {
     ArrowLeft,
 } from "lucide-react";
 
-import { getSubdomainUrl, getCookieOptions } from "@/utils/redirect";
+import { getUrlForRole, getCookieOptions } from "@/utils/redirect";
 
 import { API } from "@/services/api";
 import { PhoneInput } from "@/components/ui/PhoneInput";
@@ -93,11 +93,14 @@ export default function StudentLoginView({ onBack }: Props) {
             login({ ...user, role: user?.role || role }, { access_token, refresh_token });
             toast.success(message || t("auth.login.success"));
 
-            const targetRole = (user?.role || role) as StudentRole;
-            const sub = targetRole === "student_user" ? "student" : targetRole;
-            const base = getSubdomainUrl(sub);
-            const isLocalNow = window.location.hostname.includes("localhost");
+            const effectiveRole = user?.role || role;
+            const base = getUrlForRole(effectiveRole);
+            if (!base) {
+                toast.error(`Noma'lum rol: "${effectiveRole ?? "—"}". Administrator bilan bog'laning.`);
+                return;
+            }
 
+            const isLocalNow = window.location.hostname.includes("localhost");
             const url = isLocalNow
                 ? `${base}/?at=${encodeURIComponent(access_token)}&rt=${encodeURIComponent(refresh_token)}`
                 : base;

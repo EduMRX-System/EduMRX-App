@@ -200,3 +200,38 @@ select {
         animation-iteration-count: 1 !important;
     }
 }
+
+/* Desktop: toast kengligi */
+:root {
+    --toastify-toast-width: 340px;
+}
+
+/* Mobil: o'ngда, chetidan bo'shliq bilan, ixcham */
+@media (max-width: 480px) {
+    .Toastify__toast-container {
+        width: auto !important;
+        max-width: 320px !important;
+        left: auto !important;
+        right: 12px !important;
+        margin: 10px 0 0 0  !important;
+        padding: 0 !important;
+    }
+
+    .Toastify__toast {
+        border-radius: 12px !important;
+        margin-bottom: 8px !important;
+        min-height: auto !important;
+        padding: 10px 12px !important;
+    }
+
+    .Toastify__toast-body {
+        font-size: 13px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+}
+
+/* Uzun matn o'ralsin */
+.Toastify__toast-body {
+    word-break: break-word;
+}

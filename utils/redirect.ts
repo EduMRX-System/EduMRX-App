@@ -1,3 +1,12 @@
+export const ROLE_SUBDOMAIN: Record<string, string> = {
+  director: "director",
+  manager: "manager",
+  teacher: "teacher",
+  student_user: "student",
+  student: "student",
+  parent: "parent",
+};
+
 export function getSubdomainUrl(subdomain: string): string {
   const isLocal =
     typeof window !== "undefined" &&
@@ -5,6 +14,15 @@ export function getSubdomainUrl(subdomain: string): string {
   return isLocal
     ? `http://${subdomain}.localhost:3000`
     : `https://${subdomain}.edumrx.uz`;
+}
+
+/** role → subdomain URL. Agar rol noma'lum bo'lsa null qaytaradi. */
+export function getUrlForRole(role: string | undefined | null): string | null {
+  if (!role || typeof role !== "string") return null;
+  const normalized = role.toLowerCase().trim();
+  const sub: string | undefined = ROLE_SUBDOMAIN[normalized] ?? ROLE_SUBDOMAIN[role.trim()];
+  if (!sub || typeof sub !== "string") return null;
+  return getSubdomainUrl(sub);
 }
 
 export function getCookieOptions(): string {

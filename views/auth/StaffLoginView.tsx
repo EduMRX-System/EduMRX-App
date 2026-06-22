@@ -21,7 +21,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 
-import { getSubdomainUrl, getCookieOptions } from "@/utils/redirect";
+import { getUrlForRole, getCookieOptions } from "@/utils/redirect";
 import { API } from "@/services/api";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import { PasswordInput } from "@/components/ui/PasswordInput";
@@ -75,27 +75,46 @@ export default function StaffLoginView({ onBack }: Props) {
   const { mutate: loginStaff, isPending } = useMutation({
     mutationFn: (body: FormData) =>
       API.post("auth/login/", { ...body, phone: `+${body.phone}` }),
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       const { user, access_token, refresh_token, message } = res.data;
 
       const cookieOptions = getCookieOptions();
       document.cookie = `access_token=${access_token}; ${cookieOptions}`;
       document.cookie = `refresh_token=${refresh_token}; ${cookieOptions}`;
-      document.cookie = `user=${encodeURIComponent(JSON.stringify(user))}; ${cookieOptions}`;
 
-      login(user, { access_token, refresh_token });
+      // role login javobida yo'q → me/ dan olamiz
+      let role = user?.role;
+      if (!role) {
+        try {
+          const meRes = await API.get("me/");   // token allaqachon cookie/header da
+          role = meRes.data?.role;
+          // to'liq user'ni ham yangilaymiz
+          document.cookie = `user=${encodeURIComponent(JSON.stringify(meRes.data))}; ${cookieOptions}`;
+          login(meRes.data, { access_token, refresh_token });
+        } catch {
+          toast.error("Foydalanuvchi ma'lumotini olishda xatolik");
+          return;
+        }
+      } else {
+        document.cookie = `user=${encodeURIComponent(JSON.stringify(user))}; ${cookieOptions}`;
+        login(user, { access_token, refresh_token });
+      }
+
       toast.success(message || t("auth.staff.success"));
 
-      const targetRole = user?.role as StaffRole;
-      const base = getSubdomainUrl(targetRole);
-      const isLocal = window.location.hostname.includes("localhost");
+      const base = getUrlForRole(role);
+      if (!base) {
+        toast.error(`Noma'lum rol: "${role ?? "—"}". Administrator bilan bog'laning.`);
+        return;
+      }
 
+      const isLocal = window.location.hostname.includes("localhost");
       const url = isLocal
         ? `${base}/?at=${encodeURIComponent(access_token)}&rt=${encodeURIComponent(refresh_token)}`
         : base;
 
       window.location.replace(url);
-    },
+    },  
     onError: (err: AxiosErrorResponse) => {
       const e = err?.response?.data;
       if (e?.non_field_errors?.[0]) toast.error(e.non_field_errors[0]);

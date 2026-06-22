@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 
 // Role → subdomen yorlig'i (host'dagi 1-bo'lak shunga almashtiriladi)
 const ROLE_SUBDOMAIN: Record<string, string> = {
-    super_admin: "admin",
     director: "director",
     manager: "manager",
     teacher: "teacher",
