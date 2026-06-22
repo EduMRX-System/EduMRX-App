@@ -1,25 +1,45 @@
-"use client";
+import type { Metadata } from "next";
+import LoginClient from "./LoginClient";
 
-import { useState } from "react";
-import ChooseProfileView from "@/views/auth/ChooseProfileView";
-import StudentLoginView from "@/views/auth/StudentLoginView";
-import StaffLoginView from "@/views/auth/StaffLoginView";
+export const metadata: Metadata = {
+  title: "Kirish — EduMRX",
+  description:
+    "EduMRX tizimiga kirish. O'quvchi yoki xodim sifatida tizimga kiring va o'z panelingizdan foydalaning.",
+  keywords: [
+    "edumrx login",
+    "edumrx kirish",
+    "edumrx tizimiga kirish",
+    "o'quv markazi tizimi",
+    "edumrx",
+  ],
+  alternates: { canonical: "https://login.edumrx.uz/" },
+  openGraph: {
+    title: "Kirish — EduMRX",
+    description: "EduMRX tizimiga kirish sahifasi",
+    url: "https://login.edumrx.uz/",
+    siteName: "EduMRX",
+    type: "website",
+  },
+};
 
-type Step = "choose" | "student" | "staff";
-
-function getInitialStep(): Step {
-  if (typeof window === "undefined") return "choose";
-  const profile = new URLSearchParams(window.location.search).get("profile");
-  if (profile === "staff")    return "staff";
-  if (profile === "student")  return "student";
-  return "choose";
-}
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Kirish — EduMRX",
+  description:
+    "EduMRX tizimiga kirish. O'quvchi yoki xodim sifatida tizimga kiring.",
+  url: "https://login.edumrx.uz/",
+  isPartOf: { "@type": "WebSite", name: "EduMRX", url: "https://edumrx.uz" },
+};
 
 export default function LoginPage() {
-  const [step, setStep] = useState<Step>(getInitialStep);
-
-  if (step === "student") return <StudentLoginView onBack={() => setStep("choose")} />;
-  if (step === "staff")   return <StaffLoginView   onBack={() => setStep("choose")} />;
-
-  return <ChooseProfileView onChoose={(type) => setStep(type)} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <LoginClient />
+    </>
+  );
 }

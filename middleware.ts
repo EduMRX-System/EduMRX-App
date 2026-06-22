@@ -49,12 +49,14 @@ export function middleware(request: NextRequest) {
   // 1. LOGIN subdomain (login.edumrx.uz / login.localhost)
   // ═══════════════════════════════════════════════════
   if (subdomain === "login") {
-    // /staff → staff login, / → student login (URL o'zgarmaydi, rewrite)
     // Eslatma: token bor bo'lsa ham bu yerda redirect qilmaymiz —
     // login sahifasi o'zi (frontend) kerakli dashboardga yuboradi.
     // Bu loop oldini oladi.
     if (pathname === "/staff") {
-      return NextResponse.rewrite(new URL("/staff-login", request.url));
+      return NextResponse.rewrite(new URL("/login/staff", request.url));
+    }
+    if (pathname === "/student") {
+      return NextResponse.rewrite(new URL("/login/student", request.url));
     }
     if (pathname === "/") {
       return NextResponse.rewrite(new URL("/login", request.url));

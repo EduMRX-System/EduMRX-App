@@ -9,7 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Dashboard subdomainlari va shaxsiy sahifalarni indekslamaslik
         disallow: [
           "/api/",
           "/admin/",
@@ -18,8 +17,6 @@ export default function robots(): MetadataRoute.Robots {
           "/teacher/",
           "/student/",
           "/parent/",
-          "/login",
-          "/staff",
           "/_next/",
         ],
       },

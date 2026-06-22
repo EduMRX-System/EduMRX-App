@@ -84,7 +84,6 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
 
     const { mutate: saveManager, isPending } = useMutation({
         mutationFn: async (body: FormData) => {
-            // edit'da parol bo'sh bo'lsa yubormaymiz
             const payload: any = { ...body };
             if (isEdit && !payload.password) delete payload.password;
             return isEdit

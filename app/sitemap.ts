@@ -2,6 +2,7 @@
 import type { MetadataRoute } from "next";
 
 const SITE_URL = "https://edumrx.uz";
+const LOGIN_URL = "https://login.edumrx.uz";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -35,6 +36,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages },
     });
   }
+
+  // Login sahifalar (login.edumrx.uz)
+  entries.push(
+    {
+      url: `${LOGIN_URL}/`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${LOGIN_URL}/student`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${LOGIN_URL}/staff`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+  );
 
   return entries;
 }
