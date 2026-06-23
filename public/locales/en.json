@@ -1023,6 +1023,53 @@
         "revenue_title": "Revenue trend",
         "revenue_label": "Revenue"
       }
+    },
+    "tools": {
+      "calculator": "Calculator",
+      "calendar": "Calendar",
+      "today": "Today",
+      "months": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ],
+      "weekdays": [
+        "Mo",
+        "Tu",
+        "We",
+        "Th",
+        "Fr",
+        "Sa",
+        "Su"
+      ],
+      "quick_tools": "Quick Tools",
+      "notes": "Notes",
+      "todos": "To-Do",
+      "percent": "Percent / Currency",
+      "notes_placeholder": "Write a note...",
+      "notes_add": "Add",
+      "notes_empty": "No notes yet",
+      "todos_placeholder": "New task...",
+      "todos_pending": "{{count}} pending",
+      "todos_all_done": "All done!",
+      "todos_empty": "No tasks yet",
+      "calc_amount": "Amount",
+      "calc_result": "Result",
+      "currency": "Currency",
+      "currency_loading": "Loading rates...",
+      "currency_error": "Rates unavailable",
+      "currency_retry": "Retry",
+      "currency_enter_amount": "Enter amount",
+      "currency_rate": "Rate: {{date}}"
     }
   }
 }

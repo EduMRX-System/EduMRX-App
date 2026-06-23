@@ -1023,6 +1023,53 @@
         "revenue_title": "Daromad trendi",
         "revenue_label": "Tushum"
       }
+    },
+    "tools": {
+      "calculator": "Kalkulyator",
+      "calendar": "Kalendar",
+      "today": "Bugun",
+      "months": [
+        "Yanvar",
+        "Fevral",
+        "Mart",
+        "Aprel",
+        "May",
+        "Iyun",
+        "Iyul",
+        "Avgust",
+        "Sentabr",
+        "Oktabr",
+        "Noyabr",
+        "Dekabr"
+      ],
+      "weekdays": [
+        "Du",
+        "Se",
+        "Ch",
+        "Pa",
+        "Ju",
+        "Sh",
+        "Ya"
+      ],
+      "quick_tools": "Tezkor vositalar",
+      "notes": "Eslatmalar",
+      "todos": "Vazifalar",
+      "percent": "Foiz / Valyuta",
+      "notes_placeholder": "Eslatma yozing...",
+      "notes_add": "Qo'shish",
+      "notes_empty": "Eslatma yo'q",
+      "todos_placeholder": "Yangi vazifa...",
+      "todos_pending": "{{count}} ta bajarilmagan",
+      "todos_all_done": "Hammasi bajarildi!",
+      "todos_empty": "Vazifa yo'q",
+      "calc_amount": "Summa",
+      "calc_result": "Natija",
+      "currency": "Valyuta",
+      "currency_loading": "Kurs yuklanmoqda...",
+      "currency_error": "Kurs olib bo’lmadi",
+      "currency_retry": "Qayta urinish",
+      "currency_enter_amount": "Summani kiriting",
+      "currency_rate": "Kurs: {{date}}"
     }
   }
 }

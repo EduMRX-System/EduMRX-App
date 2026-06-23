@@ -1023,6 +1023,53 @@
         "revenue_title": "Тренд дохода",
         "revenue_label": "Доход"
       }
+    },
+    "tools": {
+      "calculator": "Калькулятор",
+      "calendar": "Календарь",
+      "today": "Сегодня",
+      "months": [
+        "Январь",
+        "Февраль",
+        "Март",
+        "Апрель",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Август",
+        "Сентябрь",
+        "Октябрь",
+        "Ноябрь",
+        "Декабрь"
+      ],
+      "weekdays": [
+        "Пн",
+        "Вт",
+        "Ср",
+        "Чт",
+        "Пт",
+        "Сб",
+        "Вс"
+      ],
+      "quick_tools": "Быстрые инструменты",
+      "notes": "Заметки",
+      "todos": "Задачи",
+      "percent": "Процент / Валюта",
+      "notes_placeholder": "Напишите заметку...",
+      "notes_add": "Добавить",
+      "notes_empty": "Заметок нет",
+      "todos_placeholder": "Новая задача...",
+      "todos_pending": "{{count}} не выполнено",
+      "todos_all_done": "Всё выполнено!",
+      "todos_empty": "Задач нет",
+      "calc_amount": "Сумма",
+      "calc_result": "Результат",
+      "currency": "Валюта",
+      "currency_loading": "Загрузка курсов...",
+      "currency_error": "Не удалось получить курс",
+      "currency_retry": "Повторить",
+      "currency_enter_amount": "Введите сумму",
+      "currency_rate": "Курс: {{date}}"
     }
   }
 }

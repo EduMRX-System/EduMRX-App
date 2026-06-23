@@ -7,6 +7,7 @@ import { useUIStore } from "@/store/useUIStore";
 import { directorMenu } from "@/constants/navigation";
 import DirectorNav from "@/components/sections/directorPanelSections/navbar/DirectorNav";
 import Breadcrumb from "@/components/ui/Breadcrumb";
+import ToolsWidget from "@/components/sections/directorPanelSections/tools/ToolsWidget";
 
 export default function DirectorLayout({
   children,
@@ -47,7 +48,7 @@ export default function DirectorLayout({
         {/* MAIN CONTENT */}
         <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden transition-all duration-300">
           {/* HEADER — floating sidebar bilan moslab, ozgina padding bilan */}
-          <Header menuItems={directorMenu} />
+          <Header menuItems={directorMenu} showQuickTools />
 
 
           <main className="px-3 pb-3 pt-4 md:px-5 md:pb-5 flex-1 overflow-y-auto transition-all duration-300">
@@ -59,6 +60,7 @@ export default function DirectorLayout({
         </div>
 
       </div>
+      <ToolsWidget />
     </ProtectedRoute >
   );
 }

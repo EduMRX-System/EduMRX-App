@@ -9,9 +9,11 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavItem } from "@/constants/navigation";
+import QuickToolsPopover from "@/components/sections/directorPanelSections/tools/QuickToolsPopover";
 
 interface HeaderProps {
     menuItems?: NavItem[];
+    showQuickTools?: boolean;
 }
 
 interface Notification {
@@ -22,7 +24,7 @@ interface Notification {
     read: boolean;
 }
 
-export default function Header({ menuItems = [] }: HeaderProps) {
+export default function Header({ menuItems = [], showQuickTools = false }: HeaderProps) {
     const { t } = useTranslation();
     const { user } = useAuthStore();
     const { setTheme, theme, toggleSidebar } = useUIStore();
@@ -82,6 +84,8 @@ export default function Header({ menuItems = [] }: HeaderProps) {
 
                 {/* RIGHT cluster */}
                 <div className="flex items-center gap-1 shrink-0">
+                    {showQuickTools && <QuickToolsPopover />}
+
                     {/* Notifications — dropdown bilan */}
                     <div className="relative" ref={notifRef}>
                         <button

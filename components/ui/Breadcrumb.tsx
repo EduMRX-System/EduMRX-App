@@ -18,8 +18,8 @@ const SEGMENT_KEY: Record<string, string> = {
   rooms:              "director.nav.rooms",
   managers:           "director.nav.managers",
   branches:           "director.nav.branches",
-  payments:           "director.nav.payments",
-  expenses:           "director.nav.expenses",
+  payments:          "director.nav.payments",
+  expenses:            "director.nav.expenses",
   profile:            "director.nav.profile",
   locations:          "director.profile.locations.title",
 };
