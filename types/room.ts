@@ -3,6 +3,9 @@ export interface Room {
     id: string;
     name: string;
     capacity: number;
+    center?: string;
+    branch?: string;
+    branch_name?: string;
 }
 
 export interface RoomsResponse {
@@ -16,4 +19,6 @@ export interface RoomsResponse {
 export interface RoomPayload {
     name: string;
     capacity: number;
+    center: string;
+    branch: string;
 }

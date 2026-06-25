@@ -1,13 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { BranchesResponse } from "@/types/branch";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
-// Barcha branch so'rovlari shu yerda — yagona manba
 const BRANCHES_URL = "center/branches/";
 
-// ───────────────────────────────────────────────
-// LIST (BranchesView uchun) — { status, count, data: [...] }
-// ───────────────────────────────────────────────
 interface BranchListParams {
     page?: number;
     pageSize?: number;
@@ -15,11 +12,18 @@ interface BranchListParams {
 }
 
 export function useBranches({ page = 1, pageSize = 10, search = "" }: BranchListParams = {}) {
+    const activeCenter = useActiveCenterStore((s) => s.activeCenter);
+
     return useQuery<BranchesResponse>({
-        queryKey: ["branches", { page, pageSize, search }],
+        queryKey: ["branches", { page, pageSize, search, centerId: activeCenter }],
         queryFn: async () => {
             const res = await API.get<BranchesResponse>(BRANCHES_URL, {
-                params: { page, page_size: pageSize, search: search || undefined },
+                params: {
+                    page,
+                    page_size: pageSize,
+                    search: search || undefined,
+                    center_id: activeCenter || undefined,
+                },
             });
             return res.data;
         },
@@ -27,10 +31,6 @@ export function useBranches({ page = 1, pageSize = 10, search = "" }: BranchList
     });
 }
 
-// ───────────────────────────────────────────────
-// OPTIONS (dropdown uchun: teacher / student / groups)
-// nom + manzil bilan chiroyli ko'rinadi
-// ───────────────────────────────────────────────
 export interface BranchOption {
     id: string;
     label: string;
@@ -38,10 +38,17 @@ export interface BranchOption {
 }
 
 export function useBranchOptions() {
+    const activeCenter = useActiveCenterStore((s) => s.activeCenter);
+
     return useQuery<BranchOption[]>({
-        queryKey: ["branches", "options"],
+        queryKey: ["branches", "options", activeCenter],
         queryFn: async () => {
-            const res = await API.get(BRANCHES_URL, { params: { page_size: 200 } });
+            const res = await API.get(BRANCHES_URL, {
+                params: {
+                    page_size: 200,
+                    center_id: activeCenter || undefined,
+                },
+            });
             const d: any = res.data;
             const list = Array.isArray(d) ? d : d?.data ?? d?.results ?? [];
             return list.map((b: any) => ({

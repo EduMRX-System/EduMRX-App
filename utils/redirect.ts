@@ -1,10 +1,12 @@
 export const ROLE_SUBDOMAIN: Record<string, string> = {
   director: "director",
+  admin: "manager",       // backend "admin" = manager paneli
   manager: "manager",
   teacher: "teacher",
   student_user: "student",
   student: "student",
   parent: "parent",
+  super_admin: "admin",   // super admin paneli (agar mavjud bo'lsa)
 };
 
 export function getSubdomainUrl(subdomain: string): string {

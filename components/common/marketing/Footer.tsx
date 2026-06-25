@@ -107,13 +107,13 @@ export default function Footer() {
 
             {/* Contact */}
             <div className="space-y-2.5">
-              <a href="mailto:info@edumrx.uz" className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              <a href="mailto:edumrxm@gmail.com" className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                 <Mail className="w-4 h-4" />
-                <span>info@edumrx.uz</span>
+                <span>edumrxm@gmail.com</span>
               </a>
-              <a href="tel:+998901234567" className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              <a href="tel:+998908182299" className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                 <Phone className="w-4 h-4" />
-                <span>+998 90 123 45 67</span>
+                <span>+998 90 818 22 99</span>
               </a>
               <div className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400">
                 <MapPin className="w-4 h-4" />

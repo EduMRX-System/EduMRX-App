@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -9,9 +9,9 @@ import { API } from "@/services/api";
 import { GraduationCap, X, Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { formatUzPhone, splitFullName, type ITeacher } from "@/types/teacher";
-import SearchSelect from "@/components/ui/SearchSelect";
-import { useBranchOptions } from "@/hooks/useBranchOptions";
 import { useTranslation } from "react-i18next";
+import ScopeFormFields from "@/components/common/ScopeFormFields";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -26,7 +26,7 @@ const schema = yup.object({
         then: (s) => s.min(6, "Kamida 6 belgi").required("Parol majburiy"),
         otherwise: (s) => s.optional(),
     }),
-    centers: yup.string().uuid("Markaz UUID noto'g'ri").required("Markazni tanlang"),
+    branch: yup.string().uuid("Filial UUID noto'g'ri").required("Filialni tanlang"),
     specialization: yup.string().required("Mutaxassislik majburiy"),
     experience: yup.number().typeError("Raqam kiriting").min(0, "Manfiy bo'lmasin").max(50, "Juda katta").required("Tajriba majburiy"),
     salary: yup.string().required("Maosh majburiy").matches(/^\d+$/, "Faqat raqam"),
@@ -49,10 +49,9 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
     const [phoneDisplay, setPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const { data: branches = [], isLoading: branchesLoading } = useBranchOptions();
+    const { activeCenter, isCentersLoaded } = useActiveCenterStore();
 
     const u = teacher?.user;
-    const currentCenterId = teacher?.centers || teacher?.center || teacher?.center_id || teacher?.branch || "";
     const nameFromFull = splitFullName(u?.full_name);
 
     const {
@@ -70,7 +69,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
             phone: u?.phone || "998",
             email: u?.email || "",
             password: "",
-            centers: currentCenterId,
+            branch: (teacher as any)?.branch || "",
             specialization: teacher?.specialization || "",
             experience: teacher?.experience ?? 0,
             salary: teacher?.salary ? String(Math.abs(parseInt(teacher.salary))).replace(/\D/g, "") : "",
@@ -84,13 +83,6 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
         if (u?.phone) setPhoneDisplay(formatUzPhone(u.phone));
     }, [u]);
 
-    // Filial options'da yo'q bo'lsa, joriy filialni qo'shamiz (label ko'rinishi uchun)
-    const branchOptions = useMemo(() => {
-        if (currentCenterId && teacher?.center_name && !branches.some((b) => b.id === currentCenterId)) {
-            return [{ id: currentCenterId, label: teacher.center_name }, ...branches];
-        }
-        return branches;
-    }, [branches, currentCenterId, teacher?.center_name]);
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const raw = e.target.value.replace(/\D/g, "");
@@ -101,9 +93,11 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
 
     const { mutate: saveTeacher, isPending } = useMutation({
         mutationFn: async (body: FormData) => {
-            // edit'da parol yuborilmaydi
+            if (!activeCenter) throw new Error(t("center.no_active_center"));
             const { password, ...rest } = body;
-            const payload = isEdit ? rest : body;
+            const payload = isEdit
+                ? { ...rest, centers: activeCenter }
+                : { ...body, centers: activeCenter };
             const res = isEdit
                 ? await API.put(`director/teachers/${teacher!.id}/`, payload)
                 : await API.post("director/teachers/", payload);
@@ -168,15 +162,10 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                     </div>
 
                     {/* Filial */}
-                    <SearchSelect
-                        label={t("common.branch")}
-                        required
-                        value={watch("centers") || ""}
-                        options={branchOptions}
-                        loading={branchesLoading}
-                        placeholder={t("director.teachers.form.branch_placeholder")}
-                        error={errors.centers?.message}
-                        onChange={(id) => setValue("centers", id, { shouldValidate: true })}
+                    <ScopeFormFields
+                        branchValue={watch("branch")}
+                        onBranchChange={(id) => setValue("branch", id, { shouldValidate: true })}
+                        branchError={(errors as any).branch?.message}
                     />
 
                     {/* Telefon + Email */}
@@ -275,7 +264,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                         </button>
                         <button
                             type="submit"
-                            disabled={isPending}
+                            disabled={isPending || !activeCenter}
                             className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}

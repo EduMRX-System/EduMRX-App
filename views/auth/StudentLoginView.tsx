@@ -27,6 +27,7 @@ import { getUrlForRole, getCookieOptions } from "@/utils/redirect";
 import { API } from "@/services/api";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import { PasswordInput } from "@/components/ui/PasswordInput";
+import { TelegramLoginButton } from "@/components/auth/TelegramLoginButton";
 import { useAuthStore } from "@/store/authStore";
 import { useUIStore } from "@/store/useUIStore";
 import { LogoIcons } from "@/constants/icons";
@@ -332,6 +333,8 @@ export default function StudentLoginView({ onBack }: Props) {
                             )}
                         </motion.button>
                     </form>
+
+                    <TelegramLoginButton />
 
                     <p className="text-xs text-slate-400 dark:text-slate-500 text-center leading-relaxed">
                         {t("auth.common.legal_prefix")}{" "}

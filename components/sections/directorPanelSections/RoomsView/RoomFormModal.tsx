@@ -7,6 +7,8 @@ import { X, Loader2, DoorOpen } from "lucide-react";
 import { toast } from "react-toastify";
 import { Room, RoomPayload } from "@/types/room";
 import { useTranslation } from "react-i18next";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
+import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 
 interface Props {
     room?: Room | null;
@@ -19,18 +21,26 @@ export default function RoomFormModal({ room, onClose }: Props) {
     const isEdit = !!room;
     const [isMounted, setIsMounted] = useState(false);
 
+    const { activeCenter, isCentersLoaded } = useActiveCenterStore();
+
     const [formData, setFormData] = useState({
         name: room?.name ?? "",
         capacity: room?.capacity ? String(room.capacity) : "",
+        branch: room?.branch ?? "",
     });
 
-    useEffect(() => { setIsMounted(true); }, []);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const { mutate: saveRoom, isPending } = useMutation({
         mutationFn: async () => {
+            if (!activeCenter) throw new Error(t("center.no_active_center"));
             const payload: RoomPayload = {
                 name: formData.name.trim(),
                 capacity: Number(formData.capacity),
+                center: activeCenter,
+                branch: formData.branch,
             };
             return isEdit
                 ? (await API.patch(`director/rooms/${room!.id}/`, payload)).data
@@ -50,29 +60,37 @@ export default function RoomFormModal({ room, onClose }: Props) {
                     return toast.error(`${k}: ${typeof text === "string" ? text.replace(/["']/g, "") : text}`);
                 }
             }
-            toast.error(t("director.rooms.toast.error_generic"));
+            toast.error(err?.message || t("director.rooms.toast.error_generic"));
         },
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.name.trim()) return toast.error(t("director.rooms.toast.error_name"));
-        if (!formData.capacity || Number(formData.capacity) <= 0) return toast.error(t("director.rooms.toast.error_capacity"));
+        if (!formData.capacity || Number(formData.capacity) <= 0)
+            return toast.error(t("director.rooms.toast.error_capacity"));
+        if (!formData.branch) return toast.error(t("director.rooms.toast.error_branch"));
+        if (!activeCenter) return toast.error(t("center.no_active_center"));
         saveRoom();
     };
 
-    const inputCls = "border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 placeholder:text-slate-400 dark:placeholder:text-slate-500";
+    const inputCls =
+        "border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 placeholder:text-slate-400 dark:placeholder:text-slate-500";
     const labelCls = "text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold";
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
-                className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
+                className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-500 ${
+                    isMounted ? "opacity-100" : "opacity-0"
+                }`}
                 onClick={onClose}
             />
 
             <div
-                className={`bg-white dark:bg-slate-900 p-6 rounded-xl max-w-md w-full relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
+                className={`bg-white dark:bg-slate-900 p-6 rounded-xl max-w-md w-full relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-all duration-500 ease-out ${
+                    isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"
+                }`}
             >
                 <button
                     type="button"
@@ -116,6 +134,13 @@ export default function RoomFormModal({ room, onClose }: Props) {
                         />
                     </div>
 
+                    <AsyncBranchSelect
+                        centerId={activeCenter}
+                        value={formData.branch}
+                        onChange={(id) => setFormData((p) => ({ ...p, branch: id }))}
+                        required
+                    />
+
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
                         <button
                             type="button"
@@ -126,7 +151,7 @@ export default function RoomFormModal({ room, onClose }: Props) {
                         </button>
                         <button
                             type="submit"
-                            disabled={isPending}
+                            disabled={isPending || !activeCenter}
                             className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}

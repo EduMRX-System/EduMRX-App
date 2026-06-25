@@ -394,7 +394,15 @@
       "message_ph": "Savolingizni yozing...",
       "send": "Yuborish",
       "error": "Ism va telefon raqamni kiriting",
-      "success": "Xabaringiz yuborildi! Tez orada bog'lanamiz."
+      "success": "Xabaringiz yuborildi! Tez orada bog'lanamiz.",
+      "validation": {
+        "full_name_required": "Ismingizni kiriting",
+        "phone_required": "Telefon raqamni kiriting",
+        "phone_invalid": "To'liq telefon raqam kiriting (12 raqam)",
+        "center_required": "Markaz nomini kiriting",
+        "message_required": "Xabar matnini kiriting",
+        "message_min": "Xabar kamida 5 ta belgi bo'lishi kerak"
+      }
     },
     "blog": {
       "title": "Blog",
@@ -532,6 +540,19 @@
         "desc": "Boshqaruv, o'qitish va analitika"
       },
       "next": "Davom etish"
+    },
+    "telegram": {
+      "or": "yoki",
+      "button": "Telegram bilan kiring",
+      "loading": "Yuklanmoqda...",
+      "success": "Telegram orqali muvaffaqiyatli kirdingiz",
+      "error": "Telegram orqali kirishda xatolik yuz berdi",
+      "role_error": "Noma'lum rol. Administrator bilan bog'laning.",
+      "phone_required": "Telefon raqamni kiriting",
+      "phone_invalid": "To'liq telefon raqam kiriting (12 raqam)",
+      "phone_modal_title": "Telefon raqamingizni kiriting",
+      "phone_modal_desc": "Telegram akkountingizda telefon raqami topilmadi. Hisobga ulash uchun raqamingizni kiriting.",
+      "phone_submit": "Tasdiqlash"
     }
   },
   "director": {
@@ -750,6 +771,7 @@
         "deleted": "Xona o'chirildi",
         "error_name": "Xona nomini kiriting",
         "error_capacity": "Sig'imni kiriting",
+        "error_branch": "Filialni tanlang",
         "error_generic": "Xatolik yuz berdi",
         "delete_error": "O'chirishda xatolik yuz berdi"
       }
@@ -1071,5 +1093,27 @@
       "currency_enter_amount": "Summani kiriting",
       "currency_rate": "Kurs: {{date}}"
     }
+  },
+  "center": {
+    "label": "Markaz",
+    "select_label": "Markaz tanlash",
+    "active": "Faol markaz",
+    "select": "Tanlash",
+    "my_centers": "Mening markazlarim",
+    "my_centers_desc": "Sizga biriktirilgan barcha ta'lim markazlari",
+    "students_count": "O'quvchilar",
+    "revenue": "Daromad",
+    "no_centers": "Hech qanday markaz topilmadi",
+    "no_active_center": "Avval markaz tanlang"
+  },
+  "branch": {
+    "label": "Filial",
+    "select_label": "Filial tanlash",
+    "active": "Faol filial",
+    "no_branches": "Bu markazda filial yo'q",
+    "search_placeholder": "Filial qidirish...",
+    "not_found": "Filial topilmadi",
+    "no_center": "Avval markaz tanlang",
+    "load_error": "Yuklashda xatolik yuz berdi"
   }
 }

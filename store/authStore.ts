@@ -19,6 +19,7 @@ interface User {
   avatar: string | null;
   is_active: boolean;
   is_staff: boolean;
+  center_ids?: string[];
 }
 
 interface AuthState {
@@ -76,17 +77,33 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     setCookie("user", JSON.stringify(user));
 
     set({ user, tokens, isAuthenticated: true, isInitialized: true });
+
+    // activeCenter ni me/ center_ids[0] dan initialize qil
+    if (user.center_ids?.length) {
+      import("@/store/activeCenterStore").then(({ useActiveCenterStore }) => {
+        useActiveCenterStore.getState().initFromIds(user.center_ids!);
+      });
+    }
   },
 
   logout: () => {
     clearAuthCookies();
+    // Lazy import to avoid circular dependency
+    import("@/store/activeCenterStore").then(({ useActiveCenterStore }) => {
+      useActiveCenterStore.getState().reset();
+    });
     set({
       user: null,
       tokens: null,
       isAuthenticated: false,
       isInitialized: true,
     });
-    window.location.href = "https://edumrx.uz/login";
+    const isLocal =
+      typeof window !== "undefined" &&
+      window.location.hostname.includes("localhost");
+    window.location.href = isLocal
+      ? "http://login.localhost:3000"
+      : "https://login.edumrx.uz";
   },
 
   initAuth: async () => {
@@ -96,51 +113,80 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const access_token = getCookie("access_token");
     const refresh_token = getCookie("refresh_token");
 
-    if (!access_token) {
+    if (!access_token && !refresh_token) {
       set({ isInitialized: true, isAuthenticated: false, user: null });
       return;
     }
 
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_DataBaseURL}/me/`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
-      );
+    const BASE = process.env.NEXT_PUBLIC_DataBaseURL;
 
-      const tokens: Tokens = {
-        access_token,
-        refresh_token: refresh_token ?? "",
-      };
-
-      set({
-        user: response.data,
-        tokens,
-        isAuthenticated: true,
-        isInitialized: true,
+    const fetchMe = async (token: string) => {
+      const res = await axios.get(`${BASE}/me/`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-    } catch (error: any) {
-      console.error("Auth initialization error:", error);
+      return res.data;
+    };
 
-      if (!error.response) {
-        console.warn("Backend serverga ulanib bo'lmadi.");
-        set({ isInitialized: true, isAuthenticated: false, user: null });
+    // 1. access_token bilan me/ ga urinib ko'r
+    if (access_token) {
+      try {
+        const userData = await fetchMe(access_token);
+        set({
+          user: userData,
+          tokens: { access_token, refresh_token: refresh_token ?? "" },
+          isAuthenticated: true,
+          isInitialized: true,
+        });
+        // activeCenter ni me/ center_ids[0] dan initialize qil
+        if (userData.center_ids?.length) {
+          const { useActiveCenterStore } = await import("@/store/activeCenterStore");
+          useActiveCenterStore.getState().initFromIds(userData.center_ids);
+        }
         return;
+      } catch (err: any) {
+        if (!err.response) {
+          // Network xatosi — token mavjud deb hisoblaymiz, lekin serverga yetib bormadi
+          set({ isInitialized: true, isAuthenticated: false, user: null });
+          return;
+        }
+        // 401/403 → refresh token bilan urinib ko'ramiz (quyida)
+        if (err.response.status !== 401 && err.response.status !== 403) {
+          set({ isInitialized: true, isAuthenticated: false, user: null });
+          return;
+        }
       }
-
-      if (error.response.status === 401 || error.response.status === 403) {
-        clearAuthCookies();
-      }
-
-      set({
-        user: null,
-        tokens: null,
-        isAuthenticated: false,
-        isInitialized: true,
-      });
     }
+
+    // 2. refresh_token bilan yangi access_token olamiz
+    if (refresh_token) {
+      try {
+        const refreshRes = await axios.post(`${BASE}/auth/token/refresh/`, {
+          refresh: refresh_token,
+        });
+        const newAccessToken: string =
+          refreshRes.data.access ?? refreshRes.data.access_token;
+
+        setCookie("access_token", newAccessToken);
+        const userData = await fetchMe(newAccessToken);
+
+        set({
+          user: userData,
+          tokens: { access_token: newAccessToken, refresh_token },
+          isAuthenticated: true,
+          isInitialized: true,
+        });
+        // activeCenter ni me/ center_ids[0] dan initialize qil
+        if (userData.center_ids?.length) {
+          const { useActiveCenterStore } = await import("@/store/activeCenterStore");
+          useActiveCenterStore.getState().initFromIds(userData.center_ids);
+        }
+        return;
+      } catch {
+        // refresh ham ishlamadi — cookie'larni tozalaymiz
+      }
+    }
+
+    clearAuthCookies();
+    set({ user: null, tokens: null, isAuthenticated: false, isInitialized: true });
   },
 }));

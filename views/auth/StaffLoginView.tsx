@@ -25,6 +25,7 @@ import { getUrlForRole, getCookieOptions } from "@/utils/redirect";
 import { API } from "@/services/api";
 import { PhoneInput } from "@/components/ui/PhoneInput";
 import { PasswordInput } from "@/components/ui/PasswordInput";
+import { TelegramLoginButton } from "@/components/auth/TelegramLoginButton";
 import { useAuthStore } from "@/store/authStore";
 import { useUIStore } from "@/store/useUIStore";
 import Image from "next/image";
@@ -102,8 +103,11 @@ export default function StaffLoginView({ onBack }: Props) {
 
       toast.success(message || t("auth.staff.success"));
 
-      const base = getUrlForRole(role);
+      const normalizedRole = role?.toLowerCase().trim();
+      const base = getUrlForRole(normalizedRole);
       if (!base) {
+        // super_admin uchun tovush chiqarma — ular uchun panel hali yo'q bo'lishi mumkin
+        if (normalizedRole === "super_admin") return;
         toast.error(`Noma'lum rol: "${role ?? "—"}". Administrator bilan bog'laning.`);
         return;
       }
@@ -306,6 +310,8 @@ export default function StaffLoginView({ onBack }: Props) {
               )}
             </motion.button>
           </form>
+
+          <TelegramLoginButton />
 
           <p className="text-xs text-slate-400 dark:text-slate-500 text-center leading-relaxed">
             {t("auth.common.legal_prefix")}{" "}

@@ -1,9 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useMutation } from "@tanstack/react-query";
 import {
   Mail,
   Phone,
@@ -14,6 +18,9 @@ import {
   User,
   Building2,
 } from "lucide-react";
+
+import { API } from "@/services/api";
+import { PhoneInput } from "@/components/ui/PhoneInput";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -29,30 +36,69 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
+type FormData = {
+  full_name: string;
+  phone: string;
+  center_name: string;
+  message: string;
+};
+
 export default function ContactView() {
   const { t } = useTranslation();
-  const [form, setForm] = useState({ name: "", phone: "", center: "", message: "" });
-  const [loading, setLoading] = useState(false);
+
+  const schema = useMemo(
+    () =>
+      yup.object({
+        full_name: yup.string().required(t("marketing.contact.validation.full_name_required")),
+        phone: yup
+          .string()
+          .required(t("marketing.contact.validation.phone_required"))
+          .test("len", t("marketing.contact.validation.phone_invalid"), (val) =>
+            val?.replace(/\D/g, "").length === 12
+          ),
+        center_name: yup.string().default(""),
+        message: yup
+          .string()
+          .required(t("marketing.contact.validation.message_required"))
+          .min(5, t("marketing.contact.validation.message_min")),
+      }),
+    [t]
+  );
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues: { full_name: "", phone: "", center_name: "", message: "" },
+  });
+
+  const { mutate: sendContact, isPending } = useMutation({
+    mutationFn: (data: FormData) =>
+      API.post("contact/", {
+        full_name: data.full_name,
+        phone: `+${data.phone}`,
+        center_name: data.center_name,
+        message: data.message,
+      }),
+    onSuccess: () => {
+      toast.success(t("marketing.contact.success"));
+      reset();
+    },
+    onError: () => {
+      toast.error(t("marketing.contact.error"));
+    },
+  });
 
   const contactInfo = [
-    { icon: Mail, key: "email", value: "info@edumrx.uz", href: "mailto:info@edumrx.uz" },
-    { icon: Phone, key: "phone", value: "+998 90 123 45 67", href: "tel:+998901234567" },
+    { icon: Mail, key: "email", value: "edumrxm@gmail.com", href: "mailto:edumrxm@gmail.com" },
+    { icon: Phone, key: "phone", value: "+998 90 818 22 99", href: "tel:+998908182299" },
     { icon: MessageCircle, key: "telegram", value: "@edumrx_support", href: "https://t.me/edumrx_support" },
     { icon: MapPin, key: "address", value: "Toshkent, O'zbekiston", href: "#" },
   ];
-
-  const handleSubmit = () => {
-    if (!form.name || !form.phone) {
-      toast.error(t("marketing.contact.error"));
-      return;
-    }
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      toast.success(t("marketing.contact.success"));
-      setForm({ name: "", phone: "", center: "", message: "" });
-    }, 1000);
-  };
 
   return (
     <div className="w-full">
@@ -133,7 +179,7 @@ export default function ContactView() {
               {t("marketing.contact.form_desc")}
             </p>
 
-            <div className="space-y-4">
+            <form onSubmit={handleSubmit((d) => sendContact(d))} className="space-y-4">
               {/* Name */}
               <div>
                 <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
@@ -141,11 +187,17 @@ export default function ContactView() {
                   {t("marketing.contact.name")}
                 </label>
                 <input
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  {...register("full_name")}
                   placeholder={t("marketing.contact.name_ph")}
-                  className="w-full h-11 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
+                  className={`w-full h-11 px-4 rounded-xl text-sm bg-white dark:bg-slate-900 border text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors ${
+                    errors.full_name
+                      ? "border-red-500/50 focus:border-red-500"
+                      : "border-slate-200 dark:border-slate-800"
+                  }`}
                 />
+                {errors.full_name && (
+                  <p className="text-red-500 dark:text-red-400 text-[11px] mt-1.5">{errors.full_name.message}</p>
+                )}
               </div>
 
               {/* Phone */}
@@ -154,11 +206,16 @@ export default function ContactView() {
                   <Phone className="w-3.5 h-3.5" />
                   {t("marketing.contact.phone")}
                 </label>
-                <input
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  placeholder="+998 90 123 45 67"
-                  className="w-full h-11 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <PhoneInput
+                      value={field.value || ""}
+                      onChange={field.onChange}
+                      error={errors.phone?.message}
+                    />
+                  )}
                 />
               </div>
 
@@ -169,10 +226,9 @@ export default function ContactView() {
                   {t("marketing.contact.center")}
                 </label>
                 <input
-                  value={form.center}
-                  onChange={(e) => setForm({ ...form, center: e.target.value })}
+                  {...register("center_name")}
                   placeholder={t("marketing.contact.center_ph")}
-                  className="w-full h-11 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
+                  className="w-full h-11 px-4 rounded-xl text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
                 />
               </div>
 
@@ -183,23 +239,29 @@ export default function ContactView() {
                   {t("marketing.contact.message")}
                 </label>
                 <textarea
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  {...register("message")}
                   placeholder={t("marketing.contact.message_ph")}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors resize-none"
+                  className={`w-full px-4 py-3 rounded-xl text-sm bg-white dark:bg-slate-900 border text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors resize-none ${
+                    errors.message
+                      ? "border-red-500/50 focus:border-red-500"
+                      : "border-slate-200 dark:border-slate-800"
+                  }`}
                 />
+                {errors.message && (
+                  <p className="text-red-500 dark:text-red-400 text-[11px] mt-1.5">{errors.message.message}</p>
+                )}
               </div>
 
               {/* Submit */}
               <motion.button
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
-                onClick={handleSubmit}
-                disabled={loading}
+                type="submit"
+                disabled={isPending}
                 className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/25 disabled:opacity-60"
               >
-                {loading ? (
+                {isPending ? (
                   <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                 ) : (
                   <>
@@ -208,7 +270,7 @@ export default function ContactView() {
                   </>
                 )}
               </motion.button>
-            </div>
+            </form>
           </motion.div>
         </div>
       </section>

@@ -38,6 +38,8 @@ export interface GroupPayload {
   lesson_days: number[]; // [1,3,5]
   lesson_start_time: string; // "HH:MM"
   lesson_end_time: string;
+  center?: string;
+  branch?: string;
 }
 
 export const STATUS_OPTIONS: {

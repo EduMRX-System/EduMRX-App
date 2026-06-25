@@ -6,14 +6,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
-import { User, Eye, EyeOff, Notebook, X, Loader2, ChevronRight, ChevronLeft, Check } from "lucide-react";
+import { User, Eye, EyeOff, Notebook, X, Loader2, Check } from "lucide-react";
 import { toast } from "react-toastify";
 
-import { ChevronDown, Search } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { ChevronDown } from "lucide-react";
 import { t } from "i18next";
-import { IAPIResponse, ILearningCenter } from "@/types";
-import { useDebounce } from "use-debounce";
+import ScopeFormFields from "@/components/common/ScopeFormFields";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
 // Backenddan keladigan umumiy paginatsiya formati uchun generic interfeys
 export interface IPaginatedResponse<T> {
@@ -47,7 +46,7 @@ const schema = yup.object({
         .string()
         .required("Parol kiritilishi shart")
         .min(6, "Parol kamida 6 ta belgidan iborat bo'lishi kerak"),
-    center: yup.string().uuid("O'quv markazi UUID formatida bo'lishi shart").required("Markazni tanlash shart"),
+    branch: yup.string().uuid("Filial UUID formatida bo'lishi shart").required("Filialni tanlash shart"),
     date_of_birth: yup.string().required("Tug'ilgan sana kiritilishi shart"),
     notes: yup.string().optional(),
     status: yup.string().oneOf(["active", "inactive"] as const).required("Status shart"),
@@ -65,8 +64,7 @@ export default function AddStudentModal({ onClose }: AddStudentModalProps) {
     const [phoneDisplay, setPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const [isCenterOpen, setIsCenterOpen] = useState(false);
-    const [selectedCenter, setSelectedCenter] = useState<{ id: string, name: string } | null>(null);
+    const { activeCenter, isCentersLoaded } = useActiveCenterStore();
 
     useEffect(() => {
         setIsMounted(true);
@@ -89,10 +87,9 @@ export default function AddStudentModal({ onClose }: AddStudentModalProps) {
 
     const { mutate: addStudent, isPending } = useMutation({
         mutationFn: async (body: FormData) => {
-            const res = await API.post("director/students/", body, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+            if (!activeCenter) throw new Error("Hisobingizga markaz biriktirilmagan");
+            const res = await API.post("director/students/", { ...body, center: activeCenter }, {
+                headers: { "Content-Type": "application/json" },
             });
             return res.data;
         },
@@ -101,7 +98,6 @@ export default function AddStudentModal({ onClose }: AddStudentModalProps) {
             reset();
             setPhoneDisplay("");
             setShowPassword(false);
-            setSelectedCenter(null);
 
             queryClient.invalidateQueries({
                 queryKey: ["students-list"],
@@ -150,35 +146,6 @@ export default function AddStudentModal({ onClose }: AddStudentModalProps) {
         addStudent(data);
     };
 
-    const [centerSearch, setCenterSearch] = useState("");
-    const [centerPage, setCenterPage] = useState(1);
-    const centerPageSize = 5;
-
-    // Input qiymati 500ms ga debounce qilindi
-    const [debouncedCenterSearch] = useDebounce(centerSearch, 500);
-
-    // 2. Query key qismiga xavfsiz bo'lishi uchun debouncedCenterSearch o'tkazildi
-    const { data: centersData, isLoading: isCentersLoading } = useQuery<IAPIResponse<ILearningCenter>>({
-        queryKey: ["centers-list", centerPage, debouncedCenterSearch],
-        queryFn: async () => {
-            const res = await API.get("center/branches/", {
-                params: {
-                    page: centerPage,
-                    search: debouncedCenterSearch,
-                    page_size: centerPageSize,
-                },
-            });
-            return res.data;
-        },
-    });
-
-    const centersList = centersData?.results || [];
-    const totalCenterPages = centersData ? Math.ceil(centersData.count / centerPageSize) : 1;
-
-    const handleCenterSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCenterSearch(e.target.value);
-        setCenterPage(1);
-    };
 
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -346,154 +313,48 @@ export default function AddStudentModal({ onClose }: AddStudentModalProps) {
                         </div>
                     </div>
 
-                    {/* STATUS & LEARNING CENTER */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="relative w-full" ref={dropdownRef}>
-                            <label className="text-[14px] text-slate-700 dark:text-slate-300 mb-1 block font-semibold">
-                                {t("students.modal.status", "Status")}
-                            </label>
-
-                            <div
-                                onClick={() => setIsOpen(!isOpen)}
-                                className="w-full h-[40px] px-3 flex items-center justify-between cursor-pointer bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-[14px] text-slate-900 dark:text-slate-100 hover:border-indigo-500 dark:hover:border-indigo-400 focus-within:ring-1 focus-within:ring-indigo-500 transition-all select-none shadow-xs"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <span className={`w-2 h-2 rounded-full ${selectedOption.color}`} />
-                                    <span>{selectedOption.label}</span>
-                                </div>
-                                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                    {/* STATUS */}
+                    <div className="relative w-full" ref={dropdownRef}>
+                        <label className="text-[14px] text-slate-700 dark:text-slate-300 mb-1 block font-semibold">
+                            {t("students.modal.status", "Status")}
+                        </label>
+                        <div
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="w-full h-[40px] px-3 flex items-center justify-between cursor-pointer bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-[14px] text-slate-900 dark:text-slate-100 hover:border-indigo-500 dark:hover:border-indigo-400 transition-all select-none shadow-xs"
+                        >
+                            <div className="flex items-center gap-2">
+                                <span className={`w-2 h-2 rounded-full ${selectedOption.color}`} />
+                                <span>{selectedOption.label}</span>
                             </div>
-
-                            {isOpen && (
-                                <div className="absolute w-full top-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 p-1">
-                                    {statusOptions.map((option) => {
-                                        const isSelected = option.value === watch("status");
-                                        return (
-                                            <div
-                                                key={option.value}
-                                                onClick={() => {
-                                                    setValue("status", option.value, { shouldValidate: true });
-                                                    setIsOpen(false);
-                                                }}
-                                                className={`px-3 py-2 text-[14px] rounded-md cursor-pointer transition-colors flex items-center justify-between 
-                                                ${isSelected
-                                                        ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-medium"
-                                                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50"}`}
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <span className={`w-2 h-2 rounded-full ${option.color}`} />
-                                                    <span>{option.label}</span>
-                                                </div>
-                                                {isSelected && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            )}
+                            <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
                         </div>
-
-                        {/* ADVANCED LEARNING CENTER DROPDOWN */}
-                        <div className="relative">
-                            <label className="text-[14px] text-slate-700 dark:text-slate-300 mb-1 block font-semibold">
-                                {t("students.modal.learningCenter", "Learning Center")}
-                            </label>
-                            <div
-                                className={`border rounded-lg w-full h-[40px] px-3 flex items-center justify-between cursor-pointer bg-white dark:bg-slate-900 transition-all ${errors.center ? "border-red-400" : "border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400"}`}
-                                onClick={() => setIsCenterOpen(!isCenterOpen)}
-                            >
-                                <span className={selectedCenter ? "text-slate-900 dark:text-slate-100" : "text-slate-400 dark:text-slate-500"}>
-                                    {selectedCenter ? selectedCenter.name : t("students.modal.placeholder.center", "Markazni tanlang...")}
-                                </span>
-                                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isCenterOpen ? "rotate-180" : ""}`} />
-                            </div>
-
-                            {isCenterOpen && (
-                                <div className="absolute w-full bottom-full mb-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 p-2 animate-in fade-in slide-in-from-bottom-1">
-                                    {/* SEARCH INPUT */}
-                                    <div className="flex items-center gap-2 border-b dark:border-slate-700 pb-2 mb-2 px-1">
-                                        <Search className="w-4 h-4 text-slate-400 shrink-0" />
-                                        <input
-                                            autoFocus
-                                            value={centerSearch}
-                                            placeholder={t("students.modal.placeholder.search", "Qidirish...")}
-                                            className="w-full bg-transparent outline-none text-[14px] text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
-                                            onChange={handleCenterSearchChange}
-                                        />
-                                        {centerSearch && (
-                                            <button
-                                                type="button"
-                                                onClick={() => { setCenterSearch(""); setCenterPage(1); }}
-                                                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-                                            >
-                                                <X className="w-3.5 h-3.5" />
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    {/* RESULTS LIST */}
-                                    <div className="max-h-[160px] overflow-y-auto space-y-0.5 pr-1 [&::-webkit-scrollbar]:w-1">
-                                        {isCentersLoading ? (
-                                            <div className="flex items-center justify-center py-4 gap-2 text-xs text-slate-400 dark:text-slate-500">
-                                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                                {t("students.modal.loading", "Yuklanmoqda...")}
+                        {isOpen && (
+                            <div className="absolute w-full top-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 p-1">
+                                {statusOptions.map((option) => {
+                                    const isSelected = option.value === watch("status");
+                                    return (
+                                        <div
+                                            key={option.value}
+                                            onClick={() => { setValue("status", option.value, { shouldValidate: true }); setIsOpen(false); }}
+                                            className={`px-3 py-2 text-[14px] rounded-md cursor-pointer transition-colors flex items-center justify-between ${isSelected ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-medium" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50"}`}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <span className={`w-2 h-2 rounded-full ${option.color}`} />
+                                                <span>{option.label}</span>
                                             </div>
-                                        ) : centersList.length > 0 ? (
-                                            centersList.map((c: any) => (
-                                                <div
-                                                    key={c.id}
-                                                    className={`px-3 py-2 text-[14px] rounded-md cursor-pointer transition-colors flex items-center justify-between ${selectedCenter?.id === c.id
-                                                        ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-medium"
-                                                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50"}`}
-                                                    onClick={() => {
-                                                        setSelectedCenter({ id: c.id, name: c.name });
-                                                        setValue("center", c.id, { shouldValidate: true });
-                                                        setIsCenterOpen(false);
-                                                    }}
-                                                >
-                                                    <span className="truncate">{c.name}</span>
-                                                    {selectedCenter?.id === c.id && <Check className="w-3.5 h-3.5 shrink-0" />}
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <p className="text-center py-4 text-xs text-slate-400 dark:text-slate-500">
-                                                {t("students.modal.notFound", "Topilmadi")}
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    {/* MINI PAGINATION CONTROL */}
-                                    {!isCentersLoading && totalCenterPages > 1 && (
-                                        <div className="flex items-center justify-between border-t dark:border-slate-700 pt-2 mt-2 px-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                                            <span>
-                                                {centerPage} / {totalCenterPages}
-                                            </span>
-                                            <div className="flex items-center gap-1">
-                                                <button
-                                                    type="button"
-                                                    disabled={centerPage === 1}
-                                                    onClick={() => setCenterPage(p => Math.max(p - 1, 1))}
-                                                    className="p-1 rounded bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200/60 dark:border-slate-600"
-                                                >
-                                                    <ChevronLeft className="w-3.5 h-3.5" />
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    disabled={centerPage === totalCenterPages}
-                                                    onClick={() => setCenterPage(p => Math.min(p + 1, totalCenterPages))}
-                                                    className="p-1 rounded bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200/60 dark:border-slate-600"
-                                                >
-                                                    <ChevronRight className="w-3.5 h-3.5" />
-                                                </button>
-                                            </div>
+                                            {isSelected && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
                                         </div>
-                                    )}
-                                </div>
-                            )}
-                            {errors.center && (
-                                <p className="text-red-400 text-[11px] mt-1">{errors.center.message}</p>
-                            )}
-                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
+
+                    {/* Filial */}
+                    <ScopeFormFields
+                        branchValue={watch("branch") ?? ""}
+                        onBranchChange={(id) => setValue("branch", id, { shouldValidate: true })}
+                    />
 
                     {/* NOTES */}
                     <div>
@@ -514,7 +375,7 @@ export default function AddStudentModal({ onClose }: AddStudentModalProps) {
                     {/* SUBMIT BUTTON */}
                     <button
                         type="submit"
-                        disabled={isPending}
+                        disabled={isPending || !activeCenter}
                         className="w-full h-[40px] mt-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:disabled:bg-indigo-800 text-white rounded-lg text-[14px] font-bold transition-colors cursor-pointer flex items-center justify-center border-none select-none shadow-sm"
                     >
                         {isPending ? (

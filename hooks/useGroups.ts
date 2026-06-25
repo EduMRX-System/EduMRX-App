@@ -1,15 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { GroupsResponse } from "@/types/group";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
-// ⚠️ MUHIM: director/courses/ aslida KURSLAR. Guruhlar boshqa endpointda —
-// ehtimol "director/groups/". Swagger'dan tasdiqlab, shu yerni to'g'rilang.
-const GROUPS_URL = "director/groups/"; // ← TODO: tasdiqlang (courses EMAS)
-
-// Dropdown manbalari:
-const COURSES_URL = "director/courses/"; // ✅ tasdiqlandi — kurs katalogi
-const TEACHERS_URL = "director/teachers/"; // ← TODO: tasdiqlang
-const ROOMS_URL = "director/rooms/";       // ← TODO: tasdiqlang
+const GROUPS_URL = "director/groups/";
+const COURSES_URL = "director/courses/";
+const TEACHERS_URL = "director/teachers/";
+const ROOMS_URL = "director/rooms/";
 
 interface ListParams {
     page?: number;
@@ -18,11 +15,20 @@ interface ListParams {
 }
 
 export function useGroups({ page = 1, pageSize = 10, search = "" }: ListParams) {
+    const activeCenter = useActiveCenterStore((s) => s.activeCenter);
+    const activeBranch = useActiveCenterStore((s) => s.activeBranch);
+
     return useQuery({
-        queryKey: ["groups", { page, pageSize, search }],
+        queryKey: ["groups", { page, pageSize, search, centerId: activeCenter, branchId: activeBranch }],
         queryFn: async () => {
             const res = await API.get<GroupsResponse>(GROUPS_URL, {
-                params: { page, page_size: pageSize, search: search || undefined },
+                params: {
+                    page,
+                    page_size: pageSize,
+                    search: search || undefined,
+                    center_id: activeCenter || undefined,
+                    branch_id: activeBranch || undefined,
+                },
             });
             return res.data;
         },
@@ -35,7 +41,6 @@ export interface Option {
     label: string;
 }
 
-// Universal option-loader: turli endpointlarning {id, name/full_name/...} ni {id,label} ga keltiradi
 function mapOptions(results: any[]): Option[] {
     return (results ?? []).map((r) => ({
         id: r.id,
@@ -49,12 +54,22 @@ function mapOptions(results: any[]): Option[] {
 }
 
 function useOptions(key: string, url: string, enabled = true) {
+    const activeCenter = useActiveCenterStore((s) => s.activeCenter);
+    const activeBranch = useActiveCenterStore((s) => s.activeBranch);
+
     return useQuery({
-        queryKey: [key, "options"],
+        queryKey: [key, "options", activeCenter, activeBranch],
         queryFn: async () => {
-            const res = await API.get(url, { params: { page_size: 200 } });
-            // DRF paginated yoki to'g'ridan-to'g'ri massiv bo'lishi mumkin
-            const results = Array.isArray(res.data) ? res.data : res.data?.results ?? res.data?.data ?? [];
+            const res = await API.get(url, {
+                params: {
+                    page_size: 200,
+                    center_id: activeCenter || undefined,
+                    branch_id: activeBranch || undefined,
+                },
+            });
+            const results = Array.isArray(res.data)
+                ? res.data
+                : res.data?.results ?? res.data?.data ?? [];
             return mapOptions(results);
         },
         enabled,

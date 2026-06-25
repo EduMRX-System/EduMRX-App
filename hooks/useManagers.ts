@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { IManager } from "@/types/manager";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
 const MANAGERS_URL = "director/admins/";
 
@@ -18,11 +19,20 @@ interface ListParams {
 }
 
 export function useManagers({ page = 1, pageSize = 10, search = "" }: ListParams = {}) {
+    const activeCenter = useActiveCenterStore((s) => s.activeCenter);
+    const activeBranch = useActiveCenterStore((s) => s.activeBranch);
+
     return useQuery<ManagersResult>({
-        queryKey: ["managers", { page, pageSize, search }],
+        queryKey: ["managers", { page, pageSize, search, centerId: activeCenter, branchId: activeBranch }],
         queryFn: async () => {
             const res = await API.get(MANAGERS_URL, {
-                params: { page, page_size: pageSize, search: search || undefined },
+                params: {
+                    page,
+                    page_size: pageSize,
+                    search: search || undefined,
+                    center_id: activeCenter || undefined,
+                    branch_id: activeBranch || undefined,
+                },
             });
             const d: any = res.data;
             if (Array.isArray(d)) return { results: d, count: d.length, next: null, previous: null };

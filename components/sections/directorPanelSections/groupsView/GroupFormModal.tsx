@@ -21,6 +21,8 @@ import {
 } from "@/types/group";
 import SearchSelect from "./SearchSelect";
 import { useTranslation } from "react-i18next";
+import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
 interface Props {
     group?: Group | null; // berilsa — tahrirlash
@@ -33,11 +35,14 @@ export default function GroupFormModal({ group, onClose }: Props) {
     const isEdit = !!group;
     const [isMounted, setIsMounted] = useState(false);
 
+    const { activeCenter } = useActiveCenterStore();
+
     const [formData, setFormData] = useState({
         name: group?.name ?? "",
         course: group?.course ?? "",
         teacher: group?.teacher ?? "",
         room: group?.room ?? "",
+        branch: (group as any)?.branch ?? "",
         status: (group?.status ?? "active") as GroupStatus,
         start_date: group?.start_date ?? "",
         end_date: group?.end_date ?? "",
@@ -83,6 +88,8 @@ export default function GroupFormModal({ group, onClose }: Props) {
                 lesson_days: formData.lesson_days,
                 lesson_start_time: formData.lesson_start_time,
                 lesson_end_time: formData.lesson_end_time,
+                ...(activeCenter ? { center: activeCenter } : {}),
+                ...(formData.branch ? { branch: formData.branch } : {}),
             };
             const res = isEdit
                 ? await API.patch(`director/courses/${group!.id}/`, payload)
@@ -110,6 +117,7 @@ export default function GroupFormModal({ group, onClose }: Props) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.name.trim()) return toast.error(t("director.groups.toast.error_name"));
+        if (!formData.branch) return toast.error(t("director.rooms.toast.error_branch"));
         if (!formData.course) return toast.error(t("director.groups.toast.error_course"));
         if (!formData.teacher) return toast.error(t("director.groups.toast.error_teacher"));
         if (!formData.room) return toast.error(t("director.groups.toast.error_room"));
@@ -166,6 +174,14 @@ export default function GroupFormModal({ group, onClose }: Props) {
                             required
                         />
                     </div>
+
+                    {/* Filial */}
+                    <AsyncBranchSelect
+                        centerId={activeCenter}
+                        value={formData.branch}
+                        onChange={(id) => setFormData((p) => ({ ...p, branch: id }))}
+                        required
+                    />
 
                     {/* Kurs + O'qituvchi */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

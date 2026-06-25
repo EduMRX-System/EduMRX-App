@@ -62,3 +62,33 @@ export function deleteThemeCookie(): void {
   if (typeof window === "undefined") return;
   document.cookie = `theme=; ${deleteOpts()}`;
 }
+
+// ─── Active Center cookie ─────────────────────────────────
+export function getActiveCenterCookie(): string | null {
+  return getCookie("active_center");
+}
+
+export function setActiveCenterCookie(id: string): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `active_center=${encodeURIComponent(id)}; ${sharedOpts()}`;
+}
+
+export function deleteActiveCenterCookie(): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `active_center=; ${deleteOpts()}`;
+}
+
+// ─── Active Branch cookie ─────────────────────────────────
+export function getActiveBranchCookie(): string | null {
+  return getCookie("active_branch");
+}
+
+export function setActiveBranchCookie(id: string): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `active_branch=${encodeURIComponent(id)}; ${sharedOpts()}`;
+}
+
+export function deleteActiveBranchCookie(): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `active_branch=; ${deleteOpts()}`;
+}

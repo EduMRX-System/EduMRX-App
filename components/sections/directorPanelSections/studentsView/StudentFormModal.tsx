@@ -9,9 +9,9 @@ import { API } from "@/services/api";
 import { User, X, Eye, EyeOff, Loader2, ChevronDown, Check, Notebook } from "lucide-react";
 import { toast } from "react-toastify";
 import { STATUS_OPTIONS, formatUzPhone, splitFullName, type IStudent } from "@/types/student";
-import SearchSelect from "@/components/ui/SearchSelect";
-import { useBranchOptions } from "@/hooks/useBranches";
 import { useTranslation } from "react-i18next";
+import ScopeFormFields from "@/components/common/ScopeFormFields";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -26,7 +26,7 @@ const schema = yup.object({
         then: (s) => s.min(6, "Kamida 6 belgi").required("Parol majburiy"),
         otherwise: (s) => s.optional(),
     }),
-    center: yup.string().uuid("Filial UUID noto'g'ri").required("Filialni tanlang"),
+    branch: yup.string().uuid("Filial UUID noto'g'ri").required("Filialni tanlang"),
     date_of_birth: yup.string().required("Tug'ilgan sana majburiy"),
     notes: yup.string().optional(),
     status: yup.string().oneOf(["active", "inactive"]).required("Status majburiy"),
@@ -49,7 +49,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
     const [isStatusOpen, setIsStatusOpen] = useState(false);
     const statusRef = useRef<HTMLDivElement>(null);
 
-    const { data: branches = [], isLoading: branchesLoading } = useBranchOptions();
+    const { activeCenter, isCentersLoaded } = useActiveCenterStore();
     const nameFromFull = splitFullName(student?.full_name);
 
     const {
@@ -67,7 +67,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
             phone: student?.phone || "998",
             email: student?.email || "",
             password: "",
-            center: student?.center || "",
+            branch: (student as any)?.branch || "",
             date_of_birth: student?.date_of_birth ? student.date_of_birth.slice(0, 10) : new Date().toISOString().split("T")[0],
             notes: student?.notes || "",
             status: (student?.status === "inactive" ? "inactive" : "active"),
@@ -84,13 +84,6 @@ export default function StudentFormModal({ student, onClose }: Props) {
         return () => document.removeEventListener("mousedown", onClick);
     }, [student]);
 
-    // Edit: center id GET'da yo'q bo'lsa, center_name bo'yicha filialni topib tanlash
-    useEffect(() => {
-        if (!isEdit || watch("center") || !student?.center_name || branches.length === 0) return;
-        const found = branches.find((b) => b.label.toLowerCase() === student.center_name!.toLowerCase());
-        if (found) setValue("center", found.id, { shouldValidate: true });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [branches, student?.center_name, isEdit]);
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const raw = e.target.value.replace(/\D/g, "");
@@ -101,8 +94,11 @@ export default function StudentFormModal({ student, onClose }: Props) {
 
     const { mutate: saveStudent, isPending } = useMutation({
         mutationFn: async (body: FormData) => {
+            if (!activeCenter) throw new Error(t("center.no_active_center"));
             const { password, ...rest } = body;
-            const payload = isEdit ? rest : body;
+            const payload = isEdit
+                ? { ...rest, center: activeCenter }
+                : { ...body, center: activeCenter };
             return isEdit
                 ? (await API.put(`director/students/${student!.id}/`, payload)).data
                 : (await API.post("director/students/", payload)).data;
@@ -212,19 +208,15 @@ export default function StudentFormModal({ student, onClose }: Props) {
                         </div>
                     </div>
 
-                    {/* Filial + Status */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <SearchSelect
-                            label={t("common.branch")}
-                            required
-                            value={watch("center") || ""}
-                            options={branches}
-                            loading={branchesLoading}
-                            placeholder={t("director.students.form.branch_placeholder")}
-                            error={errors.center?.message}
-                            onChange={(id) => setValue("center", id, { shouldValidate: true })}
-                        />
+                    {/* Filial */}
+                    <ScopeFormFields
+                        branchValue={watch("branch")}
+                        onBranchChange={(id) => setValue("branch", id, { shouldValidate: true })}
+                        branchError={(errors as any).branch?.message}
+                    />
 
+                    {/* Status */}
+                    <div>
                         <div ref={statusRef} className="relative">
                             <label className={labelCls}>{t("director.students.form.status_label")}</label>
                             <div
@@ -279,7 +271,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                         <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors">
                             {t("common.cancel")}
                         </button>
-                        <button type="submit" disabled={isPending} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
+                        <button type="submit" disabled={isPending || !activeCenter} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                             {isEdit ? t("common.save") : t("common.create")}
                         </button>

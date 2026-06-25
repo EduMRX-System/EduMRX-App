@@ -14,6 +14,7 @@ import {
   ClipboardCheck,
   UserCog,
   GraduationCap,
+  Layers,
 } from "lucide-react";
 
 export interface NavItem {
@@ -35,6 +36,7 @@ export const directorMenu: NavItem[] = [
   { title: "Filiallar", href: "/branches", icon: Building2 },
   { title: "To'lovlar", href: "/payments", icon: CreditCard },
   { title: "Xarajatlar", href: "/expenses", icon: Wallet },
+  { title: "Mening Markazlarim", href: "/my-centers", icon: Layers },
   { title: "Profil", href: "/profile", icon: User },
 ];
 

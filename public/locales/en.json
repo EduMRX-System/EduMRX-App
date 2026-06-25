@@ -394,7 +394,15 @@
       "message_ph": "Write your question...",
       "send": "Send",
       "error": "Please enter your name and phone number",
-      "success": "Your message has been sent! We'll get back to you soon."
+      "success": "Your message has been sent! We'll get back to you soon.",
+      "validation": {
+        "full_name_required": "Please enter your name",
+        "phone_required": "Please enter your phone number",
+        "phone_invalid": "Please enter a complete phone number (12 digits)",
+        "center_required": "Please enter the center name",
+        "message_required": "Please enter your message",
+        "message_min": "Message must be at least 5 characters"
+      }
     },
     "blog": {
       "title": "Blog",
@@ -532,6 +540,19 @@
         "desc": "Management, teaching and analytics"
       },
       "next": "Continue"
+    },
+    "telegram": {
+      "or": "or",
+      "button": "Sign in with Telegram",
+      "loading": "Loading...",
+      "success": "Successfully signed in via Telegram",
+      "error": "Failed to sign in via Telegram",
+      "role_error": "Unknown role. Please contact your administrator.",
+      "phone_required": "Please enter your phone number",
+      "phone_invalid": "Please enter a complete phone number (12 digits)",
+      "phone_modal_title": "Enter your phone number",
+      "phone_modal_desc": "Your Telegram account has no phone number. Enter it to link your account.",
+      "phone_submit": "Confirm"
     }
   },
   "director": {
@@ -750,6 +771,7 @@
         "deleted": "Room deleted",
         "error_name": "Enter room name",
         "error_capacity": "Enter capacity",
+        "error_branch": "Please select a branch",
         "error_generic": "An error occurred",
         "delete_error": "Error during deletion"
       }
@@ -1071,5 +1093,27 @@
       "currency_enter_amount": "Enter amount",
       "currency_rate": "Rate: {{date}}"
     }
+  },
+  "center": {
+    "label": "Center",
+    "select_label": "Select center",
+    "active": "Active center",
+    "select": "Select",
+    "my_centers": "My Centers",
+    "my_centers_desc": "All education centers linked to your account",
+    "students_count": "Students",
+    "revenue": "Revenue",
+    "no_centers": "No centers found",
+    "no_active_center": "Please select a center first"
+  },
+  "branch": {
+    "label": "Branch",
+    "select_label": "Select branch",
+    "active": "Active branch",
+    "no_branches": "No branches in this center",
+    "search_placeholder": "Search branch...",
+    "not_found": "Branch not found",
+    "no_center": "Please select a center first",
+    "load_error": "Failed to load branches"
   }
 }

@@ -1,6 +1,7 @@
-// PhoneInput.tsx
+"use client";
+
+import React from "react";
 import { formatUzPhone } from "@/utils/formatters";
-import { t } from "i18next";
 
 interface PhoneInputProps {
     value: string;

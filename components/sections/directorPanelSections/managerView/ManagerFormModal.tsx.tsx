@@ -8,10 +8,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { UserCog, X, Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
-import { useBranchOptions } from "@/hooks/useBranches";
 import { formatUzPhone, splitFullName, type IManager } from "@/types/manager";
-import SearchSelect from "@/components/ui/SearchSelect";
 import { useTranslation } from "react-i18next";
+import ScopeFormFields from "@/components/common/ScopeFormFields";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -26,7 +26,7 @@ const schema = yup.object({
         then: (s) => s.min(6, "Kamida 6 belgi").required("Parol majburiy"),
         otherwise: (s) => s.optional(),
     }),
-    center: yup.string().uuid("Filial UUID noto'g'ri").required("Filialni tanlang"),
+    branch: yup.string().uuid("Filial UUID noto'g'ri").required("Filialni tanlang"),
     notes: yup.string().optional(),
 });
 
@@ -45,7 +45,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
     const [phoneDisplay, setPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const { data: branches = [], isLoading: branchesLoading } = useBranchOptions();
+    const { activeCenter, isCentersLoaded } = useActiveCenterStore();
 
     const u = manager?.user;
     const nameFromFull = splitFullName(u?.full_name);
@@ -65,7 +65,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
             phone: u?.phone || "998",
             email: u?.email || "",
             password: "",
-            center: manager?.center || "",
+            branch: (manager as any)?.branch || "",
             notes: manager?.notes || "",
         },
     });
@@ -74,6 +74,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
         setIsMounted(true);
         if (u?.phone) setPhoneDisplay(formatUzPhone(u.phone));
     }, [u]);
+
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const raw = e.target.value.replace(/\D/g, "");
@@ -84,7 +85,8 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
 
     const { mutate: saveManager, isPending } = useMutation({
         mutationFn: async (body: FormData) => {
-            const payload: any = { ...body };
+            if (!activeCenter) throw new Error(t("center.no_active_center"));
+            const payload: any = { ...body, center: activeCenter };
             if (isEdit && !payload.password) delete payload.password;
             return isEdit
                 ? (await API.patch(`director/admins/${manager!.id}/`, payload)).data
@@ -157,15 +159,10 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                     </div>
 
                     {/* Filial */}
-                    <SearchSelect
-                        label={t("common.branch")}
-                        required
-                        value={watch("center") || ""}
-                        options={branches}
-                        loading={branchesLoading}
-                        placeholder={t("director.managers.form.branch_placeholder")}
-                        error={errors.center?.message}
-                        onChange={(id) => setValue("center", id, { shouldValidate: true })}
+                    <ScopeFormFields
+                        branchValue={watch("branch")}
+                        onBranchChange={(id) => setValue("branch", id, { shouldValidate: true })}
+                        branchError={(errors as any).branch?.message}
                     />
 
                     {/* Telefon + Email */}
@@ -215,12 +212,19 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                         />
                     </div>
 
+                    {/* Markaz biriktirilmagan ogohlantirish */}
+                    {isCentersLoaded && !activeCenter && (
+                        <p className="text-amber-600 dark:text-amber-400 text-[13px] bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-lg px-3 py-2">
+                            {t("center.no_active_center")}
+                        </p>
+                    )}
+
                     {/* Tugmalar */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
                         <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors">
                             {t("common.cancel")}
                         </button>
-                        <button type="submit" disabled={isPending} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
+                        <button type="submit" disabled={isPending || !activeCenter} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                             {isEdit ? t("common.save") : t("common.create")}
                         </button>

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { ITeacher } from "@/types/teacher";
+import { useActiveCenterStore } from "@/store/activeCenterStore";
 
-// list/delete -> director/teachers/ ; create/update -> super-admin/teachers/ (mavjud holatingiz)
 const TEACHERS_URL = "director/teachers/";
 
 export interface TeachersResult {
@@ -19,11 +19,20 @@ interface ListParams {
 }
 
 export function useTeachers({ page = 1, pageSize = 10, search = "" }: ListParams = {}) {
+    const activeCenter = useActiveCenterStore((s) => s.activeCenter);
+    const activeBranch = useActiveCenterStore((s) => s.activeBranch);
+
     return useQuery<TeachersResult>({
-        queryKey: ["teachers", { page, pageSize, search }],
+        queryKey: ["teachers", { page, pageSize, search, centerId: activeCenter, branchId: activeBranch }],
         queryFn: async () => {
             const res = await API.get(TEACHERS_URL, {
-                params: { page, page_size: pageSize, search: search || undefined },
+                params: {
+                    page,
+                    page_size: pageSize,
+                    search: search || undefined,
+                    center_id: activeCenter || undefined,
+                    branch_id: activeBranch || undefined,
+                },
             });
             const d: any = res.data;
             if (Array.isArray(d)) {
