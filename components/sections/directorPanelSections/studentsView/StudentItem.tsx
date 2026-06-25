@@ -16,12 +16,24 @@ const statusStyles: Record<string, string> = {
     active: "bg-green-50 text-green-700 border-green-100 dark:bg-green-950/20 dark:text-green-400 dark:border-green-900/40",
     inactive: "bg-slate-50 text-slate-600 border-slate-100 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700",
     pending: "bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-900/40",
+    new: "bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-900/40",
+    frozen: "bg-cyan-50 text-cyan-700 border-cyan-100 dark:bg-cyan-950/20 dark:text-cyan-400 dark:border-cyan-900/40",
+    graduated: "bg-purple-50 text-purple-700 border-purple-100 dark:bg-purple-950/20 dark:text-purple-400 dark:border-purple-900/40",
+    suspended: "bg-red-50 text-red-700 border-red-100 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/40",
 };
 
 export default function StudentItem({ student, onEdit, onDelete }: Props) {
     const { t } = useTranslation();
     const router = useRouter();
-    const initial = student.full_name?.slice(0, 2) || "ST";
+    
+    // JSON dagi strukturaga asosan ma'lumotlarni user obyektidan olish (fallback qilib o'zidan ham qidiriladi)
+    const u = student.user;
+    const fullName = u?.full_name || (student as any).full_name || "Noma'lum";
+    const avatar = u?.avatar || (student as any).avatar;
+    const phone = u?.phone || (student as any).phone || "";
+    const email = u?.email || (student as any).email || "—";
+    
+    const initial = fullName.slice(0, 2).toUpperCase() || "ST";
 
     return (
         <tr
@@ -32,17 +44,17 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
             <td className="py-4 px-5">
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 flex items-center justify-center font-semibold text-indigo-600 dark:text-indigo-400 shrink-0 uppercase text-xs overflow-hidden">
-                        {student.avatar ? (
-                            <Image src={student.avatar} alt={student.full_name} width={36} height={36} className="w-full h-full object-cover rounded-full" />
+                        {avatar ? (
+                            <Image src={avatar} alt={fullName} width={36} height={36} className="w-full h-full object-cover rounded-full" />
                         ) : (
                             <span>{initial}</span>
                         )}
                     </div>
                     <div>
                         <div className="font-semibold text-slate-900 dark:text-slate-100 leading-tight flex items-center gap-2">
-                            {student.full_name}
+                            {fullName}
                             {student.status && (
-                                <span className={`text-[10px] px-1.5 py-0.5 rounded-sm border uppercase font-bold tracking-wide ${statusStyles[student.status]}`}>
+                                <span className={`text-[10px] px-1.5 py-0.5 rounded-sm border uppercase font-bold tracking-wide ${statusStyles[student.status] || statusStyles.inactive}`}>
                                     {student.status}
                                 </span>
                             )}
@@ -59,11 +71,11 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
                 <div className="space-y-1 text-xs font-medium">
                     <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                         <Phone className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-                        <span>{formatPhoneView(student.phone)}</span>
+                        <span>{phone ? formatPhoneView(phone) : "—"}</span>
                     </div>
                     <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                         <Mail className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-                        <span className="truncate max-w-[160px]">{student.email}</span>
+                        <span className="truncate max-w-[160px]">{email}</span>
                     </div>
                 </div>
             </td>
@@ -80,7 +92,7 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
             <td className="py-4 px-5">
                 <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 font-medium">
                     <Calendar className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-                    <span>{student.date_of_birth || "—"}</span>
+                    <span>{student.date_of_birth || u?.date_of_birth || "—"}</span>
                 </div>
             </td>
 

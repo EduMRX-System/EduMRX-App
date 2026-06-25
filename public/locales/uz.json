@@ -420,6 +420,10 @@
     "next": "Keyingi",
     "active": "Faol",
     "inactive": "Nofaol",
+    "frozen": "Muzlatilgan",
+    "new": "Yangi",
+    "graduated": "Bitirgan",
+    "suspended": "To'xtatilgan",
     "loading": "Yuklanmoqda...",
     "error_load": "Ma'lumotlarni yuklashda xatolik yuz berdi",
     "error_failed": "Ma'lumotlarni yuklab bo'lmadi",
@@ -1064,15 +1068,7 @@
         "Noyabr",
         "Dekabr"
       ],
-      "weekdays": [
-        "Du",
-        "Se",
-        "Ch",
-        "Pa",
-        "Ju",
-        "Sh",
-        "Ya"
-      ],
+      "weekdays": ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"],
       "quick_tools": "Tezkor vositalar",
       "notes": "Eslatmalar",
       "todos": "Vazifalar",

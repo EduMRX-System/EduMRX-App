@@ -1,17 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
-import { GraduationCap, X, Eye, EyeOff, Loader2 } from "lucide-react";
+import { 
+    GraduationCap, X, Eye, EyeOff, Loader2, CalendarDays, 
+    ChevronLeft, ChevronRight 
+} from "lucide-react";
 import { toast } from "react-toastify";
 import { formatUzPhone, splitFullName, type ITeacher } from "@/types/teacher";
 import { useTranslation } from "react-i18next";
 import ScopeFormFields from "@/components/common/ScopeFormFields";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+
+// ── Calendar helpers ──────────────────────────────────────────────
+function daysInMonth(year: number, month: number) {
+    return new Date(year, month + 1, 0).getDate();
+}
+
+function firstWeekday(year: number, month: number) {
+    const d = new Date(year, month, 1).getDay();
+    return d === 0 ? 6 : d - 1; // Dushanba = 0
+}
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -29,7 +42,14 @@ const schema = yup.object({
     branch: yup.string().uuid("Filial UUID noto'g'ri").required("Filialni tanlang"),
     specialization: yup.string().required("Mutaxassislik majburiy"),
     experience: yup.number().typeError("Raqam kiriting").min(0, "Manfiy bo'lmasin").max(50, "Juda katta").required("Tajriba majburiy"),
-    salary: yup.string().required("Maosh majburiy").matches(/^\d+$/, "Faqat raqam"),
+    salary_type: yup.string().oneOf(["fixed", "percentage"]).required(),
+    salary: yup.string().required("Maosh majburiy").test("valid-salary", "Noto'g'ri qiymat", function(val) {
+        if (!val) return false;
+        const num = Number(val);
+        if (isNaN(num)) return false;
+        if (this.parent.salary_type === "percentage" && (num <= 0 || num > 100)) return false;
+        return true;
+    }),
     bio: yup.string().min(10, "Kamida 10 belgi").required("Bio majburiy"),
     date_of_birth: yup.string().required("Tug'ilgan sana majburiy"),
 });
@@ -37,7 +57,7 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 interface Props {
-    teacher?: ITeacher | null; // berilsa — tahrirlash
+    teacher?: ITeacher | null;
     onClose: () => void;
 }
 
@@ -45,14 +65,25 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!teacher;
+    
     const [isMounted, setIsMounted] = useState(false);
     const [phoneDisplay, setPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+
+    // Kalendar holatlari
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+    const [calendarView, setCalendarView] = useState<"days" | "months" | "years">("days");
+    const datePickerRef = useRef<HTMLDivElement>(null);
 
     const { activeCenter, isCentersLoaded } = useActiveCenterStore();
 
     const u = teacher?.user;
     const nameFromFull = splitFullName(u?.full_name);
+
+    // Maosh turi va miqdorini aniqlash (Backenddan % kelsa yoki oddiy son kelsa)
+    const rawSalary = teacher?.salary?.toString() || "";
+    const initIsPercent = rawSalary.includes("%") || (teacher as any)?.salary_type === "percentage";
+    const initSalaryVal = rawSalary.replace(/\D/g, "");
 
     const {
         register,
@@ -72,17 +103,32 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
             branch: (teacher as any)?.branch || "",
             specialization: teacher?.specialization || "",
             experience: teacher?.experience ?? 0,
-            salary: teacher?.salary ? String(Math.abs(parseInt(teacher.salary))).replace(/\D/g, "") : "",
+            salary_type: initIsPercent ? "percentage" : "fixed",
+            salary: initSalaryVal,
             bio: teacher?.bio || "",
-            date_of_birth: teacher?.date_of_birth ? teacher.date_of_birth.slice(0, 10) : "",
+            date_of_birth: teacher?.date_of_birth ? teacher.date_of_birth.slice(0, 10) : new Date().toISOString().split("T")[0],
         },
     });
+
+    // Kalendar ichki holati
+    const dobValue = watch("date_of_birth");
+    const initDate = dobValue ? new Date(dobValue) : new Date();
+    const [calYear, setCalYear] = useState(initDate.getFullYear());
+    const [calMonth, setCalMonth] = useState(initDate.getMonth());
 
     useEffect(() => {
         setIsMounted(true);
         if (u?.phone) setPhoneDisplay(formatUzPhone(u.phone));
-    }, [u]);
 
+        const onClick = (e: MouseEvent) => {
+            if (datePickerRef.current && !datePickerRef.current.contains(e.target as Node)) {
+                setIsDatePickerOpen(false);
+                setCalendarView("days");
+            }
+        };
+        document.addEventListener("mousedown", onClick);
+        return () => document.removeEventListener("mousedown", onClick);
+    }, [u]);
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const raw = e.target.value.replace(/\D/g, "");
@@ -94,10 +140,15 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
     const { mutate: saveTeacher, isPending } = useMutation({
         mutationFn: async (body: FormData) => {
             if (!activeCenter) throw new Error(t("center.no_active_center"));
-            const { password, ...rest } = body;
+            
+            // Maoshni serverga jo'natish formati (Masalan: "50%" yoki "120000")
+            const finalSalary = body.salary_type === "percentage" ? `${body.salary}%` : body.salary;
+            
+            const { password, salary_type, ...rest } = body;
             const payload = isEdit
-                ? { ...rest, centers: activeCenter }
-                : { ...body, centers: activeCenter };
+                ? { ...rest, salary: finalSalary, center: activeCenter }
+                : { ...rest, password, salary: finalSalary, center: activeCenter };
+                
             const res = isEdit
                 ? await API.put(`director/teachers/${teacher!.id}/`, payload)
                 : await API.post("director/teachers/", payload);
@@ -116,6 +167,40 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
     const labelCls = "text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold";
     const errCls = "text-red-400 dark:text-red-500 text-[11px] mt-1";
 
+    // Kalendar nomlari
+    const monthsRaw = t("director.tools.months", { returnObjects: true });
+    const months: string[] = Array.isArray(monthsRaw) ? monthsRaw : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const weekdaysRaw = t("director.tools.weekdays", { returnObjects: true });
+    const weekdays: string[] = Array.isArray(weekdaysRaw) ? weekdaysRaw : ["Mo","Tu","We","Th","Fr","Sa","Su"];
+    
+    const totalDays = daysInMonth(calYear, calMonth);
+    const startOffset = firstWeekday(calYear, calMonth);
+    const yearStartGrid = Math.floor(calYear / 12) * 12;
+
+    const prevMonth = () => {
+        if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); }
+        else setCalMonth((m) => m - 1);
+    };
+    
+    const nextMonth = () => {
+        if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); }
+        else setCalMonth((m) => m + 1);
+    };
+
+    const handleDateSelect = (day: number) => {
+        const y = calYear;
+        const m = String(calMonth + 1).padStart(2, "0");
+        const d = String(day).padStart(2, "0");
+        setValue("date_of_birth", `${y}-${m}-${d}`, { shouldValidate: true });
+        setIsDatePickerOpen(false);
+    };
+
+    let displayDob = dobValue || "";
+    if (displayDob && displayDob.includes("-")) {
+        const parts = displayDob.split("-");
+        if (parts.length === 3) displayDob = `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
@@ -126,7 +211,6 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
             <div
                 className={`bg-white dark:bg-slate-900 p-6 rounded-xl max-w-2xl w-full max-h-[92vh] overflow-y-auto relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
             >
-                {/* Sticky close */}
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
                         type="button"
@@ -137,7 +221,6 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                     </button>
                 </div>
 
-                {/* Header */}
                 <div className="mb-[10px] border border-slate-200 dark:border-slate-700 shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-indigo-600 bg-indigo-50/10 dark:bg-indigo-950/20">
                     <GraduationCap className="w-6 h-6" />
                 </div>
@@ -191,7 +274,7 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                         </div>
                     </div>
 
-                    {/* Parol (faqat add) + Tug'ilgan sana */}
+                    {/* Parol + Tug'ilgan sana */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {!isEdit && (
                             <div>
@@ -210,9 +293,124 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                                 {errors.password && <p className={errCls}>{errors.password.message}</p>}
                             </div>
                         )}
-                        <div className={isEdit ? "sm:col-span-2" : ""}>
-                            <label className={labelCls}>{t("director.teachers.form.dob_label")}</label>
-                            <input {...register("date_of_birth")} type="date" className={fieldCls(!!errors.date_of_birth)} />
+                        <div className={isEdit ? "sm:col-span-2" : ""} ref={datePickerRef}>
+                            <label className={labelCls}>{t("director.teachers.form.dob_label")} *</label>
+                            <div className="relative">
+                                <div
+                                    onClick={() => { setIsDatePickerOpen(!isDatePickerOpen); setCalendarView("days"); }}
+                                    className={`${fieldCls(!!errors.date_of_birth)} flex items-center justify-between cursor-pointer`}
+                                >
+                                    <span className={dobValue ? "text-slate-900 dark:text-slate-100" : "text-slate-400"}>
+                                        {displayDob || "YYYY-MM-DD"}
+                                    </span>
+                                    <CalendarDays className="w-4 h-4 text-slate-400" />
+                                </div>
+                                
+                                {isDatePickerOpen && (
+                                    <div className="absolute top-full left-0 mt-1 w-[280px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl z-[60] p-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                                        {calendarView === "days" && (
+                                            <>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <button type="button" onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer transition-colors">
+                                                        <ChevronLeft className="w-4 h-4" />
+                                                    </button>
+                                                    <div className="flex gap-1 text-[14px] font-semibold">
+                                                        <span onClick={() => setCalendarView("months")} className="hover:bg-slate-100 dark:hover:bg-slate-800 px-2 py-0.5 rounded cursor-pointer text-indigo-600 dark:text-indigo-400 transition-colors">
+                                                            {months[calMonth]}
+                                                        </span>
+                                                        <span onClick={() => setCalendarView("years")} className="hover:bg-slate-100 dark:hover:bg-slate-800 px-2 py-0.5 rounded cursor-pointer text-indigo-600 dark:text-indigo-400 transition-colors">
+                                                            {calYear}
+                                                        </span>
+                                                    </div>
+                                                    <button type="button" onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer transition-colors">
+                                                        <ChevronRight className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+
+                                                <div className="grid grid-cols-7 mb-1">
+                                                    {weekdays.map((d) => (
+                                                        <div key={d} className="text-[11px] font-semibold text-slate-400 text-center py-1">{d}</div>
+                                                    ))}
+                                                </div>
+
+                                                <div className="grid grid-cols-7 gap-y-0.5">
+                                                    {Array.from({ length: startOffset }).map((_, i) => (
+                                                        <div key={`empty-${i}`} />
+                                                    ))}
+                                                    {Array.from({ length: totalDays }).map((_, i) => {
+                                                        const day = i + 1;
+                                                        const formattedVal = `${calYear}-${String(calMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                                                        const isSel = dobValue === formattedVal;
+                                                        return (
+                                                            <button
+                                                                key={day}
+                                                                type="button"
+                                                                onClick={() => handleDateSelect(day)}
+                                                                className={`w-full aspect-square flex items-center justify-center text-[12px] rounded-lg transition-colors cursor-pointer font-medium ${isSel ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+                                                            >
+                                                                {day}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {calendarView === "months" && (
+                                            <>
+                                                <div className="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
+                                                    <span className="text-[14px] font-bold text-slate-800 dark:text-slate-200">Oyni tanlang</span>
+                                                    <span onClick={() => setCalendarView("years")} className="text-[13px] text-indigo-600 font-semibold cursor-pointer hover:underline">{calYear}</span>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-1.5">
+                                                    {months.map((mName, index) => (
+                                                        <button
+                                                            key={mName}
+                                                            type="button"
+                                                            onClick={() => { setCalMonth(index); setCalendarView("days"); }}
+                                                            className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${calMonth === index ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"}`}
+                                                        >
+                                                            {mName}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {calendarView === "years" && (
+                                            <>
+                                                <div className="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
+                                                    <button type="button" onClick={() => setCalYear(y => y - 12)} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer">
+                                                        <ChevronLeft className="w-4 h-4" />
+                                                    </button>
+                                                    <span className="text-[13px] font-bold text-slate-800 dark:text-slate-200">
+                                                        {yearStartGrid} - {yearStartGrid + 11}
+                                                    </span>
+                                                    <button type="button" onClick={() => setCalYear(y => y + 12)} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer">
+                                                        <ChevronRight className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-1.5 max-h-[180px] overflow-y-auto">
+                                                    {Array.from({ length: 12 }).map((_, idx) => {
+                                                        const targetYear = yearStartGrid + idx;
+                                                        const isCurrentSelected = calYear === targetYear;
+                                                        return (
+                                                            <button
+                                                                key={targetYear}
+                                                                type="button"
+                                                                onClick={() => { setCalYear(targetYear); setCalendarView("days"); }}
+                                                                className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${isCurrentSelected ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"}`}
+                                                            >
+                                                                {targetYear}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                             {errors.date_of_birth && <p className={errCls}>{errors.date_of_birth.message}</p>}
                         </div>
                     </div>
@@ -220,30 +418,52 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                     {/* Mutaxassislik + Tajriba */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>{t("director.teachers.form.specialization_label")}</label>
+                            <label className={labelCls}>{t("director.teachers.form.specialization_label")} *</label>
                             <input {...register("specialization")} placeholder="Senior Python Developer" className={fieldCls(!!errors.specialization)} />
                             {errors.specialization && <p className={errCls}>{errors.specialization.message}</p>}
                         </div>
                         <div>
-                            <label className={labelCls}>{t("director.teachers.form.experience_label")}</label>
+                            <label className={labelCls}>{t("director.teachers.form.experience_label")} *</label>
                             <input {...register("experience")} type="number" className={fieldCls(!!errors.experience)} />
                             {errors.experience && <p className={errCls}>{errors.experience.message}</p>}
                         </div>
                     </div>
 
-                    {/* Maosh */}
+                    {/* Maosh miqdori va Turi (%) yki (UZS) */}
                     <div>
-                        <label className={labelCls}>{t("director.teachers.form.salary_label")}</label>
+                        <label className={labelCls}>{t("director.teachers.form.salary_label")} *</label>
                         <div className="relative flex items-center">
-                            <input {...register("salary")} type="number" placeholder="12000000" className={`${fieldCls(!!errors.salary)} pr-16`} />
-                            <span className="absolute right-3 text-sm font-semibold text-slate-400 pointer-events-none select-none">{t("director.teachers.salary_unit")}</span>
+                            <input 
+                                {...register("salary")} 
+                                type="number" 
+                                placeholder={watch("salary_type") === "percentage" ? "50" : "12000000"} 
+                                className={`${fieldCls(!!errors.salary)} pr-[100px]`} 
+                            />
+                            
+                            {/* Salary Type Toggle */}
+                            <div className="absolute right-1.5 flex items-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md p-0.5">
+                                <button
+                                    type="button"
+                                    onClick={() => setValue("salary_type", "fixed", { shouldValidate: true })}
+                                    className={`px-3 py-1 text-[12px] font-bold rounded cursor-pointer transition-all ${watch("salary_type") === "fixed" ? "bg-white dark:bg-slate-600 shadow-sm text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"}`}
+                                >
+                                    UZS
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setValue("salary_type", "percentage", { shouldValidate: true })}
+                                    className={`px-3 py-1 text-[12px] font-bold rounded cursor-pointer transition-all ${watch("salary_type") === "percentage" ? "bg-white dark:bg-slate-600 shadow-sm text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"}`}
+                                >
+                                    %
+                                </button>
+                            </div>
                         </div>
                         {errors.salary && <p className={errCls}>{errors.salary.message}</p>}
                     </div>
 
                     {/* Bio */}
                     <div>
-                        <label className={labelCls}>{t("director.teachers.form.bio_label")}</label>
+                        <label className={labelCls}>{t("director.teachers.form.bio_label")} *</label>
                         <textarea
                             {...register("bio")}
                             rows={3}

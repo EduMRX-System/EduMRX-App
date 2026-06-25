@@ -8,8 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Provider({ children }: { children: React.ReactNode }) {
-    const [queryClient] = useState(() => new QueryClient());
-
     const initAuth = useAuthStore((state) => state.initAuth);
 
     useEffect(() => {
@@ -17,6 +15,18 @@ export default function Provider({ children }: { children: React.ReactNode }) {
             initAuth();
         }
     }, [initAuth]);
+
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnWindowFocus: false, // Tab almashtirganda API'ga zapros ketmaydi
+                refetchOnReconnect: false,   // Tarmoq tiklanganda zapros ketmaydi
+                refetchInterval: false,      // Interval bilan zapros ketmaydi
+                retry: 1,                    // Xatolik bo'lsa faqat 1 marta qayta urinib ko'radi (sukut bo'yicha 3 marta)
+                staleTime: 1000 * 60 * 5,    // Ma'lumotlarni 5 daqiqa davomida keshda saqlaydi
+            },
+        },
+    });
 
     return (
         <QueryClientProvider client={queryClient}>

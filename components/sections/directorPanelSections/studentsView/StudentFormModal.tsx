@@ -6,12 +6,25 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
-import { User, X, Eye, EyeOff, Loader2, ChevronDown, Check, Notebook } from "lucide-react";
+import { 
+    User, X, Eye, EyeOff, Loader2, ChevronDown, Check, Notebook, 
+    CalendarDays, ChevronLeft, ChevronRight 
+} from "lucide-react";
 import { toast } from "react-toastify";
 import { STATUS_OPTIONS, formatUzPhone, splitFullName, type IStudent } from "@/types/student";
 import { useTranslation } from "react-i18next";
 import ScopeFormFields from "@/components/common/ScopeFormFields";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+
+// ── Calendar helpers ──────────────────────────────────────────────
+function daysInMonth(year: number, month: number) {
+    return new Date(year, month + 1, 0).getDate();
+}
+
+function firstWeekday(year: number, month: number) {
+    const d = new Date(year, month, 1).getDay();
+    return d === 0 ? 6 : d - 1; // Dushanba = 0
+}
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -23,13 +36,17 @@ const schema = yup.object({
     email: yup.string().email("Email noto'g'ri").required("Email majburiy"),
     password: yup.string().when("$isEdit", {
         is: false,
-        then: (s) => s.min(6, "Kamida 6 belgi").required("Parol majburiy"),
-        otherwise: (s) => s.optional(),
+        then: (s) => s.required("Parol majburiy").min(6, "Kamida 6 belgi"),
+        otherwise: (s) => s.optional().test(
+            "min-length",
+            "Kamida 6 belgi kiriting",
+            (val) => !val || val.trim().length >= 6 // Agar bo'sh bo'lsa o'tkazadi, yozilsa min 6 ta so'raydi
+        ),
     }),
     branch: yup.string().uuid("Filial UUID noto'g'ri").required("Filialni tanlang"),
     date_of_birth: yup.string().required("Tug'ilgan sana majburiy"),
     notes: yup.string().optional(),
-    status: yup.string().oneOf(["active", "inactive"]).required("Status majburiy"),
+    status: yup.string().oneOf(["active", "inactive", "frozen", "new", "graduated", "suspended"]).required("Status majburiy"),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -43,14 +60,23 @@ export default function StudentFormModal({ student, onClose }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!student;
+    
     const [isMounted, setIsMounted] = useState(false);
     const [phoneDisplay, setPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    
     const [isStatusOpen, setIsStatusOpen] = useState(false);
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+    const [calendarView, setCalendarView] = useState<"days" | "months" | "years">("days");
+    
     const statusRef = useRef<HTMLDivElement>(null);
-
+    const datePickerRef = useRef<HTMLDivElement>(null);
+    
     const { activeCenter, isCentersLoaded } = useActiveCenterStore();
-    const nameFromFull = splitFullName(student?.full_name);
+    
+    const u = student?.user;
+    const fullName = u?.full_name || (student as any)?.full_name || "";
+    const nameFromFull = splitFullName(fullName);
 
     const {
         register,
@@ -62,28 +88,38 @@ export default function StudentFormModal({ student, onClose }: Props) {
         resolver: yupResolver(schema),
         context: { isEdit },
         defaultValues: {
-            first_name: student?.first_name || nameFromFull.first,
-            last_name: student?.last_name || nameFromFull.last,
-            phone: student?.phone || "998",
-            email: student?.email || "",
-            password: "",
+            first_name: u?.first_name || (student as any)?.first_name || nameFromFull.first,
+            last_name: u?.last_name || (student as any)?.last_name || nameFromFull.last,
+            phone: u?.phone || (student as any)?.phone || "998",
+            email: u?.email || (student as any)?.email || "",
+            password: "", // Dastlab doim bo'sh turadi
             branch: (student as any)?.branch || "",
-            date_of_birth: student?.date_of_birth ? student.date_of_birth.slice(0, 10) : new Date().toISOString().split("T")[0],
+            date_of_birth: student?.date_of_birth || u?.date_of_birth ? (student?.date_of_birth || u?.date_of_birth)?.slice(0, 10) : new Date().toISOString().split("T")[0],
             notes: student?.notes || "",
             status: (student?.status === "inactive" ? "inactive" : "active"),
         },
     });
 
+    const dobValue = watch("date_of_birth");
+    const initDate = dobValue ? new Date(dobValue) : new Date();
+    const [calYear, setCalYear] = useState(initDate.getFullYear());
+    const [calMonth, setCalMonth] = useState(initDate.getMonth());
+
     useEffect(() => {
         setIsMounted(true);
-        if (student?.phone) setPhoneDisplay(formatUzPhone(student.phone));
+        const currentPhone = u?.phone || (student as any)?.phone;
+        if (currentPhone) setPhoneDisplay(formatUzPhone(currentPhone));
+        
         const onClick = (e: MouseEvent) => {
             if (statusRef.current && !statusRef.current.contains(e.target as Node)) setIsStatusOpen(false);
+            if (datePickerRef.current && !datePickerRef.current.contains(e.target as Node)) {
+                setIsDatePickerOpen(false);
+                setCalendarView("days");
+            }
         };
         document.addEventListener("mousedown", onClick);
         return () => document.removeEventListener("mousedown", onClick);
-    }, [student]);
-
+    }, [student, u]);
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const raw = e.target.value.replace(/\D/g, "");
@@ -96,11 +132,17 @@ export default function StudentFormModal({ student, onClose }: Props) {
         mutationFn: async (body: FormData) => {
             if (!activeCenter) throw new Error(t("center.no_active_center"));
             const { password, ...rest } = body;
-            const payload = isEdit
-                ? { ...rest, center: activeCenter }
-                : { ...body, center: activeCenter };
+            
+            // Asosiy yuboriladigan payload (password dan tashqari)
+            const payload: any = { ...rest, center: activeCenter };
+            
+            // 🟢 Agar parol maydoniga nimadir yozilgan bo'lsa, uni qo'shamiz (bo'sh bo'lsa serverga yuborilmaydi)
+            if (password && password.trim().length > 0) {
+                payload.password = password;
+            }
+
             return isEdit
-                ? (await API.put(`director/students/${student!.id}/`, payload)).data
+                ? (await API.patch(`director/students/${student!.id}/`, payload)).data // Qisman yangilash uchun PATCH ishlatamiz
                 : (await API.post("director/students/", payload)).data;
         },
         onSuccess: (data: any) => {
@@ -122,10 +164,46 @@ export default function StudentFormModal({ student, onClose }: Props) {
     });
 
     const currentStatus = STATUS_OPTIONS.find((o) => o.value === watch("status")) || STATUS_OPTIONS[0];
+    
     const fieldCls = (hasError?: boolean) =>
         `border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 ${hasError ? "border-red-300 dark:border-red-800" : "border-slate-200 dark:border-slate-700 focus:border-indigo-400"}`;
+    
     const labelCls = "text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold";
     const errCls = "text-red-400 dark:text-red-500 text-[11px] mt-1";
+
+    const monthsRaw = t("director.tools.months", { returnObjects: true });
+    const months: string[] = Array.isArray(monthsRaw) ? monthsRaw : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const weekdaysRaw = t("director.tools.weekdays", { returnObjects: true });
+    const weekdays: string[] = Array.isArray(weekdaysRaw) ? weekdaysRaw : ["Mo","Tu","We","Th","Fr","Sa","Su"];
+    
+    const totalDays = daysInMonth(calYear, calMonth);
+    const startOffset = firstWeekday(calYear, calMonth);
+
+    const prevMonth = () => {
+        if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); }
+        else setCalMonth((m) => m - 1);
+    };
+    
+    const nextMonth = () => {
+        if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); }
+        else setCalMonth((m) => m + 1);
+    };
+
+    const handleDateSelect = (day: number) => {
+        const y = calYear;
+        const m = String(calMonth + 1).padStart(2, "0");
+        const d = String(day).padStart(2, "0");
+        setValue("date_of_birth", `${y}-${m}-${d}`, { shouldValidate: true });
+        setIsDatePickerOpen(false);
+    };
+
+    let displayDob = dobValue || "";
+    if (displayDob && displayDob.includes("-")) {
+        const parts = displayDob.split("-");
+        if (parts.length === 3) displayDob = `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+
+    const yearStartGrid = Math.floor(calYear / 12) * 12;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -187,35 +265,154 @@ export default function StudentFormModal({ student, onClose }: Props) {
                         </div>
                     </div>
 
-                    {/* Parol (add) + Tug'ilgan sana */}
+                    {/* Parol va Tug'ilgan sana */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {!isEdit && (
-                            <div>
-                                <label className={labelCls}>{t("common.password")} *</label>
-                                <div className="relative flex items-center">
-                                    <input {...register("password")} type={showPassword ? "text" : "password"} placeholder="••••••" className={`${fieldCls(!!errors.password)} pr-10`} />
-                                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">
-                                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                    </button>
-                                </div>
-                                {errors.password && <p className={errCls}>{errors.password.message}</p>}
+                        {/* Parolni endi Edit qilganda ham ko'rsatamiz */}
+                        <div>
+                            <label className={labelCls}>
+                                {t("common.password")} {!isEdit ? "*" : <span className="text-slate-400 font-normal text-xs ml-1">(Ixtiyoriy)</span>}
+                            </label>
+                            <div className="relative flex items-center">
+                                <input {...register("password")} type={showPassword ? "text" : "password"} placeholder="••••••" className={`${fieldCls(!!errors.password)} pr-10`} />
+                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">
+                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </button>
                             </div>
-                        )}
-                        <div className={isEdit ? "md:col-span-2" : ""}>
-                            <label className={labelCls}>{t("director.students.form.dob_label")}</label>
-                            <input {...register("date_of_birth")} type="date" className={fieldCls(!!errors.date_of_birth)} />
+                            {errors.password && <p className={errCls}>{errors.password.message}</p>}
+                        </div>
+                        
+                        <div ref={datePickerRef}>
+                            <label className={labelCls}>{t("director.students.form.dob_label")} *</label>
+                            <div className="relative">
+                                <div
+                                    onClick={() => { setIsDatePickerOpen(!isDatePickerOpen); setCalendarView("days"); }}
+                                    className={`${fieldCls(!!errors.date_of_birth)} flex items-center justify-between cursor-pointer`}
+                                >
+                                    <span className={dobValue ? "text-slate-900 dark:text-slate-100" : "text-slate-400"}>
+                                        {displayDob || "YYYY-MM-DD"}
+                                    </span>
+                                    <CalendarDays className="w-4 h-4 text-slate-400" />
+                                </div>
+                                
+                                {isDatePickerOpen && (
+                                    <div className="absolute top-full left-0 mt-1 w-[280px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl z-[60] p-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                                        
+                                        {calendarView === "days" && (
+                                            <>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <button type="button" onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer transition-colors">
+                                                        <ChevronLeft className="w-4 h-4" />
+                                                    </button>
+                                                    <div className="flex gap-1 text-[14px] font-semibold">
+                                                        <span onClick={() => setCalendarView("months")} className="hover:bg-slate-100 dark:hover:bg-slate-800 px-2 py-0.5 rounded cursor-pointer text-indigo-600 dark:text-indigo-400 transition-colors">
+                                                            {months[calMonth]}
+                                                        </span>
+                                                        <span onClick={() => setCalendarView("years")} className="hover:bg-slate-100 dark:hover:bg-slate-800 px-2 py-0.5 rounded cursor-pointer text-indigo-600 dark:text-indigo-400 transition-colors">
+                                                            {calYear}
+                                                        </span>
+                                                    </div>
+                                                    <button type="button" onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer transition-colors">
+                                                        <ChevronRight className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+
+                                                <div className="grid grid-cols-7 mb-1">
+                                                    {weekdays.map((d) => (
+                                                        <div key={d} className="text-[11px] font-semibold text-slate-400 text-center py-1">{d}</div>
+                                                    ))}
+                                                </div>
+
+                                                <div className="grid grid-cols-7 gap-y-0.5">
+                                                    {Array.from({ length: startOffset }).map((_, i) => (
+                                                        <div key={`empty-${i}`} />
+                                                    ))}
+                                                    {Array.from({ length: totalDays }).map((_, i) => {
+                                                        const day = i + 1;
+                                                        const formattedVal = `${calYear}-${String(calMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                                                        const isSel = dobValue === formattedVal;
+                                                        
+                                                        return (
+                                                            <button
+                                                                key={day}
+                                                                type="button"
+                                                                onClick={() => handleDateSelect(day)}
+                                                                className={`w-full aspect-square flex items-center justify-center text-[12px] rounded-lg transition-colors cursor-pointer font-medium ${isSel ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+                                                            >
+                                                                {day}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {calendarView === "months" && (
+                                            <>
+                                                <div className="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
+                                                    <span className="text-[14px] font-bold text-slate-800 dark:text-slate-200">Oyni tanlang</span>
+                                                    <span onClick={() => setCalendarView("years")} className="text-[13px] text-indigo-600 font-semibold cursor-pointer hover:underline">{calYear}</span>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-1.5">
+                                                    {months.map((mName, index) => (
+                                                        <button
+                                                            key={mName}
+                                                            type="button"
+                                                            onClick={() => { setCalMonth(index); setCalendarView("days"); }}
+                                                            className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${calMonth === index ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"}`}
+                                                        >
+                                                            {mName}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {calendarView === "years" && (
+                                            <>
+                                                <div className="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
+                                                    <button type="button" onClick={() => setCalYear(y => y - 12)} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer">
+                                                        <ChevronLeft className="w-4 h-4" />
+                                                    </button>
+                                                    <span className="text-[13px] font-bold text-slate-800 dark:text-slate-200">
+                                                        {yearStartGrid} - {yearStartGrid + 11}
+                                                    </span>
+                                                    <button type="button" onClick={() => setCalYear(y => y + 12)} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer">
+                                                        <ChevronRight className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-1.5 max-h-[180px] overflow-y-auto">
+                                                    {Array.from({ length: 12 }).map((_, idx) => {
+                                                        const targetYear = yearStartGrid + idx;
+                                                        const isCurrentSelected = calYear === targetYear;
+                                                        return (
+                                                            <button
+                                                                key={targetYear}
+                                                                type="button"
+                                                                onClick={() => { setCalYear(targetYear); setCalendarView("days"); }}
+                                                                className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${isCurrentSelected ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"}`}
+                                                            >
+                                                                {targetYear}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                             {errors.date_of_birth && <p className={errCls}>{errors.date_of_birth.message}</p>}
                         </div>
                     </div>
 
-                    {/* Filial */}
+                    {/* Filial selection */}
                     <ScopeFormFields
                         branchValue={watch("branch")}
                         onBranchChange={(id) => setValue("branch", id, { shouldValidate: true })}
                         branchError={(errors as any).branch?.message}
                     />
 
-                    {/* Status */}
+                    {/* Status selection */}
                     <div>
                         <div ref={statusRef} className="relative">
                             <label className={labelCls}>{t("director.students.form.status_label")}</label>
@@ -225,7 +422,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                             >
                                 <div className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
-                                    <span>{currentStatus.value === "active" ? t("common.active") : t("common.inactive")}</span>
+                                    <span>{t(`common.${currentStatus.value}`)}</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
                             </div>
@@ -241,7 +438,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <span className={`w-2 h-2 rounded-full ${option.color}`} />
-                                                    <span>{option.value === "active" ? t("common.active") : t("common.inactive")}</span>
+                                                    {t(`common.${option.value}`)}
                                                 </div>
                                                 {isSel && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
                                             </div>
@@ -266,7 +463,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                         </div>
                     </div>
 
-                    {/* Tugmalar */}
+                    {/* Pastki tugmalar */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
                         <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors">
                             {t("common.cancel")}
