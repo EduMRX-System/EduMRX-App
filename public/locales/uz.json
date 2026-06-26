@@ -1049,6 +1049,38 @@
         "legend_out": "Ketgan",
         "revenue_title": "Daromad trendi",
         "revenue_label": "Tushum"
+      },
+      "overview_title": "Analitika",
+      "overview_subtitle": "Umumiy ko'rsatkichlar va moliyaviy tahlil",
+      "stat": {
+        "total_revenue": "Jami daromad",
+        "monthly_revenue": "Oylik daromad",
+        "centers": "Markazlar",
+        "active": "faol",
+        "debts": "Qarzdorlik",
+        "debtors": "qarzdor o'quvchi"
+      },
+      "chart_section": {
+        "title": "Oylik daromad",
+        "no_data": "Ma'lumot yo'q",
+        "total": "Jami:"
+      },
+      "centers_table": {
+        "title": "Markazlar",
+        "name": "Nomi",
+        "students": "O'quvchilar",
+        "monthly": "Oylik",
+        "total": "Jami",
+        "status": "Holati",
+        "empty": "Markazlar topilmadi"
+      },
+      "transactions_section": {
+        "title": "Tranzaksiyalar",
+        "empty": "Tranzaksiyalar yo'q"
+      },
+      "branches_section": {
+        "title": "Filiallar",
+        "empty": "Filiallar topilmadi"
       }
     },
     "tools": {

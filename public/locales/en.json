@@ -1049,6 +1049,38 @@
         "legend_out": "Outgoing",
         "revenue_title": "Revenue trend",
         "revenue_label": "Revenue"
+      },
+      "overview_title": "Analytics",
+      "overview_subtitle": "Overall metrics and financial analysis",
+      "stat": {
+        "total_revenue": "Total revenue",
+        "monthly_revenue": "Monthly revenue",
+        "centers": "Centers",
+        "active": "active",
+        "debts": "Pending debts",
+        "debtors": "debtors"
+      },
+      "chart_section": {
+        "title": "Monthly revenue",
+        "no_data": "No data available",
+        "total": "Total:"
+      },
+      "centers_table": {
+        "title": "Centers",
+        "name": "Name",
+        "students": "Students",
+        "monthly": "Monthly",
+        "total": "Total",
+        "status": "Status",
+        "empty": "No centers found"
+      },
+      "transactions_section": {
+        "title": "Transactions",
+        "empty": "No transactions"
+      },
+      "branches_section": {
+        "title": "Branches",
+        "empty": "No branches found"
       }
     },
     "tools": {

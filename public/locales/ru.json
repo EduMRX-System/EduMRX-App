@@ -1049,6 +1049,38 @@
         "legend_out": "Выбыли",
         "revenue_title": "Тренд дохода",
         "revenue_label": "Доход"
+      },
+      "overview_title": "Аналитика",
+      "overview_subtitle": "Общие показатели и финансовый анализ",
+      "stat": {
+        "total_revenue": "Общий доход",
+        "monthly_revenue": "Доход за месяц",
+        "centers": "Центры",
+        "active": "активных",
+        "debts": "Задолженности",
+        "debtors": "должников"
+      },
+      "chart_section": {
+        "title": "Ежемесячный доход",
+        "no_data": "Нет данных",
+        "total": "Итого:"
+      },
+      "centers_table": {
+        "title": "Центры",
+        "name": "Название",
+        "students": "Ученики",
+        "monthly": "За месяц",
+        "total": "Итого",
+        "status": "Статус",
+        "empty": "Центры не найдены"
+      },
+      "transactions_section": {
+        "title": "Транзакции",
+        "empty": "Транзакций нет"
+      },
+      "branches_section": {
+        "title": "Филиалы",
+        "empty": "Филиалы не найдены"
       }
     },
     "tools": {
