@@ -5,6 +5,6 @@ export default function TeacherLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <ProtectedRoute allowedRoles="manager">{children}</ProtectedRoute>
+  return <ProtectedRoute allowedRoles={["manager", "admin"]}>{children}</ProtectedRoute>
 
 }
