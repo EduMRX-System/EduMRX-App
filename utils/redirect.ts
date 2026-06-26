@@ -6,7 +6,6 @@ export const ROLE_SUBDOMAIN: Record<string, string> = {
   student_user: "student",
   student: "student",
   parent: "parent",
-  super_admin: "admin",   // super admin paneli (agar mavjud bo'lsa)
 };
 
 export function getSubdomainUrl(subdomain: string): string {
