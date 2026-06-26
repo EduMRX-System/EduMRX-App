@@ -582,7 +582,8 @@
       "expenses": "Xarajatlar",
       "profile": "Profil",
       "collapse": "Yig'ish",
-      "expand": "Yoyish"
+      "expand": "Yoyish",
+      "my_centers": "Mening markazlarim"
     },
     "dashboard": {
       "title": "Xush kelibsiz 👋",
@@ -1068,7 +1069,15 @@
         "Noyabr",
         "Dekabr"
       ],
-      "weekdays": ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"],
+      "weekdays": [
+        "Du",
+        "Se",
+        "Ch",
+        "Pa",
+        "Ju",
+        "Sh",
+        "Ya"
+      ],
       "quick_tools": "Tezkor vositalar",
       "notes": "Eslatmalar",
       "todos": "Vazifalar",
@@ -1111,5 +1120,29 @@
     "not_found": "Filial topilmadi",
     "no_center": "Avval markaz tanlang",
     "load_error": "Yuklashda xatolik yuz berdi"
+  },
+  "manager": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "learning": "O'quv",
+      "students": "O'quvchilar",
+      "teachers": "O'qituvchilar",
+      "lessons_group": "Darslar",
+      "courses": "Kurslar",
+      "groups": "Guruhlar",
+      "attendance": "Davomat",
+      "analytics_group": "Analitika",
+      "analytics": "Analitika",
+      "analysis": "Batafsil tahlil",
+      "debtor_students": "Qarzdor talabalar",
+      "management": "Boshqaruv",
+      "rooms": "Xonalar",
+      "finance": "Moliya",
+      "expenses": "Xarajatlar",
+      "payment_types": "To'lov turlari",
+      "settings": "Sozlamalar",
+      "collapse": "Yig'ish",
+      "expand": "Yoyish"
+    }
   }
 }

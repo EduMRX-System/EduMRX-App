@@ -40,13 +40,17 @@ export const directorMenu: NavItem[] = [
   { title: "Profil", href: "/profile", icon: User },
 ];
 
-// ─── MANAGER (namuna — moslang) ─────────────────────────
+// ─── MANAGER ────────────────────────────────────────────
 export const managerMenu: NavItem[] = [
-  { title: "Dashboard", href: "/manager", icon: LayoutDashboard },
-  { title: "O'quvchilar", href: "/manager/students", icon: Users },
-  { title: "Guruhlar", href: "/manager/groups", icon: Building2 },
-  { title: "To'lovlar", href: "/manager/payments", icon: CreditCard },
-  { title: "Profil", href: "/manager/profile", icon: User },
+  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "O'quvchilar", href: "/students", icon: Users },
+  { title: "O'qituvchilar", href: "/teachers", icon: UserCog },
+  { title: "Guruhlar", href: "/groups", icon: Building2 },
+  { title: "Davomat", href: "/attendance", icon: ClipboardCheck },
+  { title: "Analitika", href: "/analytics", icon: BarChart3 },
+  { title: "Xonalar", href: "/rooms", icon: User },
+  { title: "Xarajatlar", href: "/expenses", icon: CreditCard },
+  { title: "Sozlamalar", href: "/settings", icon: User },
 ];
 
 // ─── TEACHER (namuna) ───────────────────────────────────

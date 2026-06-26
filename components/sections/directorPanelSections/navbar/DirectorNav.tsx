@@ -25,7 +25,7 @@ interface NavProps {
     onNavigate?: () => void; // mobil: bosilganda drawer yopish
 }
 
-export default function DirectorNav({ onNavigate }: NavProps) {
+export default function DirectorNav({ onNavigate }: NavProps)   {
     const { t } = useTranslation();
     const isActive = useActive();
     const { isSidebarCollapsed, setSidebarCollapsed, theme } = useUIStore();

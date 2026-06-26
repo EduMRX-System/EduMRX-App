@@ -418,7 +418,7 @@
     "search": "Search",
     "prev": "Previous",
     "next": "Next",
-   "active": "Active",
+    "active": "Active",
     "inactive": "Inactive",
     "frozen": "Frozen",
     "new": "New",
@@ -582,7 +582,8 @@
       "expenses": "Expenses",
       "profile": "Profile",
       "collapse": "Collapse",
-      "expand": "Expand"
+      "expand": "Expand",
+      "my_centers": "My Centers"
     },
     "dashboard": {
       "title": "Welcome 👋",
@@ -1119,5 +1120,29 @@
     "not_found": "Branch not found",
     "no_center": "Please select a center first",
     "load_error": "Failed to load branches"
+  },
+  "manager": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "learning": "Learning",
+      "students": "Students",
+      "teachers": "Teachers",
+      "lessons_group": "Lessons",
+      "courses": "Courses",
+      "groups": "Groups",
+      "attendance": "Attendance",
+      "analytics_group": "Analytics",
+      "analytics": "Analytics",
+      "analysis": "Detailed Analysis",
+      "debtor_students": "Debtor Students",
+      "management": "Management",
+      "rooms": "Rooms",
+      "finance": "Finance",
+      "expenses": "Expenses",
+      "payment_types": "Payment Types",
+      "settings": "Settings",
+      "collapse": "Collapse",
+      "expand": "Expand"
+    }
   }
 }
