@@ -68,17 +68,17 @@ export default function Breadcrumb() {
         return (
           <span key={item.href} className="flex items-center gap-0.5">
             {idx > 0 && (
-              <ChevronRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-700 mx-0.5 shrink-0" />
+              <ChevronRight className="w-3.5 h-3.5 text-border mx-0.5 shrink-0" />
             )}
 
             {isLast ? (
-              <span className="font-semibold text-slate-800 dark:text-white">
+              <span className="font-semibold text-foreground">
                 {item.label}
               </span>
             ) : (
               <Link
                 href={item.href}
-                className="flex items-center gap-1 font-medium text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                className="flex items-center gap-1 font-medium text-foreground-subtle hover:text-primary transition-colors"
               >
                 {idx === 0 && <Home className="w-3.5 h-3.5 shrink-0" />}
                 <span>{item.label}</span>

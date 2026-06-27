@@ -111,35 +111,35 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
     });
 
     const fieldCls = (hasError?: boolean) =>
-        `border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 ${hasError ? "border-red-300 dark:border-red-800" : "border-slate-200 dark:border-slate-700 focus:border-indigo-400"}`;
-    const labelCls = "text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold";
+        `border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring ${hasError ? "border-danger/50" : "border-border focus:border-primary"}`;
+    const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
     const errCls = "text-red-400 dark:text-red-500 text-[11px] mt-1";
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
-                className={`fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
+                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
                 onClick={onClose}
             />
 
             <div
-                className={`bg-white dark:bg-slate-900 p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
+                className={`bg-surface p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
             >
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="pointer-events-auto -mt-2 -mr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-md cursor-pointer transition-colors"
+                        className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
-                <div className="mb-[10px] border border-slate-200 dark:border-slate-700 shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-indigo-600 bg-indigo-50/10 dark:bg-indigo-950/20">
+                <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-primary bg-primary-soft/10">
                     <UserCog className="w-6 h-6" />
                 </div>
 
-                <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
+                <h3 className="text-foreground text-[18px] font-semibold mb-4">
                     {isEdit ? t("director.managers.form.title_edit") : t("director.managers.form.title_add")}
                 </h3>
 
@@ -170,7 +170,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                         <div>
                             <label className={labelCls}>{t("common.phone")} *</label>
                             <div className="relative flex items-center">
-                                <span className="absolute left-3 text-sm font-semibold text-slate-700 dark:text-slate-300 pointer-events-none select-none">+998</span>
+                                <span className="absolute left-3 text-sm font-semibold text-foreground pointer-events-none select-none">+998</span>
                                 <input type="tel" value={phoneDisplay} onChange={handlePhoneChange} placeholder="90-123-45-67" className={`${fieldCls(!!errors.phone)} pl-[55px]`} />
                             </div>
                             {errors.phone && <p className={errCls}>{errors.phone.message}</p>}
@@ -194,7 +194,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                                 placeholder={isEdit ? t("director.managers.form.password_placeholder_edit") : "••••••"}
                                 className={`${fieldCls(!!errors.password)} pr-10`}
                             />
-                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">
+                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-foreground-subtle hover:text-foreground cursor-pointer">
                                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             </button>
                         </div>
@@ -208,7 +208,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                             {...register("notes")}
                             rows={2}
                             placeholder={t("director.managers.form.note_placeholder")}
-                            className="border rounded-lg w-full px-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400 placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                            className="border rounded-lg w-full px-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-surface text-foreground border-border focus:border-primary placeholder:text-foreground-subtle"
                         />
                     </div>
 
@@ -220,11 +220,11 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                     )}
 
                     {/* Tugmalar */}
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
-                        <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors">
+                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle mt-6">
+                        <button type="button" onClick={onClose} className="h-10 px-4 border border-border bg-surface text-foreground hover:bg-hover text-sm font-semibold rounded-lg cursor-pointer transition-colors">
                             {t("common.cancel")}
                         </button>
-                        <button type="submit" disabled={isPending || !activeCenter} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
+                        <button type="submit" disabled={isPending || !activeCenter} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                             {isEdit ? t("common.save") : t("common.create")}
                         </button>

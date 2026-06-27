@@ -197,21 +197,21 @@ export default function ToolsWidgetHeader() {
   const nextMonth = () => { if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); } else setCalMonth((m) => m + 1); };
 
   const base = "flex items-center justify-center h-[50px] rounded-xl text-[15px] font-semibold transition-all duration-100 active:scale-95 select-none cursor-pointer";
-  const btnNum = `${base} bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700`;
-  const btnOp = (active: boolean) => `${base} border ${active ? "bg-indigo-600 text-white border-indigo-600" : "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/50"}`;
-  const btnAction = `${base} bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600`;
-  const btnEquals = `${base} bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white border border-indigo-600`;
+  const btnNum = `${base} bg-surface text-foreground border border-border hover:bg-hover`;
+  const btnOp = (active: boolean) => `${base} border ${active ? "bg-primary text-primary-fg border-primary" : "bg-primary-soft text-primary border-primary-soft hover:bg-primary/10"}`;
+  const btnAction = `${base} bg-hover text-foreground-muted border border-border hover:bg-border-subtle`;
+  const btnEquals = `${base} bg-primary hover:bg-primary-hover active:bg-primary-hover text-primary-fg border border-primary`;
   const showAC = calc.display === "0" && !calc.operand1 && !calc.history;
 
   const panelCls = isMobile
-    ? "fixed bottom-0 inset-x-0 z-[71] bg-white dark:bg-slate-900 rounded-t-2xl shadow-2xl flex flex-col max-h-[90vh]"
-    : "absolute right-0 top-full mt-2 w-[316px] bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xl z-50 overflow-hidden origin-top-right";
+    ? "fixed bottom-0 inset-x-0 z-[71] bg-surface rounded-t-2xl shadow-2xl flex flex-col max-h-[90vh]"
+    : "absolute right-0 top-full mt-2 w-[316px] bg-surface rounded-xl border border-border shadow-2xl z-50 overflow-hidden origin-top-right";
 
   const btnCls = (active: boolean) =>
     `w-9 h-9 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${
       active
-        ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
-        : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+        ? "bg-hover text-foreground"
+        : "text-foreground-muted hover:bg-hover hover:text-foreground"
     }`;
 
   return (
@@ -260,20 +260,20 @@ export default function ToolsWidgetHeader() {
             >
               {isMobile && (
                 <div className="flex justify-center pt-3 pb-1 shrink-0">
-                  <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
+                  <div className="w-10 h-1 rounded-full bg-border" />
                 </div>
               )}
 
               {/* Tab bar */}
-              <div className="flex items-center border-b border-slate-100 dark:border-slate-800 px-1 pt-1 gap-0.5 shrink-0">
+              <div className="flex items-center border-b border-border-subtle px-1 pt-1 gap-0.5 shrink-0">
                 {(["calculator", "calendar"] as Tab[]).map((tabName) => (
                   <button
                     key={tabName}
                     onClick={() => setTab(tabName)}
                     className={`flex items-center gap-1.5 px-3 py-2.5 text-[13px] font-semibold rounded-t-lg transition-colors cursor-pointer ${
                       tab === tabName
-                        ? "text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400 -mb-px"
-                        : "text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200"
+                        ? "text-primary border-b-2 border-primary -mb-px"
+                        : "text-foreground-subtle hover:text-foreground"
                     }`}
                   >
                     {tabName === "calculator"
@@ -284,7 +284,7 @@ export default function ToolsWidgetHeader() {
                 ))}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="ml-auto mr-1.5 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                  className="ml-auto mr-1.5 p-1.5 rounded-lg text-foreground-subtle hover:text-foreground hover:bg-hover transition-colors cursor-pointer"
                   aria-label="Close"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -295,19 +295,19 @@ export default function ToolsWidgetHeader() {
                 {/* ── CALCULATOR ──────────────────────────── */}
                 {tab === "calculator" && (
                   <div className="p-3 space-y-2">
-                    <div className="bg-slate-50 dark:bg-slate-800/60 rounded-xl px-4 py-3 min-h-[70px] flex flex-col justify-end items-end border border-slate-100 dark:border-slate-700">
+                    <div className="bg-surface-raised rounded-xl px-4 py-3 min-h-[70px] flex flex-col justify-end items-end border border-border-subtle">
                       {calc.history && (
-                        <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-1 truncate w-full text-right">
+                        <p className="text-[11px] text-foreground-subtle mb-1 truncate w-full text-right">
                           {calc.history}
                         </p>
                       )}
-                      <p className={`text-[26px] font-semibold truncate w-full text-right leading-tight ${calc.isError ? "text-red-500" : "text-slate-900 dark:text-slate-100"}`}>
+                      <p className={`text-[26px] font-semibold truncate w-full text-right leading-tight ${calc.isError ? "text-danger" : "text-foreground"}`}>
                         {calc.display}
                       </p>
                     </div>
 
                     <div className="grid grid-cols-4 gap-1.5">
-                      <button onClick={() => dispatch({ type: "CLEAR" })} className={`${btnAction} col-span-2 ${calc.isError ? "text-red-500 dark:text-red-400" : "text-orange-500 dark:text-orange-400"}`}>
+                      <button onClick={() => dispatch({ type: "CLEAR" })} className={`${btnAction} col-span-2 ${calc.isError ? "text-danger" : "text-orange-500"}`}>
                         {showAC ? "AC" : "C"}
                       </button>
                       <button onClick={() => dispatch({ type: "BACKSPACE" })} className={btnAction}>⌫</button>
@@ -340,20 +340,20 @@ export default function ToolsWidgetHeader() {
                 {tab === "calendar" && (
                   <div className="p-3">
                     <div className="flex items-center justify-between mb-2">
-                      <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-pointer transition-colors">
+                      <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">
                         <ChevronLeft className="w-4 h-4" />
                       </button>
-                      <span className="text-[14px] font-semibold text-slate-900 dark:text-slate-100">
+                      <span className="text-[14px] font-semibold text-foreground">
                         {months[calMonth]} {calYear}
                       </span>
-                      <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-pointer transition-colors">
+                      <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
 
                     <div className="grid grid-cols-7 mb-1">
                       {weekdays.map((d) => (
-                        <div key={d} className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 text-center py-1">{d}</div>
+                        <div key={d} className="text-[11px] font-semibold text-foreground-subtle text-center py-1">{d}</div>
                       ))}
                     </div>
 
@@ -369,10 +369,10 @@ export default function ToolsWidgetHeader() {
                             onClick={() => setSelectedDate(new Date(calYear, calMonth, day))}
                             className={`w-full aspect-square flex items-center justify-center text-[12px] rounded-lg transition-colors cursor-pointer font-medium ${
                               isSel
-                                ? "bg-indigo-600 text-white"
+                                ? "bg-primary text-primary-fg"
                                 : isToday
-                                ? "bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-bold ring-1 ring-indigo-200 dark:ring-indigo-800"
-                                : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                ? "bg-primary-soft text-primary font-bold ring-1 ring-primary/30"
+                                : "text-foreground hover:bg-hover"
                             }`}
                           >
                             {day}
@@ -381,15 +381,15 @@ export default function ToolsWidgetHeader() {
                       })}
                     </div>
 
-                    <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <div className="mt-3 pt-2.5 border-t border-border-subtle flex items-center justify-between">
                       <button
                         onClick={() => { setCalYear(today.getFullYear()); setCalMonth(today.getMonth()); }}
-                        className="text-[12px] font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950/40"
+                        className="text-[12px] font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-primary-soft"
                       >
                         {t("director.tools.today")}
                       </button>
                       {selectedDate && (
-                        <span className="text-[12px] text-slate-500 dark:text-slate-400">
+                        <span className="text-[12px] text-foreground-muted">
                           {selectedDate.getDate()} {months[selectedDate.getMonth()]} {selectedDate.getFullYear()}
                         </span>
                       )}

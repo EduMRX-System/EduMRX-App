@@ -114,22 +114,22 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
     const displayLabel = label ?? t("branch.label");
 
     const triggerCls = [
-        "border rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 transition-colors",
+        "border rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-surface transition-colors",
         error
             ? "border-red-300 dark:border-red-800"
             : open
             ? "border-indigo-400 dark:border-indigo-600 ring-2 ring-indigo-100 dark:ring-indigo-900/20"
-            : "border-slate-200 dark:border-slate-700",
+            : "border-border",
         value && selectedLabel
-            ? "text-slate-900 dark:text-slate-100"
-            : "text-slate-400 dark:text-slate-500",
+            ? "text-foreground"
+            : "text-foreground-subtle",
     ].join(" ");
 
     return (
         <div ref={containerRef} className="relative">
-            <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">
+            <label className="text-[14px] text-foreground-muted mb-1 block font-semibold">
                 <span className="inline-flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-indigo-500" />
+                    <MapPin className="w-3.5 h-3.5 text-primary" />
                     {displayLabel} {required && "*"}
                 </span>
             </label>
@@ -148,33 +148,33 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
                             : t("branch.select_label")}
                     </span>
                     {isLoading && !open ? (
-                        <Loader2 className="w-4 h-4 text-slate-400 shrink-0 animate-spin" />
+                        <Loader2 className="w-4 h-4 text-foreground-subtle shrink-0 animate-spin" />
                     ) : (
                         <ChevronDown
-                            className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+                            className={`w-4 h-4 text-foreground-subtle shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
                         />
                     )}
                 </div>
             )}
 
             {open && centerId && (
-                <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
+                <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
                     {/* Search */}
-                    <div className="relative p-2 border-b border-slate-100 dark:border-slate-700/60">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+                    <div className="relative p-2 border-b border-border-subtle/60">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-foreground-subtle pointer-events-none" />
                         <input
                             ref={searchRef}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder={t("branch.search_placeholder")}
-                            className="w-full h-8 pl-7 pr-2 text-[13px] rounded-md bg-slate-50 dark:bg-slate-900/50 border border-transparent outline-none focus:border-indigo-400 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                            className="w-full h-8 pl-7 pr-2 text-[13px] rounded-md bg-slate-50 /50 border border-transparent outline-none focus:border-indigo-400 text-foreground placeholder:text-foreground-subtle dark:placeholder:text-foreground-muted"
                         />
                     </div>
 
                     {/* List */}
                     <div ref={listRef} className="max-h-52 overflow-y-auto py-1" onScroll={handleScroll}>
                         {isLoading ? (
-                            <div className="flex items-center justify-center py-4 text-slate-400">
+                            <div className="flex items-center justify-center py-4 text-foreground-subtle">
                                 <Loader2 className="w-4 h-4 animate-spin" />
                             </div>
                         ) : isError ? (
@@ -182,7 +182,7 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
                                 {t("branch.load_error")}
                             </div>
                         ) : allItems.length === 0 ? (
-                            <div className="px-3 py-4 text-xs text-center text-slate-400">
+                            <div className="px-3 py-4 text-xs text-center text-foreground-subtle">
                                 {t("branch.not_found")}
                             </div>
                         ) : (
@@ -200,8 +200,8 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
                                             }}
                                             className={`px-3 py-2 text-[13px] cursor-pointer flex items-center justify-between transition-colors ${
                                                 isSel
-                                                    ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-medium"
-                                                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"
+                                                    ? "bg-primary-soft text-primary font-medium"
+                                                    : "text-foreground hover:bg-hover"
                                             }`}
                                         >
                                             <span className="truncate">{item.name}</span>
@@ -210,7 +210,7 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
                                     );
                                 })}
                                 {isFetchingNextPage && (
-                                    <div className="flex items-center justify-center py-2 text-slate-400">
+                                    <div className="flex items-center justify-center py-2 text-foreground-subtle">
                                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
                                     </div>
                                 )}
@@ -220,7 +220,7 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
                 </div>
             )}
 
-            {error && <p className="text-red-400 dark:text-red-500 text-[11px] mt-1">{error}</p>}
+            {error && <p className="text-red-400 dark:text-danger text-[11px] mt-1">{error}</p>}
         </div>
     );
 }

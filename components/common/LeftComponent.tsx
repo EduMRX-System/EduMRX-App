@@ -24,7 +24,7 @@ export default function LeftComponent({
   return (
     // Floating wrapper — atrofida padding, left'ga yopishmaydi
     <div className="h-screen p-3">
-      <div className="h-full flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all duration-300 relative overflow-hidden">
+      <div className="h-full flex flex-col bg-surface rounded-2xl border border-border shadow-sm transition-all duration-300 relative overflow-hidden">
         {/* BRAND */}
         <div
           className={`flex items-center transition-all duration-300 shrink-0 ${collapsed ? "px-3 py-6 justify-center gap-0" : "p-6 justify-between gap-3"
@@ -41,10 +41,10 @@ export default function LeftComponent({
               className={`overflow-hidden transition-all duration-300 ${collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
                 }`}
             >
-              <p className="text-2xl font-black text-slate-900 dark:text-white leading-none whitespace-nowrap">
+              <p className="text-2xl font-black text-foreground leading-none whitespace-nowrap">
                 {t("brand.name")}
               </p>
-              <p className="text-slate-500 dark:text-slate-400 text-[10px] font-bold mt-1 whitespace-nowrap uppercase tracking-wider">
+              <p className="text-foreground-muted text-[10px] font-bold mt-1 whitespace-nowrap uppercase tracking-wider">
                 {roleTitle}
               </p>
             </div>
@@ -52,7 +52,7 @@ export default function LeftComponent({
 
           <button
             onClick={() => setSidebarCollapsed(!collapsed)}
-            className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-all duration-200 cursor-pointer shrink-0"
+            className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-border text-foreground-muted hover:bg-hover hover:text-slate-700 dark:hover:text-slate-200 transition-all duration-200 cursor-pointer shrink-0"
             title={collapsed ? "Expand" : "Collapse"}
           >
             {collapsed ? (
@@ -84,7 +84,7 @@ export default function LeftComponent({
                   ${collapsed ? "px-0 py-3 justify-center" : "px-6 py-3 gap-4"}
                   ${isActive
                     ? "bg-[#4F46E5] text-white border-l-[5px] border-[#3525CD]"
-                    : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border-l-[5px] border-transparent"
+                    : "text-foreground-muted hover:bg-hover border-l-[5px] border-transparent"
                   }
                 `}
               >
@@ -104,9 +104,9 @@ export default function LeftComponent({
 
                 {/* Tooltip — faqat collapsed holatda */}
                 {collapsed && (
-                  <div className="absolute left-full ml-2 px-3 py-1.5 bg-slate-900 dark:bg-slate-700 text-white text-xs font-medium rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[9999] whitespace-nowrap pointer-events-none">
+                  <div className="absolute left-full ml-2 px-3 py-1.5 bg-foreground text-surface text-xs font-medium rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[9999] whitespace-nowrap pointer-events-none">
                     {item.title}
-                    <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-slate-900 dark:bg-slate-700 rotate-45" />
+                    <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-foreground rotate-45" />
                   </div>
                 )}
               </Link>

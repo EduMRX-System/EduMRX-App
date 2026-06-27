@@ -57,9 +57,9 @@ export default function Footer() {
     { icon: "Youtube", href: "https://youtube.com/@edumrx", label: "YouTube" },
   ];
   return (
-    <footer className="relative bg-slate-50 dark:bg-slate-950 border-t border-slate-200/60 dark:border-slate-800/60 overflow-hidden">
+    <footer className="relative bg-layout border-t border-border-subtle overflow-hidden">
       {/* Decorative glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-indigo-500/5 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-primary/5 blur-3xl rounded-full pointer-events-none" />
 
       <div className="relative mx-auto max-w-6xl px-4">
 
@@ -68,19 +68,19 @@ export default function Footer() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="py-12 flex flex-col md:flex-row items-center justify-between gap-6 border-b border-slate-200/60 dark:border-slate-800/60"
+          className="py-12 flex flex-col md:flex-row items-center justify-between gap-6 border-b border-border-subtle"
         >
           <div>
             <h3 className="text-xl font-black text-slate-900 dark:text-white">
               {t("marketing.footer.cta_title")}
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-sm text-foreground-muted mt-1">
               {t("marketing.footer.cta_desc")}
             </p>
           </div>
           <Link
             href="/pricing"
-            className="group shrink-0 inline-flex h-11 px-6 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-indigo-500/20"
+            className="group shrink-0 inline-flex h-11 px-6 bg-primary hover:bg-indigo-700 text-white text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-indigo-500/20"
           >
             <span>{t("marketing.footer.cta_button")}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -101,21 +101,21 @@ export default function Footer() {
                 }
               </Link>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mb-5">
+            <p className="text-sm text-foreground-muted leading-relaxed max-w-xs mb-5">
               {t("marketing.footer.brand_desc")}
             </p>
 
             {/* Contact */}
             <div className="space-y-2.5">
-              <a href="mailto:edumrxm@gmail.com" className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              <a href="mailto:edumrxm@gmail.com" className="flex items-center gap-2.5 text-sm text-foreground-muted hover:text-primary  transition-colors">
                 <Mail className="w-4 h-4" />
                 <span>edumrxm@gmail.com</span>
               </a>
-              <a href="tel:+998908182299" className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              <a href="tel:+998908182299" className="flex items-center gap-2.5 text-sm text-foreground-muted hover:text-primary  transition-colors">
                 <Phone className="w-4 h-4" />
                 <span>+998 90 818 22 99</span>
               </a>
-              <div className="flex items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400">
+              <div className="flex items-center gap-2.5 text-sm text-foreground-muted">
                 <MapPin className="w-4 h-4" />
                 <span>{t("marketing.footer.location")}</span>
               </div>
@@ -133,7 +133,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                      className="text-sm text-foreground-muted hover:text-primary  transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -145,8 +145,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom: copyright + socials */}
-        <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200/60 dark:border-slate-800/60">
-          <p className="text-xs text-slate-400 dark:text-slate-500">
+        <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border-subtle">
+          <p className="text-xs text-foreground-subtle">
             © {year} EduMRX. {t("marketing.footer.rights")}
           </p>
 
@@ -158,7 +158,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="w-9 h-9 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all hover:-translate-y-0.5"
+                className="w-9 h-9 rounded-lg bg-surface border border-border flex items-center justify-center text-foreground-muted hover:text-primary  hover:border-indigo-300 dark:hover:border-primary transition-all hover:-translate-y-0.5"
               >
                 <social.icon className="w-4 h-4" />
               </a>

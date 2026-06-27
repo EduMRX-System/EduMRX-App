@@ -21,7 +21,7 @@ export default function DirectorLayout({
 
   return (
     <ProtectedRoute allowedRoles="director">
-      <div className="bg-[#F8F9FA] dark:bg-slate-950 h-screen w-screen flex overflow-hidden transition-colors duration-300">
+      <div className="bg-[#F8F9FA] dark:bg-layout h-screen w-screen flex overflow-hidden transition-colors duration-300">
 
         {/* MOBILE OVERLAY BACKDROP */}
         {isSidebarOpen && (

@@ -34,13 +34,13 @@ export default function LanguageModal({ onClose }: { onClose: () => void }) {
         <>
           <button
             onClick={onClose}
-            className="px-5 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="px-5 h-11 rounded-xl bg-slate-100  text-foreground text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             {t("common.cancel")}
           </button>
           <button
             onClick={save}
-            className="px-5 h-11 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition-colors"
+            className="px-5 h-11 rounded-xl bg-primary hover:bg-primary-hover text-primary-fg text-sm font-bold transition-colors"
           >
             {t("common.save")}
           </button>
@@ -56,17 +56,17 @@ export default function LanguageModal({ onClose }: { onClose: () => void }) {
               onClick={() => setSelected(lang.code)}
               className={`w-full flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${
                 active
-                  ? "border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/30"
-                  : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                  ? "border-primary bg-primary-soft/50"
+                  : "border-border hover:bg-hover/50"
               }`}
             >
               <span className="text-2xl">{lang.flag}</span>
-              <span className="flex-1 text-left text-sm font-bold text-slate-900 dark:text-white">
+              <span className="flex-1 text-left text-sm font-bold text-foreground">
                 {lang.label}
               </span>
               <span
                 className={`w-5 h-5 rounded-full flex items-center justify-center border-2 transition-all ${
-                  active ? "bg-indigo-600 border-indigo-600" : "border-slate-300 dark:border-slate-600"
+                  active ? "bg-primary border-primary" : "border-border"
                 }`}
               >
                 {active && <Check className="w-3 h-3 text-white" strokeWidth={3} />}

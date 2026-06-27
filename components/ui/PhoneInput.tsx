@@ -22,7 +22,7 @@ export const PhoneInput = ({ value, onChange, error }: PhoneInputProps) => {
             <div className="relative flex items-center">
                 <div className="absolute left-3 flex items-center gap-3 pointer-events-none">
                     <span className="text-base">🇺🇿</span>
-                    <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">+998</span>
+                    <span className="text-sm font-semibold text-foreground-muted">+998</span>
                 </div>
                 <input
                     type="tel"
@@ -30,16 +30,16 @@ export const PhoneInput = ({ value, onChange, error }: PhoneInputProps) => {
                     onChange={handlePhoneChange}
                     placeholder="90-123-45-67"
                     className={`w-full h-[44px] pl-[90px] pr-3 rounded-xl text-sm outline-none transition-all
-            bg-white dark:bg-slate-900
-            text-slate-900 dark:text-slate-100
-            placeholder:text-slate-400 dark:placeholder:text-slate-600
+            bg-surface
+            text-foreground
+            placeholder:text-foreground-subtle
             border ${error
-                            ? "border-red-500/50 focus:border-red-500"
-                            : "border-slate-200 dark:border-slate-800 focus:border-indigo-500 dark:focus:border-indigo-500"
+                            ? "border-danger/50 focus:border-danger"
+                            : "border-border focus:border-primary"
                         }`}
                 />
             </div>
-            {error && <p className="text-red-500 dark:text-red-400 text-[11px] mt-1.5">{error}</p>}
+            {error && <p className="text-danger text-[11px] mt-1.5">{error}</p>}
         </div>
     );
 };

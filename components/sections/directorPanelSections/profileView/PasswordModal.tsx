@@ -56,7 +56,7 @@ export default function PasswordModal({ onClose }: { onClose: () => void }) {
   return (
     <ModalShell
       icon={<Lock className="w-7 h-7" />}
-      iconBg="bg-indigo-600"
+      iconBg="bg-primary"
       title={t("director.profile.password.modal_title")}
       desc={t("director.profile.password.modal_desc")}
       onClose={onClose}
@@ -65,7 +65,7 @@ export default function PasswordModal({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="px-5 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="px-5 h-11 rounded-xl bg-slate-100  text-foreground text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             {t("common.cancel")}
           </button>
@@ -73,7 +73,7 @@ export default function PasswordModal({ onClose }: { onClose: () => void }) {
             type="submit"
             form="pw-form"
             disabled={isPending}
-            className="flex items-center gap-2 px-5 h-11 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-5 h-11 rounded-xl bg-primary hover:bg-primary-hover text-primary-fg text-sm font-bold transition-colors disabled:opacity-50"
           >
             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
             {t("director.profile.password.update_btn")}
@@ -126,8 +126,8 @@ function Field({
 }) {
   return (
     <div>
-      <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1">
-        <span className="text-red-500">*</span> {label}
+      <label className="text-xs font-bold text-foreground flex items-center gap-1">
+        <span className="text-danger">*</span> {label}
       </label>
       <div className="relative mt-1.5">
         <input
@@ -135,20 +135,20 @@ function Field({
           type={show ? "text" : "password"}
           placeholder={placeholder}
           className={`w-full h-11 px-3.5 pr-11 rounded-xl text-sm outline-none transition-all
-            bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400
-            border ${error ? "border-red-500/60 focus:border-red-500" : "border-slate-200 dark:border-slate-700 focus:border-indigo-500"}`}
+            bg-slate-50  text-foreground placeholder:text-foreground-subtle
+            border ${error ? "border-red-500/60 focus:border-red-500" : "border-border focus:border-indigo-500"}`}
         />
         {toggle && (
           <button
             type="button"
             onClick={toggle}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-slate-600 dark:hover:text-slate-300"
           >
             {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         )}
       </div>
-      {error && <p className="text-red-500 text-[11px] mt-1">{error}</p>}
+      {error && <p className="text-danger text-[11px] mt-1">{error}</p>}
     </div>
   );
 }

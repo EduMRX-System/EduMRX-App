@@ -166,9 +166,9 @@ export default function StudentFormModal({ student, onClose }: Props) {
     const currentStatus = STATUS_OPTIONS.find((o) => o.value === watch("status")) || STATUS_OPTIONS[0];
     
     const fieldCls = (hasError?: boolean) =>
-        `border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 ${hasError ? "border-red-300 dark:border-red-800" : "border-slate-200 dark:border-slate-700 focus:border-indigo-400"}`;
+        `border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring ${hasError ? "border-danger/50" : "border-border focus:border-primary"}`;
     
-    const labelCls = "text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold";
+    const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
     const errCls = "text-red-400 dark:text-red-500 text-[11px] mt-1";
 
     const monthsRaw = t("director.tools.months", { returnObjects: true });
@@ -208,28 +208,28 @@ export default function StudentFormModal({ student, onClose }: Props) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
-                className={`fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
+                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
                 onClick={onClose}
             />
 
             <div
-                className={`bg-white dark:bg-slate-900 p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
+                className={`bg-surface p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
             >
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="pointer-events-auto -mt-2 -mr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-md cursor-pointer transition-colors"
+                        className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
-                <div className="mb-[10px] border border-slate-200 dark:border-slate-700 shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-indigo-600 bg-indigo-50/10 dark:bg-indigo-950/20">
+                <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-primary bg-primary-soft/10">
                     <User className="w-6 h-6" />
                 </div>
 
-                <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
+                <h3 className="text-foreground text-[18px] font-semibold mb-4">
                     {isEdit ? t("director.students.form.title_edit") : t("director.students.form.title_add")}
                 </h3>
 
@@ -253,7 +253,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                         <div>
                             <label className={labelCls}>{t("common.phone")} *</label>
                             <div className="relative flex items-center">
-                                <span className="absolute left-3 text-sm font-semibold text-slate-700 dark:text-slate-300 pointer-events-none select-none">+998</span>
+                                <span className="absolute left-3 text-sm font-semibold text-foreground pointer-events-none select-none">+998</span>
                                 <input type="tel" value={phoneDisplay} onChange={handlePhoneChange} placeholder="90-123-45-67" className={`${fieldCls(!!errors.phone)} pl-[55px]`} />
                             </div>
                             {errors.phone && <p className={errCls}>{errors.phone.message}</p>}
@@ -270,11 +270,11 @@ export default function StudentFormModal({ student, onClose }: Props) {
                         {/* Parolni endi Edit qilganda ham ko'rsatamiz */}
                         <div>
                             <label className={labelCls}>
-                                {t("common.password")} {!isEdit ? "*" : <span className="text-slate-400 font-normal text-xs ml-1">(Ixtiyoriy)</span>}
+                                {t("common.password")} {!isEdit ? "*" : <span className="text-foreground-subtle font-normal text-xs ml-1">(Ixtiyoriy)</span>}
                             </label>
                             <div className="relative flex items-center">
                                 <input {...register("password")} type={showPassword ? "text" : "password"} placeholder="••••••" className={`${fieldCls(!!errors.password)} pr-10`} />
-                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">
+                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-foreground-subtle hover:text-foreground cursor-pointer">
                                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
                             </div>
@@ -288,37 +288,37 @@ export default function StudentFormModal({ student, onClose }: Props) {
                                     onClick={() => { setIsDatePickerOpen(!isDatePickerOpen); setCalendarView("days"); }}
                                     className={`${fieldCls(!!errors.date_of_birth)} flex items-center justify-between cursor-pointer`}
                                 >
-                                    <span className={dobValue ? "text-slate-900 dark:text-slate-100" : "text-slate-400"}>
+                                    <span className={dobValue ? "text-foreground" : "text-foreground-subtle"}>
                                         {displayDob || "YYYY-MM-DD"}
                                     </span>
-                                    <CalendarDays className="w-4 h-4 text-slate-400" />
+                                    <CalendarDays className="w-4 h-4 text-foreground-subtle" />
                                 </div>
                                 
                                 {isDatePickerOpen && (
-                                    <div className="absolute top-full left-0 mt-1 w-[280px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl z-[60] p-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                                    <div className="absolute top-full left-0 mt-1 w-[280px] bg-surface border border-border rounded-xl shadow-xl z-[60] p-3 animate-in fade-in slide-in-from-top-2 duration-200">
                                         
                                         {calendarView === "days" && (
                                             <>
                                                 <div className="flex items-center justify-between mb-2">
-                                                    <button type="button" onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer transition-colors">
+                                                    <button type="button" onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">
                                                         <ChevronLeft className="w-4 h-4" />
                                                     </button>
                                                     <div className="flex gap-1 text-[14px] font-semibold">
-                                                        <span onClick={() => setCalendarView("months")} className="hover:bg-slate-100 dark:hover:bg-slate-800 px-2 py-0.5 rounded cursor-pointer text-indigo-600 dark:text-indigo-400 transition-colors">
+                                                        <span onClick={() => setCalendarView("months")} className="hover:bg-hover px-2 py-0.5 rounded cursor-pointer text-primary transition-colors">
                                                             {months[calMonth]}
                                                         </span>
-                                                        <span onClick={() => setCalendarView("years")} className="hover:bg-slate-100 dark:hover:bg-slate-800 px-2 py-0.5 rounded cursor-pointer text-indigo-600 dark:text-indigo-400 transition-colors">
+                                                        <span onClick={() => setCalendarView("years")} className="hover:bg-hover px-2 py-0.5 rounded cursor-pointer text-primary transition-colors">
                                                             {calYear}
                                                         </span>
                                                     </div>
-                                                    <button type="button" onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer transition-colors">
+                                                    <button type="button" onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">
                                                         <ChevronRight className="w-4 h-4" />
                                                     </button>
                                                 </div>
 
                                                 <div className="grid grid-cols-7 mb-1">
                                                     {weekdays.map((d) => (
-                                                        <div key={d} className="text-[11px] font-semibold text-slate-400 text-center py-1">{d}</div>
+                                                        <div key={d} className="text-[11px] font-semibold text-foreground-subtle text-center py-1">{d}</div>
                                                     ))}
                                                 </div>
 
@@ -336,7 +336,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                                                                 key={day}
                                                                 type="button"
                                                                 onClick={() => handleDateSelect(day)}
-                                                                className={`w-full aspect-square flex items-center justify-center text-[12px] rounded-lg transition-colors cursor-pointer font-medium ${isSel ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+                                                                className={`w-full aspect-square flex items-center justify-center text-[12px] rounded-lg transition-colors cursor-pointer font-medium ${isSel ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover"}`}
                                                             >
                                                                 {day}
                                                             </button>
@@ -348,9 +348,9 @@ export default function StudentFormModal({ student, onClose }: Props) {
 
                                         {calendarView === "months" && (
                                             <>
-                                                <div className="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
-                                                    <span className="text-[14px] font-bold text-slate-800 dark:text-slate-200">Oyni tanlang</span>
-                                                    <span onClick={() => setCalendarView("years")} className="text-[13px] text-indigo-600 font-semibold cursor-pointer hover:underline">{calYear}</span>
+                                                <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
+                                                    <span className="text-[14px] font-bold text-foreground">Oyni tanlang</span>
+                                                    <span onClick={() => setCalendarView("years")} className="text-[13px] text-primary font-semibold cursor-pointer hover:underline">{calYear}</span>
                                                 </div>
                                                 <div className="grid grid-cols-3 gap-1.5">
                                                     {months.map((mName, index) => (
@@ -358,7 +358,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                                                             key={mName}
                                                             type="button"
                                                             onClick={() => { setCalMonth(index); setCalendarView("days"); }}
-                                                            className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${calMonth === index ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"}`}
+                                                            className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${calMonth === index ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover border border-border-subtle"}`}
                                                         >
                                                             {mName}
                                                         </button>
@@ -369,14 +369,14 @@ export default function StudentFormModal({ student, onClose }: Props) {
 
                                         {calendarView === "years" && (
                                             <>
-                                                <div className="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
-                                                    <button type="button" onClick={() => setCalYear(y => y - 12)} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer">
+                                                <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
+                                                    <button type="button" onClick={() => setCalYear(y => y - 12)} className="p-1 rounded hover:bg-hover text-slate-500 cursor-pointer">
                                                         <ChevronLeft className="w-4 h-4" />
                                                     </button>
-                                                    <span className="text-[13px] font-bold text-slate-800 dark:text-slate-200">
+                                                    <span className="text-[13px] font-bold text-foreground">
                                                         {yearStartGrid} - {yearStartGrid + 11}
                                                     </span>
-                                                    <button type="button" onClick={() => setCalYear(y => y + 12)} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer">
+                                                    <button type="button" onClick={() => setCalYear(y => y + 12)} className="p-1 rounded hover:bg-hover text-slate-500 cursor-pointer">
                                                         <ChevronRight className="w-4 h-4" />
                                                     </button>
                                                 </div>
@@ -389,7 +389,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
                                                                 key={targetYear}
                                                                 type="button"
                                                                 onClick={() => { setCalYear(targetYear); setCalendarView("days"); }}
-                                                                className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${isCurrentSelected ? "bg-indigo-600 text-white" : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"}`}
+                                                                className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${isCurrentSelected ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover border border-border-subtle"}`}
                                                             >
                                                                 {targetYear}
                                                             </button>
@@ -418,29 +418,29 @@ export default function StudentFormModal({ student, onClose }: Props) {
                             <label className={labelCls}>{t("director.students.form.status_label")}</label>
                             <div
                                 onClick={() => setIsStatusOpen(!isStatusOpen)}
-                                className="border border-slate-200 dark:border-slate-700 rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                                className="border border-border rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-surface text-foreground"
                             >
                                 <div className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
                                     <span>{t(`common.${currentStatus.value}`)}</span>
                                 </div>
-                                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
+                                <ChevronDown className={`w-4 h-4 text-foreground-subtle transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
                             </div>
                             {isStatusOpen && (
-                                <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
+                                <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
                                     {STATUS_OPTIONS.map((option) => {
                                         const isSel = option.value === watch("status");
                                         return (
                                             <div
                                                 key={option.value}
                                                 onClick={() => { setValue("status", option.value, { shouldValidate: true }); setIsStatusOpen(false); }}
-                                                className={`px-3 py-2.5 text-sm cursor-pointer transition-colors flex items-center justify-between ${isSel ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-medium" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60"}`}
+                                                className={`px-3 py-2.5 text-sm cursor-pointer transition-colors flex items-center justify-between ${isSel ? "bg-primary-soft text-primary font-medium" : "text-foreground hover:bg-hover"}`}
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <span className={`w-2 h-2 rounded-full ${option.color}`} />
                                                     {t(`common.${option.value}`)}
                                                 </div>
-                                                {isSel && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
+                                                {isSel && <Check className="w-4 h-4 text-primary" />}
                                             </div>
                                         );
                                     })}
@@ -453,22 +453,22 @@ export default function StudentFormModal({ student, onClose }: Props) {
                     <div>
                         <label className={labelCls}>{t("director.students.form.note_label")}</label>
                         <div className="relative">
-                            <Notebook className="absolute left-3 top-3 w-4 h-4 text-slate-400 pointer-events-none" />
+                            <Notebook className="absolute left-3 top-3 w-4 h-4 text-foreground-subtle pointer-events-none" />
                             <textarea
                                 {...register("notes")}
                                 rows={2}
                                 placeholder={t("director.students.form.note_placeholder")}
-                                className="border rounded-lg w-full pl-10 pr-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400"
+                                className="border rounded-lg w-full pl-10 pr-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-surface text-foreground border-border focus:border-primary"
                             />
                         </div>
                     </div>
 
                     {/* Pastki tugmalar */}
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
-                        <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors">
+                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle mt-6">
+                        <button type="button" onClick={onClose} className="h-10 px-4 border border-border bg-surface text-foreground hover:bg-hover text-sm font-semibold rounded-lg cursor-pointer transition-colors">
                             {t("common.cancel")}
                         </button>
-                        <button type="submit" disabled={isPending || !activeCenter} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
+                        <button type="submit" disabled={isPending || !activeCenter} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                             {isEdit ? t("common.save") : t("common.create")}
                         </button>

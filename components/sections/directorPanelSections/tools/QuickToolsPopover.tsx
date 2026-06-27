@@ -277,21 +277,21 @@ export default function QuickToolsPopover() {
 
   // ── Shared classes ────────────────────────────────────────────
   const inputCls =
-    "w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 " +
-    "rounded-lg px-3 py-2.5 text-[13px] text-slate-900 dark:text-slate-100 " +
-    "placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none " +
-    "focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 " +
+    "w-full bg-surface border border-border " +
+    "rounded-lg px-3 py-2.5 text-[13px] text-foreground " +
+    "placeholder:text-foreground-subtle dark:placeholder:text-foreground-muted outline-none " +
+    "focus:border-primary dark:focus:border-indigo-500 focus:ring-2 " +
     "focus:ring-indigo-100 dark:focus:ring-indigo-900/30 transition-colors";
 
   const selectCls =
-    "flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 " +
-    "rounded-lg px-3 py-2.5 text-[13px] font-semibold text-slate-900 dark:text-slate-100 " +
-    "outline-none focus:border-indigo-400 dark:focus:border-indigo-500 " +
+    "flex-1 bg-surface border border-border " +
+    "rounded-lg px-3 py-2.5 text-[13px] font-semibold text-foreground " +
+    "outline-none focus:border-primary dark:focus:border-indigo-500 " +
     "focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 transition-colors cursor-pointer";
 
   const panelCls = isMobile
-    ? "fixed bottom-0 inset-x-0 z-[71] bg-white dark:bg-slate-900 rounded-t-2xl shadow-2xl flex flex-col max-h-[88vh]"
-    : "absolute right-0 mt-2 w-[380px] bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xl z-50 flex flex-col max-h-[540px] origin-top-right";
+    ? "fixed bottom-0 inset-x-0 z-[71] bg-surface rounded-t-2xl shadow-2xl flex flex-col max-h-[88vh]"
+    : "absolute right-0 mt-2 w-[380px] bg-surface rounded-xl border border-border shadow-2xl z-50 flex flex-col max-h-[540px] origin-top-right";
 
   // ── Render ────────────────────────────────────────────────────
   return (
@@ -302,13 +302,13 @@ export default function QuickToolsPopover() {
         aria-label={t("director.tools.quick_tools")}
         className={`relative w-9 h-9 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${
           isOpen
-            ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
-            : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+            ? "bg-hover  text-foreground"
+            : "text-foreground-muted hover:bg-hover hover:text-foreground dark:hover:text-white"
         }`}
       >
         <StickyNote className="w-5 h-5" />
         {pendingCount > 0 && (
-          <span className="absolute top-1 right-1 min-w-[14px] h-3.5 px-0.5 rounded-full bg-indigo-600 text-white text-[9px] font-bold flex items-center justify-center border-2 border-white dark:border-slate-900">
+          <span className="absolute top-1 right-1 min-w-[14px] h-3.5 px-0.5 rounded-full bg-primary text-primary-fg text-[9px] font-bold flex items-center justify-center border-2 border-surface">
             {pendingCount > 9 ? "9+" : pendingCount}
           </span>
         )}
@@ -343,26 +343,26 @@ export default function QuickToolsPopover() {
               {/* Mobile drag handle */}
               {isMobile && (
                 <div className="flex justify-center pt-3 pb-1 shrink-0">
-                  <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
+                  <div className="w-10 h-1 rounded-full bg-border" />
                 </div>
               )}
 
               {/* Tab bar */}
-              <div className="flex items-center border-b border-slate-100 dark:border-slate-800 shrink-0 px-1 gap-0.5">
+              <div className="flex items-center border-b border-border-subtle shrink-0 px-1 gap-0.5">
                 {TABS.map(({ id, icon, label }) => (
                   <button
                     key={id}
                     onClick={() => setTab(id)}
                     className={`flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:justify-start px-3 h-11 text-[12px] font-semibold transition-colors cursor-pointer border-b-2 -mb-px whitespace-nowrap ${
                       tab === id
-                        ? "text-indigo-600 dark:text-indigo-400 border-indigo-600 dark:border-indigo-400"
-                        : "text-slate-400 dark:text-slate-500 border-transparent hover:text-slate-700 dark:hover:text-slate-300"
+                        ? "text-primary border-primary dark:border-indigo-400"
+                        : "text-foreground-subtle border-transparent hover:text-foreground dark:hover:text-slate-300"
                     }`}
                   >
                     {icon}
                     <span>{label}</span>
                     {id === "todos" && pendingCount > 0 && (
-                      <span className="min-w-[16px] h-4 px-1 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold flex items-center justify-center">
+                      <span className="min-w-[16px] h-4 px-1 rounded-full bg-primary-soft text-primary text-[10px] font-bold flex items-center justify-center">
                         {pendingCount}
                       </span>
                     )}
@@ -370,7 +370,7 @@ export default function QuickToolsPopover() {
                 ))}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="ml-auto mr-1.5 p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+                  className="ml-auto mr-1.5 p-2 rounded-lg text-foreground-subtle hover:text-foreground-muted dark:hover:text-slate-200 hover:bg-hover transition-colors cursor-pointer shrink-0"
                   aria-label="Close"
                 >
                   <X className="w-4 h-4" />
@@ -396,14 +396,14 @@ export default function QuickToolsPopover() {
                           rows={3}
                           className={`${inputCls} resize-none pr-10`}
                         />
-                        <span className="absolute bottom-2.5 right-2.5 text-[10px] text-slate-300 dark:text-slate-600 pointer-events-none">
+                        <span className="absolute bottom-2.5 right-2.5 text-[10px] text-slate-300 dark:text-foreground-muted pointer-events-none">
                           {noteInput.length}/300
                         </span>
                       </div>
                       <button
                         onClick={addNote}
                         disabled={!noteInput.trim()}
-                        className="w-full h-9 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[12px] font-semibold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                        className="w-full h-9 bg-primary hover:bg-primary-hover active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[12px] font-semibold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         {t("director.tools.notes_add")}
@@ -413,7 +413,7 @@ export default function QuickToolsPopover() {
                     {/* Status row */}
                     {notes.length > 0 && (
                       <div className="flex items-center justify-between px-0.5">
-                        <span className="text-[11px] text-slate-400 dark:text-slate-500">
+                        <span className="text-[11px] text-foreground-subtle">
                           {notes.length} ta eslatma
                         </span>
                         <AnimatePresence>
@@ -422,7 +422,7 @@ export default function QuickToolsPopover() {
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
-                              className="flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400"
+                              className="flex items-center gap-1 text-[11px] font-medium text-success"
                             >
                               <Check className="w-3 h-3" />
                               Saqlandi
@@ -436,10 +436,10 @@ export default function QuickToolsPopover() {
                     <div className="space-y-2">
                       {notes.length === 0 ? (
                         <div className="py-10 flex flex-col items-center gap-2.5 text-center">
-                          <div className="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                            <StickyNote className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                          <div className="w-11 h-11 rounded-xl bg-hover  flex items-center justify-center">
+                            <StickyNote className="w-5 h-5 text-foreground-subtle" />
                           </div>
-                          <p className="text-[12px] text-slate-400 dark:text-slate-500">
+                          <p className="text-[12px] text-foreground-subtle">
                             {t("director.tools.notes_empty")}
                           </p>
                         </div>
@@ -447,14 +447,14 @@ export default function QuickToolsPopover() {
                         notes.map((note) => (
                           <div
                             key={note.id}
-                            className="group flex gap-2 bg-slate-50 dark:bg-slate-800/60 rounded-xl px-3 py-2.5 border border-slate-100 dark:border-slate-700/60"
+                            className="group flex gap-2 bg-surface-raised /60 rounded-xl px-3 py-2.5 border border-border-subtle/60"
                           >
-                            <p className="text-[12px] text-slate-700 dark:text-slate-300 flex-1 whitespace-pre-wrap break-words leading-relaxed">
+                            <p className="text-[12px] text-foreground flex-1 whitespace-pre-wrap break-words leading-relaxed">
                               {note.text}
                             </p>
                             <button
                               onClick={() => deleteNote(note.id)}
-                              className="shrink-0 mt-0.5 p-1.5 rounded-md text-slate-300 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
+                              className="shrink-0 mt-0.5 p-1.5 rounded-md text-slate-300 dark:text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
                               aria-label="Delete note"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -482,7 +482,7 @@ export default function QuickToolsPopover() {
                       <button
                         onClick={addTodo}
                         disabled={!todoInput.trim()}
-                        className="h-[42px] w-11 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg transition-colors cursor-pointer shrink-0 flex items-center justify-center"
+                        className="h-[42px] w-11 bg-primary hover:bg-primary-hover active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg transition-colors cursor-pointer shrink-0 flex items-center justify-center"
                         aria-label="Add todo"
                       >
                         <Plus className="w-4 h-4" />
@@ -493,8 +493,8 @@ export default function QuickToolsPopover() {
                     {todos.length > 0 && (
                       <p className={`text-[11px] font-semibold px-0.5 ${
                         pendingCount > 0
-                          ? "text-indigo-600 dark:text-indigo-400"
-                          : "text-emerald-600 dark:text-emerald-400"
+                          ? "text-primary"
+                          : "text-success"
                       }`}>
                         {pendingCount > 0
                           ? t("director.tools.todos_pending", { count: pendingCount })
@@ -506,10 +506,10 @@ export default function QuickToolsPopover() {
                     <div>
                       {todos.length === 0 ? (
                         <div className="py-10 flex flex-col items-center gap-2.5 text-center">
-                          <div className="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                            <CheckSquare2 className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                          <div className="w-11 h-11 rounded-xl bg-hover  flex items-center justify-center">
+                            <CheckSquare2 className="w-5 h-5 text-foreground-subtle" />
                           </div>
-                          <p className="text-[12px] text-slate-400 dark:text-slate-500">
+                          <p className="text-[12px] text-foreground-subtle">
                             {t("director.tools.todos_empty")}
                           </p>
                         </div>
@@ -519,19 +519,19 @@ export default function QuickToolsPopover() {
                           {todos.filter((item) => !item.done).map((todo) => (
                             <div
                               key={todo.id}
-                              className="group flex items-center gap-2.5 py-2 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+                              className="group flex items-center gap-2.5 py-2 px-2 rounded-lg hover:bg-surface-raised dark:hover:bg-slate-800/60 transition-colors"
                             >
                               <button
                                 onClick={() => toggleTodo(todo.id)}
-                                className="w-5 h-5 rounded-md border-2 border-slate-300 dark:border-slate-600 hover:border-indigo-500 dark:hover:border-indigo-500 flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+                                className="w-5 h-5 rounded-md border-2 border-border hover:border-primary flex items-center justify-center shrink-0 transition-colors cursor-pointer"
                                 aria-label="Mark done"
                               />
-                              <span className="text-[13px] text-slate-700 dark:text-slate-200 flex-1 break-words leading-relaxed">
+                              <span className="text-[13px] text-foreground flex-1 break-words leading-relaxed">
                                 {todo.text}
                               </span>
                               <button
                                 onClick={() => deleteTodo(todo.id)}
-                                className="p-1.5 rounded-md text-slate-300 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer shrink-0 sm:opacity-0 sm:group-hover:opacity-100"
+                                className="p-1.5 rounded-md text-slate-300 dark:text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer shrink-0 sm:opacity-0 sm:group-hover:opacity-100"
                                 aria-label="Delete task"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -542,11 +542,11 @@ export default function QuickToolsPopover() {
                           {/* Done — separator only if both sections have items */}
                           {pendingCount > 0 && todos.some((item) => item.done) && (
                             <div className="py-1 flex items-center gap-2 px-2">
-                              <div className="flex-1 h-px bg-slate-100 dark:bg-slate-800" />
-                              <span className="text-[10px] text-slate-300 dark:text-slate-600 uppercase tracking-wide">
+                              <div className="flex-1 h-px bg-hover " />
+                              <span className="text-[10px] text-slate-300 dark:text-foreground-muted uppercase tracking-wide">
                                 bajarildi
                               </span>
-                              <div className="flex-1 h-px bg-slate-100 dark:bg-slate-800" />
+                              <div className="flex-1 h-px bg-hover " />
                             </div>
                           )}
 
@@ -557,17 +557,17 @@ export default function QuickToolsPopover() {
                             >
                               <button
                                 onClick={() => toggleTodo(todo.id)}
-                                className="w-5 h-5 rounded-md border-2 border-indigo-400 dark:border-indigo-600 bg-indigo-100 dark:bg-indigo-950/50 flex items-center justify-center shrink-0 cursor-pointer"
+                                className="w-5 h-5 rounded-md border-2 border-indigo-400 dark:border-primary bg-primary-soft  flex items-center justify-center shrink-0 cursor-pointer"
                                 aria-label="Mark undone"
                               >
-                                <Check className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+                                <Check className="w-3 h-3 text-primary" />
                               </button>
-                              <span className="text-[13px] text-slate-500 dark:text-slate-500 flex-1 line-through break-words leading-relaxed">
+                              <span className="text-[13px] text-foreground-muted dark:text-foreground-muted flex-1 line-through break-words leading-relaxed">
                                 {todo.text}
                               </span>
                               <button
                                 onClick={() => deleteTodo(todo.id)}
-                                className="p-1.5 rounded-md text-slate-300 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer shrink-0 sm:opacity-0 sm:group-hover:opacity-100"
+                                className="p-1.5 rounded-md text-slate-300 dark:text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer shrink-0 sm:opacity-0 sm:group-hover:opacity-100"
                                 aria-label="Delete task"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -587,7 +587,7 @@ export default function QuickToolsPopover() {
                     {/* ── FOIZ HISOBLAGICH ──────────────────── */}
                     {/* Amount */}
                     <div className="space-y-1.5">
-                      <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      <label className="block text-[11px] font-semibold uppercase tracking-wide text-foreground-muted">
                         {t("director.tools.calc_amount")} (UZS)
                       </label>
                       <input
@@ -602,17 +602,17 @@ export default function QuickToolsPopover() {
 
                     {/* Mode + percent row */}
                     <div className="space-y-1.5">
-                      <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      <label className="block text-[11px] font-semibold uppercase tracking-wide text-foreground-muted">
                         Foiz (%)
                       </label>
                       <div className="flex gap-2">
-                        <div className="flex rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden shrink-0">
+                        <div className="flex rounded-lg border border-border overflow-hidden shrink-0">
                           <button
                             onClick={() => setMode("add")}
                             className={`px-4 h-10 text-[13px] font-bold transition-colors cursor-pointer ${
                               mode === "add"
-                                ? "bg-indigo-600 text-white"
-                                : "bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+                                ? "bg-primary text-primary-fg"
+                                : "bg-surface text-foreground-muted hover:bg-surface-raised dark:hover:bg-slate-700"
                             }`}
                           >
                             +%
@@ -621,8 +621,8 @@ export default function QuickToolsPopover() {
                             onClick={() => setMode("sub")}
                             className={`px-4 h-10 text-[13px] font-bold transition-colors cursor-pointer ${
                               mode === "sub"
-                                ? "bg-indigo-600 text-white"
-                                : "bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+                                ? "bg-primary text-primary-fg"
+                                : "bg-surface text-foreground-muted hover:bg-surface-raised dark:hover:bg-slate-700"
                             }`}
                           >
                             −%
@@ -637,7 +637,7 @@ export default function QuickToolsPopover() {
                             placeholder="10"
                             className={inputCls}
                           />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[13px] text-slate-400 pointer-events-none">
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[13px] text-foreground-subtle pointer-events-none">
                             %
                           </span>
                         </div>
@@ -646,51 +646,51 @@ export default function QuickToolsPopover() {
 
                     {/* Result block */}
                     {hasCalc ? (
-                      <div className="bg-indigo-50 dark:bg-indigo-950/30 rounded-xl border border-indigo-100 dark:border-indigo-900/50 p-4 space-y-2.5">
+                      <div className="bg-primary-soft  rounded-xl border border-primary/20  p-4 space-y-2.5">
                         <div className="flex items-center justify-between text-[12px]">
-                          <span className="text-slate-500 dark:text-slate-400">
+                          <span className="text-foreground-muted">
                             {fmtUZS(amtNum)} {mode === "add" ? "+" : "−"} {pctNum}%
                           </span>
                           <span className={`font-semibold ${
-                            mode === "add" ? "text-emerald-600 dark:text-emerald-400" : "text-red-500 dark:text-red-400"
+                            mode === "add" ? "text-success" : "text-danger"
                           }`}>
                             {mode === "add" ? "+" : "−"}{fmtUZS(diff)} UZS
                           </span>
                         </div>
-                        <div className="flex items-center justify-between border-t border-indigo-100 dark:border-indigo-900/40 pt-2.5">
-                          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                        <div className="flex items-center justify-between border-t border-primary/20 dark:border-indigo-900/40 pt-2.5">
+                          <span className="text-[11px] font-semibold text-foreground-muted uppercase tracking-wide">
                             {t("director.tools.calc_result")}
                           </span>
-                          <span className="text-[22px] font-bold text-indigo-600 dark:text-indigo-400 tabular-nums leading-none">
+                          <span className="text-[22px] font-bold text-primary tabular-nums leading-none">
                             {fmtUZS(calcResult)}
-                            <span className="text-[13px] font-semibold ml-1.5 text-indigo-400 dark:text-indigo-500">
+                            <span className="text-[13px] font-semibold ml-1.5 text-primary">
                               UZS
                             </span>
                           </span>
                         </div>
                       </div>
                     ) : (
-                      <div className="bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-700/60 px-4 py-3.5 text-center">
-                        <p className="text-[12px] text-slate-400 dark:text-slate-500">
+                      <div className="bg-surface-raised /40 rounded-xl border border-border-subtle/60 px-4 py-3.5 text-center">
+                        <p className="text-[12px] text-foreground-subtle">
                           Masalan: 100,000 dan 10% chegirma ={" "}
-                          <span className="font-semibold text-slate-600 dark:text-slate-300">90,000</span>
+                          <span className="font-semibold text-foreground-muted">90,000</span>
                         </p>
                       </div>
                     )}
 
                     {/* ── VALYUTA KONVERTOR ─────────────────── */}
-                    <div className="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+                    <div className="border-t border-border-subtle pt-4 space-y-3">
 
                       {/* Header */}
                       <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        <span className="text-[11px] font-semibold uppercase tracking-wide text-foreground-muted">
                           {t("director.tools.currency")}
                         </span>
                         <button
                           onClick={() => refetchRates()}
                           disabled={ratesLoading}
                           title={t("director.tools.currency_retry")}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer disabled:opacity-40"
+                          className="p-1.5 rounded-lg text-foreground-subtle hover:text-primary  hover:bg-hover transition-colors cursor-pointer disabled:opacity-40"
                         >
                           <RefreshCw className={`w-3.5 h-3.5 ${ratesLoading ? "animate-spin" : ""}`} />
                         </button>
@@ -709,7 +709,7 @@ export default function QuickToolsPopover() {
                         </select>
                         <button
                           onClick={swapCurrencies}
-                          className="p-2 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+                          className="p-2 rounded-lg text-foreground-subtle hover:text-primary  hover:bg-hover transition-colors cursor-pointer shrink-0"
                           aria-label="Swap currencies"
                         >
                           <ArrowLeftRight className="w-4 h-4" />
@@ -737,9 +737,9 @@ export default function QuickToolsPopover() {
 
                       {/* Loading skeleton */}
                       {ratesLoading && (
-                        <div className="bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-700/60 px-4 py-3 flex items-center gap-2.5">
-                          <div className="w-4 h-4 rounded-full border-2 border-indigo-200 dark:border-indigo-800 border-t-indigo-600 dark:border-t-indigo-400 animate-spin shrink-0" />
-                          <span className="text-[12px] text-slate-400 dark:text-slate-500">
+                        <div className="bg-surface-raised /40 rounded-xl border border-border-subtle/60 px-4 py-3 flex items-center gap-2.5">
+                          <div className="w-4 h-4 rounded-full border-2 border-primary/30 border-t-indigo-600 dark:border-t-indigo-400 animate-spin shrink-0" />
+                          <span className="text-[12px] text-foreground-subtle">
                             {t("director.tools.currency_loading")}
                           </span>
                         </div>
@@ -748,12 +748,12 @@ export default function QuickToolsPopover() {
                       {/* Error state */}
                       {ratesError && !ratesLoading && (
                         <div className="bg-red-50 dark:bg-red-950/20 rounded-xl border border-red-100 dark:border-red-900/40 px-4 py-3 flex items-center justify-between gap-2">
-                          <span className="text-[12px] text-red-500 dark:text-red-400">
+                          <span className="text-[12px] text-danger">
                             {t("director.tools.currency_error")}
                           </span>
                           <button
                             onClick={() => refetchRates()}
-                            className="text-[12px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer shrink-0"
+                            className="text-[12px] font-semibold text-primary hover:underline cursor-pointer shrink-0"
                           >
                             {t("director.tools.currency_retry")}
                           </button>
@@ -764,23 +764,23 @@ export default function QuickToolsPopover() {
                       {ratesData && !ratesError && (
                         convAmtNum > 0 && convResult !== null ? (
                           <div className="space-y-1.5">
-                            <div className="flex items-center justify-between bg-indigo-50 dark:bg-indigo-950/30 rounded-xl border border-indigo-100 dark:border-indigo-900/50 px-4 py-3">
-                              <span className="text-[12px] text-slate-500 dark:text-slate-400">
+                            <div className="flex items-center justify-between bg-primary-soft  rounded-xl border border-primary/20  px-4 py-3">
+                              <span className="text-[12px] text-foreground-muted">
                                 {fmtResult(convAmtNum, fromCurrency)}{" "}{fromCurrency}
                               </span>
-                              <span className="text-[18px] font-bold text-indigo-600 dark:text-indigo-400 tabular-nums">
+                              <span className="text-[18px] font-bold text-primary tabular-nums">
                                 {fmtResult(convResult, toCurrency)}
-                                <span className="text-[12px] font-semibold ml-1.5 text-indigo-400 dark:text-indigo-500">
+                                <span className="text-[12px] font-semibold ml-1.5 text-primary">
                                   {toCurrency}
                                 </span>
                               </span>
                             </div>
-                            <p className="text-[11px] text-slate-400 dark:text-slate-500 px-0.5">
+                            <p className="text-[11px] text-foreground-subtle px-0.5">
                               {t("director.tools.currency_rate", { date: ratesData.date })}
                             </p>
                           </div>
                         ) : (
-                          <p className="text-[11px] text-slate-400 dark:text-slate-500 px-0.5">
+                          <p className="text-[11px] text-foreground-subtle px-0.5">
                             {t("director.tools.currency_enter_amount")}
                           </p>
                         )

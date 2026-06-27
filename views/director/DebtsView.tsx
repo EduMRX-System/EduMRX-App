@@ -48,18 +48,18 @@ function SimpleSelect({ value, onChange, options, placeholder }: {
 
   return (
     <div ref={ref} className="relative">
-      <div onClick={() => setOpen((v) => !v)} className="border border-slate-200 dark:border-slate-700 rounded-lg h-10 px-3 text-sm flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 min-w-[140px]">
-        <span className={selected ? "" : "text-slate-400"}>{selected?.label ?? placeholder ?? "—"}</span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 ml-2 transition-transform ${open ? "rotate-180" : ""}`} />
+      <div onClick={() => setOpen((v) => !v)} className="border border-border rounded-lg h-10 px-3 text-sm flex items-center justify-between cursor-pointer bg-surface text-foreground min-w-[140px]">
+        <span className={selected ? "" : "text-foreground-subtle"}>{selected?.label ?? placeholder ?? "—"}</span>
+        <ChevronDown className={`w-4 h-4 text-foreground-subtle ml-2 transition-transform ${open ? "rotate-180" : ""}`} />
       </div>
       {open && (
-        <div className="absolute left-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 min-w-full overflow-hidden">
+        <div className="absolute left-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 min-w-full overflow-hidden">
           <div className="py-1">
             {placeholder && (
-              <div onClick={() => { onChange(""); setOpen(false); }} className="px-3 py-2 text-sm cursor-pointer text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/60">{placeholder}</div>
+              <div onClick={() => { onChange(""); setOpen(false); }} className="px-3 py-2 text-sm cursor-pointer text-foreground-subtle hover:bg-surface-raised ">{placeholder}</div>
             )}
             {options.map((opt) => (
-              <div key={opt.value} onClick={() => { onChange(opt.value); setOpen(false); }} className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${value === opt.value ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 font-medium" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"}`}>
+              <div key={opt.value} onClick={() => { onChange(opt.value); setOpen(false); }} className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${value === opt.value ? "bg-primary-soft  text-primary font-medium" : "text-foreground hover:bg-surface-raised "}`}>
                 {opt.label}
                 {value === opt.value && <Check className="w-3.5 h-3.5 shrink-0" />}
               </div>
@@ -121,25 +121,25 @@ function StudentSelect({ value, label, onChange, placeholder }: {
 
   return (
     <div ref={ref} className="relative">
-      <div onClick={() => setOpen((v) => !v)} className="border border-slate-200 dark:border-slate-700 rounded-lg h-10 px-3 text-sm flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
-        <span className={selected.id ? "" : "text-slate-400"}>{selected.id ? selected.name : placeholder}</span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} />
+      <div onClick={() => setOpen((v) => !v)} className="border border-border rounded-lg h-10 px-3 text-sm flex items-center justify-between cursor-pointer bg-surface text-foreground">
+        <span className={selected.id ? "" : "text-foreground-subtle"}>{selected.id ? selected.name : placeholder}</span>
+        <ChevronDown className={`w-4 h-4 text-foreground-subtle transition-transform ${open ? "rotate-180" : ""}`} />
       </div>
       {open && (
-        <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 overflow-hidden">
-          <div className="p-2 border-b border-slate-100 dark:border-slate-700">
-            <input autoFocus value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Qidirish..." className="w-full h-8 px-3 text-sm rounded-md bg-slate-50 dark:bg-slate-900/50 border border-transparent outline-none focus:border-indigo-400 text-slate-900 dark:text-slate-100 placeholder:text-slate-400" />
+        <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden">
+          <div className="p-2 border-b border-border-subtle">
+            <input autoFocus value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Qidirish..." className="w-full h-8 px-3 text-sm rounded-md bg-surface-raised /50 border border-transparent outline-none focus:border-primary text-foreground placeholder:text-foreground-subtle" />
           </div>
           <div className="max-h-48 overflow-y-auto py-1">
             {isLoading ? (
-              <div className="flex justify-center py-3"><Loader2 className="w-4 h-4 animate-spin text-slate-400" /></div>
+              <div className="flex justify-center py-3"><Loader2 className="w-4 h-4 animate-spin text-foreground-subtle" /></div>
             ) : !data?.length ? (
-              <div className="px-3 py-3 text-xs text-center text-slate-400">Topilmadi</div>
+              <div className="px-3 py-3 text-xs text-center text-foreground-subtle">Topilmadi</div>
             ) : data.map((item) => (
-              <div key={item.id} onClick={() => { setSelected(item); onChange(item.id, item.name); setOpen(false); setSearch(""); }} className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${selected.id === item.id ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 font-medium" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"}`}>
+              <div key={item.id} onClick={() => { setSelected(item); onChange(item.id, item.name); setOpen(false); setSearch(""); }} className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${selected.id === item.id ? "bg-primary-soft  text-primary font-medium" : "text-foreground hover:bg-surface-raised "}`}>
                 <div>
                   <div className="font-medium">{item.name}</div>
-                  {item.phone && <div className="text-xs text-slate-400">{item.phone}</div>}
+                  {item.phone && <div className="text-xs text-foreground-subtle">{item.phone}</div>}
                 </div>
                 {selected.id === item.id && <Check className="w-4 h-4 shrink-0" />}
               </div>
@@ -186,22 +186,22 @@ function GroupSelect({ value, label, onChange, placeholder }: {
 
   return (
     <div ref={ref} className="relative">
-      <div onClick={() => setOpen((v) => !v)} className="border border-slate-200 dark:border-slate-700 rounded-lg h-10 px-3 text-sm flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
-        <span className={selected.id ? "" : "text-slate-400"}>{selected.id ? selected.name : placeholder}</span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} />
+      <div onClick={() => setOpen((v) => !v)} className="border border-border rounded-lg h-10 px-3 text-sm flex items-center justify-between cursor-pointer bg-surface text-foreground">
+        <span className={selected.id ? "" : "text-foreground-subtle"}>{selected.id ? selected.name : placeholder}</span>
+        <ChevronDown className={`w-4 h-4 text-foreground-subtle transition-transform ${open ? "rotate-180" : ""}`} />
       </div>
       {open && (
-        <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 overflow-hidden">
-          <div className="p-2 border-b border-slate-100 dark:border-slate-700">
-            <input autoFocus value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Guruh qidirish..." className="w-full h-8 px-3 text-sm rounded-md bg-slate-50 dark:bg-slate-900/50 border border-transparent outline-none focus:border-indigo-400 text-slate-900 dark:text-slate-100 placeholder:text-slate-400" />
+        <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden">
+          <div className="p-2 border-b border-border-subtle">
+            <input autoFocus value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Guruh qidirish..." className="w-full h-8 px-3 text-sm rounded-md bg-surface-raised /50 border border-transparent outline-none focus:border-primary text-foreground placeholder:text-foreground-subtle" />
           </div>
           <div className="max-h-48 overflow-y-auto py-1">
             {isLoading ? (
-              <div className="flex justify-center py-3"><Loader2 className="w-4 h-4 animate-spin text-slate-400" /></div>
+              <div className="flex justify-center py-3"><Loader2 className="w-4 h-4 animate-spin text-foreground-subtle" /></div>
             ) : !data?.length ? (
-              <div className="px-3 py-3 text-xs text-center text-slate-400">Topilmadi</div>
+              <div className="px-3 py-3 text-xs text-center text-foreground-subtle">Topilmadi</div>
             ) : data.map((item) => (
-              <div key={item.id} onClick={() => { setSelected(item); onChange(item.id, item.name); setOpen(false); setSearch(""); }} className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${selected.id === item.id ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 font-medium" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60"}`}>
+              <div key={item.id} onClick={() => { setSelected(item); onChange(item.id, item.name); setOpen(false); setSearch(""); }} className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${selected.id === item.id ? "bg-primary-soft  text-primary font-medium" : "text-foreground hover:bg-surface-raised "}`}>
                 <span>{item.name}</span>
                 {selected.id === item.id && <Check className="w-4 h-4 shrink-0" />}
               </div>
@@ -289,25 +289,25 @@ function DebtFormModal({ debt, onClose }: { debt?: IDebt | null; onClose: () => 
     }
   }
 
-  const labelCls = "text-[13px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold";
+  const labelCls = "text-[13px] text-foreground-muted mb-1 block font-semibold";
   const fieldCls = (err?: boolean) =>
-    `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 ${err ? "border-red-300 dark:border-red-700" : "border-slate-200 dark:border-slate-700 focus:border-indigo-400"}`;
+    `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 ${err ? "border-red-300 dark:border-red-700" : "border-border focus:border-primary"}`;
   const errCls = "text-red-400 text-[11px] mt-0.5";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
-      <div className={`bg-white dark:bg-slate-900 rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transition-all duration-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}>
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <div className={`fixed inset-0 bg-slate-900/40 dark:bg-layout/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
+      <div className={`bg-surface rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}>
+        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border-subtle bg-surface">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-950/40 flex items-center justify-center">
-              <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              <AlertTriangle className="w-5 h-5 text-warning" />
             </div>
-            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+            <h3 className="text-base font-semibold text-foreground">
               {isEdit ? t("director.debts.form.title_edit") : t("director.debts.form.title_add")}
             </h3>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"><X className="w-5 h-5" /></button>
+          <button onClick={onClose} className="text-foreground-subtle hover:text-foreground-muted p-1.5 rounded-lg hover:bg-hover cursor-pointer"><X className="w-5 h-5" /></button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
@@ -350,9 +350,9 @@ function DebtFormModal({ debt, onClose }: { debt?: IDebt | null; onClose: () => 
             <SimpleSelect value={form.status} onChange={(v) => set("status", v)} options={DEBT_STATUS_OPTIONS.map((o) => ({ value: o.value, label: o.label }))} />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <button type="button" onClick={onClose} className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 text-sm font-semibold rounded-lg cursor-pointer transition-colors">{t("common.cancel")}</button>
-            <button type="submit" disabled={isPending} className="inline-flex items-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle">
+            <button type="button" onClick={onClose} className="h-10 px-4 border border-border bg-surface text-foreground hover:bg-surface-raised text-sm font-semibold rounded-lg cursor-pointer transition-colors">{t("common.cancel")}</button>
+            <button type="submit" disabled={isPending} className="inline-flex items-center gap-2 h-10 px-5 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
               {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
               {isEdit ? t("common.save") : t("common.create")}
             </button>
@@ -380,13 +380,13 @@ function DeleteDebtModal({ debt, onClose }: { debt: IDebt; onClose: () => void }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
-      <div className={`bg-white dark:bg-slate-900 rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
-        <div className="w-12 h-12 rounded-full bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center mb-4 mx-auto"><Trash2 className="w-6 h-6 text-rose-600" /></div>
-        <h3 className="text-center text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">{t("director.debts.delete.title")}</h3>
-        <p className="text-center text-sm text-slate-500 dark:text-slate-400 mb-6">{t("director.debts.delete.desc")}</p>
+      <div className={`fixed inset-0 bg-slate-900/40 dark:bg-layout/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
+      <div className={`bg-surface rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+        <div className="w-12 h-12 rounded-full bg-rose-50 dark:bg-danger-bg flex items-center justify-center mb-4 mx-auto"><Trash2 className="w-6 h-6 text-rose-600" /></div>
+        <h3 className="text-center text-base font-semibold text-foreground mb-2">{t("director.debts.delete.title")}</h3>
+        <p className="text-center text-sm text-foreground-muted mb-6">{t("director.debts.delete.desc")}</p>
         <div className="flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">{t("common.cancel")}</button>
+          <button onClick={onClose} className="flex-1 h-10 border border-border text-foreground text-sm font-semibold rounded-lg hover:bg-surface-raised dark:hover:bg-slate-800 cursor-pointer">{t("common.cancel")}</button>
           <button onClick={handleDelete} disabled={deleteMut.isPending} className="flex-1 h-10 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer inline-flex items-center justify-center gap-2">
             {deleteMut.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
             {t("common.delete") || "O'chirish"}
@@ -404,12 +404,12 @@ function SummaryCard({ icon, title, value, sub, loading, accent }: {
 }) {
   const bg = accent === "rose" ? "bg-rose-50 dark:bg-rose-950/30" : accent === "emerald" ? "bg-emerald-50 dark:bg-emerald-950/30" : "bg-amber-50 dark:bg-amber-950/30";
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5 flex items-start gap-4">
+    <div className="bg-surface border border-border-subtle rounded-2xl p-5 flex items-start gap-4">
       <div className={`w-11 h-11 rounded-xl ${bg} flex items-center justify-center shrink-0`}>{icon}</div>
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">{title}</p>
-        {loading ? <div className="h-6 w-28 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" /> : <p className="text-lg font-bold text-slate-900 dark:text-slate-100 truncate">{value}</p>}
-        {sub && !loading && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
+        <p className="text-xs font-medium text-foreground-muted mb-1">{title}</p>
+        {loading ? <div className="h-6 w-28 bg-border  rounded animate-pulse" /> : <p className="text-lg font-bold text-foreground truncate">{value}</p>}
+        {sub && !loading && <p className="text-xs text-foreground-subtle mt-0.5">{sub}</p>}
       </div>
     </div>
   );
@@ -418,8 +418,8 @@ function SummaryCard({ icon, title, value, sub, loading, accent }: {
 function ChartTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl p-3 text-sm">
-      <p className="font-semibold text-slate-700 dark:text-slate-300 mb-1">{label}</p>
+    <div className="bg-surface border border-border rounded-xl shadow-xl p-3 text-sm">
+      <p className="font-semibold text-foreground mb-1">{label}</p>
       <p className="text-amber-600 font-bold">{formatAmount(payload[0].value)}</p>
     </div>
   );
@@ -461,12 +461,12 @@ export default function DebtsView() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t("director.debts.title")}</h1>
-          <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{t("director.debts.count", { count })}</p>
+          <h1 className="text-xl font-semibold text-foreground">{t("director.debts.title")}</h1>
+          <p className="mt-0.5 text-sm text-foreground-muted">{t("director.debts.count", { count })}</p>
         </div>
         <button
           onClick={() => setAddOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-fg shadow-sm transition hover:bg-primary-hover"
         >
           <Plus className="h-4 w-4" /> {t("director.debts.add_btn")}
         </button>
@@ -475,7 +475,7 @@ export default function DebtsView() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <SummaryCard
-          icon={<AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />}
+          icon={<AlertTriangle className="w-5 h-5 text-warning" />}
           title={t("director.debts.summary.total")}
           value={formatAmount(summary?.total_amount)}
           sub={summary?.total_count ? `${summary.total_count} ta` : undefined}
@@ -483,7 +483,7 @@ export default function DebtsView() {
           accent="amber"
         />
         <SummaryCard
-          icon={<AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />}
+          icon={<AlertCircle className="w-5 h-5 text-danger" />}
           title={t("director.debts.summary.unpaid")}
           value={formatAmount(summary?.unpaid_amount)}
           sub={summary?.unpaid_count ? `${summary.unpaid_count} ta` : undefined}
@@ -491,7 +491,7 @@ export default function DebtsView() {
           accent="rose"
         />
         <SummaryCard
-          icon={<AlertCircle className="w-5 h-5 text-rose-700 dark:text-rose-500" />}
+          icon={<AlertCircle className="w-5 h-5 text-rose-700 dark:text-danger" />}
           title={t("director.debts.summary.overdue")}
           value={formatAmount(summary?.overdue_amount)}
           sub={summary?.overdue_count ? `${summary.overdue_count} ta` : undefined}
@@ -504,8 +504,8 @@ export default function DebtsView() {
       {(monthlyData.length > 0 || pieData.length > 0) && (
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
           {monthlyData.length > 0 && (
-            <div className="xl:col-span-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6">
-              <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">{t("director.debts.chart_title")}</h2>
+            <div className="xl:col-span-3 bg-surface border border-border-subtle rounded-2xl p-6">
+              <h2 className="text-base font-semibold text-foreground mb-4">{t("director.debts.chart_title")}</h2>
               <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={monthlyData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
@@ -520,8 +520,8 @@ export default function DebtsView() {
             </div>
           )}
           {pieData.length > 0 && (
-            <div className="xl:col-span-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6">
-              <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">Status bo'yicha</h2>
+            <div className="xl:col-span-2 bg-surface border border-border-subtle rounded-2xl p-6">
+              <h2 className="text-base font-semibold text-foreground mb-4">Status bo'yicha</h2>
               <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -541,19 +541,19 @@ export default function DebtsView() {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("director.debts.search_placeholder")} className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-8 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100" />
-          {search && <button onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"><X className="h-4 w-4" /></button>}
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground-subtle" />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("director.debts.search_placeholder")} className="w-full rounded-lg border border-border bg-surface py-2.5 pl-9 pr-8 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20   " />
+          {search && <button onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-foreground-muted cursor-pointer"><X className="h-4 w-4" /></button>}
         </div>
         <SimpleSelect value={filterStatus} onChange={(v) => { setFilterStatus(v); setPage(1); }} options={DEBT_STATUS_OPTIONS.map((o) => ({ value: o.value, label: o.label }))} placeholder={t("director.debts.all_statuses")} />
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-900">
+      <div className="overflow-hidden rounded-xl border border-slate-100 bg-surface  ">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50 text-xs uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-400">
+              <tr className="border-b border-slate-100 bg-surface-raised text-xs uppercase tracking-wider text-foreground-muted  /50 ">
                 <th className="py-3.5 px-4 font-semibold">{t("director.debts.table.student")}</th>
                 <th className="py-3.5 px-4 font-semibold hidden md:table-cell">{t("director.debts.table.group")}</th>
                 <th className="py-3.5 px-4 font-semibold">{t("director.debts.table.amount")}</th>
@@ -566,52 +566,52 @@ export default function DebtsView() {
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    <td className="py-4 px-4"><div className="h-4 w-32 bg-slate-200 dark:bg-slate-800 rounded" /></td>
-                    <td className="py-4 px-4 hidden md:table-cell"><div className="h-4 w-24 bg-slate-200 dark:bg-slate-800 rounded" /></td>
-                    <td className="py-4 px-4"><div className="h-4 w-28 bg-slate-200 dark:bg-slate-800 rounded" /></td>
-                    <td className="py-4 px-4"><div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded" /></td>
-                    <td className="py-4 px-4"><div className="h-6 w-24 bg-slate-200 dark:bg-slate-800 rounded-full" /></td>
-                    <td className="py-4 px-4"><div className="h-4 w-12 bg-slate-200 dark:bg-slate-800 rounded ml-auto" /></td>
+                    <td className="py-4 px-4"><div className="h-4 w-32 bg-border  rounded" /></td>
+                    <td className="py-4 px-4 hidden md:table-cell"><div className="h-4 w-24 bg-border  rounded" /></td>
+                    <td className="py-4 px-4"><div className="h-4 w-28 bg-border  rounded" /></td>
+                    <td className="py-4 px-4"><div className="h-4 w-20 bg-border  rounded" /></td>
+                    <td className="py-4 px-4"><div className="h-6 w-24 bg-border  rounded-full" /></td>
+                    <td className="py-4 px-4"><div className="h-4 w-12 bg-border  rounded ml-auto" /></td>
                   </tr>
                 ))
               ) : isError ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center">
-                    <AlertCircle className="mx-auto h-9 w-9 text-rose-500" />
+                    <AlertCircle className="mx-auto h-9 w-9 text-danger" />
                     <p className="mt-2 text-sm font-semibold text-rose-600">{t("common.error_failed")}</p>
                   </td>
                 </tr>
               ) : debts.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-16 text-center">
-                    <AlertTriangle className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-slate-600" />
-                    <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{t("director.debts.empty.title")}</p>
-                    <p className="mt-1 text-sm text-slate-400">{t("director.debts.empty.desc")}</p>
+                    <AlertTriangle className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-foreground-muted" />
+                    <p className="text-sm font-medium text-foreground-muted">{t("director.debts.empty.title")}</p>
+                    <p className="mt-1 text-sm text-foreground-subtle">{t("director.debts.empty.desc")}</p>
                   </td>
                 </tr>
               ) : (
                 debts.map((d) => {
                   const overdue = isOverdue(d.due_date) && d.status !== "paid";
                   return (
-                    <tr key={d.id} className={`transition-colors ${overdue ? "bg-rose-50/30 dark:bg-rose-950/10 hover:bg-rose-50/50" : "hover:bg-slate-50 dark:hover:bg-slate-800/40"}`}>
+                    <tr key={d.id} className={`transition-colors ${overdue ? "bg-rose-50/30 dark:bg-rose-950/10 hover:bg-rose-50/50" : "hover:bg-surface-raised dark:hover:bg-slate-800/40"}`}>
                       <td className="py-3.5 px-4">
-                        <div className="font-medium text-slate-900 dark:text-slate-100">{d.student_name ?? "—"}</div>
-                        {d.student_phone && <div className="text-xs text-slate-400">{d.student_phone}</div>}
+                        <div className="font-medium text-foreground">{d.student_name ?? "—"}</div>
+                        {d.student_phone && <div className="text-xs text-foreground-subtle">{d.student_phone}</div>}
                       </td>
-                      <td className="py-3.5 px-4 hidden md:table-cell text-slate-600 dark:text-slate-400">{d.group_name ?? "—"}</td>
-                      <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-slate-100">{formatAmount(d.amount)}</td>
+                      <td className="py-3.5 px-4 hidden md:table-cell text-foreground-muted">{d.group_name ?? "—"}</td>
+                      <td className="py-3.5 px-4 font-semibold text-foreground">{formatAmount(d.amount)}</td>
                       <td className="py-3.5 px-4">
-                        <div className={`flex items-center gap-1.5 ${overdue ? "text-rose-600 dark:text-rose-400 font-semibold" : "text-slate-600 dark:text-slate-400"}`}>
+                        <div className={`flex items-center gap-1.5 ${overdue ? "text-danger font-semibold" : "text-foreground-muted"}`}>
                           {overdue && <AlertCircle className="w-3.5 h-3.5 shrink-0" />}
                           {formatDate(d.due_date)}
                         </div>
-                        {overdue && <div className="text-[10px] text-rose-500 font-semibold mt-0.5">{t("director.debts.overdue_badge")}</div>}
+                        {overdue && <div className="text-[10px] text-danger font-semibold mt-0.5">{t("director.debts.overdue_badge")}</div>}
                       </td>
                       <td className="py-3.5 px-4"><StatusBadge status={d.status} display={d.status_display} /></td>
                       <td className="py-3.5 px-4 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button onClick={() => setEditing(d)} className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
-                          <button onClick={() => setDeleting(d)} className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"><Trash2 className="w-4 h-4" /></button>
+                          <button onClick={() => setEditing(d)} className="p-1.5 rounded-lg text-foreground-subtle hover:text-primary hover:bg-primary-soft  transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
+                          <button onClick={() => setDeleting(d)} className="p-1.5 rounded-lg text-foreground-subtle hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"><Trash2 className="w-4 h-4" /></button>
                         </div>
                       </td>
                     </tr>
@@ -624,16 +624,16 @@ export default function DebtsView() {
 
         {/* Pagination */}
         {!isLoading && debts.length > 0 && (
-          <div className="flex items-center justify-between border-t border-slate-100 px-5 py-3 dark:border-slate-800">
-            <span className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+          <div className="flex items-center justify-between border-t border-slate-100 px-5 py-3 ">
+            <span className="flex items-center gap-2 text-sm text-foreground-muted">
               {isFetching && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               {page} / {totalPages}
             </span>
             <div className="flex gap-2">
-              <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={!data?.previous} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
+              <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={!data?.previous} className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800">
                 <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
               </button>
-              <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={!data?.next} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
+              <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={!data?.next} className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800">
                 {t("common.next")} <ChevronRight className="h-4 w-4" />
               </button>
             </div>

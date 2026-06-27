@@ -18,10 +18,10 @@ interface Props {
 }
 
 const inputCls =
-    "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500";
+    "w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-primary focus:ring-2 focus:ring-primary-ring";
 
 const labelCls =
-    "mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300";
+    "mb-1.5 block text-sm font-medium text-foreground-muted";
 
 export default function BranchForm({
     defaultValues,
@@ -134,14 +134,14 @@ export default function BranchForm({
                     type="button"
                     onClick={onCancel}
                     disabled={submitting}
-                    className="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="rounded-xl px-4 py-2.5 text-sm font-medium text-foreground-muted transition hover:bg-hover disabled:opacity-50"
                 >
                     {t("common.cancel")}
                 </button>
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700 disabled:opacity-60"
+                    className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700 disabled:opacity-60"
                 >
                     {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                     {submitLabel}

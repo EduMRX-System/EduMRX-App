@@ -302,7 +302,7 @@ export default function BranchesLocationView() {
       <button
         type="button"
         onClick={() => router.back()}
-        className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-foreground-muted hover:text-foreground dark:hover:text-white transition-colors"
       >
         <ChevronLeft className="w-5 h-5" />
         Orqaga
@@ -310,16 +310,16 @@ export default function BranchesLocationView() {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-lg border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50 dark:bg-indigo-950/30 px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-300 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-lg border border-primary/20  bg-primary-soft  px-3 py-1 text-xs font-bold text-primary  mb-3">
             <Building2 className="w-3.5 h-3.5" />
             {branches.length} ta filial
           </div>
 
-          <h1 className="text-2xl font-black text-slate-900 dark:text-white">
+          <h1 className="text-2xl font-black text-foreground">
             Filiallarimiz
           </h1>
 
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-sm text-foreground-muted mt-1">
             Eng yaqin filialni xaritadan toping yoki ro'yxatdan tanlang.
           </p>
         </div>
@@ -327,7 +327,7 @@ export default function BranchesLocationView() {
         <button
           type="button"
           onClick={() => refetch()}
-          className="h-10 px-4 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-60"
+          className="h-10 px-4 rounded-lg bg-slate-900 dark:bg-surface text-white dark:text-foreground text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-60"
           disabled={isLoading}
         >
           Yangilash
@@ -335,26 +335,26 @@ export default function BranchesLocationView() {
       </div>
 
       <div className="grid lg:grid-cols-5 gap-5">
-        <div className="lg:col-span-3 relative min-h-[420px] lg:h-[560px] overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
+        <div className="lg:col-span-3 relative min-h-[420px] lg:h-[560px] overflow-hidden rounded-xl border border-border bg-hover ">
           {(isLoading || mapLoading) && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900">
-              <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-3" />
-              <p className="text-sm font-bold text-slate-600 dark:text-slate-300">
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-hover ">
+              <Loader2 className="w-10 h-10 text-primary animate-spin mb-3" />
+              <p className="text-sm font-bold text-foreground-muted">
                 Xarita yuklanmoqda...
               </p>
             </div>
           )}
 
           {(isError || mapError) && !isLoading && (
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 px-6 text-center">
-              <AlertCircle className="w-10 h-10 text-rose-500 mb-3" />
-              <p className="text-sm font-bold text-slate-800 dark:text-slate-100">
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-hover  px-6 text-center">
+              <AlertCircle className="w-10 h-10 text-danger mb-3" />
+              <p className="text-sm font-bold text-slate-800 ">
                 {mapError || "Filiallarni yuklashda xatolik yuz berdi"}
               </p>
               <button
                 type="button"
                 onClick={() => refetch()}
-                className="mt-4 h-9 px-4 rounded-lg bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 transition-colors"
+                className="mt-4 h-9 px-4 rounded-lg bg-primary text-primary-fg text-sm font-bold hover:bg-primary-hover transition-colors"
               >
                 Qayta urinish
               </button>
@@ -362,12 +362,12 @@ export default function BranchesLocationView() {
           )}
 
           {!isLoading && !isError && branchesWithCoords.length === 0 && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center bg-slate-100 dark:bg-slate-900">
-              <MapPin className="w-10 h-10 text-slate-400 mb-3" />
-              <p className="text-sm font-bold text-slate-700 dark:text-slate-200">
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center bg-hover ">
+              <MapPin className="w-10 h-10 text-foreground-subtle mb-3" />
+              <p className="text-sm font-bold text-foreground">
                 Koordinatasi bor filial topilmadi
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <p className="text-xs text-foreground-muted mt-1">
                 Filial qo'shganda xaritadan joylashuv tanlanganini tekshiring.
               </p>
             </div>
@@ -385,7 +385,7 @@ export default function BranchesLocationView() {
             [1, 2, 3, 4].map((item) => (
               <div
                 key={item}
-                className="h-32 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 animate-pulse"
+                className="h-32 rounded-xl border border-border bg-surface animate-pulse"
               />
             ))
           ) : branches.length > 0 ? (
@@ -397,10 +397,10 @@ export default function BranchesLocationView() {
                 <div
                   key={branch.id}
                   onClick={() => focusBranch(branch)}
-                  className={`rounded-xl border bg-white dark:bg-slate-900 p-4 transition-all cursor-pointer ${
+                  className={`rounded-xl border bg-surface p-4 transition-all cursor-pointer ${
                     isSelected
                       ? "border-indigo-400 dark:border-indigo-500 shadow-md shadow-indigo-500/10"
-                      : "border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700"
+                      : "border-border hover:border-indigo-300 dark:hover:border-indigo-700"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -408,8 +408,8 @@ export default function BranchesLocationView() {
                       <div
                         className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
                           branch.status === "active"
-                            ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-300"
-                            : "bg-slate-100 dark:bg-slate-800 text-slate-400"
+                            ? "bg-primary-soft  text-primary "
+                            : "bg-hover  text-foreground-subtle"
                         }`}
                       >
                         <MapPin className="w-5 h-5" />
@@ -417,7 +417,7 @@ export default function BranchesLocationView() {
 
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="text-sm font-black text-slate-900 dark:text-white truncate">
+                          <p className="text-sm font-black text-foreground truncate">
                             {branch.name}
                           </p>
                           <span
@@ -429,11 +429,11 @@ export default function BranchesLocationView() {
                           />
                         </div>
 
-                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">
+                        <p className="text-xs text-foreground-muted mt-1 line-clamp-2">
                           {branch.address || "Manzil kiritilmagan"}
                         </p>
 
-                        <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mt-2">
+                        <div className="flex items-center gap-1.5 text-xs text-foreground-subtle mt-2">
                           <Phone className="w-3.5 h-3.5" />
                           <span>{formatPhone(branch.phone)}</span>
                         </div>
@@ -452,8 +452,8 @@ export default function BranchesLocationView() {
                         onClick={(event) => event.stopPropagation()}
                         className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                           coords
-                            ? "bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/50"
-                            : "bg-slate-100 dark:bg-slate-800 text-slate-300 pointer-events-none"
+                            ? "bg-hover  text-foreground-muted hover:text-primary hover:bg-primary-soft "
+                            : "bg-hover  text-slate-300 pointer-events-none"
                         }`}
                         aria-label="Yandex Maps"
                       >
@@ -471,8 +471,8 @@ export default function BranchesLocationView() {
                         onClick={(event) => event.stopPropagation()}
                         className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                           coords
-                            ? "bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/50"
-                            : "bg-slate-100 dark:bg-slate-800 text-slate-300 pointer-events-none"
+                            ? "bg-hover  text-foreground-muted hover:text-primary hover:bg-primary-soft "
+                            : "bg-hover  text-slate-300 pointer-events-none"
                         }`}
                         aria-label="Google Maps"
                       >
@@ -481,18 +481,18 @@ export default function BranchesLocationView() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-                      <Users className="w-3.5 h-3.5 text-indigo-400" />
+                  <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-border-subtle">
+                    <div className="flex items-center gap-1.5 text-xs text-foreground-muted">
+                      <Users className="w-3.5 h-3.5 text-primary" />
                       <span>{branch.stats?.students_count ?? 0}</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center gap-1.5 text-xs text-foreground-muted">
                       <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
                       <span>{branch.stats?.teachers_count ?? 0}</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center gap-1.5 text-xs text-foreground-muted">
                       <DoorOpen className="w-3.5 h-3.5 text-amber-400" />
                       <span>{branch.stats?.rooms_count ?? 0}</span>
                     </div>
@@ -501,12 +501,12 @@ export default function BranchesLocationView() {
               );
             })
           ) : (
-            <div className="rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 text-center">
-              <MapPin className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-              <p className="text-sm font-bold text-slate-700 dark:text-slate-200">
+            <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center">
+              <MapPin className="w-10 h-10 text-slate-300 dark:text-foreground-muted mx-auto mb-3" />
+              <p className="text-sm font-bold text-foreground">
                 Filiallar topilmadi
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <p className="text-xs text-foreground-muted mt-1">
                 API dan filial kelganda shu yerda ko'rinadi.
               </p>
             </div>

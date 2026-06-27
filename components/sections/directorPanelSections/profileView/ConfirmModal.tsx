@@ -20,12 +20,12 @@ interface ConfirmModalProps {
 
 export default function ConfirmModal({
     icon: Icon,
-    iconBg = "bg-red-500",
+    iconBg = "bg-danger",
     title,
     desc,
     confirmText = "Tasdiqlash",
     cancelText = "Bekor qilish",
-    confirmClass = "bg-red-600 hover:bg-red-700",
+    confirmClass = "bg-danger hover:bg-danger/90",
     loading = false,
     onConfirm,
     onClose,
@@ -46,18 +46,18 @@ export default function ConfirmModal({
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             {/* Backdrop */}
             <div
-                className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm animate-[cfFadeIn_0.2s_ease-out]"
+                className="absolute inset-0 bg-overlay backdrop-blur-sm animate-[cfFadeIn_0.2s_ease-out]"
                 onClick={() => !loading && onClose()}
             />
 
             {/* Modal */}
-            <div className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-[cfModalIn_0.25s_cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
+            <div className="relative w-full max-w-sm rounded-3xl bg-surface border border-border shadow-2xl animate-[cfModalIn_0.25s_cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
                 <div className="pt-8 pb-5 px-6 text-center">
-                    <div className={`w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center text-white mx-auto shadow-lg`}>
+                    <div className={`w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center text-primary-fg mx-auto shadow-lg`}>
                         <Icon className="w-7 h-7" />
                     </div>
-                    <h2 className="text-xl font-black text-slate-900 dark:text-white mt-4">{title}</h2>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 max-w-xs mx-auto leading-relaxed">
+                    <h2 className="text-xl font-black text-foreground mt-4">{title}</h2>
+                    <p className="text-sm text-foreground-muted mt-1.5 max-w-xs mx-auto leading-relaxed">
                         {desc}
                     </p>
                 </div>
@@ -66,14 +66,14 @@ export default function ConfirmModal({
                     <button
                         onClick={onClose}
                         disabled={loading}
-                        className="flex-1 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+                        className="flex-1 h-11 rounded-xl bg-hover text-foreground text-sm font-bold hover:bg-border-subtle transition-colors disabled:opacity-50"
                     >
                         {cancelText}
                     </button>
                     <button
                         onClick={onConfirm}
                         disabled={loading}
-                        className={`flex-1 h-11 rounded-xl text-white text-sm font-bold transition-colors disabled:opacity-60 flex items-center justify-center gap-2 ${confirmClass}`}
+                        className={`flex-1 h-11 rounded-xl text-primary-fg text-sm font-bold transition-colors disabled:opacity-60 flex items-center justify-center gap-2 ${confirmClass}`}
                     >
                         {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                         {confirmText}

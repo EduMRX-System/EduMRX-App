@@ -40,18 +40,18 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
-                className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 ${isMounted ? "opacity-100" : "opacity-0"}`}
+                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-300 ${isMounted ? "opacity-100" : "opacity-0"}`}
                 onClick={!isPending ? onClose : undefined}
             />
 
             <div
-                className={`bg-white dark:bg-slate-900 p-6 rounded-xl max-w-md w-full relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-all duration-300 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}
+                className={`bg-surface p-6 rounded-xl max-w-md w-full relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-300 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}
             >
                 {!isPending && (
                     <button
                         type="button"
                         onClick={onClose}
-                        className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                        className="absolute top-4 right-4 text-foreground-subtle hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-hover transition-colors cursor-pointer"
                     >
                         <X className="w-5 h-5" />
                     </button>
@@ -61,8 +61,8 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
                     <AlertTriangle className="w-5 h-5" />
                 </div>
 
-                <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-2">{t("director.teachers.delete.title")}</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                <h3 className="text-foreground text-[18px] font-semibold mb-2">{t("director.teachers.delete.title")}</h3>
+                <p className="text-foreground-muted text-sm mb-6 leading-relaxed">
                     {t("director.teachers.delete.desc", { name: teacher.user?.full_name })}
                 </p>
 
@@ -71,7 +71,7 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
                         type="button"
                         disabled={isPending}
                         onClick={onClose}
-                        className="h-10 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer order-2 sm:order-1"
+                        className="h-10 px-4 bg-surface border border-border hover:bg-hover text-foreground rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer order-2 sm:order-1"
                     >
                         {t("common.cancel")}
                     </button>
@@ -79,7 +79,7 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
                         type="button"
                         disabled={isPending}
                         onClick={() => deleteTeacher()}
-                        className="h-10 px-4 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer order-1 sm:order-2"
+                        className="h-10 px-4 bg-danger hover:bg-danger/90 disabled:bg-red-400 text-white rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer order-1 sm:order-2"
                     >
                         {isPending ? (<><Loader2 className="w-4 h-4 animate-spin" /> {t("common.deleting")}</>) : t("common.delete")}
                     </button>

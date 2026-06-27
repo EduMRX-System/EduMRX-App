@@ -14,7 +14,7 @@ interface Props {
 
 const statusStyles: Record<string, string> = {
     active: "bg-green-50 text-green-700 border-green-100 dark:bg-green-950/20 dark:text-green-400 dark:border-green-900/40",
-    inactive: "bg-slate-50 text-slate-600 border-slate-100 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700",
+    inactive: "bg-slate-50 text-slate-600 border-slate-100   ",
     pending: "bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-900/40",
     new: "bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-900/40",
     frozen: "bg-cyan-50 text-cyan-700 border-cyan-100 dark:bg-cyan-950/20 dark:text-cyan-400 dark:border-cyan-900/40",
@@ -38,12 +38,12 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
     return (
         <tr
             onClick={() => router.push(`/students/${student.id}`)}
-            className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 border-b border-slate-100 dark:border-slate-800/60 transition-colors group cursor-pointer"
+            className="hover:bg-hover/50 dark:hover:bg-slate-800/40 border-b border-border-subtle/60 transition-colors group cursor-pointer"
         >
             {/* Ism + avatar */}
             <td className="py-4 px-5">
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 flex items-center justify-center font-semibold text-indigo-600 dark:text-indigo-400 shrink-0 uppercase text-xs overflow-hidden">
+                    <div className="w-9 h-9 rounded-full bg-primary-soft border border-primary/20 flex items-center justify-center font-semibold text-primary shrink-0 uppercase text-xs overflow-hidden">
                         {avatar ? (
                             <Image src={avatar} alt={fullName} width={36} height={36} className="w-full h-full object-cover rounded-full" />
                         ) : (
@@ -51,7 +51,7 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
                         )}
                     </div>
                     <div>
-                        <div className="font-semibold text-slate-900 dark:text-slate-100 leading-tight flex items-center gap-2">
+                        <div className="font-semibold text-foreground leading-tight flex items-center gap-2">
                             {fullName}
                             {student.status && (
                                 <span className={`text-[10px] px-1.5 py-0.5 rounded-sm border uppercase font-bold tracking-wide ${statusStyles[student.status] || statusStyles.inactive}`}>
@@ -59,7 +59,7 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
                                 </span>
                             )}
                         </div>
-                        <div className="text-xs text-slate-400 dark:text-slate-500 mt-0.5 font-medium">
+                        <div className="text-xs text-foreground-subtle mt-0.5 font-medium">
                             ID: {student.student_id || student.id.slice(0, 8)}
                         </div>
                     </div>
@@ -69,12 +69,12 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
             {/* Aloqa */}
             <td className="py-4 px-5">
                 <div className="space-y-1 text-xs font-medium">
-                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                        <Phone className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+                    <div className="flex items-center gap-2 text-foreground-muted">
+                        <Phone className="w-3.5 h-3.5 text-foreground-subtle" />
                         <span>{phone ? formatPhoneView(phone) : "—"}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                        <Mail className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+                    <div className="flex items-center gap-2 text-foreground-muted">
+                        <Mail className="w-3.5 h-3.5 text-foreground-subtle" />
                         <span className="truncate max-w-[160px]">{email}</span>
                     </div>
                 </div>
@@ -82,7 +82,7 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
 
             {/* Filial */}
             <td className="py-4 px-5">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-indigo-50/60 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 border border-indigo-100/50 dark:border-indigo-900/30">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-primary-soft/60 text-primary border border-primary/20">
                     <GraduationCap className="w-3.5 h-3.5" />
                     {student.center_name || "—"}
                 </span>
@@ -90,8 +90,8 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
 
             {/* Tug'ilgan sana */}
             <td className="py-4 px-5">
-                <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 font-medium">
-                    <Calendar className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+                <div className="flex items-center gap-1.5 text-xs text-foreground-muted font-medium">
+                    <Calendar className="w-3.5 h-3.5 text-foreground-subtle" />
                     <span>{student.date_of_birth || u?.date_of_birth || "—"}</span>
                 </div>
             </td>
@@ -102,14 +102,14 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
                     <button
                         onClick={(e) => { e.stopPropagation(); onEdit(student); }}
                         title={t("common.edit")}
-                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 border border-transparent hover:border-indigo-100 dark:hover:border-indigo-900/50 transition-all cursor-pointer bg-transparent"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-foreground-subtle hover:text-primary hover:bg-primary-soft border border-transparent hover:border-primary/20 transition-all cursor-pointer bg-transparent"
                     >
                         <Edit3 className="w-4 h-4" />
                     </button>
                     <button
                         onClick={(e) => { e.stopPropagation(); onDelete(student); }}
                         title={t("common.delete")}
-                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 border border-transparent hover:border-red-100 dark:hover:border-red-900/50 transition-all cursor-pointer bg-transparent"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-foreground-subtle hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 border border-transparent hover:border-red-100 dark:hover:border-red-900/50 transition-all cursor-pointer bg-transparent"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>

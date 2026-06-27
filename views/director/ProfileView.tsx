@@ -54,7 +54,7 @@ export default function ProfileView() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-24">
-        <Loader2 className="w-7 h-7 text-indigo-600 animate-spin" />
+        <Loader2 className="w-7 h-7 text-primary animate-spin" />
       </div>
     );
   }
@@ -71,7 +71,7 @@ export default function ProfileView() {
       {/* ─── PROFILE CARD (bosilganda → detail) ─── */}
       <button
         onClick={() => router.push("/profile/details")}
-        className="group w-full flex items-center gap-4 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors text-left"
+        className="group w-full flex items-center gap-4 p-4 rounded-2xl bg-surface border border-border hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors text-left"
       >
         <div className="relative shrink-0">
           <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center overflow-hidden">
@@ -82,25 +82,25 @@ export default function ProfileView() {
               <span className="text-lg font-black text-white">{initials || "?"}</span>
             )}
           </div>
-          <span className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center">
-            <ShieldCheck className="w-4 h-4 text-indigo-500" />
+          <span className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-surface flex items-center justify-center">
+            <ShieldCheck className="w-4 h-4 text-primary" />
           </span>
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-base font-black text-slate-900 dark:text-white truncate">
+          <p className="text-base font-black text-foreground truncate">
             {profile.full_name}
           </p>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-sm text-foreground-muted mt-0.5">
             {t(`director.profile.role.${profile.role}`) || profile.role}
           </p>
         </div>
 
-        <ChevronRight className="w-5 h-5 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all shrink-0" />
+        <ChevronRight className="w-5 h-5 text-slate-300 dark:text-foreground-muted group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
       </button>
 
       {/* ─── SOZLAMALAR GURUHI ─── */}
-      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+      <div className="rounded-2xl bg-surface border border-border overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
         <SettingRow
           icon={<Contrast className="w-5 h-5" />}
           iconBg="bg-emerald-500"
@@ -119,7 +119,7 @@ export default function ProfileView() {
         />
         <SettingRow
           icon={<Lock className="w-5 h-5" />}
-          iconBg="bg-indigo-600"
+          iconBg="bg-primary"
           title={t("director.profile.password.title")}
           desc={t("director.profile.password.desc")}
           value={t("director.profile.password.change")}
@@ -128,7 +128,7 @@ export default function ProfileView() {
       </div>
 
       {/* ─── MARKAZ GURUHI ─── */}
-      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="rounded-2xl bg-surface border border-border overflow-hidden">
         <SettingRow
           icon={<MapPin className="w-5 h-5" />}
           iconBg="bg-rose-500"
@@ -139,17 +139,17 @@ export default function ProfileView() {
       </div>
 
       {/* ─── LOG OUT ─── */}
-      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="rounded-2xl bg-surface border border-border overflow-hidden">
         <button
           onClick={() => setLogoutOpen(true)}
           className="group w-full flex items-center gap-4 p-4 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors text-left"
         >
-          <span className="w-10 h-10 rounded-xl bg-red-500 flex items-center justify-center text-white shrink-0">
+          <span className="w-10 h-10 rounded-xl bg-danger flex items-center justify-center text-white shrink-0">
             <LogOut className="w-5 h-5" />
           </span>
           <div className="flex-1">
             <p className="text-sm font-bold text-red-600 dark:text-red-400">{t("director.profile.logout.title")}</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-foreground-muted mt-0.5">
               {t("director.profile.logout.desc")}
             </p>
           </div>
@@ -164,12 +164,12 @@ export default function ProfileView() {
       {logoutOpen && (
         <ConfirmModal
           icon={LogOut}
-          iconBg="bg-red-500"
+          iconBg="bg-danger"
           title={t("director.profile.logout.confirm_title")}
           desc={t("director.profile.logout.confirm_desc")}
           confirmText={t("director.profile.logout.confirm_btn")}
           cancelText={t("common.cancel")}
-          confirmClass="bg-red-600 hover:bg-red-700"
+          confirmClass="bg-danger hover:bg-danger/90"
           onConfirm={logout}
           onClose={() => setLogoutOpen(false)}
         />
@@ -197,21 +197,21 @@ function SettingRow({
   return (
     <button
       onClick={onClick}
-      className="group w-full flex items-center gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left"
+      className="group w-full flex items-center gap-4 p-4 hover:bg-surface-raised dark:hover:bg-slate-800/50 transition-colors text-left"
     >
       <span className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center text-white shrink-0`}>
         {icon}
       </span>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-slate-900 dark:text-white">{title}</p>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{desc}</p>
+        <p className="text-sm font-bold text-foreground">{title}</p>
+        <p className="text-xs text-foreground-muted mt-0.5 truncate">{desc}</p>
       </div>
       {value && (
-        <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 shrink-0 hidden sm:block">
+        <span className="text-xs font-semibold text-foreground-subtle shrink-0 hidden sm:block">
           {value}
         </span>
       )}
-      <ChevronRight className="w-5 h-5 text-slate-300 dark:text-slate-600 group-hover:text-slate-500 shrink-0" />
+      <ChevronRight className="w-5 h-5 text-slate-300 dark:text-foreground-muted group-hover:text-foreground-muted shrink-0" />
     </button>
   );
 } 

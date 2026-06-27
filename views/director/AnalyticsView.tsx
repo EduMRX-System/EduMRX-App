@@ -49,8 +49,8 @@ function ChangeBadge({ value }: { value: number | undefined }) {
     <span
       className={`inline-flex items-center gap-0.5 text-[11px] font-bold px-1.5 py-0.5 rounded-full ${
         pos
-          ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
-          : "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400"
+          ? "bg-emerald-50 text-emerald-600 dark:bg-success-bg dark:text-emerald-400"
+          : "bg-red-50 text-red-600 dark:bg-danger/10 dark:text-red-400"
       }`}
     >
       <Icon className="w-3 h-3" />
@@ -66,8 +66,8 @@ function StatusDot({ status }: { status: string }) {
     <span
       className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
         active
-          ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
-          : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+          ? "bg-emerald-50 text-emerald-600 dark:bg-success-bg dark:text-emerald-400"
+          : "bg-hover text-foreground-muted  "
       }`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-emerald-500" : "bg-slate-400"}`} />
@@ -82,11 +82,11 @@ function CardSkeleton() {
       {[0, 1, 2, 3].map((i) => (
         <div
           key={i}
-          className="bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-5 h-36"
+          className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 h-36"
         >
-          <div className="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-700 mb-3" />
-          <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2" />
-          <div className="h-7 bg-slate-200 dark:bg-slate-700 rounded w-2/3" />
+          <div className="w-10 h-10 rounded-xl bg-border  mb-3" />
+          <div className="h-3 bg-border  rounded w-1/2 mb-2" />
+          <div className="h-7 bg-border  rounded w-2/3" />
         </div>
       ))}
     </div>
@@ -97,7 +97,7 @@ function RowSkeleton({ rows = 4 }: { rows?: number }) {
   return (
     <div className="p-5 space-y-3 animate-pulse">
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="h-11 bg-slate-100 dark:bg-slate-800 rounded-xl" />
+        <div key={i} className="h-11 bg-hover  rounded-xl" />
       ))}
     </div>
   );
@@ -158,29 +158,29 @@ export default function AnalyticsView() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Total revenue */}
-          <div className="bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 flex items-center justify-center mb-3">
+          <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary dark:bg-primary-soft0/10  flex items-center justify-center mb-3">
               <Wallet className="w-5 h-5" />
             </div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+            <p className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
               {t("director.analytics.stat.total_revenue")}
             </p>
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+            <h3 className="text-2xl font-black text-foreground mt-1">
               {fmtCompact(summary?.total_revenue ?? 0)}{" "}
               <span className="text-base font-semibold">UZS</span>
             </h3>
           </div>
 
           {/* Monthly revenue */}
-          <div className="bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 flex items-center justify-center mb-3">
+          <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 dark:bg-success-bg dark:text-emerald-400 flex items-center justify-center mb-3">
               <TrendingUp className="w-5 h-5" />
             </div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+            <p className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
               {t("director.analytics.stat.monthly_revenue")}
             </p>
             <div className="flex items-end gap-2 mt-1">
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+              <h3 className="text-2xl font-black text-foreground">
                 {fmtCompact(summary?.month_revenue ?? 0)}{" "}
                 <span className="text-base font-semibold">UZS</span>
               </h3>
@@ -189,39 +189,39 @@ export default function AnalyticsView() {
           </div>
 
           {/* Centers */}
-          <div className="bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-5 shadow-xs">
+          <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
             <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 flex items-center justify-center mb-3">
               <Building2 className="w-5 h-5" />
             </div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+            <p className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
               {t("director.analytics.stat.centers")}
             </p>
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+            <h3 className="text-2xl font-black text-foreground mt-1">
               {summary?.active_centers ?? 0}
-              <span className="text-base font-semibold text-slate-400 ml-1">
+              <span className="text-base font-semibold text-foreground-subtle ml-1">
                 / {summary?.total_centers ?? 0}
               </span>
             </h3>
-            <p className="text-[11px] text-slate-400 mt-0.5">{t("director.analytics.stat.active")}</p>
+            <p className="text-[11px] text-foreground-subtle mt-0.5">{t("director.analytics.stat.active")}</p>
           </div>
 
           {/* Debts */}
-          <div className="bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400 flex items-center justify-center mb-3">
+          <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 dark:bg-warning-bg dark:text-amber-400 flex items-center justify-center mb-3">
               <AlertCircle className="w-5 h-5" />
             </div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+            <p className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
               {t("director.analytics.stat.debts")}
             </p>
             <div className="flex items-end gap-2 mt-1">
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+              <h3 className="text-2xl font-black text-foreground">
                 {fmtCompact(summary?.pending_debts ?? 0)}{" "}
                 <span className="text-base font-semibold">UZS</span>
               </h3>
               <ChangeBadge value={summary?.pending_debts_change} />
             </div>
             {(summary?.pending_debts_students_count ?? 0) > 0 && (
-              <p className="text-[11px] text-slate-400 mt-0.5">
+              <p className="text-[11px] text-foreground-subtle mt-0.5">
                 {summary?.pending_debts_students_count} {t("director.analytics.stat.debtors")}
               </p>
             )}
@@ -230,25 +230,25 @@ export default function AnalyticsView() {
       )}
 
       {/* Main revenue bar chart */}
-      <div className="bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 shadow-xs">
+      <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-6 shadow-xs">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-slate-400" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+            <TrendingUp className="w-4 h-4 text-foreground-subtle" />
+            <h3 className="text-sm font-bold text-foreground">
               {t("director.analytics.chart_section.title")}
             </h3>
           </div>
           {chartData?.total_sum_formatted && (
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 px-3 py-1 rounded-full">
+            <span className="text-xs font-semibold text-foreground-muted bg-surface-raised  px-3 py-1 rounded-full">
               {t("director.analytics.chart_section.total")} {chartData.total_sum_formatted}
             </span>
           )}
         </div>
 
         {chartQ.isLoading ? (
-          <div className="h-72 animate-pulse bg-slate-100 dark:bg-slate-800 rounded-xl" />
+          <div className="h-72 animate-pulse bg-hover  rounded-xl" />
         ) : !chartData || chartData?.chart?.length === 0 || chartSeries?.length === 0 ? (
-          <div className="h-72 flex flex-col items-center justify-center gap-3 text-slate-400">
+          <div className="h-72 flex flex-col items-center justify-center gap-3 text-foreground-subtle">
             <TrendingUp className="w-10 h-10 opacity-30" />
             <p className="text-sm">{t("director.analytics.chart_section.no_data")}</p>
           </div>
@@ -320,10 +320,10 @@ export default function AnalyticsView() {
       {/* Bottom 2-column: centers table + transactions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Centers table (2/3) */}
-        <div className="lg:col-span-2 bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-xs overflow-hidden">
-          <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-            <Building2 className="w-4 h-4 text-slate-400" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+        <div className="lg:col-span-2 bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl shadow-xs overflow-hidden">
+          <div className="flex items-center gap-2 px-5 py-4 border-b border-border-subtle">
+            <Building2 className="w-4 h-4 text-foreground-subtle" />
+            <h3 className="text-sm font-bold text-foreground">
               {t("director.analytics.centers_table.title")}
             </h3>
           </div>
@@ -332,8 +332,8 @@ export default function AnalyticsView() {
             <RowSkeleton rows={4} />
           ) : !centers?.data?.length ? (
             <div className="p-10 text-center">
-              <Building2 className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
-              <p className="text-sm text-slate-400">
+              <Building2 className="w-8 h-8 text-slate-300 dark:text-foreground-muted mx-auto mb-2" />
+              <p className="text-sm text-foreground-subtle">
                 {t("director.analytics.centers_table.empty")}
               </p>
             </div>
@@ -342,7 +342,7 @@ export default function AnalyticsView() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    <tr className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
                       <th className="px-5 py-3 text-left">
                         {t("director.analytics.centers_table.name")}
                       </th>
@@ -364,21 +364,21 @@ export default function AnalyticsView() {
                     {centers.data.map((c) => (
                       <tr
                         key={c.id}
-                        className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                        className="hover:bg-surface-raised dark:hover:bg-slate-800/40 transition-colors"
                       >
-                        <td className="px-5 py-3.5 font-semibold text-slate-800 dark:text-slate-200">
+                        <td className="px-5 py-3.5 font-semibold text-foreground">
                           {c.name}
                         </td>
                         <td className="px-3 py-3.5 text-right">
-                          <span className="inline-flex items-center justify-end gap-1 text-slate-600 dark:text-slate-400">
+                          <span className="inline-flex items-center justify-end gap-1 text-foreground-muted">
                             <Users className="w-3.5 h-3.5 opacity-60" />
                             {c.students_count}
                           </span>
                         </td>
-                        <td className="px-3 py-3.5 text-right text-slate-600 dark:text-slate-400 whitespace-nowrap text-xs">
+                        <td className="px-3 py-3.5 text-right text-foreground-muted whitespace-nowrap text-xs">
                           {fmtCompact(c.month_revenue)} UZS
                         </td>
-                        <td className="px-3 py-3.5 text-right font-semibold text-slate-800 dark:text-slate-200 whitespace-nowrap text-xs">
+                        <td className="px-3 py-3.5 text-right font-semibold text-foreground whitespace-nowrap text-xs">
                           {fmtCompact(c.total_revenue)} UZS
                         </td>
                         <td className="px-5 py-3.5 text-center">
@@ -392,8 +392,8 @@ export default function AnalyticsView() {
 
               {/* Pagination */}
               {centers.meta && totalPages > 1 && (
-                <div className="flex items-center justify-between px-5 py-3 border-t border-slate-100 dark:border-slate-800">
-                  <span className="text-xs text-slate-400">
+                <div className="flex items-center justify-between px-5 py-3 border-t border-border-subtle">
+                  <span className="text-xs text-foreground-subtle">
                     {t("common.page_of", {
                       page: centers.meta.current_page,
                       total: totalPages,
@@ -403,14 +403,14 @@ export default function AnalyticsView() {
                     <button
                       onClick={() => setCentersPage((p) => Math.max(1, p - 1))}
                       disabled={centersPage === 1}
-                      className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                      className="p-1.5 rounded-lg border border-border text-foreground-muted hover:bg-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setCentersPage((p) => Math.min(totalPages, p + 1))}
                       disabled={centersPage >= totalPages}
-                      className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                      className="p-1.5 rounded-lg border border-border text-foreground-muted hover:bg-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -422,10 +422,10 @@ export default function AnalyticsView() {
         </div>
 
         {/* Transactions (1/3) — safe empty state */}
-        <div className="bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-xs overflow-hidden">
-          <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-            <Wallet className="w-4 h-4 text-slate-400" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+        <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl shadow-xs overflow-hidden">
+          <div className="flex items-center gap-2 px-5 py-4 border-b border-border-subtle">
+            <Wallet className="w-4 h-4 text-foreground-subtle" />
+            <h3 className="text-sm font-bold text-foreground">
               {t("director.analytics.transactions_section.title")}
             </h3>
           </div>
@@ -434,8 +434,8 @@ export default function AnalyticsView() {
             <RowSkeleton rows={5} />
           ) : transactions?.length === 0 ? (
             <div className="p-8 text-center">
-              <AlertCircle className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
-              <p className="text-sm text-slate-400">
+              <AlertCircle className="w-8 h-8 text-slate-300 dark:text-foreground-muted mx-auto mb-2" />
+              <p className="text-sm text-foreground-subtle">
                 {t("director.analytics.transactions_section.empty")}
               </p>
             </div>
@@ -444,12 +444,12 @@ export default function AnalyticsView() {
               {transactions.map((tx: any, i: number) => (
                 <div
                   key={tx.id ?? i}
-                  className="px-5 py-3 flex items-center justify-between gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                  className="px-5 py-3 flex items-center justify-between gap-3 hover:bg-surface-raised dark:hover:bg-slate-800/40 transition-colors"
                 >
-                  <span className="text-sm text-slate-700 dark:text-slate-300 truncate">
+                  <span className="text-sm text-foreground truncate">
                     {tx.name ?? tx.description ?? tx.title ?? `#${i + 1}`}
                   </span>
-                  <span className="text-sm font-semibold text-slate-800 dark:text-white whitespace-nowrap">
+                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">
                     {fmtCompact(tx.amount ?? 0)} UZS
                   </span>
                 </div>
@@ -460,10 +460,10 @@ export default function AnalyticsView() {
       </div>
 
       {/* Branches chips */}
-      <div className="bg-white dark:bg-[#1A2035] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-5 shadow-xs">
+      <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
         <div className="flex items-center gap-2 mb-4">
-          <Building2 className="w-4 h-4 text-slate-400" />
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+          <Building2 className="w-4 h-4 text-foreground-subtle" />
+          <h3 className="text-sm font-bold text-foreground">
             {t("director.analytics.branches_section.title")}
           </h3>
         </div>
@@ -471,17 +471,17 @@ export default function AnalyticsView() {
         {branchesQ.isLoading ? (
           <div className="flex gap-2 flex-wrap animate-pulse">
             {[0, 1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-7 w-24 bg-slate-100 dark:bg-slate-800 rounded-full" />
+              <div key={i} className="h-7 w-24 bg-hover  rounded-full" />
             ))}
           </div>
         ) : branches?.length === 0 ? (
-          <p className="text-sm text-slate-400">{t("director.analytics.branches_section.empty")}</p>
+          <p className="text-sm text-foreground-subtle">{t("director.analytics.branches_section.empty")}</p>
         ) : (
           <div className="flex gap-2 flex-wrap">
             {branches.map((b) => (
               <span
                 key={b.id}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border border-border text-foreground bg-surface-raised /60"
               >
                 <span
                   className={`w-2 h-2 rounded-full ${

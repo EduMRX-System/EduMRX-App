@@ -58,6 +58,9 @@
     /* stone-100 — tugma/qator hover */
     --overlay: rgb(28 25 23 / 0.4);
     /* stone-900/40 — modal backdrop */
+
+    /* Range slider alias */
+    --accent: var(--primary);
 }
 
 /* ============ SEMANTIC TOKENS — dark ============ */

@@ -35,12 +35,12 @@ export default function StudentsView() {
             {/* Header */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t("director.students.title")}</h1>
-                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{t("director.students.count", { count })}</p>
+                    <h1 className="text-xl font-semibold text-foreground">{t("director.students.title")}</h1>
+                    <p className="mt-0.5 text-sm text-foreground-muted">{t("director.students.count", { count })}</p>
                 </div>
                 <button
                     onClick={() => setAddOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+                    className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-fg shadow-sm transition hover:bg-primary-hover"
                 >
                     <Plus className="h-4 w-4" /> {t("director.students.add_btn")}
                 </button>
@@ -48,26 +48,26 @@ export default function StudentsView() {
 
             {/* Search */}
             <div className="relative w-full sm:w-72">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground-subtle" />
                 <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder={t("director.students.search_placeholder")}
-                    className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-8 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+                    className="w-full rounded-lg border border-border bg-surface py-2.5 pl-9 pr-8 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20   "
                 />
                 {search && (
-                    <button onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">
+                    <button onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-foreground-muted dark:hover:text-slate-300 cursor-pointer">
                         <X className="h-4 w-4" />
                     </button>
                 )}
             </div>
 
             {/* Table */}
-            <div className="overflow-hidden rounded-xl border border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-900">
+            <div className="overflow-hidden rounded-xl border border-slate-100 bg-surface  ">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm">
                         <thead>
-                            <tr className="border-b border-slate-100 bg-slate-50 text-xs uppercase tracking-wider text-slate-600 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-400">
+                            <tr className="border-b border-slate-100 bg-surface-raised text-xs uppercase tracking-wider text-foreground-muted  /50 ">
                                 <th className="py-3.5 px-5 font-semibold">{t("director.students.table.name")}</th>
                                 <th className="py-3.5 px-5 font-semibold">{t("director.students.table.contact")}</th>
                                 <th className="py-3.5 px-5 font-semibold">{t("director.students.table.branch")}</th>
@@ -81,31 +81,31 @@ export default function StudentsView() {
                                     <tr key={i} className="animate-pulse">
                                         <td className="py-4 px-5">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-9 h-9 bg-slate-200 dark:bg-slate-800 rounded-full" />
+                                                <div className="w-9 h-9 bg-border  rounded-full" />
                                                 <div className="space-y-2">
-                                                    <div className="h-4 w-32 bg-slate-200 dark:bg-slate-800 rounded" />
-                                                    <div className="h-3 w-16 bg-slate-200 dark:bg-slate-800 rounded" />
+                                                    <div className="h-4 w-32 bg-border  rounded" />
+                                                    <div className="h-3 w-16 bg-border  rounded" />
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="py-4 px-5" colSpan={4}>
-                                            <div className="h-4 w-full max-w-md bg-slate-200 dark:bg-slate-800 rounded" />
+                                            <div className="h-4 w-full max-w-md bg-border  rounded" />
                                         </td>
                                     </tr>
                                 ))
                             ) : isError ? (
                                 <tr>
                                     <td colSpan={5} className="py-12 text-center">
-                                        <AlertCircle className="mx-auto h-9 w-9 text-rose-500" />
+                                        <AlertCircle className="mx-auto h-9 w-9 text-danger" />
                                         <p className="mt-2 text-sm font-semibold text-rose-600">{t("common.error_failed")}</p>
                                     </td>
                                 </tr>
                             ) : students.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="py-16 text-center">
-                                        <User className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-slate-600" />
-                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{t("director.students.empty.title")}</p>
-                                        <p className="mt-1 text-sm text-slate-400">{t("director.students.empty.desc")}</p>
+                                        <User className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-foreground-muted" />
+                                        <p className="text-sm font-medium text-foreground-muted">{t("director.students.empty.title")}</p>
+                                        <p className="mt-1 text-sm text-foreground-subtle">{t("director.students.empty.desc")}</p>
                                     </td>
                                 </tr>
                             ) : (
@@ -119,8 +119,8 @@ export default function StudentsView() {
 
                 {/* Pagination */}
                 {!isLoading && students.length > 0 && (
-                    <div className="flex items-center justify-between border-t border-slate-100 px-5 py-3 dark:border-slate-800">
-                        <span className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center justify-between border-t border-slate-100 px-5 py-3 ">
+                        <span className="flex items-center gap-2 text-sm text-foreground-muted">
                             {isFetching && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                             {page} / {totalPages}
                         </span>
@@ -128,14 +128,14 @@ export default function StudentsView() {
                             <button
                                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                                 disabled={!data?.previous}
-                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800"
                             >
                                 <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
                             </button>
                             <button
                                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                                 disabled={!data?.next}
-                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800"
                             >
                                 {t("common.next")} <ChevronRight className="h-4 w-4" />
                             </button>

@@ -128,36 +128,36 @@ export default function GroupFormModal({ group, onClose }: Props) {
     };
 
     const currentStatus = STATUS_OPTIONS.find((o) => o.value === formData.status) || STATUS_OPTIONS[0];
-    const inputCls = "border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 placeholder:text-slate-400 dark:placeholder:text-slate-500";
-    const labelCls = "text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold";
+    const inputCls = "border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-surface text-foreground border-border focus:border-primary focus:ring-2 focus:ring-primary-ring placeholder:text-foreground-subtle";
+    const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
-                className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
+                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
                 onClick={onClose}
             />
 
             <div
-                className={`bg-white dark:bg-slate-900 p-6 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
+                className={`bg-surface p-6 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
             >
                 {/* Sticky close */}
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="pointer-events-auto -mt-2 -mr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-md cursor-pointer transition-colors"
+                        className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
                 {/* Header */}
-                <div className="mb-[10px] border border-slate-200 dark:border-slate-700 shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-indigo-600 bg-indigo-50/10 dark:bg-indigo-950/20">
+                <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-primary bg-primary-soft/10">
                     <Users2 className="w-6 h-6" />
                 </div>
 
-                <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
+                <h3 className="text-foreground text-[18px] font-semibold mb-4">
                     {isEdit ? t("director.groups.form.title_edit") : t("director.groups.form.title_add")}
                 </h3>
 
@@ -218,16 +218,16 @@ export default function GroupFormModal({ group, onClose }: Props) {
                             <label className={labelCls}>{t("director.groups.form.status_label")}</label>
                             <div
                                 onClick={() => setIsStatusOpen(!isStatusOpen)}
-                                className="border border-slate-200 dark:border-slate-700 rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                                className="border border-border rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-surface text-foreground"
                             >
                                 <div className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
                                     <span>{currentStatus.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                 </div>
-                                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
+                                <ChevronDown className={`w-4 h-4 text-foreground-subtle transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
                             </div>
                             {isStatusOpen && (
-                                <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
+                                <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
                                     {STATUS_OPTIONS.map((option) => {
                                         const isSel = option.value === formData.status;
                                         return (
@@ -235,15 +235,15 @@ export default function GroupFormModal({ group, onClose }: Props) {
                                                 key={option.value}
                                                 onClick={() => { setFormData((p) => ({ ...p, status: option.value })); setIsStatusOpen(false); }}
                                                 className={`px-3 py-2.5 text-sm cursor-pointer transition-colors flex items-center justify-between ${isSel
-                                                    ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-medium"
-                                                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                                                    ? "bg-primary-soft text-primary font-medium"
+                                                    : "text-foreground hover:bg-hover"
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <span className={`w-2 h-2 rounded-full ${option.color}`} />
                                                     <span>{option.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                                 </div>
-                                                {isSel && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
+                                                {isSel && <Check className="w-4 h-4 text-primary" />}
                                             </div>
                                         );
                                     })}
@@ -289,8 +289,8 @@ export default function GroupFormModal({ group, onClose }: Props) {
                                         onClick={() => toggleDay(d.value)}
                                         title={d.full}
                                         className={`h-9 min-w-[44px] px-3 rounded-lg text-[13px] font-semibold border transition-colors cursor-pointer ${active
-                                            ? "bg-indigo-600 text-white border-indigo-600"
-                                            : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700"
+                                            ? "bg-primary text-primary-fg border-primary"
+                                            : "bg-surface text-foreground-muted border-border hover:border-primary/50"
                                             }`}
                                     >
                                         {d.short}
@@ -325,18 +325,18 @@ export default function GroupFormModal({ group, onClose }: Props) {
                     </div>
 
                     {/* Tugmalar */}
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
+                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle mt-6">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors"
+                            className="h-10 px-4 border border-border bg-surface text-foreground hover:bg-hover text-sm font-semibold rounded-lg cursor-pointer transition-colors"
                         >
                             {t("common.cancel")}
                         </button>
                         <button
                             type="submit"
                             disabled={isPending}
-                            className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
+                            className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                             {isEdit ? t("common.save") : t("common.create")}

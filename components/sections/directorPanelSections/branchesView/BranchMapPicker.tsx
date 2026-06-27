@@ -124,22 +124,22 @@ export default function BranchMapPicker({
 
     return (
         <div>
-            <div className="relative h-56 w-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+            <div className="relative h-56 w-full overflow-hidden rounded-xl border border-border">
                 {loading && (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-50 dark:bg-slate-800">
-                        <Loader2 className="h-5 w-5 animate-spin text-indigo-500" />
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface-raised ">
+                        <Loader2 className="h-5 w-5 animate-spin text-primary" />
                     </div>
                 )}
                 <div ref={mapEl} className="h-full w-full" />
             </div>
 
-            <p className="mt-2 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-2 flex items-center gap-1.5 text-xs text-foreground-muted">
                 <MapPin className="h-3.5 w-3.5" />
                 {lat != null && lng != null
                     ? `${lat.toFixed(6)}, ${lng.toFixed(6)}`
                     : "Xaritadan filial joylashuvini bosing"}
             </p>
-            {error && <p className="mt-1 text-xs text-rose-500">{error}</p>}
+            {error && <p className="mt-1 text-xs text-danger">{error}</p>}
         </div>
     );
 }

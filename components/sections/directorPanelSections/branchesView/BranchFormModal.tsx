@@ -33,22 +33,22 @@ const PhoneInput = ({ value, onChange, error }: PhoneInputProps) => {
 
     return (
         <div>
-            <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">
+            <label className="text-[14px] text-foreground-muted mb-1 block font-semibold">
                 {t("common.phone")} *
             </label>
             <div className="relative flex items-center">
                 <div className="absolute left-3 flex items-center gap-3 pointer-events-none select-none">
                     <span className="text-base">🇺🇿</span>
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">+998</span>
+                    <span className="text-sm font-semibold text-foreground">+998</span>
                 </div>
                 <input
                     type="tel"
                     value={formatUzPhone(value.startsWith("998") ? value.slice(3) : value)}
                     onChange={handlePhoneChange}
                     placeholder="90-123-45-67"
-                    className={`border rounded-lg w-full h-[40px] pl-[90px] pr-[10px] text-[14px] outline-none focus:border-indigo-500 dark:focus:border-indigo-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-colors ${error
-                        ? "border-red-300 dark:border-red-800 bg-red-50/10"
-                        : "border-slate-200 dark:border-slate-700"
+                    className={`border rounded-lg w-full h-[40px] pl-[90px] pr-[10px] text-[14px] outline-none focus:border-primary bg-surface text-foreground placeholder:text-foreground-subtle transition-colors ${error
+                        ? "border-danger/50 bg-red-50/10"
+                        : "border-border"
                         }`}
                     required
                 />
@@ -343,44 +343,44 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
     };
 
     const currentStatus = STATUS_OPTIONS.find(o => o.value === formData.status) || STATUS_OPTIONS[0];
-    const inputCls = "border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 focus:border-indigo-400 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 placeholder:text-slate-400 dark:placeholder:text-slate-500";
+    const inputCls = "border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-surface text-foreground border-border focus:border-primary focus:ring-2 focus:ring-primary-ring placeholder:text-foreground-subtle";
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Orqa fon */}
             <div
-                className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
+                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
                 onClick={onClose}
             />
 
             {/* Modal */}
             <div
-                className={`bg-white dark:bg-slate-900 p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
+                className={`bg-surface p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
             >
                 {/* Sticky close */}
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="pointer-events-auto -mt-2 -mr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-md cursor-pointer transition-colors"
+                        className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
                 {/* Header */}
-                <div className="mb-[10px] border border-slate-200 dark:border-slate-700 shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-indigo-600 bg-indigo-50/10 dark:bg-indigo-950/20">
+                <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-primary bg-primary-soft/10">
                     <Building2 className="w-6 h-6" />
                 </div>
 
-                <h3 className="text-slate-900 dark:text-slate-100 text-[18px] font-semibold mb-4">
+                <h3 className="text-foreground text-[18px] font-semibold mb-4">
                     {isEdit ? t("director.branches.form.title_edit") : t("director.branches.form.title_add")}
                 </h3>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Nom */}
                     <div>
-                        <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">{t("director.branches.form.name_label")}</label>
+                        <label className="text-[14px] text-foreground-muted mb-1 block font-semibold">{t("director.branches.form.name_label")}</label>
                         <input
                             type="text"
                             value={formData.name}
@@ -399,20 +399,20 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                         />
 
                         <div ref={statusDropdownRef} className="relative">
-                            <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 block font-semibold">{t("director.branches.form.status_label")}</label>
+                            <label className="text-[14px] text-foreground-muted mb-1 block font-semibold">{t("director.branches.form.status_label")}</label>
                             <div
                                 onClick={() => setIsStatusOpen(!isStatusOpen)}
-                                className="border border-slate-200 dark:border-slate-700 rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                                className="border border-border rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-surface text-foreground"
                             >
                                 <div className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
                                     <span>{currentStatus.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                 </div>
-                                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
+                                <ChevronDown className={`w-4 h-4 text-foreground-subtle transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
                             </div>
 
                             {isStatusOpen && (
-                                <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
+                                <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
                                     {STATUS_OPTIONS.map((option) => {
                                         const isSelected = option.value === formData.status;
                                         return (
@@ -420,15 +420,15 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                                                 key={option.value}
                                                 onClick={() => { setFormData(prev => ({ ...prev, status: option.value })); setIsStatusOpen(false); }}
                                                 className={`px-3 py-2.5 text-sm cursor-pointer transition-colors flex items-center justify-between ${isSelected
-                                                    ? "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-medium"
-                                                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100"
+                                                    ? "bg-primary-soft text-primary font-medium"
+                                                    : "text-foreground hover:bg-hover hover:text-slate-900 dark:hover:text-slate-100"
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <span className={`w-2 h-2 rounded-full ${option.color}`} />
                                                     <span>{option.value === "active" ? t("common.active") : t("common.inactive")}</span>
                                                 </div>
-                                                {isSelected && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
+                                                {isSelected && <Check className="w-4 h-4 text-primary" />}
                                             </div>
                                         );
                                     })}
@@ -439,14 +439,14 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
 
                     {/* Yandex Map + manzil */}
                     <div>
-                        <label className="text-[14px] text-slate-600 dark:text-slate-300 mb-1 font-semibold flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-indigo-500" />
+                        <label className="text-[14px] text-slate-600  mb-1 font-semibold flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-primary" />
                             {t("director.branches.form.address_label")}
                         </label>
 
                         <div className="relative mb-2" ref={suggestionsRef}>
                             <div className="relative flex items-center">
-                                <Search className="absolute left-3 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+                                <Search className="absolute left-3 w-3.5 h-3.5 text-foreground-subtle pointer-events-none" />
                                 <input
                                     type="text"
                                     value={addressSearchQuery}
@@ -454,24 +454,24 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                                     placeholder={t("director.branches.form.address_placeholder")}
                                     className={`${inputCls} pl-9`}
                                 />
-                                {isSearchingAddress && <Loader2 className="absolute right-3 w-3.5 h-3.5 text-indigo-400 animate-spin" />}
+                                {isSearchingAddress && <Loader2 className="absolute right-3 w-3.5 h-3.5 text-primary animate-spin" />}
                                 {!isSearchingAddress && addressSearchQuery && (
                                     <X
                                         onClick={() => { setAddressSearchQuery(""); setFormData(prev => ({ ...prev, address: "" })); setAddressSuggestions([]); }}
-                                        className="absolute right-3 w-3.5 h-3.5 text-slate-400 cursor-pointer"
+                                        className="absolute right-3 w-3.5 h-3.5 text-foreground-subtle cursor-pointer"
                                     />
                                 )}
                             </div>
 
                             {addressSuggestions.length > 0 && (
-                                <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 overflow-hidden">
+                                <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden">
                                     {addressSuggestions.map((s, i) => (
                                         <div
                                             key={i}
                                             onClick={() => selectSuggestion(s)}
-                                            className="flex items-start gap-2 px-3 py-2.5 text-[13px] text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors border-b border-slate-100 dark:border-slate-700/50 last:border-0"
+                                            className="flex items-start gap-2 px-3 py-2.5 text-[13px] text-foreground hover:bg-primary-soft hover:text-primary cursor-pointer transition-colors border-b border-border-subtle last:border-0"
                                         >
-                                            <MapPin className="w-3.5 h-3.5 mt-0.5 text-indigo-400 shrink-0" />
+                                            <MapPin className="w-3.5 h-3.5 mt-0.5 text-primary shrink-0" />
                                             <span>{s.name}</span>
                                         </div>
                                     ))}
@@ -479,12 +479,12 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                             )}
                         </div>
 
-                        <div className="relative rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                        <div className="relative rounded-xl overflow-hidden border border-border">
                             {(mapLoading || mapError) && (
-                                <div className="absolute inset-0 z-10 bg-slate-100 dark:bg-slate-800 flex flex-col items-center justify-center gap-2">
+                                <div className="absolute inset-0 z-10 bg-hover flex flex-col items-center justify-center gap-2">
                                     {mapError
                                         ? <span className="text-xs text-red-500 font-semibold">{t("director.branches.form.map_error")}</span>
-                                        : <Loader2 className="w-6 h-6 text-indigo-500 animate-spin" />}
+                                        : <Loader2 className="w-6 h-6 text-primary animate-spin" />}
                                 </div>
                             )}
                             <div ref={mapContainerRef} className="w-full h-[200px]" style={{ overflow: "visible" }} />
@@ -493,25 +493,25 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
 
                     {/* Koordinata nishoni */}
                     {coords && (
-                        <div className="flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400 bg-indigo-50/60 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40 rounded-lg px-3 py-2">
-                            <MapPin className="w-3.5 h-3.5 text-indigo-400" />
+                        <div className="flex items-center gap-2 text-[11px] text-foreground-muted bg-primary-soft/60 border border-primary/20 rounded-lg px-3 py-2">
+                            <MapPin className="w-3.5 h-3.5 text-primary" />
                             <span>Lat: {coords.lat} | Lng: {coords.lng}</span>
                         </div>
                     )}
 
                     {/* Tugmalar */}
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
+                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle mt-6">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="h-10 px-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-sm font-semibold rounded-lg cursor-pointer transition-colors"
+                            className="h-10 px-4 border border-border bg-surface text-foreground hover:bg-hover text-sm font-semibold rounded-lg cursor-pointer transition-colors"
                         >
                             {t("common.cancel")}
                         </button>
                         <button
                             type="submit"
                             disabled={isPending}
-                            className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
+                            className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                         >
                             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                             {isEdit ? t("common.save") : t("common.create")}
