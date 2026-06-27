@@ -580,6 +580,7 @@
       "finance": "Финансы",
       "payments": "Платежи",
       "expenses": "Расходы",
+      "debts": "Долги",
       "profile": "Профиль",
       "collapse": "Свернуть",
       "expand": "Развернуть",
@@ -956,6 +957,250 @@
         "deleted": "Студент удалён",
         "error_generic": "Произошла ошибка",
         "delete_error": "Ошибка при удалении"
+      }
+    },
+    "payments": {
+      "title": "Платежи",
+      "count": "{{count}} платёж(ей)",
+      "add_btn": "Новый платёж",
+      "search_placeholder": "Поиск платежей...",
+      "filter_status": "Статус",
+      "filter_method": "Метод",
+      "all_statuses": "Все статусы",
+      "all_methods": "Все методы",
+      "summary": {
+        "total": "Всего платежей",
+        "monthly": "В этом месяце",
+        "pending": "Ожидает",
+        "count": "Количество"
+      },
+      "chart_title": "Ежемесячный доход",
+      "table": {
+        "student": "Студент",
+        "group": "Группа",
+        "period": "Период",
+        "amount": "Сумма",
+        "method": "Метод",
+        "status": "Статус",
+        "due_date": "Срок",
+        "actions": "Действия"
+      },
+      "status": {
+        "pending": "Ожидает",
+        "paid": "Оплачен",
+        "overdue": "Просрочен"
+      },
+      "method": {
+        "cash": "Наличные",
+        "card": "Карта",
+        "transfer": "Перевод",
+        "online": "Онлайн"
+      },
+      "empty": {
+        "title": "Платежи не найдены",
+        "desc": "Начните с добавления нового платежа"
+      },
+      "form": {
+        "title_add": "Добавить платёж",
+        "title_edit": "Редактировать платёж",
+        "student_label": "Студент *",
+        "student_placeholder": "Поиск студента...",
+        "group_label": "Группа *",
+        "group_placeholder": "Выберите группу...",
+        "branch_label": "Филиал *",
+        "amount_label": "Сумма *",
+        "amount_placeholder": "0",
+        "discount_label": "Скидка",
+        "method_label": "Метод оплаты *",
+        "status_label": "Статус *",
+        "period_month_label": "Месяц *",
+        "period_year_label": "Год *",
+        "due_date_label": "Срок оплаты",
+        "receipt_label": "Номер квитанции",
+        "comment_label": "Комментарий",
+        "comment_placeholder": "Дополнительная информация..."
+      },
+      "delete": {
+        "title": "Удалить платёж",
+        "desc": "Вы уверены, что хотите удалить этот платёж? Это действие нельзя отменить."
+      },
+      "toast": {
+        "created": "Платёж добавлен",
+        "updated": "Платёж обновлён",
+        "deleted": "Платёж удалён",
+        "error_generic": "Произошла ошибка",
+        "delete_error": "Ошибка при удалении"
+      }
+    },
+    "expenses": {
+      "title": "Расходы",
+      "count": "{{count}} расход(ов)",
+      "add_btn": "Новый расход",
+      "search_placeholder": "Поиск расходов...",
+      "categories_btn": "Категории",
+      "filter_status": "Статус",
+      "filter_category": "Категория",
+      "all_statuses": "Все статусы",
+      "all_categories": "Все категории",
+      "summary": {
+        "total": "Всего расходов",
+        "monthly": "В этом месяце",
+        "planned": "Запланировано"
+      },
+      "chart_title_monthly": "Ежемесячные расходы",
+      "chart_title_category": "По категориям",
+      "table": {
+        "title": "Название",
+        "category": "Категория",
+        "amount": "Сумма",
+        "method": "Метод",
+        "status": "Статус",
+        "date": "Дата",
+        "by": "Исполнитель",
+        "actions": "Действия"
+      },
+      "status": {
+        "planned": "Запланировано",
+        "completed": "Выполнено",
+        "cancelled": "Отменено"
+      },
+      "empty": {
+        "title": "Расходы не найдены",
+        "desc": "Начните с добавления нового расхода"
+      },
+      "form": {
+        "title_add": "Добавить расход",
+        "title_edit": "Редактировать расход",
+        "title_label": "Название *",
+        "title_placeholder": "Название расхода...",
+        "amount_label": "Сумма *",
+        "amount_placeholder": "0",
+        "method_label": "Метод оплаты *",
+        "status_label": "Статус *",
+        "category_label": "Категория *",
+        "category_placeholder": "Выберите категорию...",
+        "branch_label": "Филиал *",
+        "date_label": "Дата *",
+        "period_month_label": "Месяц *",
+        "period_year_label": "Год *",
+        "comment_label": "Комментарий",
+        "comment_placeholder": "Дополнительная информация..."
+      },
+      "categories": {
+        "title": "Категории расходов",
+        "add_btn": "Добавить категорию",
+        "system_badge": "Система",
+        "name_label": "Название *",
+        "name_placeholder": "Название категории...",
+        "icon_label": "Иконка",
+        "icon_placeholder": "building",
+        "form_add": "Новая категория",
+        "form_edit": "Редактировать категорию",
+        "empty": "Категории не найдены"
+      },
+      "delete": {
+        "title": "Удалить расход",
+        "desc": "Вы уверены, что хотите удалить этот расход? Это действие нельзя отменить."
+      },
+      "toast": {
+        "created": "Расход добавлен",
+        "updated": "Расход обновлён",
+        "deleted": "Расход удалён",
+        "cat_created": "Категория добавлена",
+        "cat_updated": "Категория обновлена",
+        "cat_deleted": "Категория удалена",
+        "error_generic": "Произошла ошибка",
+        "delete_error": "Ошибка при удалении"
+      }
+    },
+    "debts": {
+      "title": "Долги",
+      "count": "{{count}} долг(ов)",
+      "add_btn": "Новый долг",
+      "search_placeholder": "Поиск долгов...",
+      "filter_status": "Статус",
+      "all_statuses": "Все статусы",
+      "overdue_badge": "Просрочен",
+      "summary": {
+        "total": "Всего долгов",
+        "unpaid": "Не оплачено",
+        "overdue": "Просрочено"
+      },
+      "chart_title": "Статус долгов",
+      "table": {
+        "student": "Студент",
+        "group": "Группа",
+        "amount": "Сумма",
+        "due_date": "Срок",
+        "status": "Статус",
+        "actions": "Действия"
+      },
+      "status": {
+        "unpaid": "Не оплачен",
+        "paid": "Оплачен",
+        "overdue": "Просрочен"
+      },
+      "empty": {
+        "title": "Долги не найдены",
+        "desc": "Начните с добавления нового долга"
+      },
+      "form": {
+        "title_add": "Добавить долг",
+        "title_edit": "Редактировать долг",
+        "student_label": "Студент *",
+        "student_placeholder": "Поиск студента...",
+        "group_label": "Группа *",
+        "group_placeholder": "Выберите группу...",
+        "amount_label": "Сумма *",
+        "amount_placeholder": "0",
+        "due_date_label": "Срок оплаты *",
+        "status_label": "Статус *"
+      },
+      "delete": {
+        "title": "Удалить долг",
+        "desc": "Вы уверены, что хотите удалить этот долг? Это действие нельзя отменить."
+      },
+      "toast": {
+        "created": "Долг добавлен",
+        "updated": "Долг обновлён",
+        "deleted": "Долг удалён",
+        "error_generic": "Произошла ошибка",
+        "delete_error": "Ошибка при удалении"
+      }
+    },
+    "attendance": {
+      "title": "Посещаемость",
+      "mode_attendance": "Посещаемость",
+      "mode_homework": "Домашнее задание",
+      "group_placeholder": "Выберите группу...",
+      "student_col": "Ученик",
+      "total_col": "Итого",
+      "no_lessons": "В этом месяце нет уроков",
+      "no_students": "Ученики не найдены",
+      "status": {
+        "present": "Присутствовал",
+        "absent": "Отсутствовал",
+        "excused": "По уважительной причине",
+        "unmarked": "Не отмечено"
+      },
+      "reasons": {
+        "sick": "Болезнь",
+        "family": "Семейная причина",
+        "permitted": "С разрешения",
+        "transport": "Транспорт",
+        "unexcused": "Без причины",
+        "other": "Другое"
+      },
+      "reason_label": "Причина",
+      "homework_label": "Процент выполнения д/з",
+      "save_btn": "Сохранить",
+      "cancel_btn": "Отмена",
+      "summary": {
+        "present": "Присутствовали",
+        "absent": "Отсутствовали",
+        "excused": "По уваж. причине",
+        "attendance_rate": "Посещаемость",
+        "hw_average": "Среднее"
       }
     },
     "profile": {

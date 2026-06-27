@@ -580,6 +580,7 @@
       "finance": "Moliya",
       "payments": "To'lovlar",
       "expenses": "Xarajatlar",
+      "debts": "Qarzlar",
       "profile": "Profil",
       "collapse": "Yig'ish",
       "expand": "Yoyish",
@@ -956,6 +957,250 @@
         "deleted": "Talaba o'chirildi",
         "error_generic": "Xatolik yuz berdi",
         "delete_error": "O'chirishda xatolik"
+      }
+    },
+    "payments": {
+      "title": "To'lovlar",
+      "count": "{{count}} ta to'lov",
+      "add_btn": "Yangi to'lov",
+      "search_placeholder": "To'lov qidirish...",
+      "filter_status": "Holat",
+      "filter_method": "Usul",
+      "all_statuses": "Barcha holat",
+      "all_methods": "Barcha usul",
+      "summary": {
+        "total": "Jami to'lovlar",
+        "monthly": "Bu oy",
+        "pending": "Kutilmoqda",
+        "count": "To'lovlar soni"
+      },
+      "chart_title": "Oylik tushum",
+      "table": {
+        "student": "O'quvchi",
+        "group": "Guruh",
+        "period": "Davr",
+        "amount": "Summa",
+        "method": "Usul",
+        "status": "Holat",
+        "due_date": "Muddat",
+        "actions": "Amallar"
+      },
+      "status": {
+        "pending": "Kutilmoqda",
+        "paid": "To'langan",
+        "overdue": "Muddati o'tgan"
+      },
+      "method": {
+        "cash": "Naqd",
+        "card": "Karta",
+        "transfer": "O'tkazma",
+        "online": "Online"
+      },
+      "empty": {
+        "title": "To'lov topilmadi",
+        "desc": "Yangi to'lov qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi to'lov qo'shish",
+        "title_edit": "To'lovni tahrirlash",
+        "student_label": "O'quvchi *",
+        "student_placeholder": "O'quvchi qidirish...",
+        "group_label": "Guruh *",
+        "group_placeholder": "Guruh tanlang...",
+        "branch_label": "Filial *",
+        "amount_label": "Summa *",
+        "amount_placeholder": "0",
+        "discount_label": "Chegirma",
+        "method_label": "To'lov usuli *",
+        "status_label": "Holat *",
+        "period_month_label": "Oy *",
+        "period_year_label": "Yil *",
+        "due_date_label": "To'lov muddati",
+        "receipt_label": "Chek raqami",
+        "comment_label": "Izoh",
+        "comment_placeholder": "Qo'shimcha ma'lumot..."
+      },
+      "delete": {
+        "title": "To'lovni o'chirish",
+        "desc": "Rostdan ham bu to'lovni o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "To'lov qo'shildi",
+        "updated": "To'lov yangilandi",
+        "deleted": "To'lov o'chirildi",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik"
+      }
+    },
+    "expenses": {
+      "title": "Xarajatlar",
+      "count": "{{count}} ta xarajat",
+      "add_btn": "Yangi xarajat",
+      "search_placeholder": "Xarajat qidirish...",
+      "categories_btn": "Kategoriyalar",
+      "filter_status": "Holat",
+      "filter_category": "Kategoriya",
+      "all_statuses": "Barcha holat",
+      "all_categories": "Barcha kategoriya",
+      "summary": {
+        "total": "Jami xarajat",
+        "monthly": "Bu oy",
+        "planned": "Rejalashtirilgan"
+      },
+      "chart_title_monthly": "Oylik xarajat",
+      "chart_title_category": "Kategoriya bo'yicha",
+      "table": {
+        "title": "Sarlavha",
+        "category": "Kategoriya",
+        "amount": "Summa",
+        "method": "Usul",
+        "status": "Holat",
+        "date": "Sana",
+        "by": "Bajaruvchi",
+        "actions": "Amallar"
+      },
+      "status": {
+        "planned": "Rejalashtirilgan",
+        "completed": "Bajarildi",
+        "cancelled": "Bekor qilindi"
+      },
+      "empty": {
+        "title": "Xarajat topilmadi",
+        "desc": "Yangi xarajat qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi xarajat qo'shish",
+        "title_edit": "Xarajatni tahrirlash",
+        "title_label": "Sarlavha *",
+        "title_placeholder": "Xarajat nomi...",
+        "amount_label": "Summa *",
+        "amount_placeholder": "0",
+        "method_label": "To'lov usuli *",
+        "status_label": "Holat *",
+        "category_label": "Kategoriya *",
+        "category_placeholder": "Kategoriya tanlang...",
+        "branch_label": "Filial *",
+        "date_label": "Sana *",
+        "period_month_label": "Oy *",
+        "period_year_label": "Yil *",
+        "comment_label": "Izoh",
+        "comment_placeholder": "Qo'shimcha ma'lumot..."
+      },
+      "categories": {
+        "title": "Xarajat kategoriyalari",
+        "add_btn": "Kategoriya qo'shish",
+        "system_badge": "Tizim",
+        "name_label": "Nom *",
+        "name_placeholder": "Kategoriya nomi...",
+        "icon_label": "Ikonka nomi",
+        "icon_placeholder": "building",
+        "form_add": "Yangi kategoriya",
+        "form_edit": "Kategoriyani tahrirlash",
+        "empty": "Kategoriya topilmadi"
+      },
+      "delete": {
+        "title": "Xarajatni o'chirish",
+        "desc": "Rostdan ham bu xarajatni o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "Xarajat qo'shildi",
+        "updated": "Xarajat yangilandi",
+        "deleted": "Xarajat o'chirildi",
+        "cat_created": "Kategoriya qo'shildi",
+        "cat_updated": "Kategoriya yangilandi",
+        "cat_deleted": "Kategoriya o'chirildi",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik"
+      }
+    },
+    "debts": {
+      "title": "Qarzlar",
+      "count": "{{count}} ta qarz",
+      "add_btn": "Yangi qarz",
+      "search_placeholder": "Qarz qidirish...",
+      "filter_status": "Holat",
+      "all_statuses": "Barcha holat",
+      "overdue_badge": "Muddati o'tgan",
+      "summary": {
+        "total": "Jami qarz",
+        "unpaid": "To'lanmagan",
+        "overdue": "Muddati o'tgan"
+      },
+      "chart_title": "Qarz holati",
+      "table": {
+        "student": "O'quvchi",
+        "group": "Guruh",
+        "amount": "Summa",
+        "due_date": "Muddat",
+        "status": "Holat",
+        "actions": "Amallar"
+      },
+      "status": {
+        "unpaid": "To'lanmagan",
+        "paid": "To'langan",
+        "overdue": "Muddati o'tgan"
+      },
+      "empty": {
+        "title": "Qarz topilmadi",
+        "desc": "Yangi qarz qo'shib boshlang"
+      },
+      "form": {
+        "title_add": "Yangi qarz qo'shish",
+        "title_edit": "Qarzni tahrirlash",
+        "student_label": "O'quvchi *",
+        "student_placeholder": "O'quvchi qidirish...",
+        "group_label": "Guruh *",
+        "group_placeholder": "Guruh tanlang...",
+        "amount_label": "Summa *",
+        "amount_placeholder": "0",
+        "due_date_label": "To'lov muddati *",
+        "status_label": "Holat *"
+      },
+      "delete": {
+        "title": "Qarzni o'chirish",
+        "desc": "Rostdan ham bu qarzni o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi."
+      },
+      "toast": {
+        "created": "Qarz qo'shildi",
+        "updated": "Qarz yangilandi",
+        "deleted": "Qarz o'chirildi",
+        "error_generic": "Xatolik yuz berdi",
+        "delete_error": "O'chirishda xatolik"
+      }
+    },
+    "attendance": {
+      "title": "Davomat",
+      "mode_attendance": "Davomat",
+      "mode_homework": "Uy ishi",
+      "group_placeholder": "Guruh tanlang...",
+      "student_col": "O'quvchi",
+      "total_col": "Jami",
+      "no_lessons": "Bu oyda dars mavjud emas",
+      "no_students": "O'quvchilar topilmadi",
+      "status": {
+        "present": "Keldi",
+        "absent": "Kelmadi",
+        "excused": "Sababli",
+        "unmarked": "Belgilanmagan"
+      },
+      "reasons": {
+        "sick": "Kasal",
+        "family": "Oilaviy sabab",
+        "permitted": "Ruxsat bilan",
+        "transport": "Transport",
+        "unexcused": "Sababsiz",
+        "other": "Boshqa"
+      },
+      "reason_label": "Sabab",
+      "homework_label": "Uy ishi foizi",
+      "save_btn": "Saqlash",
+      "cancel_btn": "Bekor",
+      "summary": {
+        "present": "Keldi",
+        "absent": "Kelmadi",
+        "excused": "Sababli",
+        "attendance_rate": "Davomat",
+        "hw_average": "O'rtacha"
       }
     },
     "profile": {

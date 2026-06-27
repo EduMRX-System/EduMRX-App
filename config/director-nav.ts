@@ -13,6 +13,7 @@ import {
   CalendarDays,
   CreditCard,
   Wallet,
+  AlertCircle,
   User,
   Briefcase,
   Layers,
@@ -81,6 +82,7 @@ export const directorMenu: NavEntry[] = [
       children: [
           { title: "director.nav.payments", href: "/payments", icon: CreditCard },
           { title: "director.nav.expenses", href: "/expenses", icon: Wallet },
+          { title: "director.nav.debts", href: "/debts", icon: AlertCircle },
       ],
   },
 

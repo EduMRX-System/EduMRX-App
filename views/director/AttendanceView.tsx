@@ -1,7 +1,1 @@
-import ComingSoon from "@/components/ComingSoon";
-
-export default function AttendanceView() {
-  return (
-    <ComingSoon />
-  )
-}
+export { default } from "@/components/attendance/AttendanceView";
