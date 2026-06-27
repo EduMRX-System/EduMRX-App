@@ -51,9 +51,9 @@ export default function LoginClient() {
 
   if (showLoader) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-white dark:bg-slate-950 transition-colors">
-        <div className="w-10 h-10 rounded-full border-[3px] border-indigo-100 border-t-indigo-600 animate-spin" />
-        <p className="text-sm font-medium text-slate-400 dark:text-slate-500">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-layout transition-colors">
+        <div className="w-10 h-10 rounded-full border-[3px] border-primary-ring border-t-primary animate-spin" />
+        <p className="text-sm font-medium text-foreground-subtle">
           {redirecting ? "Panelingizga yo'naltirilmoqda…" : "Tekshirilmoqda…"}
         </p>
       </div>
