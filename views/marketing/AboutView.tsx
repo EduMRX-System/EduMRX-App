@@ -55,20 +55,20 @@ export default function AboutView() {
     <div className="w-full">
       {/* HERO */}
       <section className="relative pt-20 pb-16 text-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-72 bg-indigo-500/10 blur-3xl rounded-full -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-72 bg-primary/8 blur-3xl rounded-full -z-10" />
         <motion.div
           variants={stagger}
           initial="hidden"
           animate="visible"
           className="mx-auto max-w-3xl px-4"
         >
-          <motion.p variants={fadeUp} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
+          <motion.p variants={fadeUp} className="text-sm font-bold text-primary uppercase tracking-widest mb-3">
             {t("marketing.about.label")}
           </motion.p>
-          <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+          <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black tracking-tight text-foreground leading-tight">
             {t("marketing.about.title")}
           </motion.h1>
-          <motion.p variants={fadeUp} className="text-lg text-slate-600 dark:text-slate-400 mt-5">
+          <motion.p variants={fadeUp} className="text-lg text-foreground-muted mt-5">
             {t("marketing.about.subtitle")}
           </motion.p>
         </motion.div>
@@ -87,13 +87,13 @@ export default function AboutView() {
             <motion.div
               key={stat.key}
               variants={fadeUp}
-              className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center"
+              className="p-6 rounded-2xl bg-surface border border-border text-center"
             >
-              <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center mx-auto mb-3">
-                <stat.icon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <div className="w-11 h-11 rounded-xl bg-primary-soft flex items-center justify-center mx-auto mb-3">
+                <stat.icon className="w-5 h-5 text-primary" />
               </div>
-              <p className="text-2xl font-black text-slate-900 dark:text-white">{stat.value}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t(`marketing.about.stats.${stat.key}`)}</p>
+              <p className="text-2xl font-black text-foreground">{stat.value}</p>
+              <p className="text-xs text-foreground-muted mt-1">{t(`marketing.about.stats.${stat.key}`)}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -113,13 +113,13 @@ export default function AboutView() {
               <motion.div
                 key={value.key}
                 variants={fadeUp}
-                className="p-7 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+                className="p-7 rounded-2xl bg-surface border border-border"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center mb-4 shadow-lg">
-                  <value.icon className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
+                  <value.icon className="w-6 h-6 text-primary-fg" />
                 </div>
-                <h3 className="text-lg font-black text-slate-900 dark:text-white mb-2">{t(`marketing.about.values.${value.key}.title`)}</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{t(`marketing.about.values.${value.key}.desc`)}</p>
+                <h3 className="text-lg font-black text-foreground mb-2">{t(`marketing.about.values.${value.key}.title`)}</h3>
+                <p className="text-sm text-foreground-muted leading-relaxed">{t(`marketing.about.values.${value.key}.desc`)}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -127,7 +127,7 @@ export default function AboutView() {
       </section>
 
       {/* TIMELINE */}
-      <section className="py-16 bg-slate-50/50 dark:bg-slate-950/30 border-y border-slate-200/60 dark:border-slate-800/60">
+      <section className="py-16 bg-layout border-y border-border">
         <div className="mx-auto max-w-3xl px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -135,14 +135,14 @@ export default function AboutView() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-black text-slate-900 dark:text-white">
+            <h2 className="text-3xl font-black text-foreground">
               {t("marketing.about.journey")}
             </h2>
           </motion.div>
 
           <div className="relative">
             {/* Line */}
-            <div className="absolute left-[27px] top-2 bottom-2 w-0.5 bg-slate-200 dark:bg-slate-800" />
+            <div className="absolute left-[27px] top-2 bottom-2 w-0.5 bg-border" />
 
             <div className="space-y-8">
               {timeline.map((item, i) => (
@@ -154,13 +154,13 @@ export default function AboutView() {
                   transition={{ delay: i * 0.1 }}
                   className="relative flex gap-5"
                 >
-                  <div className="relative z-10 w-14 h-14 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/25">
-                    <Rocket className="w-6 h-6 text-white" />
+                  <div className="relative z-10 w-14 h-14 rounded-xl bg-primary flex items-center justify-center shrink-0 shadow-lg shadow-primary/25">
+                    <Rocket className="w-6 h-6 text-primary-fg" />
                   </div>
                   <div className="pt-1">
-                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{item.year}</span>
-                    <h3 className="text-lg font-black text-slate-900 dark:text-white">{t(`marketing.about.timeline.${item.key}.title`)}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{t(`marketing.about.timeline.${item.key}.desc`)}</p>
+                    <span className="text-xs font-bold text-primary">{item.year}</span>
+                    <h3 className="text-lg font-black text-foreground">{t(`marketing.about.timeline.${item.key}.title`)}</h3>
+                    <p className="text-sm text-foreground-muted mt-1">{t(`marketing.about.timeline.${item.key}.desc`)}</p>
                   </div>
                 </motion.div>
               ))}
@@ -169,7 +169,7 @@ export default function AboutView() {
         </div>
       </section>
 
-      {/* CTA */} 
+      {/* CTA */}
       <section className="py-20">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <motion.div
@@ -178,12 +178,12 @@ export default function AboutView() {
             viewport={{ once: true }}
             className="space-y-6"
           >
-            <h2 className="text-3xl font-black text-slate-900 dark:text-white">
+            <h2 className="text-3xl font-black text-foreground">
               {t("marketing.about.cta_title")}
             </h2>
             <Link
               href="/contact"
-              className="group inline-flex h-12 px-8 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-indigo-500/25 hover:-translate-y-0.5"
+              className="group inline-flex h-12 px-8 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-primary/25 hover:-translate-y-0.5"
             >
               <span>{t("marketing.about.cta_button")}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

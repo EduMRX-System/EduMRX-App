@@ -71,7 +71,7 @@ export default function Footer() {
           className="py-12 flex flex-col md:flex-row items-center justify-between gap-6 border-b border-border-subtle"
         >
           <div>
-            <h3 className="text-xl font-black text-slate-900 dark:text-white">
+            <h3 className="text-xl font-black text-foreground">
               {t("marketing.footer.cta_title")}
             </h3>
             <p className="text-sm text-foreground-muted mt-1">
@@ -80,7 +80,7 @@ export default function Footer() {
           </div>
           <Link
             href="/pricing"
-            className="group shrink-0 inline-flex h-11 px-6 bg-primary hover:bg-indigo-700 text-white text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-indigo-500/20"
+            className="group shrink-0 inline-flex h-11 px-6 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-bold rounded-xl items-center gap-2 transition-all shadow-lg shadow-primary/20"
           >
             <span>{t("marketing.footer.cta_button")}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -125,7 +125,7 @@ export default function Footer() {
           {/* Link columns */}
           {columns.map((col) => (
             <div key={col.title}>
-              <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-4">
+              <h4 className="text-sm font-bold text-foreground mb-4">
                 {col.title}
               </h4>
               <ul className="space-y-2.5">

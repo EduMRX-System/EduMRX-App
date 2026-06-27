@@ -97,8 +97,8 @@ export default function Header() {
                                     key={link.href}
                                     href={link.href}
                                     className={`relative px-3 py-1.5 text-[13px] font-semibold rounded-lg transition-colors ${isActive(link.href)
-                                        ? "text-white"
-                                        : "text-foreground-muted hover:text-slate-900 dark:hover:text-white"
+                                        ? "text-primary-fg"
+                                        : "text-foreground-muted hover:text-foreground"
                                         }`}
                                 >
                                     <span className="relative z-10">{link.label}</span>
@@ -182,7 +182,7 @@ export default function Header() {
                             {/* Login */}
                             <a
                                 href={loginUrl}
-                                className="hidden sm:inline-flex group h-8 px-3.5 ml-1 bg-primary hover:bg-indigo-700 text-white text-[13px] font-bold rounded-lg items-center gap-1 transition-all shadow-md shadow-indigo-500/25"
+                                className="hidden sm:inline-flex group h-8 px-3.5 ml-1 bg-primary hover:bg-primary-hover text-primary-fg text-[13px] font-bold rounded-lg items-center gap-1 transition-all shadow-md shadow-primary/25"
                             >
                                 <span>{t("marketing.nav.login")}</span>
                                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -208,7 +208,7 @@ export default function Header() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden"
+                            className="fixed inset-0 z-50 bg-overlay backdrop-blur-sm lg:hidden"
                             onClick={() => setMobileOpen(false)}
                         />
                         <motion.div
@@ -220,14 +220,14 @@ export default function Header() {
                         >
                             <div className="flex items-center justify-between px-5 h-16 border-b border-border">
                                 <div className="flex items-center gap-2">
-                                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                                        <GraduationCap className="w-4 h-4 text-white" />
+                                    <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                                        <GraduationCap className="w-4 h-4 text-primary-fg" />
                                     </div>
-                                    <span className="font-black text-slate-900 dark:text-white">EduMRX</span>
+                                    <span className="font-black text-foreground">EduMRX</span>
                                 </div>
                                 <button
                                     onClick={() => setMobileOpen(false)}
-                                    className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                    className="p-2 rounded-lg text-foreground-muted hover:bg-hover"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -244,7 +244,7 @@ export default function Header() {
                                         <Link
                                             href={link.href}
                                             className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${isActive(link.href)
-                                                ? "bg-primary text-white"
+                                                ? "bg-primary text-primary-fg"
                                                 : "text-foreground-muted hover:bg-hover"
                                                 }`}
                                         >
@@ -255,7 +255,7 @@ export default function Header() {
 
                                 <a
                                     href={loginUrl}
-                                    className="flex items-center justify-center gap-1.5 mt-4 h-11 bg-primary hover:bg-indigo-700 text-white text-sm font-bold rounded-xl transition-colors"
+                                    className="flex items-center justify-center gap-1.5 mt-4 h-11 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-bold rounded-xl transition-colors"
                                 >
                                     <span>{t("marketing.nav.login")}</span>
                                     <ArrowRight className="w-4 h-4" />

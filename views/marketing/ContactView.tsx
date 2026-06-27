@@ -104,20 +104,20 @@ export default function ContactView() {
     <div className="w-full">
       {/* HERO */}
       <section className="relative pt-20 pb-12 text-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-72 bg-indigo-500/10 blur-3xl rounded-full -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-72 bg-primary/8 blur-3xl rounded-full -z-10" />
         <motion.div
           variants={stagger}
           initial="hidden"
           animate="visible"
           className="mx-auto max-w-3xl px-4"
         >
-          <motion.p variants={fadeUp} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
+          <motion.p variants={fadeUp} className="text-sm font-bold text-primary uppercase tracking-widest mb-3">
             {t("marketing.contact.label")}
           </motion.p>
-          <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
+          <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black tracking-tight text-foreground">
             {t("marketing.contact.title")}
           </motion.h1>
-          <motion.p variants={fadeUp} className="text-lg text-slate-600 dark:text-slate-400 mt-5">
+          <motion.p variants={fadeUp} className="text-lg text-foreground-muted mt-5">
             {t("marketing.contact.subtitle")}
           </motion.p>
         </motion.div>
@@ -140,14 +140,14 @@ export default function ContactView() {
                 href={info.href}
                 variants={fadeUp}
                 whileHover={{ x: 4 }}
-                className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all"
+                className="flex items-center gap-4 p-5 rounded-2xl bg-surface border border-border hover:border-primary/40 transition-all"
               >
-                <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center shrink-0">
-                  <info.icon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                <div className="w-11 h-11 rounded-xl bg-primary-soft flex items-center justify-center shrink-0">
+                  <info.icon className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-400 font-medium">{t(`marketing.contact.info.${info.key}`)}</p>
-                  <p className="text-sm font-bold text-slate-900 dark:text-white">{info.value}</p>
+                  <p className="text-xs text-foreground-subtle font-medium">{t(`marketing.contact.info.${info.key}`)}</p>
+                  <p className="text-sm font-bold text-foreground">{info.value}</p>
                 </div>
               </motion.a>
             ))}
@@ -155,13 +155,13 @@ export default function ContactView() {
             {/* Working hours */}
             <motion.div
               variants={fadeUp}
-              className="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 text-white"
+              className="p-5 rounded-2xl bg-surface-raised border border-border"
             >
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="w-4 h-4" />
-                <p className="text-sm font-bold">{t("marketing.contact.hours_title")}</p>
+                <Clock className="w-4 h-4 text-primary" />
+                <p className="text-sm font-bold text-foreground">{t("marketing.contact.hours_title")}</p>
               </div>
-              <p className="text-xs text-indigo-100">{t("marketing.contact.hours")}</p>
+              <p className="text-xs text-foreground-muted">{t("marketing.contact.hours")}</p>
             </motion.div>
           </motion.div>
 
@@ -170,39 +170,39 @@ export default function ContactView() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-3 p-7 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+            className="lg:col-span-3 p-7 rounded-2xl bg-surface border border-border"
           >
-            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-1">
+            <h3 className="text-xl font-black text-foreground mb-1">
               {t("marketing.contact.form_title")}
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+            <p className="text-sm text-foreground-muted mb-6">
               {t("marketing.contact.form_desc")}
             </p>
 
             <form onSubmit={handleSubmit((d) => sendContact(d))} className="space-y-4">
               {/* Name */}
               <div>
-                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-foreground-muted mb-1.5 flex items-center gap-1.5">
                   <User className="w-3.5 h-3.5" />
                   {t("marketing.contact.name")}
                 </label>
                 <input
                   {...register("full_name")}
                   placeholder={t("marketing.contact.name_ph")}
-                  className={`w-full h-11 px-4 rounded-xl text-sm bg-white dark:bg-slate-900 border text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors ${
+                  className={`w-full h-11 px-4 rounded-xl text-sm bg-surface border text-foreground placeholder:text-foreground-subtle outline-none focus:border-primary transition-colors ${
                     errors.full_name
-                      ? "border-red-500/50 focus:border-red-500"
-                      : "border-slate-200 dark:border-slate-800"
+                      ? "border-danger/50 focus:border-danger"
+                      : "border-border"
                   }`}
                 />
                 {errors.full_name && (
-                  <p className="text-red-500 dark:text-red-400 text-[11px] mt-1.5">{errors.full_name.message}</p>
+                  <p className="text-danger text-[11px] mt-1.5">{errors.full_name.message}</p>
                 )}
               </div>
 
               {/* Phone */}
               <div>
-                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-foreground-muted mb-1.5 flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5" />
                   {t("marketing.contact.phone")}
                 </label>
@@ -221,20 +221,20 @@ export default function ContactView() {
 
               {/* Center */}
               <div>
-                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-foreground-muted mb-1.5 flex items-center gap-1.5">
                   <Building2 className="w-3.5 h-3.5" />
                   {t("marketing.contact.center")}
                 </label>
                 <input
                   {...register("center_name")}
                   placeholder={t("marketing.contact.center_ph")}
-                  className="w-full h-11 px-4 rounded-xl text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors"
+                  className="w-full h-11 px-4 rounded-xl text-sm bg-surface border border-border text-foreground placeholder:text-foreground-subtle outline-none focus:border-primary transition-colors"
                 />
               </div>
 
               {/* Message */}
               <div>
-                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-foreground-muted mb-1.5 flex items-center gap-1.5">
                   <MessageCircle className="w-3.5 h-3.5" />
                   {t("marketing.contact.message")}
                 </label>
@@ -242,14 +242,14 @@ export default function ContactView() {
                   {...register("message")}
                   placeholder={t("marketing.contact.message_ph")}
                   rows={4}
-                  className={`w-full px-4 py-3 rounded-xl text-sm bg-white dark:bg-slate-900 border text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-indigo-500 transition-colors resize-none ${
+                  className={`w-full px-4 py-3 rounded-xl text-sm bg-surface border text-foreground placeholder:text-foreground-subtle outline-none focus:border-primary transition-colors resize-none ${
                     errors.message
-                      ? "border-red-500/50 focus:border-red-500"
-                      : "border-slate-200 dark:border-slate-800"
+                      ? "border-danger/50 focus:border-danger"
+                      : "border-border"
                   }`}
                 />
                 {errors.message && (
-                  <p className="text-red-500 dark:text-red-400 text-[11px] mt-1.5">{errors.message.message}</p>
+                  <p className="text-danger text-[11px] mt-1.5">{errors.message.message}</p>
                 )}
               </div>
 
@@ -259,10 +259,10 @@ export default function ContactView() {
                 whileTap={{ scale: 0.99 }}
                 type="submit"
                 disabled={isPending}
-                className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/25 disabled:opacity-60"
+                className="w-full h-12 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/25 disabled:opacity-60"
               >
                 {isPending ? (
-                  <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  <div className="w-4 h-4 rounded-full border-2 border-primary-fg/30 border-t-primary-fg animate-spin" />
                 ) : (
                   <>
                     <span>{t("marketing.contact.send")}</span>

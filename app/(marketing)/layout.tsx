@@ -13,7 +13,7 @@ export default function MarketingLayout({
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
+    <div className="min-h-screen flex flex-col bg-layout">
       <Header />
 
       <main className="flex-1 pt-16">
