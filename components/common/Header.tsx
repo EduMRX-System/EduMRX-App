@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavItem } from "@/constants/navigation";
 import QuickToolsPopover from "@/components/sections/directorPanelSections/tools/QuickToolsPopover";
+import ToolsWidgetHeader from "@/components/common/ToolsWidgetHeader";
 
 interface HeaderProps {
     menuItems?: NavItem[];
@@ -84,6 +85,7 @@ export default function Header({ menuItems = [], showQuickTools = false }: Heade
 
                 {/* RIGHT cluster */}
                 <div className="flex items-center gap-1 shrink-0">
+                    {showQuickTools && <ToolsWidgetHeader />}
                     {showQuickTools && <QuickToolsPopover />}
 
                     {/* Notifications — dropdown bilan */}

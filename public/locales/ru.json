@@ -589,6 +589,44 @@
     "dashboard": {
       "title": "Добро пожаловать 👋",
       "subtitle": "Статус и статистика вашего учебного центра",
+      "greeting": "Привет, {{name}}!",
+      "greeting_sub": "Текущее состояние вашего учебного центра",
+      "period_this_month": "Этот месяц",
+      "period_last_month": "Прошлый месяц",
+      "kpi": {
+        "students": "Активные ученики",
+        "revenue": "Месячный доход",
+        "debt": "Долги",
+        "debt_count": "{{count}} должников",
+        "attendance": "Посещаемость",
+        "avg": "среднее",
+        "vs_prev": "по сравнению с прошлым месяцем"
+      },
+      "income_expense_chart": "Доходы / Расходы",
+      "income_expense_desc": "Ежемесячные финансовые показатели (млн сум)",
+      "income": "Доход",
+      "expense": "Расход",
+      "net_profit": "Чистая прибыль",
+      "payment_status_chart": "Статус платежей",
+      "today_lessons": "Сегодняшние уроки",
+      "today_lessons_empty": "Сегодня уроков нет",
+      "recent_payments": "Последние платежи",
+      "no_payments": "Нет платежей",
+      "debtors": "Должники",
+      "debtors_empty": "Должников нет",
+      "quick_actions": "Быстрые действия",
+      "add_student": "+ Ученик",
+      "add_group": "+ Группа",
+      "add_payment": "+ Платёж",
+      "add_lesson": "+ Урок",
+      "branch_status": "Состояние филиалов",
+      "no_branches": "Нет филиалов",
+      "quick_stats": "Быстрая статистика",
+      "new_students": "Новые ученики",
+      "active_groups": "Активные группы",
+      "teachers_stat": "Учителя",
+      "avg_fill": "Средняя загруженность",
+      "see_all": "Посмотреть все",
       "stats": {
         "payments_title": "Платежи",
         "payments_desc": "Всего платежей",
@@ -599,7 +637,6 @@
         "revenue_title": "Доход",
         "revenue_desc": "Общий доход"
       },
-      "quick_actions": "Быстрые действия",
       "quick": {
         "analytics": "Аналитика",
         "analytics_desc": "Отчёты и статистика",
@@ -608,7 +645,6 @@
         "payments": "Платежи",
         "payments_desc": "Финансовые отчёты"
       },
-      "recent_payments": "Последние платежи",
       "recent_payments_desc": "Последние принятые платежи в системе",
       "payment_method": {
         "cash": "Наличные"
@@ -1421,5 +1457,44 @@
       "collapse": "Свернуть",
       "expand": "Развернуть"
     }
+  },
+  "brand": {
+    "name": "EduMRX"
+  },
+  "header": {
+    "page": "Страница",
+    "user_name": "Пользователь",
+    "admin": "Администратор"
+  },
+  "notifications": {
+    "title": "Уведомления"
+  },
+  "pagination": {
+    "total_prefix": "Всего",
+    "total_suffix": "записей",
+    "show": "Показывать"
+  },
+  "status": {
+    "active": "Активный",
+    "graduated": "Выпускник",
+    "inactive": "Неактивный",
+    "suspended": "Приостановлен"
+  },
+  "student": {
+    "center": "Учебный центр",
+    "personal_info": "Личные данные",
+    "phone": "Номер телефона",
+    "email": "Электронная почта",
+    "dob": "Дата рождения",
+    "enrolled_at": "Дата регистрации",
+    "notes": "Системные заметки",
+    "no_notes": "Заметки не добавлены.",
+    "parent_info": "Информация о родителях / опекуне"
+  },
+  "parent": {
+    "full_name": "Ф.И.О.",
+    "phone": "Номер телефона",
+    "occupation": "Профессия / Занятие",
+    "no_data": "Данные о родителях отсутствуют."
   }
 }

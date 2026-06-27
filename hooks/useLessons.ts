@@ -10,20 +10,22 @@ interface ListParams {
     page?: number;
     pageSize?: number;
     search?: string;
+    date?: string;
 }
 
-export function useLessons({ page = 1, pageSize = 10, search = "" }: ListParams = {}) {
+export function useLessons({ page = 1, pageSize = 10, search = "", date }: ListParams = {}) {
     const activeCenter = useActiveCenterStore((s) => s.activeCenter);
     const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
     return useQuery<LessonsResponse>({
-        queryKey: ["lessons", { page, pageSize, search, centerId: activeCenter, branchId: activeBranch }],
+        queryKey: ["lessons", { page, pageSize, search, date, centerId: activeCenter, branchId: activeBranch }],
         queryFn: async () => {
             const res = await API.get<LessonsResponse>(LESSONS_URL, {
                 params: {
                     page,
                     page_size: pageSize,
                     search: search || undefined,
+                    date: date || undefined,
                     center_id: activeCenter || undefined,
                     branch_id: activeBranch || undefined,
                 },

@@ -7,7 +7,6 @@ import { useUIStore } from "@/store/useUIStore";
 import { directorMenu } from "@/constants/navigation";
 import DirectorNav from "@/components/sections/directorPanelSections/navbar/DirectorNav";
 import Breadcrumb from "@/components/ui/Breadcrumb";
-import ToolsWidget from "@/components/sections/directorPanelSections/tools/ToolsWidget";
 
 export default function DirectorLayout({
   children,
@@ -60,7 +59,6 @@ export default function DirectorLayout({
         </div>
 
       </div>
-      <ToolsWidget />
-    </ProtectedRoute >
+    </ProtectedRoute>
   );
 }

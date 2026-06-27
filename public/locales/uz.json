@@ -589,6 +589,44 @@
     "dashboard": {
       "title": "Xush kelibsiz 👋",
       "subtitle": "Ta'lim markazingiz holati va statistikalar",
+      "greeting": "Salom, {{name}}!",
+      "greeting_sub": "Ta'lim markazingiz bugungi holati",
+      "period_this_month": "Bu oy",
+      "period_last_month": "O'tgan oy",
+      "kpi": {
+        "students": "Faol o'quvchilar",
+        "revenue": "Oylik daromad",
+        "debt": "Qarzdorlik",
+        "debt_count": "{{count}} ta qarzdor",
+        "attendance": "Davomat",
+        "avg": "o'rtacha",
+        "vs_prev": "o'tgan oyga nisbatan"
+      },
+      "income_expense_chart": "Daromad / Xarajat",
+      "income_expense_desc": "Oylik moliyaviy ko'rsatkichlar (mln UZS)",
+      "income": "Daromad",
+      "expense": "Xarajat",
+      "net_profit": "Sof foyda",
+      "payment_status_chart": "To'lov holati",
+      "today_lessons": "Bugungi darslar",
+      "today_lessons_empty": "Bugun dars yo'q",
+      "recent_payments": "So'nggi to'lovlar",
+      "no_payments": "To'lovlar yo'q",
+      "debtors": "Qarzdorlar",
+      "debtors_empty": "Qarzdor yo'q",
+      "quick_actions": "Tezkor amallar",
+      "add_student": "+ O'quvchi",
+      "add_group": "+ Guruh",
+      "add_payment": "+ To'lov",
+      "add_lesson": "+ Dars",
+      "branch_status": "Filiallar holati",
+      "no_branches": "Filiallar yo'q",
+      "quick_stats": "Tezkor statistika",
+      "new_students": "Yangi o'quvchilar",
+      "active_groups": "Faol guruhlar",
+      "teachers_stat": "O'qituvchilar",
+      "avg_fill": "O'rtacha to'ldirish",
+      "see_all": "Hammasini ko'rish",
       "stats": {
         "payments_title": "To'lovlar",
         "payments_desc": "Jami to'lovlar soni",
@@ -599,7 +637,6 @@
         "revenue_title": "Daromad",
         "revenue_desc": "Umumiy daromad"
       },
-      "quick_actions": "Tezkor amallar",
       "quick": {
         "analytics": "Analitika",
         "analytics_desc": "Hisobotlar va statistika",
@@ -608,7 +645,6 @@
         "payments": "To'lovlar",
         "payments_desc": "Moliyaviy hisobotlar"
       },
-      "recent_payments": "So'nggi to'lovlar",
       "recent_payments_desc": "Tizimdagi oxirgi qabul qilingan to'lovlar",
       "payment_method": {
         "cash": "Naqd"
@@ -1421,5 +1457,44 @@
       "collapse": "Yig'ish",
       "expand": "Yoyish"
     }
+  },
+  "brand": {
+    "name": "EduMRX"
+  },
+  "header": {
+    "page": "Sahifa",
+    "user_name": "Foydalanuvchi",
+    "admin": "Admin"
+  },
+  "notifications": {
+    "title": "Bildirishnomalar"
+  },
+  "pagination": {
+    "total_prefix": "Jami",
+    "total_suffix": "ta",
+    "show": "Ko'rsatish"
+  },
+  "status": {
+    "active": "Faol",
+    "graduated": "Bitirgan",
+    "inactive": "Nofaol",
+    "suspended": "To'xtatilgan"
+  },
+  "student": {
+    "center": "O'quv Markaz",
+    "personal_info": "Shaxsiy Ma'lumotlar",
+    "phone": "Telefon Raqami",
+    "email": "Email Pochta",
+    "dob": "Tug'ilgan Sana",
+    "enrolled_at": "Ro'yxatdan O'tgan Sana",
+    "notes": "Tizim Izohlari",
+    "no_notes": "Izohlar kiritilmagan.",
+    "parent_info": "Ota-ona / Vasiy Ma'lumotlari"
+  },
+  "parent": {
+    "full_name": "F.I.SH",
+    "phone": "Telefon Raqami",
+    "occupation": "Kasbi / Mashg'uloti",
+    "no_data": "Vasiy ma'lumotlari mavjud emas."
   }
 }

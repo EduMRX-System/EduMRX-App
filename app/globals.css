@@ -6,6 +6,164 @@
 /* ============ DARK VARIANT (bittasi yetarli) ============ */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ============ SEMANTIC TOKENS — light ============ */
+:root {
+    /* Surface */
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --layout: #fafaf9;
+    /* stone-50 */
+
+    /* Border */
+    --border: #e7e5e4;
+    /* stone-200 */
+    --border-subtle: #f5f5f4;
+    /* stone-100 */
+
+    /* Text */
+    --foreground: #1c1917;
+    /* stone-900 */
+    --foreground-muted: #78716c;
+    /* stone-500 */
+    --foreground-subtle: #a8a29e;
+    /* stone-400 */
+
+    /* Primary — GOLD (light: to'qroq, oq fonda o'qilsin) */
+    --primary: #b8860b;
+    /* dark goldenrod */
+    --primary-hover: #a67a0a;
+    --primary-soft: #fbf6e9;
+    /* gold-50 ~ ikonка/badge foni */
+    --primary-ring: #f3e3b8;
+    /* gold focus ring (light) */
+    --primary-fg: #ffffff;
+    /* gold tugmada matn (light) */
+
+    /* Semantic states */
+    --success: #059669;
+    /* emerald-600 */
+    --success-bg: #d1fae5;
+    /* emerald-100 */
+    --warning: #d97706;
+    /* amber-600 */
+    --warning-bg: #fef3c7;
+    /* amber-100 */
+    --danger: #e11d48;
+    /* rose-600 */
+    --danger-bg: #ffe4e6;
+    /* rose-100 */
+
+    /* Interactive */
+    --hover: #f5f5f4;
+    /* stone-100 — tugma/qator hover */
+    --overlay: rgb(28 25 23 / 0.4);
+    /* stone-900/40 — modal backdrop */
+}
+
+/* ============ SEMANTIC TOKENS — dark ============ */
+.dark {
+    /* Surface */
+    --surface: #1c1917;
+    /* stone-900 */
+    --surface-raised: #292524;
+    /* stone-800 */
+    --layout: #0c0a09;
+    /* stone-950 */
+
+    /* Border */
+    --border: #292524;
+    /* stone-800 */
+    --border-subtle: #44403c;
+    /* stone-700 */
+
+    /* Text */
+    --foreground: #f5f5f4;
+    /* stone-100 */
+    --foreground-muted: #a8a29e;
+    /* stone-400 */
+    --foreground-subtle: #57534e;
+    /* stone-600 */
+
+    /* Primary — GOLD (dark: yorqinroq, qora fonda porlasin) */
+    --primary: #d4a017;
+    /* yorqin gold */
+    --primary-hover: #b8860b;
+    --primary-soft: rgb(212 160 23 / 0.12);
+    /* gold soft (dark) */
+    --primary-ring: rgb(212 160 23 / 0.25);
+    /* gold focus ring (dark) */
+    --primary-fg: #1c1917;
+    /* gold tugmada TO'Q matn (dark) */
+
+    /* Semantic states */
+    --success: #34d399;
+    /* emerald-400 */
+    --success-bg: rgb(52 211 153 / 0.12);
+    --warning: #fbbf24;
+    /* amber-400 */
+    --warning-bg: rgb(251 191 36 / 0.12);
+    --danger: #fb7185;
+    /* rose-400 */
+    --danger-bg: rgb(251 113 133 / 0.12);
+
+    /* Interactive */
+    --hover: rgb(68 64 60 / 0.6);
+    /* stone-700/60 */
+    --overlay: rgb(12 10 9 / 0.6);
+    /* stone-950/60 */
+}
+
+/* ============ TAILWIND v4 — utility generatsiyasi ============ */
+@theme inline {
+    /* Surface */
+    --color-surface: var(--surface);
+    --color-surface-raised: var(--surface-raised);
+    --color-layout: var(--layout);
+
+    /* Border */
+    --color-border: var(--border);
+    --color-border-subtle: var(--border-subtle);
+
+    /* Primary — GOLD (light/dark CSS var orqali avtomatik almashadi) */
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-soft: var(--primary-soft);
+    --color-primary-ring: var(--primary-ring);
+    --color-primary-fg: var(--primary-fg);
+
+    /* Text */
+    --color-foreground: var(--foreground);
+    --color-foreground-muted: var(--foreground-muted);
+    --color-foreground-subtle: var(--foreground-subtle);
+
+    /* Semantic states */
+    --color-success: var(--success);
+    --color-success-bg: var(--success-bg);
+    --color-warning: var(--warning);
+    --color-warning-bg: var(--warning-bg);
+    --color-danger: var(--danger);
+    --color-danger-bg: var(--danger-bg);
+
+    /* Interactive */
+    --color-hover: var(--hover);
+    --color-overlay: var(--overlay);
+}
+
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+/* ============ others ============ */
+
+
+
+
 /* ============ BASE ============ */
 html,
 body {
@@ -124,11 +282,6 @@ select {
     }
 }
 
-
-
-
-
-
 @keyframes spin-cw {
     to {
         transform: rotate(360deg);
@@ -213,7 +366,7 @@ select {
         max-width: 320px !important;
         left: auto !important;
         right: 12px !important;
-        margin: 10px 0 0 0  !important;
+        margin: 10px 0 0 0 !important;
         padding: 0 !important;
     }
 
@@ -231,7 +384,6 @@ select {
     }
 }
 
-/* Uzun matn o'ralsin */
 .Toastify__toast-body {
     word-break: break-word;
 }

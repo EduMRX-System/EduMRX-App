@@ -589,6 +589,44 @@
     "dashboard": {
       "title": "Welcome 👋",
       "subtitle": "Your education center status and statistics",
+      "greeting": "Hello, {{name}}!",
+      "greeting_sub": "Your education center status today",
+      "period_this_month": "This month",
+      "period_last_month": "Last month",
+      "kpi": {
+        "students": "Active students",
+        "revenue": "Monthly revenue",
+        "debt": "Total debt",
+        "debt_count": "{{count}} debtors",
+        "attendance": "Attendance",
+        "avg": "average",
+        "vs_prev": "vs last month"
+      },
+      "income_expense_chart": "Income / Expense",
+      "income_expense_desc": "Monthly financial indicators (mln UZS)",
+      "income": "Income",
+      "expense": "Expense",
+      "net_profit": "Net profit",
+      "payment_status_chart": "Payment status",
+      "today_lessons": "Today's lessons",
+      "today_lessons_empty": "No lessons today",
+      "recent_payments": "Recent payments",
+      "no_payments": "No payments",
+      "debtors": "Debtors",
+      "debtors_empty": "No debtors",
+      "quick_actions": "Quick actions",
+      "add_student": "+ Student",
+      "add_group": "+ Group",
+      "add_payment": "+ Payment",
+      "add_lesson": "+ Lesson",
+      "branch_status": "Branch status",
+      "no_branches": "No branches",
+      "quick_stats": "Quick stats",
+      "new_students": "New students",
+      "active_groups": "Active groups",
+      "teachers_stat": "Teachers",
+      "avg_fill": "Average fill",
+      "see_all": "See all",
       "stats": {
         "payments_title": "Payments",
         "payments_desc": "Total number of payments",
@@ -599,7 +637,6 @@
         "revenue_title": "Revenue",
         "revenue_desc": "Total revenue"
       },
-      "quick_actions": "Quick actions",
       "quick": {
         "analytics": "Analytics",
         "analytics_desc": "Reports and statistics",
@@ -608,7 +645,6 @@
         "payments": "Payments",
         "payments_desc": "Financial reports"
       },
-      "recent_payments": "Recent payments",
       "recent_payments_desc": "Last accepted payments in the system",
       "payment_method": {
         "cash": "Cash"
@@ -1421,5 +1457,44 @@
       "collapse": "Collapse",
       "expand": "Expand"
     }
+  },
+  "brand": {
+    "name": "EduMRX"
+  },
+  "header": {
+    "page": "Page",
+    "user_name": "User",
+    "admin": "Admin"
+  },
+  "notifications": {
+    "title": "Notifications"
+  },
+  "pagination": {
+    "total_prefix": "Total",
+    "total_suffix": "items",
+    "show": "Show"
+  },
+  "status": {
+    "active": "Active",
+    "graduated": "Graduated",
+    "inactive": "Inactive",
+    "suspended": "Suspended"
+  },
+  "student": {
+    "center": "Learning Center",
+    "personal_info": "Personal Info",
+    "phone": "Phone Number",
+    "email": "Email",
+    "dob": "Date of Birth",
+    "enrolled_at": "Enrollment Date",
+    "notes": "Notes",
+    "no_notes": "No notes added.",
+    "parent_info": "Parent / Guardian Info"
+  },
+  "parent": {
+    "full_name": "Full Name",
+    "phone": "Phone Number",
+    "occupation": "Occupation",
+    "no_data": "No parent data available."
   }
 }
