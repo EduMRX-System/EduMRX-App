@@ -49,13 +49,13 @@ export default function DeleteCourseModal({ course, onClose }: Props) {
                 <button
                     type="button"
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-foreground-subtle hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                    className="absolute top-4 right-4 text-foreground-subtle hover:text-foreground cursor-pointer"
                 >
                     <X className="w-5 h-5" />
                 </button>
 
                 <div className="flex gap-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-500/15">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rose-100 dark:bg-danger-bg0/15">
                         <AlertTriangle className="h-5 w-5 text-danger" />
                     </div>
                     <div>
@@ -79,7 +79,7 @@ export default function DeleteCourseModal({ course, onClose }: Props) {
                         type="button"
                         onClick={() => deleteCourse()}
                         disabled={isPending}
-                        className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
+                        className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-danger hover:bg-danger/90 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors"
                     >
                         {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                         {t("common.delete")}

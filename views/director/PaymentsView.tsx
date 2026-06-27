@@ -396,7 +396,7 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
 
   const labelCls = "text-[13px] text-foreground-muted mb-1 block font-semibold";
   const fieldCls = (err?: boolean) =>
-    `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 ${err ? "border-red-300 dark:border-red-700" : "border-border focus:border-primary"}`;
+    `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring/50 ${err ? "border-danger/50" : "border-border focus:border-primary"}`;
   const errCls = "text-red-400 text-[11px] mt-0.5";
 
   const currentYear = new Date().getFullYear();
@@ -405,7 +405,7 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className={`fixed inset-0 bg-slate-900/40 dark:bg-layout/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`}
+        className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`}
         onClick={onClose}
       />
       <div className={`bg-surface rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}>
@@ -418,7 +418,7 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
               {isEdit ? t("director.payments.form.title_edit") : t("director.payments.form.title_add")}
             </h3>
           </div>
-          <button onClick={onClose} className="text-foreground-subtle hover:text-foreground-muted dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-hover transition-colors cursor-pointer">
+          <button onClick={onClose} className="text-foreground-subtle hover:text-foreground-muted dark:hover:text-foreground p-1.5 rounded-lg hover:bg-hover transition-colors cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -604,18 +604,18 @@ function DeletePaymentModal({ payment, onClose }: { payment: IPayment; onClose: 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-slate-900/40 dark:bg-layout/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
+      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
       <div className={`bg-surface rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
-        <div className="w-12 h-12 rounded-full bg-rose-50 dark:bg-danger-bg flex items-center justify-center mb-4 mx-auto">
+        <div className="w-12 h-12 rounded-full bg-danger-bg flex items-center justify-center mb-4 mx-auto">
           <Trash2 className="w-6 h-6 text-danger" />
         </div>
         <h3 className="text-center text-base font-semibold text-foreground mb-2">{t("director.payments.delete.title")}</h3>
         <p className="text-center text-sm text-foreground-muted mb-6">{t("director.payments.delete.desc")}</p>
         <div className="flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 border border-border text-foreground text-sm font-semibold rounded-lg hover:bg-surface-raised dark:hover:bg-slate-800 cursor-pointer transition-colors">
+          <button onClick={onClose} className="flex-1 h-10 border border-border text-foreground text-sm font-semibold rounded-lg hover:bg-surface-raised dark:hover:bg-hover cursor-pointer transition-colors">
             {t("common.cancel")}
           </button>
-          <button onClick={handleDelete} disabled={deleteMut.isPending} className="flex-1 h-10 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors inline-flex items-center justify-center gap-2">
+          <button onClick={handleDelete} disabled={deleteMut.isPending} className="flex-1 h-10 bg-danger hover:bg-danger/90 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors inline-flex items-center justify-center gap-2">
             {deleteMut.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
             {t("common.delete") || "O'chirish"}
           </button>
@@ -646,7 +646,7 @@ function SummaryCard({
         )}
         {sub && !loading && <p className="text-xs text-foreground-subtle mt-0.5">{sub}</p>}
         {change !== undefined && !loading && (
-          <div className={`inline-flex items-center gap-1 text-xs font-semibold mt-1 ${change >= 0 ? "text-emerald-600" : "text-danger"}`}>
+          <div className={`inline-flex items-center gap-1 text-xs font-semibold mt-1 ${change >= 0 ? "text-success" : "text-danger"}`}>
             {change >= 0 ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
             {Math.abs(change).toFixed(1)}%
           </div>
@@ -734,7 +734,7 @@ export default function PaymentsView() {
           loading={summaryLoading}
         />
         <SummaryCard
-          icon={<TrendingUp className="w-5 h-5 text-violet-600 dark:text-violet-400" />}
+          icon={<TrendingUp className="w-5 h-5 text-primary" />}
           title={t("director.payments.summary.count")}
           value={summaryLoading ? "—" : String(summary?.total_count ?? count)}
           sub={summary?.monthly_count ? `Bu oy: ${summary.monthly_count}` : undefined}
@@ -755,7 +755,7 @@ export default function PaymentsView() {
                     <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-100 dark:stroke-slate-800" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
                 <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
                 <Tooltip content={<ChartTooltip />} cursor={{ stroke: "#94a3b8", strokeWidth: 1, strokeDasharray: "4 4" }} />
@@ -774,7 +774,7 @@ export default function PaymentsView() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("director.payments.search_placeholder")}
-            className="w-full rounded-lg border border-border bg-surface py-2.5 pl-9 pr-8 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20   "
+            className="w-full rounded-lg border border-border bg-surface py-2.5 pl-9 pr-8 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
           {search && (
             <button onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-foreground-muted cursor-pointer">
@@ -797,11 +797,11 @@ export default function PaymentsView() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-100 bg-surface  ">
+      <div className="overflow-hidden rounded-xl border border-border-subtle bg-surface">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-surface-raised text-xs uppercase tracking-wider text-foreground-muted  /50 ">
+              <tr className="border-b border-border-subtle bg-surface-raised text-xs uppercase tracking-wider text-foreground-muted">
                 <th className="py-3.5 px-4 font-semibold">{t("director.payments.table.student")}</th>
                 <th className="py-3.5 px-4 font-semibold hidden md:table-cell">{t("director.payments.table.group")}</th>
                 <th className="py-3.5 px-4 font-semibold hidden lg:table-cell">{t("director.payments.table.period")}</th>
@@ -812,7 +812,7 @@ export default function PaymentsView() {
                 <th className="py-3.5 px-4 text-right font-semibold">{t("director.payments.table.actions")}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-border-subtle dark:divide-border">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
@@ -830,20 +830,20 @@ export default function PaymentsView() {
                 <tr>
                   <td colSpan={8} className="py-12 text-center">
                     <AlertCircle className="mx-auto h-9 w-9 text-danger" />
-                    <p className="mt-2 text-sm font-semibold text-rose-600">{t("common.error_failed")}</p>
+                    <p className="mt-2 text-sm font-semibold text-danger">{t("common.error_failed")}</p>
                   </td>
                 </tr>
               ) : payments.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-16 text-center">
-                    <CreditCard className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-foreground-muted" />
+                    <CreditCard className="mx-auto mb-3 h-10 w-10 text-foreground-muted" />
                     <p className="text-sm font-medium text-foreground-muted">{t("director.payments.empty.title")}</p>
                     <p className="mt-1 text-sm text-foreground-subtle">{t("director.payments.empty.desc")}</p>
                   </td>
                 </tr>
               ) : (
                 payments.map((p) => (
-                  <tr key={p.id} className="hover:bg-surface-raised dark:hover:bg-slate-800/40 transition-colors">
+                  <tr key={p.id} className="hover:bg-surface-raised dark:hover:bg-hover/40 transition-colors">
                     <td className="py-3.5 px-4">
                       <div className="font-medium text-foreground">{p.student_name ?? "—"}</div>
                       {p.student_phone && <div className="text-xs text-foreground-subtle">{p.student_phone}</div>}
@@ -873,7 +873,7 @@ export default function PaymentsView() {
                         </button>
                         <button
                           onClick={() => setDeleting(p)}
-                          className="p-1.5 rounded-lg text-foreground-subtle hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg text-foreground-subtle hover:text-danger hover:bg-danger-bg transition-colors cursor-pointer"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -888,7 +888,7 @@ export default function PaymentsView() {
 
         {/* Pagination */}
         {!isLoading && payments.length > 0 && (
-          <div className="flex items-center justify-between border-t border-slate-100 px-5 py-3 ">
+          <div className="flex items-center justify-between border-t border-border-subtle px-5 py-3 ">
             <span className="flex items-center gap-2 text-sm text-foreground-muted">
               {isFetching && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               {page} / {totalPages}
@@ -897,14 +897,14 @@ export default function PaymentsView() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={!data?.previous}
-                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800"
+                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-hover"
               >
                 <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
               </button>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={!data?.next}
-                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800"
+                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-hover"
               >
                 {t("common.next")} <ChevronRight className="h-4 w-4" />
               </button>

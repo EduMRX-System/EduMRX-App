@@ -54,7 +54,7 @@ export default function BranchForm({
                     placeholder={t("director.branches.form.name_placeholder")}
                 />
                 {errors.name && (
-                    <p className="mt-1 text-xs text-rose-500">{errors.name.message}</p>
+                    <p className="mt-1 text-xs text-danger">{errors.name.message}</p>
                 )}
             </div>
 
@@ -68,7 +68,7 @@ export default function BranchForm({
                         placeholder="+998901234567"
                     />
                     {errors.phone && (
-                        <p className="mt-1 text-xs text-rose-500">{errors.phone.message}</p>
+                        <p className="mt-1 text-xs text-danger">{errors.phone.message}</p>
                     )}
                 </div>
                 <div>
@@ -89,7 +89,7 @@ export default function BranchForm({
                     placeholder={t("director.branches.form.address_placeholder")}
                 />
                 {errors.address && (
-                    <p className="mt-1 text-xs text-rose-500">{errors.address.message}</p>
+                    <p className="mt-1 text-xs text-danger">{errors.address.message}</p>
                 )}
             </div>
 
@@ -123,7 +123,7 @@ export default function BranchForm({
             </div>
 
             {serverError && (
-                <div className="rounded-xl bg-rose-50 px-3.5 py-2.5 text-sm text-rose-600 dark:bg-rose-500/10 dark:text-rose-400">
+                <div className="rounded-xl bg-danger-bg px-3.5 py-2.5 text-sm text-danger dark:bg-danger-bg0/10 dark:text-danger">
                     {serverError}
                 </div>
             )}
@@ -141,7 +141,7 @@ export default function BranchForm({
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700 disabled:opacity-60"
+                    className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-fg shadow-sm transition hover:bg-primary-hover disabled:opacity-60"
                 >
                     {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                     {submitLabel}

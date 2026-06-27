@@ -113,7 +113,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
     const fieldCls = (hasError?: boolean) =>
         `border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring ${hasError ? "border-danger/50" : "border-border focus:border-primary"}`;
     const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
-    const errCls = "text-red-400 dark:text-red-500 text-[11px] mt-1";
+    const errCls = "text-red-400 dark:text-danger text-[11px] mt-1";
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -214,7 +214,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
 
                     {/* Markaz biriktirilmagan ogohlantirish */}
                     {isCentersLoaded && !activeCenter && (
-                        <p className="text-amber-600 dark:text-amber-400 text-[13px] bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-lg px-3 py-2">
+                        <p className="text-warning text-[13px] bg-warning-bg dark:bg-amber-900/20 border border-warning/20 dark:border-amber-800/50 rounded-lg px-3 py-2">
                             {t("center.no_active_center")}
                         </p>
                     )}

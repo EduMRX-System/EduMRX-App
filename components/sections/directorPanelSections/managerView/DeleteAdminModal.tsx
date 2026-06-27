@@ -42,7 +42,7 @@ export default function DeleteManagerModal({ manager, onClose }: Props) {
             <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-300 ${isMounted ? "opacity-100" : "opacity-0"}`} onClick={!isPending ? onClose : undefined} />
             <div className={`bg-surface p-6 rounded-xl max-w-md w-full relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-300 ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}>
                 {!isPending && (
-                    <button type="button" onClick={onClose} className="absolute top-4 right-4 text-foreground-subtle hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-hover transition-colors cursor-pointer">
+                    <button type="button" onClick={onClose} className="absolute top-4 right-4 text-foreground-subtle hover:text-foreground p-1 rounded-lg hover:bg-hover transition-colors cursor-pointer">
                         <X className="w-5 h-5" />
                     </button>
                 )}

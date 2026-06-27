@@ -80,7 +80,7 @@ export default function SearchSelect({
                                 <Loader2 className="w-4 h-4 animate-spin" />
                             </div>
                         ) : filtered.length === 0 ? (
-                            <div className="px-3 py-4 text-xs text-center text-slate-400">Topilmadi</div>
+                            <div className="px-3 py-4 text-xs text-center text-foreground-subtle">Topilmadi</div>
                         ) : (
                             filtered.map((o) => {
                                 const isSel = o.id === value;

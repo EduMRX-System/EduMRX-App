@@ -51,23 +51,23 @@ export default function HomeworkPopover({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className={`fixed inset-0 bg-slate-900/30 dark:bg-slate-950/50 backdrop-blur-[2px] transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`}
+        className={`fixed inset-0 bg-overlay/60 backdrop-blur-[2px] transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`}
         onClick={onClose}
       />
-      <div className={`bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 w-full max-w-xs relative z-10 transition-all duration-200 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+      <div className={`bg-surface rounded-2xl shadow-2xl border border-border-subtle w-full max-w-xs relative z-10 transition-all duration-200 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
         {/* Header */}
-        <div className="flex items-start justify-between p-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-start justify-between p-4 pb-3 border-b border-border-subtle">
           <div>
-            <p className="text-[13px] font-semibold text-slate-900 dark:text-slate-100">{studentName}</p>
-            <p className="text-[11px] text-slate-400 mt-0.5">{lessonTopic} — Uy ishi</p>
+            <p className="text-[13px] font-semibold text-foreground">{studentName}</p>
+            <p className="text-[11px] text-foreground-subtle mt-0.5">{lessonTopic} — Uy ishi</p>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer ml-2"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} className="text-foreground-subtle hover:text-foreground-muted p-1 rounded-lg hover:bg-hover dark:hover:bg-surface-raised cursor-pointer ml-2"><X className="w-4 h-4" /></button>
         </div>
 
         <div className="p-4 space-y-3">
           {/* Preview circle + input */}
           <div className="flex items-center gap-3">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${getHomeworkBg(preview)} ${preview != null ? "text-white" : "bg-slate-200 dark:bg-slate-700"}`}>
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${getHomeworkBg(preview)} ${preview != null ? "text-white" : "bg-border/60 dark:bg-surface-raised"}`}>
               {preview != null ? `${preview}` : "—"}
             </div>
             <div className="flex-1">
@@ -81,7 +81,7 @@ export default function HomeworkPopover({
                   if (raw === "" || (!isNaN(n) && n >= 0 && n <= 100)) setValue(raw);
                 }}
                 placeholder="0 – 100"
-                className="w-full h-10 px-3 text-base font-semibold border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 transition-all placeholder:text-slate-300 dark:placeholder:text-slate-600"
+                className="w-full h-10 px-3 text-base font-semibold border border-border rounded-xl bg-surface-raised text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary-ring/50 transition-all placeholder:text-foreground-subtle dark:placeholder:text-foreground-muted"
               />
             </div>
           </div>
@@ -92,14 +92,14 @@ export default function HomeworkPopover({
               <button
                 key={p}
                 onClick={() => setValue(String(p))}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${String(p) === value ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300" : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-indigo-300"}`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${String(p) === value ? "border-primary bg-primary-soft text-primary" : "border-border text-foreground-muted hover:border-primary/40"}`}
               >
                 {p}%
               </button>
             ))}
             <button
               onClick={() => setValue("")}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${value === "" ? "border-slate-500 bg-slate-100 dark:bg-slate-800 text-slate-700" : "border-slate-200 dark:border-slate-700 text-slate-400 hover:border-slate-400"}`}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${value === "" ? "border-border bg-hover text-foreground-muted" : "border-border text-foreground-subtle hover:border-border"}`}
             >
               Bo'sh
             </button>
@@ -107,8 +107,8 @@ export default function HomeworkPopover({
 
           {/* Actions */}
           <div className="flex gap-2">
-            <button onClick={onClose} className="flex-1 h-9 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">Bekor</button>
-            <button onClick={handleSave} className="flex-1 h-9 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-semibold text-white transition-colors cursor-pointer">Saqlash</button>
+            <button onClick={onClose} className="flex-1 h-9 border border-border rounded-lg text-sm font-semibold text-foreground-muted hover:bg-hover transition-colors cursor-pointer">Bekor</button>
+            <button onClick={handleSave} className="flex-1 h-9 bg-primary hover:bg-primary-hover rounded-lg text-sm font-semibold text-white transition-colors cursor-pointer">Saqlash</button>
           </div>
         </div>
       </div>

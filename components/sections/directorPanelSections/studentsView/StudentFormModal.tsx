@@ -169,7 +169,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
         `border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring ${hasError ? "border-danger/50" : "border-border focus:border-primary"}`;
     
     const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
-    const errCls = "text-red-400 dark:text-red-500 text-[11px] mt-1";
+    const errCls = "text-red-400 dark:text-danger text-[11px] mt-1";
 
     const monthsRaw = t("director.tools.months", { returnObjects: true });
     const months: string[] = Array.isArray(monthsRaw) ? monthsRaw : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -370,13 +370,13 @@ export default function StudentFormModal({ student, onClose }: Props) {
                                         {calendarView === "years" && (
                                             <>
                                                 <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
-                                                    <button type="button" onClick={() => setCalYear(y => y - 12)} className="p-1 rounded hover:bg-hover text-slate-500 cursor-pointer">
+                                                    <button type="button" onClick={() => setCalYear(y => y - 12)} className="p-1 rounded hover:bg-hover text-foreground-muted cursor-pointer">
                                                         <ChevronLeft className="w-4 h-4" />
                                                     </button>
                                                     <span className="text-[13px] font-bold text-foreground">
                                                         {yearStartGrid} - {yearStartGrid + 11}
                                                     </span>
-                                                    <button type="button" onClick={() => setCalYear(y => y + 12)} className="p-1 rounded hover:bg-hover text-slate-500 cursor-pointer">
+                                                    <button type="button" onClick={() => setCalYear(y => y + 12)} className="p-1 rounded hover:bg-hover text-foreground-muted cursor-pointer">
                                                         <ChevronRight className="w-4 h-4" />
                                                     </button>
                                                 </div>

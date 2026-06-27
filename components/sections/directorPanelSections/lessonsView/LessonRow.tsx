@@ -56,7 +56,7 @@ export default function LessonRow({ lesson, onEdit, onDelete }: Props) {
                     <button onClick={() => onEdit(lesson)} className="rounded-lg p-2 text-foreground-subtle transition hover:bg-hover hover:text-primary" title={t("common.edit")}>
                         <Pencil className="h-4 w-4" />
                     </button>
-                    <button onClick={() => onDelete(lesson)} className="rounded-lg p-2 text-foreground-subtle transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400" title={t("common.delete")}>
+                    <button onClick={() => onDelete(lesson)} className="rounded-lg p-2 text-foreground-subtle transition hover:bg-danger-bg hover:text-danger dark:hover:bg-danger-bg0/10 dark:hover:text-danger" title={t("common.delete")}>
                         <Trash2 className="h-4 w-4" />
                     </button>
                 </div>

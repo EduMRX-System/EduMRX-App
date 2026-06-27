@@ -34,7 +34,7 @@ export default function LanguageModal({ onClose }: { onClose: () => void }) {
         <>
           <button
             onClick={onClose}
-            className="px-5 h-11 rounded-xl bg-slate-100  text-foreground text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="px-5 h-11 rounded-xl bg-hover text-foreground text-sm font-bold hover:bg-border transition-colors"
           >
             {t("common.cancel")}
           </button>

@@ -24,7 +24,7 @@ export default function CenterSwitcher() {
 
     if (isLoading) {
         return (
-            <div className="h-8 w-32 rounded-lg bg-slate-100  animate-pulse" />
+            <div className="h-8 w-32 rounded-lg bg-hover animate-pulse" />
         );
     }
 
@@ -55,7 +55,7 @@ export default function CenterSwitcher() {
                 className={`flex items-center gap-1.5 px-3 h-8 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${
                     open
                         ? "bg-primary-soft border-primary/40 text-primary"
-                        : "bg-surface border-border text-foreground hover:border-indigo-300 dark:hover:border-primary hover:text-primary "
+                        : "bg-surface border-border text-foreground hover:border-primary/40 hover:text-primary "
                 }`}
             >
                 <Building2 className="w-3.5 h-3.5 shrink-0" />
@@ -64,7 +64,7 @@ export default function CenterSwitcher() {
             </button>
 
             {open && (
-                <div className="absolute left-0 top-full mt-1.5 w-64 rounded-xl bg-surface border border-border shadow-xl shadow-slate-900/10 dark:shadow-black/40 z-50 overflow-hidden animate-[fadeIn_0.12s_ease-out]">
+                <div className="absolute left-0 top-full mt-1.5 w-64 rounded-xl bg-surface border border-border shadow-xl shadow-foreground/10 dark:shadow-black/40 z-50 overflow-hidden animate-[fadeIn_0.12s_ease-out]">
                     <div className="px-4 py-2.5 border-b border-border-subtle">
                         <p className="text-[11px] font-semibold text-foreground-subtle uppercase tracking-wider">
                             {t("center.select_label")}

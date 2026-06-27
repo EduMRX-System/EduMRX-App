@@ -122,18 +122,18 @@ export function TelegramLoginButton() {
     <>
       {/* Divider */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
-        <span className="text-xs text-slate-400 font-medium select-none">
+        <div className="flex-1 h-px bg-border" />
+        <span className="text-xs text-foreground-subtle font-medium select-none">
           {t("auth.telegram.or")}
         </span>
-        <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
+        <div className="flex-1 h-px bg-border" />
       </div>
 
       {/* Telegram button */}
       <div className="flex justify-center items-center min-h-[44px]">
         {isPending ? (
-          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <div className="w-4 h-4 rounded-full border-2 border-slate-300 border-t-indigo-500 animate-spin" />
+          <div className="flex items-center gap-2 text-sm text-foreground-muted">
+            <div className="w-4 h-4 rounded-full border-2 border-primary-ring border-t-primary animate-spin" />
             {t("auth.telegram.loading")}
           </div>
         ) : (
@@ -157,10 +157,10 @@ export function TelegramLoginButton() {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.95, y: 16, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="w-full max-w-sm bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xl"
+              className="w-full max-w-sm bg-surface rounded-2xl border border-border p-6 shadow-2xl"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-black text-slate-900 dark:text-white">
+                <h3 className="text-base font-black text-foreground">
                   {t("auth.telegram.phone_modal_title")}
                 </h3>
                 <button
@@ -169,13 +169,13 @@ export function TelegramLoginButton() {
                     setPendingTgUser(null);
                     resetPhone();
                   }}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg text-foreground-subtle hover:text-foreground hover:bg-hover dark:hover:bg-hover transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-5">
+              <p className="text-sm text-foreground-muted mb-5">
                 {t("auth.telegram.phone_modal_desc")}
               </p>
 
@@ -188,7 +188,7 @@ export function TelegramLoginButton() {
                 className="space-y-4"
               >
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <label className="text-xs font-bold text-foreground-muted flex items-center gap-1.5">
                     <Phone className="w-3.5 h-3.5" />
                     {t("auth.common.phone_label")}
                   </label>
@@ -208,7 +208,7 @@ export function TelegramLoginButton() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-60"
+                  className="w-full h-11 bg-primary hover:bg-primary-hover text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-60"
                 >
                   {isPending ? (
                     <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />

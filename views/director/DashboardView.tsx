@@ -88,7 +88,7 @@ function KpiCard({ icon, iconCls, title, value, badge, badgeUp, sub, loading }: 
   }
 
   return (
-    <div className="bg-surface border border-border rounded-2xl p-5 hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
+    <div className="bg-surface border border-border rounded-2xl p-5 hover:border-border-subtle transition-colors">
       <div className="flex items-start justify-between gap-2">
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${iconCls}`}>
           {icon}
@@ -96,8 +96,8 @@ function KpiCard({ icon, iconCls, title, value, badge, badgeUp, sub, loading }: 
         {badge !== undefined && (
           <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
             badgeUp
-              ? "bg-emerald-50 dark:bg-emerald-950/30 text-success"
-              : "bg-rose-50 dark:bg-rose-950/30 text-danger"
+              ? "bg-success-bg text-success"
+              : "bg-danger-bg text-danger"
           }`}>
             {badgeUp ? "↑" : "↓"} {badge}
           </span>
@@ -174,11 +174,11 @@ function IncomeExpenseChart() {
         </div>
         <div className="flex items-center gap-3 text-[11px] flex-wrap">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
+            <span className="w-2.5 h-2.5 rounded-full bg-success shrink-0" />
             <span className="text-foreground-muted">{t("director.dashboard.income")}: <strong className="text-foreground">{totalIncome}M</strong></span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0" />
+            <span className="w-2.5 h-2.5 rounded-full bg-danger shrink-0" />
             <span className="text-foreground-muted">{t("director.dashboard.expense")}: <strong className="text-foreground">{totalExpense}M</strong></span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -194,13 +194,13 @@ function IncomeExpenseChart() {
         <div className="h-[240px]">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-100 dark:stroke-slate-800" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 11, fontWeight: 500 }} dy={6} />
               <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 11, fontWeight: 500 }} tickFormatter={(v) => `${v}M`} />
               <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(148,163,184,0.05)" }} />
-              <Bar dataKey="income" name={t("director.dashboard.income")} fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={24} />
-              <Bar dataKey="expense" name={t("director.dashboard.expense")} fill="#f43f5e" radius={[4, 4, 0, 0]} maxBarSize={24} />
-              <Line type="monotone" dataKey="net" name={t("director.dashboard.net_profit")} stroke="#6366f1" strokeWidth={2.5} dot={false} />
+              <Bar dataKey="income" name={t("director.dashboard.income")} fill="#059669" radius={[4, 4, 0, 0]} maxBarSize={24} />
+              <Bar dataKey="expense" name={t("director.dashboard.expense")} fill="#e11d48" radius={[4, 4, 0, 0]} maxBarSize={24} />
+              <Line type="monotone" dataKey="net" name={t("director.dashboard.net_profit")} stroke="#b8860b" strokeWidth={2.5} dot={false} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -227,9 +227,9 @@ function DonutTooltip({ active, payload }: any) {
 }
 
 const DONUT_FAKE = [
-  { name: "To'langan", value: 85_000_000, count: 42, fill: "#10b981" },
-  { name: "Kutilayotgan", value: 25_000_000, count: 18, fill: "#f59e0b" },
-  { name: "Muddati o'tgan", value: 12_000_000, count: 8, fill: "#f43f5e" },
+  { name: "To'langan", value: 85_000_000, count: 42, fill: "#059669" },
+  { name: "Kutilayotgan", value: 25_000_000, count: 18, fill: "#d97706" },
+  { name: "Muddati o'tgan", value: 12_000_000, count: 8, fill: "#e11d48" },
 ];
 
 function PaymentStatusDonut() {
@@ -238,7 +238,7 @@ function PaymentStatusDonut() {
 
   const pieData = useMemo(() => {
     if (data?.by_status?.length) {
-      const FILLS = ["#10b981", "#f59e0b", "#f43f5e"];
+      const FILLS = ["#059669", "#d97706", "#e11d48"];
       return data.by_status.map((s, i) => ({
         name: s.status === "paid" ? "To'langan" : s.status === "unpaid" ? "Kutilayotgan" : "Muddati o'tgan",
         value: s.amount,
@@ -306,7 +306,7 @@ function TodayLessons() {
       ) : (
         <div className="space-y-2">
           {lessons.slice(0, 5).map((lesson) => (
-            <div key={lesson.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-surface-raised/60 /40 border border-slate-100/70 /50 hover:bg-hover/50 dark:hover:bg-slate-800/70 transition-colors">
+            <div key={lesson.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-surface-raised/60 border border-border-subtle hover:bg-hover transition-colors">
               <div className="w-8 h-8 rounded-lg bg-primary-soft  flex items-center justify-center shrink-0">
                 <BookOpen className="w-4 h-4 text-primary " />
               </div>
@@ -348,8 +348,8 @@ function RecentPayments() {
       ) : (
         <div className="space-y-2">
           {payments.map((p) => (
-            <div key={p.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-surface-raised/60 /40 border border-slate-100/70 /50 hover:bg-hover/50 dark:hover:bg-slate-800/70 transition-colors">
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center shrink-0">
+            <div key={p.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-surface-raised/60 border border-border-subtle hover:bg-hover transition-colors">
+              <div className="w-8 h-8 rounded-lg bg-success-bg flex items-center justify-center shrink-0">
                 <DollarSign className="w-4 h-4 text-success" />
               </div>
               <div className="min-w-0 flex-1">
@@ -390,8 +390,8 @@ function DebtorsList() {
       ) : (
         <div className="space-y-2">
           {debts.map((d) => (
-            <div key={d.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-surface-raised/60 /40 border border-slate-100/70 /50 hover:bg-hover/50 dark:hover:bg-slate-800/70 transition-colors">
-              <div className="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center shrink-0">
+            <div key={d.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-surface-raised/60 border border-border-subtle hover:bg-hover transition-colors">
+              <div className="w-8 h-8 rounded-lg bg-danger-bg flex items-center justify-center shrink-0">
                 <AlertCircle className="w-4 h-4 text-danger" />
               </div>
               <div className="min-w-0 flex-1">
@@ -416,10 +416,10 @@ function QuickActions() {
   const { t } = useTranslation();
 
   const actions = [
-    { icon: <UserPlus className="w-4 h-4" />, label: t("director.dashboard.add_student"), href: "/director/students", cls: "text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/50 hover:bg-success-bg dark:hover:bg-emerald-950/50" },
+    { icon: <UserPlus className="w-4 h-4" />, label: t("director.dashboard.add_student"), href: "/director/students", cls: "text-success bg-success-bg border-success/20 hover:bg-success-bg" },
     { icon: <Users className="w-4 h-4" />, label: t("director.dashboard.add_group"), href: "/director/groups", cls: "text-primary  bg-primary-soft  border-primary/30 hover:bg-primary-soft " },
     { icon: <DollarSign className="w-4 h-4" />, label: t("director.dashboard.add_payment"), href: "/director/payments", cls: "text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800/50 hover:bg-warning-bg dark:hover:bg-amber-950/50" },
-    { icon: <BookOpen className="w-4 h-4" />, label: t("director.dashboard.add_lesson"), href: "/director/lessons", cls: "text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800/50 hover:bg-sky-100 dark:hover:bg-sky-950/50" },
+    { icon: <BookOpen className="w-4 h-4" />, label: t("director.dashboard.add_lesson"), href: "/director/lessons", cls: "text-foreground-muted bg-hover border-border hover:bg-border" },
   ];
 
   return (
@@ -457,7 +457,7 @@ function BranchesStatus() {
       ) : (
         <div className="space-y-2">
           {branches.map((b) => (
-            <div key={b.id} className="flex items-center gap-3 p-3 rounded-xl bg-surface-raised/60 /40 border border-slate-100/70 /50 hover:bg-hover/50 dark:hover:bg-slate-800/70 transition-colors">
+            <div key={b.id} className="flex items-center gap-3 p-3 rounded-xl bg-surface-raised/60 border border-border-subtle hover:bg-hover transition-colors">
               <div className="w-8 h-8 rounded-lg bg-primary-soft  flex items-center justify-center shrink-0">
                 <Building2 className="w-4 h-4 text-primary " />
               </div>
@@ -469,8 +469,8 @@ function BranchesStatus() {
               </div>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
                 b.status === "active"
-                  ? "bg-emerald-50 dark:bg-emerald-950/30 text-success"
-                  : "bg-hover  text-foreground-muted"
+                  ? "bg-success-bg text-success"
+                  : "bg-hover text-foreground-muted"
               }`}>
                 {b.status === "active" ? "Faol" : "Nofaol"}
               </span>
@@ -489,10 +489,10 @@ function QuickStats() {
   const { t } = useTranslation();
 
   const stats = [
-    { label: t("director.dashboard.new_students"), value: "24", icon: <GraduationCap className="w-4 h-4" />, cls: "text-success bg-emerald-50 dark:bg-emerald-950/30" },
-    { label: t("director.dashboard.active_groups"), value: "18", icon: <Users className="w-4 h-4" />, cls: "text-primary bg-primary-soft " },
-    { label: t("director.dashboard.teachers_stat"), value: "12", icon: <BookOpen className="w-4 h-4" />, cls: "text-warning bg-amber-50 dark:bg-amber-950/30" },
-    { label: t("director.dashboard.avg_fill"), value: "78%", icon: <BarChart3 className="w-4 h-4" />, cls: "text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/30" },
+    { label: t("director.dashboard.new_students"), value: "24", icon: <GraduationCap className="w-4 h-4" />, cls: "text-success bg-success-bg" },
+    { label: t("director.dashboard.active_groups"), value: "18", icon: <Users className="w-4 h-4" />, cls: "text-primary bg-primary-soft" },
+    { label: t("director.dashboard.teachers_stat"), value: "12", icon: <BookOpen className="w-4 h-4" />, cls: "text-warning bg-warning-bg" },
+    { label: t("director.dashboard.avg_fill"), value: "78%", icon: <BarChart3 className="w-4 h-4" />, cls: "text-foreground-muted bg-hover" },
   ];
 
   return (
@@ -539,7 +539,7 @@ export default function DashboardView() {
           <select
             value={period}
             onChange={(e) => setPeriod(e.target.value as "this_month" | "last_month")}
-            className="appearance-none pl-3 pr-8 h-9 text-[12px] font-semibold bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary dark:focus:border-indigo-500 cursor-pointer transition-colors"
+            className="appearance-none pl-3 pr-8 h-9 text-[12px] font-semibold bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary cursor-pointer transition-colors"
           >
             <option value="this_month">{t("director.dashboard.period_this_month")}</option>
             <option value="last_month">{t("director.dashboard.period_last_month")}</option>
@@ -562,7 +562,7 @@ export default function DashboardView() {
         />
         <KpiCard
           icon={<Wallet className="w-5 h-5" />}
-          iconCls="bg-emerald-50 dark:bg-emerald-950/40 text-success"
+          iconCls="bg-success-bg text-success"
           title={t("director.dashboard.kpi.revenue")}
           value={summary?.month_revenue ? fmtUZS(summary.month_revenue) : "—"}
           badge={summary?.month_revenue_change !== undefined ? `${Math.abs(Math.round(summary.month_revenue_change))}%` : undefined}
@@ -571,7 +571,7 @@ export default function DashboardView() {
         />
         <KpiCard
           icon={<AlertCircle className="w-5 h-5" />}
-          iconCls="bg-rose-50 dark:bg-rose-950/40 text-danger"
+          iconCls="bg-danger-bg text-danger"
           title={t("director.dashboard.kpi.debt")}
           value={summary?.pending_debts ? fmtUZS(summary.pending_debts) : "—"}
           badge={summary?.pending_debts_change !== undefined ? `${Math.abs(Math.round(summary.pending_debts_change))}%` : undefined}
@@ -581,7 +581,7 @@ export default function DashboardView() {
         />
         <KpiCard
           icon={<BarChart3 className="w-5 h-5" />}
-          iconCls="bg-amber-50 dark:bg-amber-950/40 text-warning"
+          iconCls="bg-warning-bg text-warning"
           title={t("director.dashboard.kpi.attendance")}
           value="87%"
           badge="2.1%"

@@ -66,7 +66,7 @@ export default function SearchSelect({
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Qidirish..."
-                            className="w-full h-8 pl-7 pr-2 text-[13px] rounded-md bg-slate-50 /50 border border-transparent outline-none focus:border-indigo-400 text-foreground"
+                            className="w-full h-8 pl-7 pr-2 text-[13px] rounded-md bg-hover/50 border border-transparent outline-none focus:border-primary text-foreground"
                         />
                     </div>
 

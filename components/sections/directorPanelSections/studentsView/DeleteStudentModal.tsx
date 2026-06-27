@@ -41,12 +41,12 @@ export default function DeleteStudentModal({ student, onClose }: Props) {
         <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-overlay backdrop-blur-sm transition-opacity duration-200 ${isMounted ? "opacity-100" : "opacity-0"}`}>
             <div className="w-full max-w-md bg-surface rounded-xl border border-border-subtle shadow-xl overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle bg-slate-50/50 /50">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle bg-hover/50">
                     <div className="flex items-center gap-2 text-red-600">
                         <AlertTriangle className="w-5 h-5" />
                         <h3 className="text-sm font-semibold text-foreground">{t("director.students.delete.title")}</h3>
                     </div>
-                    <button onClick={onClose} disabled={isPending} className="p-1.5 rounded-lg text-foreground-subtle hover:text-slate-600 hover:bg-hover transition-colors disabled:opacity-50 cursor-pointer">
+                    <button onClick={onClose} disabled={isPending} className="p-1.5 rounded-lg text-foreground-subtle hover:text-foreground hover:bg-hover transition-colors disabled:opacity-50 cursor-pointer">
                         <X className="w-4 h-4" />
                     </button>
                 </div>
@@ -62,8 +62,8 @@ export default function DeleteStudentModal({ student, onClose }: Props) {
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-end gap-2 px-5 py-3.5 bg-slate-50 /50 border-t border-border-subtle">
-                    <button type="button" onClick={onClose} disabled={isPending} className="h-9 px-3.5 text-xs font-semibold text-foreground bg-surface border border-border rounded-lg hover:bg-hover dark:hover:bg-slate-700 transition-colors cursor-pointer disabled:opacity-50">
+                <div className="flex items-center justify-end gap-2 px-5 py-3.5 bg-hover/50 border-t border-border-subtle">
+                    <button type="button" onClick={onClose} disabled={isPending} className="h-9 px-3.5 text-xs font-semibold text-foreground bg-surface border border-border rounded-lg hover:bg-hover dark:hover:bg-hover transition-colors cursor-pointer disabled:opacity-50">
                         {t("common.cancel")}
                     </button>
                     <button type="button" onClick={() => deleteStudent()} disabled={isPending} className="inline-flex items-center justify-center gap-1.5 h-9 px-4 text-xs font-semibold text-white bg-danger hover:bg-danger/90 rounded-lg transition-colors cursor-pointer disabled:opacity-70 min-w-[100px]">

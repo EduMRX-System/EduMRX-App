@@ -123,11 +123,11 @@ function CategoryFormModal({ cat, onClose }: { cat?: IExpenseCategory | null; on
     }
   }
 
-  const fieldCls = "border border-border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:border-primary focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20";
+  const fieldCls = "border border-border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:border-primary focus:ring-2 focus:ring-primary-ring/50";
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-slate-900/40 dark:bg-layout/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
+      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
       <div className={`bg-surface rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-base font-semibold text-foreground">
@@ -146,7 +146,7 @@ function CategoryFormModal({ cat, onClose }: { cat?: IExpenseCategory | null; on
             <input value={icon} onChange={(e) => setIcon(e.target.value)} placeholder={t("director.expenses.categories.icon_placeholder")} className={fieldCls} />
           </div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 h-10 border border-border text-foreground text-sm font-semibold rounded-lg hover:bg-surface-raised dark:hover:bg-slate-800 cursor-pointer">{t("common.cancel")}</button>
+            <button type="button" onClick={onClose} className="flex-1 h-10 border border-border text-foreground text-sm font-semibold rounded-lg hover:bg-surface-raised dark:hover:bg-hover cursor-pointer">{t("common.cancel")}</button>
             <button type="submit" disabled={isPending} className="flex-1 h-10 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer inline-flex items-center justify-center gap-2">
               {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
               {isEdit ? t("common.save") : t("common.create")}
@@ -256,14 +256,14 @@ function ExpenseFormModal({ expense, categories, onClose }: {
 
   const labelCls = "text-[13px] text-foreground-muted mb-1 block font-semibold";
   const fieldCls = (err?: boolean) =>
-    `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20 ${err ? "border-red-300 dark:border-red-700" : "border-border focus:border-primary"}`;
+    `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring/50 ${err ? "border-danger/50" : "border-border focus:border-primary"}`;
   const errCls = "text-red-400 text-[11px] mt-0.5";
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-slate-900/40 dark:bg-layout/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
+      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
       <div className={`bg-surface rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}>
         <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border-subtle bg-surface">
           <div className="flex items-center gap-3">
@@ -393,14 +393,14 @@ function DeleteExpenseModal({ expense, onClose }: { expense: IExpense; onClose: 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-slate-900/40 dark:bg-layout/60 backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
+      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
       <div className={`bg-surface rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
-        <div className="w-12 h-12 rounded-full bg-rose-50 dark:bg-danger-bg flex items-center justify-center mb-4 mx-auto"><Trash2 className="w-6 h-6 text-rose-600" /></div>
+        <div className="w-12 h-12 rounded-full bg-danger-bg flex items-center justify-center mb-4 mx-auto"><Trash2 className="w-6 h-6 text-danger" /></div>
         <h3 className="text-center text-base font-semibold text-foreground mb-2">{t("director.expenses.delete.title")}</h3>
         <p className="text-center text-sm text-foreground-muted mb-6">{t("director.expenses.delete.desc")}</p>
         <div className="flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 border border-border text-foreground text-sm font-semibold rounded-lg hover:bg-surface-raised dark:hover:bg-slate-800 cursor-pointer">{t("common.cancel")}</button>
-          <button onClick={handleDelete} disabled={deleteMut.isPending} className="flex-1 h-10 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer inline-flex items-center justify-center gap-2">
+          <button onClick={onClose} className="flex-1 h-10 border border-border text-foreground text-sm font-semibold rounded-lg hover:bg-surface-raised dark:hover:bg-hover cursor-pointer">{t("common.cancel")}</button>
+          <button onClick={handleDelete} disabled={deleteMut.isPending} className="flex-1 h-10 bg-danger hover:bg-danger/90 text-white text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer inline-flex items-center justify-center gap-2">
             {deleteMut.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
             {t("common.delete") || "O'chirish"}
           </button>
@@ -414,7 +414,7 @@ function DeleteExpenseModal({ expense, onClose }: { expense: IExpense; onClose: 
 function SummaryCard({ icon, title, value, loading }: { icon: React.ReactNode; title: string; value: string; loading?: boolean }) {
   return (
     <div className="bg-surface border border-border-subtle rounded-2xl p-5 flex items-start gap-4">
-      <div className="w-11 h-11 rounded-xl bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center shrink-0">{icon}</div>
+      <div className="w-11 h-11 rounded-xl bg-danger-bg flex items-center justify-center shrink-0">{icon}</div>
       <div className="min-w-0 flex-1">
         <p className="text-xs font-medium text-foreground-muted mb-1">{title}</p>
         {loading ? <div className="h-6 w-28 bg-border  rounded animate-pulse" /> : <p className="text-lg font-bold text-foreground truncate">{value}</p>}
@@ -428,7 +428,7 @@ function ChartTooltip({ active, payload, label }: any) {
   return (
     <div className="bg-surface border border-border rounded-xl shadow-xl p-3 text-sm">
       <p className="font-semibold text-foreground mb-1">{label}</p>
-      <p className="text-rose-600 font-bold">{formatAmount(payload[0].value)}</p>
+      <p className="text-danger font-bold">{formatAmount(payload[0].value)}</p>
     </div>
   );
 }
@@ -487,7 +487,7 @@ export default function ExpensesView() {
         <div className="flex gap-2">
           <button
             onClick={() => setShowCategories((v) => !v)}
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-surface-raised dark:hover:bg-slate-700"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-surface-raised dark:hover:bg-hover"
           >
             <LayoutGrid className="h-4 w-4" /> {t("director.expenses.categories_btn")}
           </button>
@@ -502,9 +502,9 @@ export default function ExpensesView() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <SummaryCard icon={<TrendingDown className="w-5 h-5 text-rose-600" />} title={t("director.expenses.summary.total")} value={formatAmount(summary?.total_amount)} loading={summaryLoading} />
+        <SummaryCard icon={<TrendingDown className="w-5 h-5 text-danger" />} title={t("director.expenses.summary.total")} value={formatAmount(summary?.total_amount)} loading={summaryLoading} />
         <SummaryCard icon={<Receipt className="w-5 h-5 text-warning" />} title={t("director.expenses.summary.monthly")} value={formatAmount(summary?.monthly_amount)} loading={summaryLoading} />
-        <SummaryCard icon={<TrendingUp className="w-5 h-5 text-sky-500" />} title={t("director.expenses.summary.planned")} value={formatAmount(summary?.planned_amount)} loading={summaryLoading} />
+        <SummaryCard icon={<TrendingUp className="w-5 h-5 text-foreground-muted" />} title={t("director.expenses.summary.planned")} value={formatAmount(summary?.planned_amount)} loading={summaryLoading} />
       </div>
 
       {/* Charts */}
@@ -517,7 +517,7 @@ export default function ExpensesView() {
               <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={monthlyData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-100 dark:stroke-slate-800" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
                     <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
                     <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(99,102,241,0.04)" }} />
@@ -577,7 +577,7 @@ export default function ExpensesView() {
                   {!cat.is_system && (
                     <div className="absolute top-2 right-2 hidden group-hover:flex gap-1">
                       <button onClick={() => setEditingCat(cat)} className="p-1 rounded text-foreground-subtle hover:text-primary hover:bg-primary-soft  cursor-pointer"><Edit2 className="w-3 h-3" /></button>
-                      <button onClick={() => handleDeleteCat(cat.id)} className="p-1 rounded text-foreground-subtle hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 cursor-pointer"><Trash2 className="w-3 h-3" /></button>
+                      <button onClick={() => handleDeleteCat(cat.id)} className="p-1 rounded text-foreground-subtle hover:text-danger hover:bg-danger-bg cursor-pointer"><Trash2 className="w-3 h-3" /></button>
                     </div>
                   )}
                 </div>
@@ -591,7 +591,7 @@ export default function ExpensesView() {
       <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground-subtle" />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("director.expenses.search_placeholder")} className="w-full rounded-lg border border-border bg-surface py-2.5 pl-9 pr-8 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20   " />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("director.expenses.search_placeholder")} className="w-full rounded-lg border border-border bg-surface py-2.5 pl-9 pr-8 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-primary focus:ring-2 focus:ring-primary/20" />
           {search && <button onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-foreground-muted cursor-pointer"><X className="h-4 w-4" /></button>}
         </div>
         <SimpleSelect value={filterStatus} onChange={(v) => { setFilterStatus(v); setPage(1); }} options={EXPENSE_STATUS_OPTIONS.map((o) => ({ value: o.value, label: o.label }))} placeholder={t("director.expenses.all_statuses")} />
@@ -601,11 +601,11 @@ export default function ExpensesView() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-100 bg-surface  ">
+      <div className="overflow-hidden rounded-xl border border-border-subtle bg-surface">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-surface-raised text-xs uppercase tracking-wider text-foreground-muted  /50 ">
+              <tr className="border-b border-border-subtle bg-surface-raised text-xs uppercase tracking-wider text-foreground-muted">
                 <th className="py-3.5 px-4 font-semibold">{t("director.expenses.table.title")}</th>
                 <th className="py-3.5 px-4 font-semibold hidden sm:table-cell">{t("director.expenses.table.category")}</th>
                 <th className="py-3.5 px-4 font-semibold">{t("director.expenses.table.amount")}</th>
@@ -616,7 +616,7 @@ export default function ExpensesView() {
                 <th className="py-3.5 px-4 text-right font-semibold">{t("director.expenses.table.actions")}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-border-subtle dark:divide-border">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
@@ -634,20 +634,20 @@ export default function ExpensesView() {
                 <tr>
                   <td colSpan={8} className="py-12 text-center">
                     <AlertCircle className="mx-auto h-9 w-9 text-danger" />
-                    <p className="mt-2 text-sm font-semibold text-rose-600">{t("common.error_failed")}</p>
+                    <p className="mt-2 text-sm font-semibold text-danger">{t("common.error_failed")}</p>
                   </td>
                 </tr>
               ) : expenses.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-16 text-center">
-                    <TrendingDown className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-foreground-muted" />
+                    <TrendingDown className="mx-auto mb-3 h-10 w-10 text-foreground-muted" />
                     <p className="text-sm font-medium text-foreground-muted">{t("director.expenses.empty.title")}</p>
                     <p className="mt-1 text-sm text-foreground-subtle">{t("director.expenses.empty.desc")}</p>
                   </td>
                 </tr>
               ) : (
                 expenses.map((e) => (
-                  <tr key={e.id} className="hover:bg-surface-raised dark:hover:bg-slate-800/40 transition-colors">
+                  <tr key={e.id} className="hover:bg-surface-raised dark:hover:bg-hover/40 transition-colors">
                     <td className="py-3.5 px-4">
                       <div className="font-medium text-foreground">{e.title ?? "—"}</div>
                     </td>
@@ -667,7 +667,7 @@ export default function ExpensesView() {
                     <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button onClick={() => setEditing(e)} className="p-1.5 rounded-lg text-foreground-subtle hover:text-primary hover:bg-primary-soft  transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
-                        <button onClick={() => setDeleting(e)} className="p-1.5 rounded-lg text-foreground-subtle hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"><Trash2 className="w-4 h-4" /></button>
+                        <button onClick={() => setDeleting(e)} className="p-1.5 rounded-lg text-foreground-subtle hover:text-danger hover:bg-danger-bg transition-colors cursor-pointer"><Trash2 className="w-4 h-4" /></button>
                       </div>
                     </td>
                   </tr>
@@ -679,16 +679,16 @@ export default function ExpensesView() {
 
         {/* Pagination */}
         {!isLoading && expenses.length > 0 && (
-          <div className="flex items-center justify-between border-t border-slate-100 px-5 py-3 ">
+          <div className="flex items-center justify-between border-t border-border-subtle px-5 py-3 ">
             <span className="flex items-center gap-2 text-sm text-foreground-muted">
               {isFetching && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               {page} / {totalPages}
             </span>
             <div className="flex gap-2">
-              <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={!data?.previous} className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800">
+              <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={!data?.previous} className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-hover">
                 <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
               </button>
-              <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={!data?.next} className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800">
+              <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={!data?.next} className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-hover">
                 {t("common.next")} <ChevronRight className="h-4 w-4" />
               </button>
             </div>

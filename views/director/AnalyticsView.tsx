@@ -49,7 +49,7 @@ function ChangeBadge({ value }: { value: number | undefined }) {
     <span
       className={`inline-flex items-center gap-0.5 text-[11px] font-bold px-1.5 py-0.5 rounded-full ${
         pos
-          ? "bg-emerald-50 text-emerald-600 dark:bg-success-bg dark:text-emerald-400"
+          ? "bg-success-bg text-success"
           : "bg-red-50 text-red-600 dark:bg-danger/10 dark:text-red-400"
       }`}
     >
@@ -66,11 +66,11 @@ function StatusDot({ status }: { status: string }) {
     <span
       className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
         active
-          ? "bg-emerald-50 text-emerald-600 dark:bg-success-bg dark:text-emerald-400"
+          ? "bg-success-bg text-success"
           : "bg-hover text-foreground-muted  "
       }`}
     >
-      <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-emerald-500" : "bg-slate-400"}`} />
+      <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-success" : "bg-foreground-subtle"}`} />
       {status}
     </span>
   );
@@ -173,7 +173,7 @@ export default function AnalyticsView() {
 
           {/* Monthly revenue */}
           <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 dark:bg-success-bg dark:text-emerald-400 flex items-center justify-center mb-3">
+            <div className="w-10 h-10 rounded-xl bg-success-bg text-success flex items-center justify-center mb-3">
               <TrendingUp className="w-5 h-5" />
             </div>
             <p className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
@@ -207,7 +207,7 @@ export default function AnalyticsView() {
 
           {/* Debts */}
           <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 dark:bg-warning-bg dark:text-amber-400 flex items-center justify-center mb-3">
+            <div className="w-10 h-10 rounded-xl bg-warning-bg text-warning flex items-center justify-center mb-3">
               <AlertCircle className="w-5 h-5" />
             </div>
             <p className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
@@ -332,7 +332,7 @@ export default function AnalyticsView() {
             <RowSkeleton rows={4} />
           ) : !centers?.data?.length ? (
             <div className="p-10 text-center">
-              <Building2 className="w-8 h-8 text-slate-300 dark:text-foreground-muted mx-auto mb-2" />
+              <Building2 className="w-8 h-8 text-foreground-muted mx-auto mb-2" />
               <p className="text-sm text-foreground-subtle">
                 {t("director.analytics.centers_table.empty")}
               </p>
@@ -360,11 +360,11 @@ export default function AnalyticsView() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  <tbody className="divide-y divide-border-subtle dark:divide-border">
                     {centers.data.map((c) => (
                       <tr
                         key={c.id}
-                        className="hover:bg-surface-raised dark:hover:bg-slate-800/40 transition-colors"
+                        className="hover:bg-surface-raised dark:hover:bg-hover/40 transition-colors"
                       >
                         <td className="px-5 py-3.5 font-semibold text-foreground">
                           {c.name}
@@ -434,17 +434,17 @@ export default function AnalyticsView() {
             <RowSkeleton rows={5} />
           ) : transactions?.length === 0 ? (
             <div className="p-8 text-center">
-              <AlertCircle className="w-8 h-8 text-slate-300 dark:text-foreground-muted mx-auto mb-2" />
+              <AlertCircle className="w-8 h-8 text-foreground-muted mx-auto mb-2" />
               <p className="text-sm text-foreground-subtle">
                 {t("director.analytics.transactions_section.empty")}
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-80 overflow-y-auto">
+            <div className="divide-y divide-border-subtle dark:divide-border max-h-80 overflow-y-auto">
               {transactions.map((tx: any, i: number) => (
                 <div
                   key={tx.id ?? i}
-                  className="px-5 py-3 flex items-center justify-between gap-3 hover:bg-surface-raised dark:hover:bg-slate-800/40 transition-colors"
+                  className="px-5 py-3 flex items-center justify-between gap-3 hover:bg-surface-raised dark:hover:bg-hover/40 transition-colors"
                 >
                   <span className="text-sm text-foreground truncate">
                     {tx.name ?? tx.description ?? tx.title ?? `#${i + 1}`}
@@ -485,7 +485,7 @@ export default function AnalyticsView() {
               >
                 <span
                   className={`w-2 h-2 rounded-full ${
-                    b.status === "active" ? "bg-emerald-500" : "bg-slate-400"
+                    b.status === "active" ? "bg-success" : "bg-foreground-subtle"
                   }`}
                 />
                 {b.name}

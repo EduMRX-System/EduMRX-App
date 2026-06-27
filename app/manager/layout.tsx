@@ -20,7 +20,7 @@ export default function ManagerLayout({
 
   return (
     <ProtectedRoute allowedRoles={["manager", "admin"]}>
-      <div className="bg-[#F8F9FA] dark:bg-slate-950 h-screen w-screen flex overflow-hidden transition-colors duration-300">
+      <div className="bg-layout h-screen w-screen flex overflow-hidden transition-colors duration-300">
 
         {isSidebarOpen && (
           <div

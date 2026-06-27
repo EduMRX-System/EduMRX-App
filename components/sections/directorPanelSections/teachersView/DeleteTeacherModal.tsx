@@ -51,7 +51,7 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
                     <button
                         type="button"
                         onClick={onClose}
-                        className="absolute top-4 right-4 text-foreground-subtle hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-hover transition-colors cursor-pointer"
+                        className="absolute top-4 right-4 text-foreground-subtle hover:text-foreground p-1 rounded-lg hover:bg-hover transition-colors cursor-pointer"
                     >
                         <X className="w-5 h-5" />
                     </button>

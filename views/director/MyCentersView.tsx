@@ -29,7 +29,7 @@ function CenterCard({
             className={`relative rounded-2xl border transition-all duration-200 p-5 flex flex-col gap-4 ${
                 isActive
                     ? "border-primary/40  bg-primary-soft  shadow-md  "
-                    : "border-border bg-surface hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md hover:shadow-slate-100 dark:hover:shadow-slate-950/30"
+                    : "border-border bg-surface hover:border-border-subtle hover:shadow-sm"
             }`}
         >
             {/* Active badge */}

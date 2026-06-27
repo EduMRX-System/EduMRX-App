@@ -118,7 +118,7 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
         error
             ? "border-red-300 dark:border-red-800"
             : open
-            ? "border-indigo-400 dark:border-indigo-600 ring-2 ring-indigo-100 dark:ring-indigo-900/20"
+            ? "border-primary ring-2 ring-primary-ring/50"
             : "border-border",
         value && selectedLabel
             ? "text-foreground"
@@ -135,7 +135,7 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
             </label>
 
             {!centerId ? (
-                <div className="flex items-center gap-2 px-3 h-[40px] rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 text-sm text-amber-700 dark:text-amber-400">
+                <div className="flex items-center gap-2 px-3 h-[40px] rounded-lg bg-warning-bg border border-warning/20 dark:border-amber-800 text-sm text-amber-700 dark:text-warning">
                     {t("branch.no_center")}
                 </div>
             ) : (
@@ -167,7 +167,7 @@ export default function AsyncBranchSelect({ centerId, value, onChange, label, re
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder={t("branch.search_placeholder")}
-                            className="w-full h-8 pl-7 pr-2 text-[13px] rounded-md bg-slate-50 /50 border border-transparent outline-none focus:border-indigo-400 text-foreground placeholder:text-foreground-subtle dark:placeholder:text-foreground-muted"
+                            className="w-full h-8 pl-7 pr-2 text-[13px] rounded-md bg-hover/50 border border-transparent outline-none focus:border-primary text-foreground placeholder:text-foreground-subtle dark:placeholder:text-foreground-muted"
                         />
                     </div>
 

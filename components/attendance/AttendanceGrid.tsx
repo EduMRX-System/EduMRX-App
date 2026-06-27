@@ -52,13 +52,13 @@ function LessonHeader({ lesson }: { lesson: AttendanceLesson }) {
 
   return (
     <th
-      className={`sticky top-0 z-20 bg-white dark:bg-slate-900 px-0 py-0 border-b border-r border-slate-100 dark:border-slate-800 min-w-[48px] w-[48px] ${future ? "opacity-40" : ""}`}
+      className={`sticky top-0 z-20 bg-surface px-0 py-0 border-b border-r border-border-subtle min-w-[48px] w-[48px] ${future ? "opacity-40" : ""}`}
       title={`${day} ${month} — ${lesson.topic}${future ? " (hali bo'lmagan)" : ""}`}
     >
       <div className="flex flex-col items-center justify-center py-2 gap-0">
-        <span className="text-[13px] font-bold text-slate-800 dark:text-slate-100 leading-none">{day}</span>
-        <span className="text-[10px] text-slate-400 dark:text-slate-500 leading-none mt-0.5">{month}</span>
-        <span className="text-[9px] text-slate-400 dark:text-slate-600 leading-none mt-1 px-0.5 text-center truncate w-full">{topicShort}</span>
+        <span className="text-[13px] font-bold text-foreground leading-none">{day}</span>
+        <span className="text-[10px] text-foreground-subtle dark:text-foreground-muted leading-none mt-0.5">{month}</span>
+        <span className="text-[9px] text-foreground-subtle dark:text-foreground-subtle leading-none mt-1 px-0.5 text-center truncate w-full">{topicShort}</span>
       </div>
     </th>
   );
@@ -80,13 +80,13 @@ function StatSummary({ students, lessons, attendanceMap, mode }: {
     const pct = total > 0 ? Math.round((present / total) * 100) : 0;
 
     return (
-      <div className="flex flex-wrap gap-3 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 text-[12px]">
-        <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-emerald-500" /><span className="text-slate-600 dark:text-slate-300 font-medium">Keldi: <b>{present}</b></span></div>
-        <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-rose-500" /><span className="text-slate-600 dark:text-slate-300 font-medium">Kelmadi: <b>{absent}</b></span></div>
-        <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-amber-400" /><span className="text-slate-600 dark:text-slate-300 font-medium">Sababli: <b>{excused}</b></span></div>
+      <div className="flex flex-wrap gap-3 px-4 py-2 bg-hover/50 border-t border-border-subtle text-[12px]">
+        <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-success" /><span className="text-foreground-muted font-medium">Keldi: <b>{present}</b></span></div>
+        <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-danger" /><span className="text-foreground-muted font-medium">Kelmadi: <b>{absent}</b></span></div>
+        <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-warning" /><span className="text-foreground-muted font-medium">Sababli: <b>{excused}</b></span></div>
         <div className="ml-auto flex items-center gap-1.5">
-          <span className="text-slate-400 dark:text-slate-500">Davomat:</span>
-          <span className={`font-bold ${pct >= 80 ? "text-emerald-600" : pct >= 60 ? "text-amber-600" : "text-rose-600"}`}>{pct}%</span>
+          <span className="text-foreground-subtle dark:text-foreground-muted">Davomat:</span>
+          <span className={`font-bold ${pct >= 80 ? "text-success" : pct >= 60 ? "text-warning" : "text-danger"}`}>{pct}%</span>
         </div>
       </div>
     );
@@ -96,14 +96,14 @@ function StatSummary({ students, lessons, attendanceMap, mode }: {
   const avg = marks.length > 0 ? Math.round(marks.reduce((s, m) => s + (m.homework_percent ?? 0), 0) / marks.length) : null;
 
   return (
-    <div className="flex flex-wrap gap-3 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 text-[12px]">
-      <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-emerald-500" /><span className="text-slate-600 dark:text-slate-300">90–100%</span></div>
-      <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-amber-400" /><span className="text-slate-600 dark:text-slate-300">80–89%</span></div>
-      <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-rose-500" /><span className="text-slate-600 dark:text-slate-300">0–79%</span></div>
+    <div className="flex flex-wrap gap-3 px-4 py-2 bg-hover/50 border-t border-border-subtle text-[12px]">
+      <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-success" /><span className="text-foreground-muted">90–100%</span></div>
+      <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-warning" /><span className="text-foreground-muted">80–89%</span></div>
+      <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-danger" /><span className="text-foreground-muted">0–79%</span></div>
       {avg != null && (
         <div className="ml-auto flex items-center gap-1.5">
-          <span className="text-slate-400 dark:text-slate-500">O'rtacha:</span>
-          <span className={`font-bold ${avg >= 80 ? "text-emerald-600" : avg >= 60 ? "text-amber-600" : "text-rose-600"}`}>{avg}%</span>
+          <span className="text-foreground-subtle dark:text-foreground-muted">O'rtacha:</span>
+          <span className={`font-bold ${avg >= 80 ? "text-success" : avg >= 60 ? "text-warning" : "text-danger"}`}>{avg}%</span>
         </div>
       )}
     </div>
@@ -115,7 +115,7 @@ export default function AttendanceGrid({ students, lessons, attendanceMap, mode,
 
   if (!students.length) {
     return (
-      <div className="flex items-center justify-center py-20 text-slate-400 dark:text-slate-600 text-sm">
+      <div className="flex items-center justify-center py-20 text-foreground-subtle dark:text-foreground-subtle text-sm">
         O'quvchilar topilmadi
       </div>
     );
@@ -123,7 +123,7 @@ export default function AttendanceGrid({ students, lessons, attendanceMap, mode,
 
   if (!lessons.length) {
     return (
-      <div className="flex items-center justify-center py-20 text-slate-400 dark:text-slate-600 text-sm">
+      <div className="flex items-center justify-center py-20 text-foreground-subtle dark:text-foreground-subtle text-sm">
         Bu oyda dars mavjud emas
       </div>
     );
@@ -172,13 +172,13 @@ export default function AttendanceGrid({ students, lessons, attendanceMap, mode,
 
   return (
     <>
-      <div className="relative  overflow-auto rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900" style={{ maxHeight: "calc(100vh - 300px)" }}>
+      <div className="relative  overflow-auto rounded-xl border border-border-subtle bg-surface" style={{ maxHeight: "calc(100vh - 300px)" }}>
         <table className="w-full border-separate border-spacing-0 text-sm" style={{ minWidth: `${220 + lessons.length * 48}px` }}>
           <thead>
             <tr>
               {/* Corner cell */}
-              <th className="sticky top-0 left-0 z-30 bg-white dark:bg-slate-900 border-b border-r border-slate-100 dark:border-slate-800 w-[220px] min-w-[220px]">
-                <div className="px-4 py-3 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-left">
+              <th className="sticky top-0 left-0 z-30 bg-surface border-b border-r border-border-subtle w-[220px] min-w-[220px]">
+                <div className="px-4 py-3 text-[11px] font-semibold text-foreground-muted uppercase tracking-wider text-left">
                   O'quvchi
                 </div>
               </th>
@@ -187,8 +187,8 @@ export default function AttendanceGrid({ students, lessons, attendanceMap, mode,
                 <LessonHeader key={lesson.id} lesson={lesson} />
               ))}
               {/* Stat column header */}
-              <th className="sticky top-0 z-20 bg-white dark:bg-slate-900 border-b border-l border-slate-100 dark:border-slate-800 min-w-[52px] w-[52px] px-1 py-2">
-                <div className="text-[10px] text-center font-semibold text-slate-400 dark:text-slate-500 uppercase">Jami</div>
+              <th className="sticky top-0 z-20 bg-surface border-b border-l border-border-subtle min-w-[52px] w-[52px] px-1 py-2">
+                <div className="text-[10px] text-center font-semibold text-foreground-subtle dark:text-foreground-muted uppercase">Jami</div>
               </th>
             </tr>
           </thead>
@@ -197,13 +197,13 @@ export default function AttendanceGrid({ students, lessons, attendanceMap, mode,
             {students.map((student, si) => (
               <tr key={student.id} className="group/row">
                 {/* Sticky student name cell */}
-                <td className="sticky left-0 z-10 bg-white dark:bg-slate-900 border-b border-r border-slate-100 dark:border-slate-800 px-3 py-2 group-hover/row:bg-indigo-50/40 dark:group-hover/row:bg-indigo-950/10 transition-colors">
+                <td className="sticky left-0 z-10 bg-surface border-b border-r border-border-subtle px-3 py-2 group-hover/row:bg-primary-soft/30 transition-colors">
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-slate-400 dark:text-slate-600 font-medium w-4 shrink-0 text-right">{si + 1}</span>
+                    <span className="text-[11px] text-foreground-subtle dark:text-foreground-muted font-medium w-4 shrink-0 text-right">{si + 1}</span>
                     <Avatar name={student.name} />
                     <div className="min-w-0">
-                      <div className="text-[13px] font-semibold text-slate-900 dark:text-slate-100 truncate leading-tight">{student.name}</div>
-                      {student.phone && <div className="text-[10px] text-slate-400 truncate">{student.phone}</div>}
+                      <div className="text-[13px] font-semibold text-foreground truncate leading-tight">{student.name}</div>
+                      {student.phone && <div className="text-[10px] text-foreground-subtle truncate">{student.phone}</div>}
                     </div>
                   </div>
                 </td>
@@ -216,7 +216,7 @@ export default function AttendanceGrid({ students, lessons, attendanceMap, mode,
                   return (
                     <td
                       key={lesson.id}
-                      className={`border-b border-r border-slate-50 dark:border-slate-800/60 p-0 text-center transition-colors ${future ? "" : "group-hover/row:bg-indigo-50/20 dark:group-hover/row:bg-indigo-950/5"}`}
+                      className={`border-b border-r border-border-subtle/50 p-0 text-center transition-colors ${future ? "" : "group-hover/row:bg-primary-soft/20"}`}
                     >
                       <div className="flex items-center justify-center p-1">
                         <AttendanceCell
@@ -231,12 +231,12 @@ export default function AttendanceGrid({ students, lessons, attendanceMap, mode,
                 })}
 
                 {/* Stat cell */}
-                <td className="border-b border-l border-slate-100 dark:border-slate-800 px-1 py-2 text-center group-hover/row:bg-indigo-50/20 dark:group-hover/row:bg-indigo-950/5 transition-colors">
+                <td className="border-b border-l border-border-subtle px-1 py-2 text-center group-hover/row:bg-primary-soft/20 transition-colors">
                   {(() => {
                     const stat = studentStats(student);
-                    if (!stat) return <span className="text-[11px] text-slate-300 dark:text-slate-700">—</span>;
+                    if (!stat) return <span className="text-[11px] text-foreground-subtle">—</span>;
                     const num = parseInt(stat);
-                    const color = num >= 80 ? "text-emerald-600 dark:text-emerald-400" : num >= 60 ? "text-amber-600 dark:text-amber-400" : "text-rose-600 dark:text-rose-400";
+                    const color = num >= 80 ? "text-success" : num >= 60 ? "text-warning" : "text-danger";
                     return <span className={`text-[11px] font-bold ${color}`}>{stat}</span>;
                   })()}
                 </td>

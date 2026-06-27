@@ -11,7 +11,7 @@ function ChangeBadge({ value }: { value: number }) {
   const pos = value >= 0;
   const Icon = pos ? TrendingUp : TrendingDown;
   return (
-    <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold ${pos ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400"}`}>
+    <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold ${pos ? "bg-success-bg dark:bg-success/10 text-success" : "bg-danger-bg dark:bg-danger/10 text-danger"}`}>
       <Icon className="w-3 h-3" />
       {pos ? "+" : ""}{value.toFixed(1)}%
     </span>
@@ -29,23 +29,23 @@ function KpiCard({ icon, iconBg, label, value, unit, sub, change, loading }: {
   loading?: boolean;
 }) {
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-5">
+    <div className="bg-surface border border-border-subtle rounded-2xl p-5">
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}>
           {icon}
         </div>
         {change !== undefined && !loading && <ChangeBadge value={change} />}
       </div>
-      <p className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-1">{label}</p>
+      <p className="text-[11px] font-semibold text-foreground-subtle dark:text-foreground-muted uppercase tracking-wide mb-1">{label}</p>
       {loading ? (
-        <div className="h-7 w-32 bg-slate-100 dark:bg-slate-800 rounded animate-pulse" />
+        <div className="h-7 w-32 bg-hover rounded animate-pulse" />
       ) : (
         <div className="flex items-baseline gap-1">
-          <span className="text-2xl font-black text-slate-900 dark:text-slate-100">{value}</span>
-          {unit && <span className="text-sm font-semibold text-slate-400">{unit}</span>}
+          <span className="text-2xl font-black text-foreground">{value}</span>
+          {unit && <span className="text-sm font-semibold text-foreground-subtle">{unit}</span>}
         </div>
       )}
-      {sub && !loading && <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">{sub}</p>}
+      {sub && !loading && <p className="text-[11px] text-foreground-subtle dark:text-foreground-muted mt-1">{sub}</p>}
     </div>
   );
 }
@@ -65,8 +65,8 @@ export default function BranchKpiCards({ kpi, loading }: Props) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <KpiCard
-        icon={<Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />}
-        iconBg="bg-indigo-50 dark:bg-indigo-500/10"
+        icon={<Users className="w-5 h-5 text-primary" />}
+        iconBg="bg-primary-soft"
         label="Faol o'quvchilar"
         value={String(k.students_count)}
         sub="Jami ro'yxatdagi"
@@ -74,8 +74,8 @@ export default function BranchKpiCards({ kpi, loading }: Props) {
         loading={loading}
       />
       <KpiCard
-        icon={<Wallet className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />}
-        iconBg="bg-emerald-50 dark:bg-emerald-500/10"
+        icon={<Wallet className="w-5 h-5 text-success" />}
+        iconBg="bg-success-bg dark:bg-success/10"
         label="Daromad"
         value={formatCompact(k.monthly_revenue)}
         unit="UZS"
@@ -83,8 +83,8 @@ export default function BranchKpiCards({ kpi, loading }: Props) {
         loading={loading}
       />
       <KpiCard
-        icon={<AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />}
-        iconBg="bg-rose-50 dark:bg-rose-500/10"
+        icon={<AlertCircle className="w-5 h-5 text-danger" />}
+        iconBg="bg-danger-bg dark:bg-danger/10"
         label="Qarzdorlik"
         value={formatCompact(k.total_debt)}
         unit="UZS"
@@ -92,24 +92,24 @@ export default function BranchKpiCards({ kpi, loading }: Props) {
         loading={loading}
       />
       <KpiCard
-        icon={<ClipboardCheck className="w-5 h-5 text-amber-600 dark:text-amber-400" />}
-        iconBg="bg-amber-50 dark:bg-amber-500/10"
+        icon={<ClipboardCheck className="w-5 h-5 text-warning" />}
+        iconBg="bg-warning-bg dark:bg-warning-bg0/10"
         label="O'rtacha davomat"
         value={`${k.avg_attendance}%`}
         sub={k.min_attendance_group ? `Eng past: ${k.min_attendance_group}` : undefined}
         loading={loading}
       />
       <KpiCard
-        icon={<GraduationCap className="w-5 h-5 text-violet-600 dark:text-violet-400" />}
-        iconBg="bg-violet-50 dark:bg-violet-500/10"
+        icon={<GraduationCap className="w-5 h-5 text-primary" />}
+        iconBg="bg-primary-soft"
         label="O'qituvchilar"
         value={String(k.teachers_count)}
         sub={`${k.groups_count} ta guruh`}
         loading={loading}
       />
       <KpiCard
-        icon={<BookOpen className="w-5 h-5 text-sky-600 dark:text-sky-400" />}
-        iconBg="bg-sky-50 dark:bg-sky-500/10"
+        icon={<BookOpen className="w-5 h-5 text-foreground-muted" />}
+        iconBg="bg-hover"
         label="Faol guruhlar"
         value={String(k.active_groups)}
         sub={`O'rtacha to'ldirilish: ${k.avg_fill_percent}%`}

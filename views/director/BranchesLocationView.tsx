@@ -327,7 +327,7 @@ export default function BranchesLocationView() {
         <button
           type="button"
           onClick={() => refetch()}
-          className="h-10 px-4 rounded-lg bg-slate-900 dark:bg-surface text-white dark:text-foreground text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-60"
+          className="h-10 px-4 rounded-lg bg-surface-raised dark:bg-surface text-white dark:text-foreground text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-60"
           disabled={isLoading}
         >
           Yangilash
@@ -348,7 +348,7 @@ export default function BranchesLocationView() {
           {(isError || mapError) && !isLoading && (
             <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-hover  px-6 text-center">
               <AlertCircle className="w-10 h-10 text-danger mb-3" />
-              <p className="text-sm font-bold text-slate-800 ">
+              <p className="text-sm font-bold text-foreground ">
                 {mapError || "Filiallarni yuklashda xatolik yuz berdi"}
               </p>
               <button
@@ -399,8 +399,8 @@ export default function BranchesLocationView() {
                   onClick={() => focusBranch(branch)}
                   className={`rounded-xl border bg-surface p-4 transition-all cursor-pointer ${
                     isSelected
-                      ? "border-indigo-400 dark:border-indigo-500 shadow-md shadow-indigo-500/10"
-                      : "border-border hover:border-indigo-300 dark:hover:border-indigo-700"
+                      ? "border-primary shadow-md shadow-primary/10"
+                      : "border-border hover:border-primary/40"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -423,8 +423,8 @@ export default function BranchesLocationView() {
                           <span
                             className={`w-2 h-2 rounded-full shrink-0 ${
                               branch.status === "active"
-                                ? "bg-emerald-500"
-                                : "bg-rose-500"
+                                ? "bg-success"
+                                : "bg-danger"
                             }`}
                           />
                         </div>
@@ -453,7 +453,7 @@ export default function BranchesLocationView() {
                         className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                           coords
                             ? "bg-hover  text-foreground-muted hover:text-primary hover:bg-primary-soft "
-                            : "bg-hover  text-slate-300 pointer-events-none"
+                            : "bg-hover  text-foreground-subtle pointer-events-none"
                         }`}
                         aria-label="Yandex Maps"
                       >
@@ -472,7 +472,7 @@ export default function BranchesLocationView() {
                         className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                           coords
                             ? "bg-hover  text-foreground-muted hover:text-primary hover:bg-primary-soft "
-                            : "bg-hover  text-slate-300 pointer-events-none"
+                            : "bg-hover  text-foreground-subtle pointer-events-none"
                         }`}
                         aria-label="Google Maps"
                       >
@@ -488,12 +488,12 @@ export default function BranchesLocationView() {
                     </div>
 
                     <div className="flex items-center gap-1.5 text-xs text-foreground-muted">
-                      <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
+                      <GraduationCap className="w-3.5 h-3.5 text-success" />
                       <span>{branch.stats?.teachers_count ?? 0}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5 text-xs text-foreground-muted">
-                      <DoorOpen className="w-3.5 h-3.5 text-amber-400" />
+                      <DoorOpen className="w-3.5 h-3.5 text-warning" />
                       <span>{branch.stats?.rooms_count ?? 0}</span>
                     </div>
                   </div>
@@ -502,7 +502,7 @@ export default function BranchesLocationView() {
             })
           ) : (
             <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center">
-              <MapPin className="w-10 h-10 text-slate-300 dark:text-foreground-muted mx-auto mb-3" />
+              <MapPin className="w-10 h-10 text-foreground-muted mx-auto mb-3" />
               <p className="text-sm font-bold text-foreground">
                 Filiallar topilmadi
               </p>

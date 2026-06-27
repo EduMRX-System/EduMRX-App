@@ -20,7 +20,7 @@ export default function AppearanceModal({ onClose }: { onClose: () => void }) {
   return (
     <ModalShell
       icon={<Contrast className="w-7 h-7" />}
-      iconBg="bg-emerald-500"
+      iconBg="bg-success-bg0"
       title={t("director.profile.appearance.modal_title")}
       desc={t("director.profile.appearance.modal_desc")}
       onClose={onClose}
@@ -28,7 +28,7 @@ export default function AppearanceModal({ onClose }: { onClose: () => void }) {
         <>
           <button
             onClick={onClose}
-            className="px-5 h-11 rounded-xl bg-slate-100  text-foreground text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="px-5 h-11 rounded-xl bg-hover text-foreground text-sm font-bold hover:bg-border transition-colors"
           >
             {t("common.cancel")}
           </button>
@@ -51,7 +51,7 @@ export default function AppearanceModal({ onClose }: { onClose: () => void }) {
               className={`relative p-3 rounded-2xl border-2 transition-all ${
                 active
                   ? "border-primary bg-primary-soft/50"
-                  : "border-border hover:border-slate-300 dark:hover:border-slate-700"
+                  : "border-border hover:border-border-subtle"
               }`}
             >
               {/* Mini preview */}

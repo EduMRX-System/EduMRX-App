@@ -44,7 +44,7 @@ export default function RoomRow({ room, onEdit, onDelete }: Props) {
                     </button>
                     <button
                         onClick={() => onDelete(room)}
-                        className="rounded-lg p-2 text-foreground-subtle transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
+                        className="rounded-lg p-2 text-foreground-subtle transition hover:bg-danger-bg hover:text-danger dark:hover:bg-danger-bg0/10 dark:hover:text-danger"
                         title={t("common.delete")}
                     >
                         <Trash2 className="h-4 w-4" />

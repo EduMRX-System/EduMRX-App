@@ -35,14 +35,14 @@ function ScopeDropdown({
     }, [open]);
 
     if (loading) {
-        return <div className="h-8 w-28 rounded-lg bg-slate-100  animate-pulse" />;
+        return <div className="h-8 w-28 rounded-lg bg-hover animate-pulse" />;
     }
 
     const selected = options.find((o) => o.id === value);
 
     if (disabled || options.length <= 1) {
         return (
-            <div className="flex items-center gap-1.5 px-2.5 h-8 rounded-lg bg-slate-50 /60 border border-border text-xs font-semibold text-foreground-muted">
+            <div className="flex items-center gap-1.5 px-2.5 h-8 rounded-lg bg-hover/60 border border-border text-xs font-semibold text-foreground-muted">
                 <Icon className="w-3.5 h-3.5 shrink-0 text-primary" />
                 <span className="max-w-[120px] truncate">{selected?.name ?? label}</span>
             </div>
@@ -56,7 +56,7 @@ function ScopeDropdown({
                 className={`flex items-center gap-1.5 px-2.5 h-8 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${
                     open
                         ? "bg-primary-soft border-primary/40 text-primary"
-                        : "bg-surface border-border text-foreground hover:border-indigo-300 dark:hover:border-primary hover:text-primary "
+                        : "bg-surface border-border text-foreground hover:border-primary/40 hover:text-primary "
                 }`}
             >
                 <Icon className="w-3.5 h-3.5 shrink-0 text-primary" />
@@ -107,8 +107,8 @@ export default function ScopeSelector() {
     if (isCentersLoading && !activeCenter) {
         return (
             <div className="flex items-center gap-1.5">
-                <div className="h-8 w-28 rounded-lg bg-slate-100  animate-pulse" />
-                <div className="h-8 w-24 rounded-lg bg-slate-100  animate-pulse" />
+                <div className="h-8 w-28 rounded-lg bg-hover animate-pulse" />
+                <div className="h-8 w-24 rounded-lg bg-hover animate-pulse" />
             </div>
         );
     }

@@ -233,15 +233,15 @@ export default function ToolsWidget() {
 
   // Calc button styles
   const base = "flex items-center justify-center h-[52px] rounded-xl text-[15px] font-semibold transition-all duration-100 active:scale-95 select-none cursor-pointer";
-  const btnNum = `${base} bg-surface text-foreground border border-border hover:bg-surface-raised dark:hover:bg-slate-700`;
+  const btnNum = `${base} bg-surface text-foreground border border-border hover:bg-surface-raised dark:hover:bg-surface-raised`;
   const btnOp = (active: boolean) =>
     `${base} border ${
       active
         ? "bg-primary text-primary-fg border-primary"
         : "bg-primary-soft text-primary border-primary/30 hover:bg-primary-soft "
     }`;
-  const btnAction = `${base} bg-hover text-foreground-muted border border-border hover:bg-border dark:hover:bg-slate-600`;
-  const btnEquals = `${base} bg-primary hover:bg-primary-hover active:bg-indigo-800 text-white border border-primary`;
+  const btnAction = `${base} bg-hover text-foreground-muted border border-border hover:bg-border dark:hover:bg-hover`;
+  const btnEquals = `${base} bg-primary hover:bg-primary-hover active:bg-primary-hover text-primary-fg border border-primary`;
   const showAC = calc.display === "0" && !calc.operand1 && !calc.history;
 
   const TABS: Tab[] = ["calculator", "calendar"];
@@ -265,8 +265,8 @@ export default function ToolsWidget() {
                   onClick={() => setTab(tabName)}
                   className={`flex items-center gap-1.5 px-3 py-2.5 text-[13px] font-semibold rounded-t-lg transition-colors cursor-pointer ${
                     tab === tabName
-                      ? "text-primary border-b-2 border-primary dark:border-indigo-400 -mb-px"
-                      : "text-foreground-subtle hover:text-foreground dark:hover:text-slate-200"
+                      ? "text-primary border-b-2 border-primary -mb-px"
+                      : "text-foreground-subtle hover:text-foreground dark:hover:text-foreground"
                   }`}
                 >
                   {tabName === "calculator"
@@ -277,7 +277,7 @@ export default function ToolsWidget() {
               ))}
               <button
                 onClick={() => setIsOpen(false)}
-                className="ml-auto mr-1.5 p-1.5 rounded-lg text-foreground-subtle hover:text-foreground-muted dark:hover:text-slate-200 hover:bg-hover transition-colors cursor-pointer"
+                className="ml-auto mr-1.5 p-1.5 rounded-lg text-foreground-subtle hover:text-foreground-muted dark:hover:text-foreground hover:bg-hover transition-colors cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -441,7 +441,7 @@ export default function ToolsWidget() {
           className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-lg border transition-all duration-150 cursor-pointer ${
             isOpen && tab === "calculator"
               ? "bg-primary border-primary text-white"
-              : "bg-surface border-border text-foreground-muted hover:border-indigo-400 hover:text-primary "
+              : "bg-surface border-border text-foreground-muted hover:border-primary/60 hover:text-primary "
           }`}
         >
           <Calculator className="w-5 h-5" />
@@ -452,7 +452,7 @@ export default function ToolsWidget() {
           className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-lg border transition-all duration-150 cursor-pointer ${
             isOpen && tab === "calendar"
               ? "bg-primary border-primary text-white"
-              : "bg-surface border-border text-foreground-muted hover:border-indigo-400 hover:text-primary "
+              : "bg-surface border-border text-foreground-muted hover:border-primary/60 hover:text-primary "
           }`}
         >
           <CalendarDays className="w-5 h-5" />

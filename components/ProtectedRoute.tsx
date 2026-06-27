@@ -102,9 +102,9 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
     // Yuklash / tekshirish / redirect davomida — loader ko'rsatamiz (kontent "miltillamasligi" uchun)
     if (!isInitialized || redirecting || isWrongPanel) {
         return (
-            <div className="relative flex h-screen w-full flex-col items-center justify-center bg-white dark:bg-slate-950 overflow-hidden transition-colors duration-300">
+            <div className="relative flex h-screen w-full flex-col items-center justify-center bg-surface overflow-hidden transition-colors duration-300">
                 {/* Ambient glow */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] bg-indigo-500/[0.08] dark:bg-indigo-500/[0.12] blur-3xl rounded-full" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] bg-primary/8 blur-3xl rounded-full" />
 
                 {/* Subtle grid */}
                 <div
@@ -123,17 +123,17 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
                         <svg viewBox="0 0 180 180" className="absolute inset-0 w-full h-full">
                             <defs>
                                 <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#6366f1" />
-                                    <stop offset="100%" stopColor="#8b5cf6" />
+                                    <stop offset="0%" stopColor="#b8860b" />
+                                    <stop offset="100%" stopColor="#b8860b" />
                                 </linearGradient>
                                 <linearGradient id="scan-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="#6366f1" stopOpacity="0" />
-                                    <stop offset="50%" stopColor="#6366f1" stopOpacity="0.7" />
-                                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+                                    <stop offset="0%" stopColor="#b8860b" stopOpacity="0" />
+                                    <stop offset="50%" stopColor="#b8860b" stopOpacity="0.7" />
+                                    <stop offset="100%" stopColor="#b8860b" stopOpacity="0" />
                                 </linearGradient>
                                 <radialGradient id="core-glow">
-                                    <stop offset="0%" stopColor="#6366f1" stopOpacity="0.35" />
-                                    <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
+                                    <stop offset="0%" stopColor="#b8860b" stopOpacity="0.35" />
+                                    <stop offset="100%" stopColor="#b8860b" stopOpacity="0" />
                                 </radialGradient>
                             </defs>
 
@@ -168,19 +168,19 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
                             {/* Inner ring — clockwise faster */}
                             <circle
                                 cx="90" cy="90" r="50"
-                                fill="none" stroke="#6366f1" strokeWidth="1.5"
+                                fill="none" stroke="#b8860b" strokeWidth="1.5"
                                 strokeDasharray="2 6" opacity="0.4"
                                 style={{ transformOrigin: "90px 90px", animation: "spin-cw 4s linear infinite" }}
                             />
 
                             {/* Orbiting nodes */}
                             <g style={{ transformOrigin: "90px 90px", animation: "spin-cw 5s linear infinite" }}>
-                                <circle cx="90" cy="12" r="3" fill="#8b5cf6">
+                                <circle cx="90" cy="12" r="3" fill="#b8860b">
                                     <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" />
                                 </circle>
                             </g>
                             <g style={{ transformOrigin: "90px 90px", animation: "spin-ccw 7s linear infinite" }}>
-                                <circle cx="90" cy="26" r="2.5" fill="#6366f1">
+                                <circle cx="90" cy="26" r="2.5" fill="#b8860b">
                                     <animate attributeName="opacity" values="1;0.3;1" dur="1.8s" repeatCount="indefinite" />
                                 </circle>
                             </g>
@@ -189,10 +189,10 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
                         {/* Center shield badge */}
                         <div className="relative w-[68px] h-[68px]">
                             {/* Pulse rings behind badge */}
-                            <span className="absolute inset-0 rounded-[20px] bg-indigo-500/25 animate-ping" style={{ animationDuration: "2s" }} />
+                            <span className="absolute inset-0 rounded-[20px] bg-primary/25 animate-ping" style={{ animationDuration: "2s" }} />
 
                             {/* Badge with scan effect */}
-                            <div className="relative w-[68px] h-[68px] rounded-[20px] bg-gradient-to-br from-indigo-600 to-violet-700 flex items-center justify-center shadow-xl shadow-indigo-500/40 overflow-hidden">
+                            <div className="relative w-[68px] h-[68px] rounded-[20px] bg-primary flex items-center justify-center shadow-xl shadow-primary/40 overflow-hidden">
                                 <Image src={LogoIcons.icon192} alt="EduMRX - mini logo" />
 
                                 {/* Scan line sweeping across badge */}
@@ -201,10 +201,10 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
 
                             {/* Check seal — appears with pop */}
                             <div
-                                className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-white dark:bg-slate-950 flex items-center justify-center shadow-lg"
+                                className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-surface flex items-center justify-center shadow-lg"
                                 style={{ animation: "seal-pop 2.6s ease-in-out infinite" }}
                             >
-                                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="#059669" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M20 6L9 17l-5-5">
                                         <animate attributeName="stroke-dasharray" values="0 24;24 24" dur="0.6s" begin="0.4s" fill="freeze" />
                                     </path>
@@ -214,7 +214,7 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
                     </div>
 
                     {/* Brand name */}
-                    <p className="mt-8 text-lg font-black text-slate-900 dark:text-white tracking-tight">
+                    <p className="mt-8 text-lg font-black text-foreground tracking-tight">
                         EduMRX
                     </p>
 
@@ -222,7 +222,7 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
                     <div className="mt-2 h-5 overflow-hidden relative">
                         <p
                             key={msgIndex}
-                            className="text-[13px] font-medium text-slate-500 dark:text-slate-400 text-center"
+                            className="text-[13px] font-medium text-foreground-muted text-center"
                             style={{ animation: "msg-in 0.4s ease-out" }}
                         >
                             {redirecting ? "Panelingizga yo'naltirilmoqda" : messages[msgIndex]}
@@ -235,8 +235,8 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
                             <span
                                 key={i}
                                 className={`h-1.5 rounded-full transition-all duration-500 ${i === msgIndex
-                                    ? "w-7 bg-gradient-to-r from-indigo-500 to-violet-500"
-                                    : "w-1.5 bg-slate-200 dark:bg-slate-700"
+                                    ? "w-7 bg-primary"
+                                    : "w-1.5 bg-border"
                                     }`}
                             />
                         ))}

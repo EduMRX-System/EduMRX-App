@@ -65,7 +65,7 @@ export default function PasswordModal({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="px-5 h-11 rounded-xl bg-slate-100  text-foreground text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="px-5 h-11 rounded-xl bg-hover text-foreground text-sm font-bold hover:bg-border transition-colors"
           >
             {t("common.cancel")}
           </button>
@@ -135,14 +135,14 @@ function Field({
           type={show ? "text" : "password"}
           placeholder={placeholder}
           className={`w-full h-11 px-3.5 pr-11 rounded-xl text-sm outline-none transition-all
-            bg-slate-50  text-foreground placeholder:text-foreground-subtle
-            border ${error ? "border-red-500/60 focus:border-red-500" : "border-border focus:border-indigo-500"}`}
+            bg-layout text-foreground placeholder:text-foreground-subtle
+            border ${error ? "border-danger/60 focus:border-danger" : "border-border focus:border-primary"}`}
         />
         {toggle && (
           <button
             type="button"
             onClick={toggle}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-slate-600 dark:hover:text-slate-300"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-foreground-muted"
           >
             {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>

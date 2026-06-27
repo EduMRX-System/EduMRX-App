@@ -53,7 +53,7 @@ const PhoneInput = ({ value, onChange, error }: PhoneInputProps) => {
                     required
                 />
             </div>
-            {error && <p className="text-red-400 dark:text-red-500 text-[11px] mt-1">{error}</p>}
+            {error && <p className="text-red-400 dark:text-danger text-[11px] mt-1">{error}</p>}
         </div>
     );
 };
@@ -104,8 +104,8 @@ function loadYandexMaps(): Promise<void> {
 // STATUS OPTIONS
 // ═════════════════════════════════════════════════════════════════
 const STATUS_OPTIONS: { value: BranchStatus; label: string; color: string }[] = [
-    { value: "active", label: "Faol", color: "bg-emerald-500" },
-    { value: "inactive", label: "Nofaol", color: "bg-rose-500" },
+    { value: "active", label: "Faol", color: "bg-success-bg0" },
+    { value: "inactive", label: "Nofaol", color: "bg-danger-bg0" },
 ];
 
 interface BranchFormModalProps {
@@ -421,7 +421,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                                                 onClick={() => { setFormData(prev => ({ ...prev, status: option.value })); setIsStatusOpen(false); }}
                                                 className={`px-3 py-2.5 text-sm cursor-pointer transition-colors flex items-center justify-between ${isSelected
                                                     ? "bg-primary-soft text-primary font-medium"
-                                                    : "text-foreground hover:bg-hover hover:text-slate-900 dark:hover:text-slate-100"
+                                                    : "text-foreground hover:bg-hover hover:text-foreground"
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -439,7 +439,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
 
                     {/* Yandex Map + manzil */}
                     <div>
-                        <label className="text-[14px] text-slate-600  mb-1 font-semibold flex items-center gap-1.5">
+                        <label className="text-[14px] text-foreground-muted mb-1 font-semibold flex items-center gap-1.5">
                             <MapPin className="w-3.5 h-3.5 text-primary" />
                             {t("director.branches.form.address_label")}
                         </label>
@@ -483,7 +483,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                             {(mapLoading || mapError) && (
                                 <div className="absolute inset-0 z-10 bg-hover flex flex-col items-center justify-center gap-2">
                                     {mapError
-                                        ? <span className="text-xs text-red-500 font-semibold">{t("director.branches.form.map_error")}</span>
+                                        ? <span className="text-xs text-danger font-semibold">{t("director.branches.form.map_error")}</span>
                                         : <Loader2 className="w-6 h-6 text-primary animate-spin" />}
                                 </div>
                             )}

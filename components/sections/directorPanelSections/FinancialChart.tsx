@@ -63,7 +63,7 @@ export default function FinancialTrendChart() {
                         <span className="text-sm font-bold text-primary">3324M UZS</span>
                     </div>
 
-                    <button className="flex items-center gap-2 bg-slate-50 /50 border border-border px-3 py-2 rounded-xl text-foreground-muted hover:bg-hover transition-colors cursor-pointer">
+                    <button className="flex items-center gap-2 bg-hover/50 border border-border px-3 py-2 rounded-xl text-foreground-muted hover:bg-hover transition-colors cursor-pointer">
                         <Calendar className="w-4 h-4 text-primary" />
                         <span className="text-sm font-semibold">{t("director.dashboard.chart.months_12")}</span>
                         <ChevronDown className="w-4 h-4 text-foreground-subtle" />
@@ -98,7 +98,7 @@ export default function FinancialTrendChart() {
                             </linearGradient>
                         </defs>
 
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-100 dark:stroke-slate-800" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
 
                         <XAxis
                             dataKey="name"

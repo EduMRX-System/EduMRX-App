@@ -21,7 +21,7 @@ export default function ManagerRow({ manager, onEdit, onDelete }: Props) {
             {/* Manager */}
             <td className="py-4 px-5">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-slate-100  border border-border flex items-center justify-center overflow-hidden shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-hover border border-border flex items-center justify-center overflow-hidden shrink-0">
                         {u.avatar ? (
                             <Image src={u.avatar} alt={u.full_name} width={40} height={40} className="w-full h-full object-cover" />
                         ) : (

@@ -41,7 +41,7 @@ export default function ManagerNav({ onNavigate }: NavProps) {
 
   return (
     <aside
-      className={`h-full flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 ${
+      className={`h-full flex flex-col bg-surface border-r border-border transition-all duration-300 ${
         collapsed ? "w-20" : "w-64"
       }`}
     >
@@ -62,7 +62,7 @@ export default function ManagerNav({ onNavigate }: NavProps) {
 
         <button
           onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
-          className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-all duration-200 cursor-pointer shrink-0"
+          className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-border text-foreground-muted hover:bg-hover dark:hover:bg-surface-raised hover:text-foreground transition-all duration-200 cursor-pointer shrink-0"
           title={collapsed ? t("manager.nav.expand") : t("manager.nav.collapse")}
         >
           {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
@@ -74,7 +74,7 @@ export default function ManagerNav({ onNavigate }: NavProps) {
           ? managerMenu.map((entry, i) =>
               isGroup(entry) ? (
                 <Fragment key={entry.title}>
-                  {i > 0 && <div className="my-2 mx-3 border-t border-slate-100 dark:border-slate-800" />}
+                  {i > 0 && <div className="my-2 mx-3 border-t border-border-subtle" />}
                   {entry.children.map((c) => (
                     <NavItemLink key={c.href} item={c} active={isActive(c.href)} collapsed onNavigate={onNavigate} />
                   ))}
@@ -129,8 +129,8 @@ function NavItemLink({
         ${collapsed ? "mx-2 px-0 py-3 justify-center" : nested ? "mx-3 pl-11 pr-4 py-2.5 gap-3" : "mx-3 px-4 py-3 gap-4"}
         ${
           active
-            ? "bg-[#4F46E5] text-white shadow-sm shadow-indigo-500/20"
-            : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+            ? "bg-primary text-primary-fg shadow-sm shadow-primary/20"
+            : "text-foreground-muted hover:bg-hover dark:hover:bg-surface-raised"
         }
       `}
     >
@@ -143,9 +143,9 @@ function NavItemLink({
       )}
 
       {collapsed && (
-        <div className="absolute left-full ml-2 px-3 py-1.5 bg-slate-900 dark:bg-slate-700 text-white text-xs font-medium rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[9999] whitespace-nowrap pointer-events-none">
+        <div className="absolute left-full ml-2 px-3 py-1.5 bg-surface-raised border border-border text-foreground text-xs font-medium rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[9999] whitespace-nowrap pointer-events-none">
           {t(item.title)}
-          <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-slate-900 dark:bg-slate-700 rotate-45" />
+          <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-surface-raised rotate-45" />
         </div>
       )}
     </Link>
@@ -179,14 +179,14 @@ function GroupItem({
           transition-all w-[90%] duration-200 text-sm font-medium mx-3 px-4 py-3 gap-4
           ${
             hasActiveChild && !open
-              ? "text-[#4F46E5] dark:text-indigo-400"
-              : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+              ? "text-[#4F46E5] dark:text-primary"
+              : "text-foreground-muted hover:bg-hover dark:hover:bg-surface-raised"
           }
         `}
       >
         <Icon className="w-5 h-5 shrink-0 opacity-70 group-hover:opacity-100" />
         <span className="flex-1 text-left whitespace-nowrap">{t(group.title)}</span>
-        <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-4 h-4 shrink-0 text-foreground-subtle transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
 
       <div className={`grid transition-[grid-template-rows] duration-200 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>

@@ -8,7 +8,7 @@ function StatusBadge({ status }: { status: Group["status"] }) {
     const { t } = useTranslation();
     const opt = STATUS_OPTIONS.find((o) => o.value === status) ?? STATUS_OPTIONS[0];
     return (
-        <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium bg-slate-50 text-slate-600  ">
+        <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium bg-hover text-foreground-muted">
             <span className={`h-1.5 w-1.5 rounded-full ${opt.color}`} />
             {status === "active" ? t("common.active") : t("common.inactive")}
         </span>
@@ -78,7 +78,7 @@ export default function GroupItem({ group, onEdit, onDelete }: Props) {
                     </button>
                     <button
                         onClick={() => onDelete(group)}
-                        className="rounded-lg p-2 text-foreground-subtle transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
+                        className="rounded-lg p-2 text-foreground-subtle transition hover:bg-danger-bg hover:text-danger dark:hover:bg-danger/10 dark:hover:text-danger"
                         title={t("common.delete")}
                     >
                         <Trash2 className="h-4 w-4" />

@@ -71,10 +71,10 @@ export default function ProfileView() {
       {/* ─── PROFILE CARD (bosilganda → detail) ─── */}
       <button
         onClick={() => router.push("/profile/details")}
-        className="group w-full flex items-center gap-4 p-4 rounded-2xl bg-surface border border-border hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors text-left"
+        className="group w-full flex items-center gap-4 p-4 rounded-2xl bg-surface border border-border hover:border-primary/40 transition-colors text-left"
       >
         <div className="relative shrink-0">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center overflow-hidden">
+          <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center overflow-hidden">
             {profile.avatar ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={profile.avatar} alt="avatar" className="w-full h-full object-cover" />
@@ -96,14 +96,14 @@ export default function ProfileView() {
           </p>
         </div>
 
-        <ChevronRight className="w-5 h-5 text-slate-300 dark:text-foreground-muted group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+        <ChevronRight className="w-5 h-5 text-foreground-muted group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
       </button>
 
       {/* ─── SOZLAMALAR GURUHI ─── */}
-      <div className="rounded-2xl bg-surface border border-border overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+      <div className="rounded-2xl bg-surface border border-border overflow-hidden divide-y divide-border-subtle dark:divide-border">
         <SettingRow
           icon={<Contrast className="w-5 h-5" />}
-          iconBg="bg-emerald-500"
+          iconBg="bg-success"
           title={t("director.profile.appearance.title")}
           desc={t("director.profile.appearance.desc")}
           value={theme === "dark" ? t("director.profile.appearance.current_dark") : t("director.profile.appearance.current_light")}
@@ -131,7 +131,7 @@ export default function ProfileView() {
       <div className="rounded-2xl bg-surface border border-border overflow-hidden">
         <SettingRow
           icon={<MapPin className="w-5 h-5" />}
-          iconBg="bg-rose-500"
+          iconBg="bg-danger"
           title={t("director.profile.locations.title")}
           desc={t("director.profile.locations.desc")}
           onClick={() => router.push("/profile/locations")}
@@ -197,7 +197,7 @@ function SettingRow({
   return (
     <button
       onClick={onClick}
-      className="group w-full flex items-center gap-4 p-4 hover:bg-surface-raised dark:hover:bg-slate-800/50 transition-colors text-left"
+      className="group w-full flex items-center gap-4 p-4 hover:bg-surface-raised dark:hover:bg-hover transition-colors text-left"
     >
       <span className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center text-white shrink-0`}>
         {icon}
@@ -211,7 +211,7 @@ function SettingRow({
           {value}
         </span>
       )}
-      <ChevronRight className="w-5 h-5 text-slate-300 dark:text-foreground-muted group-hover:text-foreground-muted shrink-0" />
+      <ChevronRight className="w-5 h-5 text-foreground-muted group-hover:text-foreground-muted shrink-0" />
     </button>
   );
 } 

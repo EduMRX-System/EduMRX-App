@@ -52,7 +52,7 @@ export default function LeftComponent({
 
           <button
             onClick={() => setSidebarCollapsed(!collapsed)}
-            className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-border text-foreground-muted hover:bg-hover hover:text-slate-700 dark:hover:text-slate-200 transition-all duration-200 cursor-pointer shrink-0"
+            className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-border text-foreground-muted hover:bg-hover hover:text-foreground transition-all duration-200 cursor-pointer shrink-0"
             title={collapsed ? "Expand" : "Collapse"}
           >
             {collapsed ? (

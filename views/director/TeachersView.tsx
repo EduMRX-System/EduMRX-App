@@ -48,7 +48,7 @@ export default function TeachersView() {
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                     placeholder={t("director.teachers.search_placeholder")}
-                    className="w-full rounded-lg border border-border bg-surface py-2.5 pl-9 pr-3 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20   "
+                    className="w-full rounded-lg border border-border bg-surface py-2.5 pl-9 pr-3 text-sm text-foreground outline-none transition placeholder:text-foreground-subtle focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
             </div>
 
@@ -65,7 +65,7 @@ export default function TeachersView() {
                                 <th className="py-3.5 px-5 text-right font-semibold">{t("director.teachers.table.actions")}</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                        <tbody className="divide-y divide-border-subtle dark:divide-border">
                             {isLoading ? (
                                 <tr>
                                     <td colSpan={5} className="py-16 text-center">
@@ -77,13 +77,13 @@ export default function TeachersView() {
                                 <tr>
                                     <td colSpan={5} className="py-12 text-center">
                                         <AlertCircle className="mx-auto h-9 w-9 text-danger" />
-                                        <p className="mt-2 text-sm font-semibold text-rose-600">{t("common.error_failed")}</p>
+                                        <p className="mt-2 text-sm font-semibold text-danger">{t("common.error_failed")}</p>
                                     </td>
                                 </tr>
                             ) : teachers.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="py-16 text-center">
-                                        <GraduationCap className="mx-auto mb-3 h-10 w-10 text-slate-300 dark:text-foreground-muted" />
+                                        <GraduationCap className="mx-auto mb-3 h-10 w-10 text-foreground-muted" />
                                         <p className="text-sm font-medium text-foreground-muted">{t("director.teachers.empty.title")}</p>
                                         <p className="mt-1 text-sm text-foreground-subtle">{t("director.teachers.empty.desc")}</p>
                                     </td>
@@ -108,14 +108,14 @@ export default function TeachersView() {
                             <button
                                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                                 disabled={!data?.previous}
-                                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800"
+                                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-hover"
                             >
                                 <ChevronLeft className="h-4 w-4" /> {t("common.prev")}
                             </button>
                             <button
                                 onClick={() => setPage((p) => p + 1)}
                                 disabled={!data?.next}
-                                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-slate-800"
+                                className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground-muted transition hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-40   dark:hover:bg-hover"
                             >
                                 {t("common.next")} <ChevronRight className="h-4 w-4" />
                             </button>

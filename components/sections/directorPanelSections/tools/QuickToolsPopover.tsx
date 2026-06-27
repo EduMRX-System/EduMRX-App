@@ -280,14 +280,14 @@ export default function QuickToolsPopover() {
     "w-full bg-surface border border-border " +
     "rounded-lg px-3 py-2.5 text-[13px] text-foreground " +
     "placeholder:text-foreground-subtle dark:placeholder:text-foreground-muted outline-none " +
-    "focus:border-primary dark:focus:border-indigo-500 focus:ring-2 " +
-    "focus:ring-indigo-100 dark:focus:ring-indigo-900/30 transition-colors";
+    "focus:border-primary dark:focus:border-primary focus:ring-2 " +
+    "focus:ring-primary-ring/50 transition-colors";
 
   const selectCls =
     "flex-1 bg-surface border border-border " +
     "rounded-lg px-3 py-2.5 text-[13px] font-semibold text-foreground " +
-    "outline-none focus:border-primary dark:focus:border-indigo-500 " +
-    "focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 transition-colors cursor-pointer";
+    "outline-none focus:border-primary dark:focus:border-primary " +
+    "focus:ring-2 focus:ring-primary-ring/50 transition-colors cursor-pointer";
 
   const panelCls = isMobile
     ? "fixed bottom-0 inset-x-0 z-[71] bg-surface rounded-t-2xl shadow-2xl flex flex-col max-h-[88vh]"
@@ -355,8 +355,8 @@ export default function QuickToolsPopover() {
                     onClick={() => setTab(id)}
                     className={`flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:justify-start px-3 h-11 text-[12px] font-semibold transition-colors cursor-pointer border-b-2 -mb-px whitespace-nowrap ${
                       tab === id
-                        ? "text-primary border-primary dark:border-indigo-400"
-                        : "text-foreground-subtle border-transparent hover:text-foreground dark:hover:text-slate-300"
+                        ? "text-primary border-primary"
+                        : "text-foreground-subtle border-transparent hover:text-foreground dark:hover:text-foreground-subtle"
                     }`}
                   >
                     {icon}
@@ -370,7 +370,7 @@ export default function QuickToolsPopover() {
                 ))}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="ml-auto mr-1.5 p-2 rounded-lg text-foreground-subtle hover:text-foreground-muted dark:hover:text-slate-200 hover:bg-hover transition-colors cursor-pointer shrink-0"
+                  className="ml-auto mr-1.5 p-2 rounded-lg text-foreground-subtle hover:text-foreground-muted dark:hover:text-foreground hover:bg-hover transition-colors cursor-pointer shrink-0"
                   aria-label="Close"
                 >
                   <X className="w-4 h-4" />
@@ -396,14 +396,14 @@ export default function QuickToolsPopover() {
                           rows={3}
                           className={`${inputCls} resize-none pr-10`}
                         />
-                        <span className="absolute bottom-2.5 right-2.5 text-[10px] text-slate-300 dark:text-foreground-muted pointer-events-none">
+                        <span className="absolute bottom-2.5 right-2.5 text-[10px] text-foreground-muted pointer-events-none">
                           {noteInput.length}/300
                         </span>
                       </div>
                       <button
                         onClick={addNote}
                         disabled={!noteInput.trim()}
-                        className="w-full h-9 bg-primary hover:bg-primary-hover active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[12px] font-semibold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                        className="w-full h-9 bg-primary hover:bg-primary-hover active:bg-primary-hover disabled:opacity-40 disabled:cursor-not-allowed text-primary-fg text-[12px] font-semibold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         {t("director.tools.notes_add")}
@@ -454,7 +454,7 @@ export default function QuickToolsPopover() {
                             </p>
                             <button
                               onClick={() => deleteNote(note.id)}
-                              className="shrink-0 mt-0.5 p-1.5 rounded-md text-slate-300 dark:text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
+                              className="shrink-0 mt-0.5 p-1.5 rounded-md text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
                               aria-label="Delete note"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -482,7 +482,7 @@ export default function QuickToolsPopover() {
                       <button
                         onClick={addTodo}
                         disabled={!todoInput.trim()}
-                        className="h-[42px] w-11 bg-primary hover:bg-primary-hover active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg transition-colors cursor-pointer shrink-0 flex items-center justify-center"
+                        className="h-[42px] w-11 bg-primary hover:bg-primary-hover active:bg-primary-hover disabled:opacity-40 disabled:cursor-not-allowed text-primary-fg rounded-lg transition-colors cursor-pointer shrink-0 flex items-center justify-center"
                         aria-label="Add todo"
                       >
                         <Plus className="w-4 h-4" />
@@ -519,7 +519,7 @@ export default function QuickToolsPopover() {
                           {todos.filter((item) => !item.done).map((todo) => (
                             <div
                               key={todo.id}
-                              className="group flex items-center gap-2.5 py-2 px-2 rounded-lg hover:bg-surface-raised dark:hover:bg-slate-800/60 transition-colors"
+                              className="group flex items-center gap-2.5 py-2 px-2 rounded-lg hover:bg-surface-raised dark:hover:bg-surface-raised/60 transition-colors"
                             >
                               <button
                                 onClick={() => toggleTodo(todo.id)}
@@ -531,7 +531,7 @@ export default function QuickToolsPopover() {
                               </span>
                               <button
                                 onClick={() => deleteTodo(todo.id)}
-                                className="p-1.5 rounded-md text-slate-300 dark:text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer shrink-0 sm:opacity-0 sm:group-hover:opacity-100"
+                                className="p-1.5 rounded-md text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer shrink-0 sm:opacity-0 sm:group-hover:opacity-100"
                                 aria-label="Delete task"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -543,7 +543,7 @@ export default function QuickToolsPopover() {
                           {pendingCount > 0 && todos.some((item) => item.done) && (
                             <div className="py-1 flex items-center gap-2 px-2">
                               <div className="flex-1 h-px bg-hover " />
-                              <span className="text-[10px] text-slate-300 dark:text-foreground-muted uppercase tracking-wide">
+                              <span className="text-[10px] text-foreground-muted uppercase tracking-wide">
                                 bajarildi
                               </span>
                               <div className="flex-1 h-px bg-hover " />
@@ -557,7 +557,7 @@ export default function QuickToolsPopover() {
                             >
                               <button
                                 onClick={() => toggleTodo(todo.id)}
-                                className="w-5 h-5 rounded-md border-2 border-indigo-400 dark:border-primary bg-primary-soft  flex items-center justify-center shrink-0 cursor-pointer"
+                                className="w-5 h-5 rounded-md border-2 border-primary bg-primary-soft  flex items-center justify-center shrink-0 cursor-pointer"
                                 aria-label="Mark undone"
                               >
                                 <Check className="w-3 h-3 text-primary" />
@@ -567,7 +567,7 @@ export default function QuickToolsPopover() {
                               </span>
                               <button
                                 onClick={() => deleteTodo(todo.id)}
-                                className="p-1.5 rounded-md text-slate-300 dark:text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer shrink-0 sm:opacity-0 sm:group-hover:opacity-100"
+                                className="p-1.5 rounded-md text-foreground-muted hover:text-danger dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer shrink-0 sm:opacity-0 sm:group-hover:opacity-100"
                                 aria-label="Delete task"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -612,7 +612,7 @@ export default function QuickToolsPopover() {
                             className={`px-4 h-10 text-[13px] font-bold transition-colors cursor-pointer ${
                               mode === "add"
                                 ? "bg-primary text-primary-fg"
-                                : "bg-surface text-foreground-muted hover:bg-surface-raised dark:hover:bg-slate-700"
+                                : "bg-surface text-foreground-muted hover:bg-surface-raised dark:hover:bg-surface-raised"
                             }`}
                           >
                             +%
@@ -622,7 +622,7 @@ export default function QuickToolsPopover() {
                             className={`px-4 h-10 text-[13px] font-bold transition-colors cursor-pointer ${
                               mode === "sub"
                                 ? "bg-primary text-primary-fg"
-                                : "bg-surface text-foreground-muted hover:bg-surface-raised dark:hover:bg-slate-700"
+                                : "bg-surface text-foreground-muted hover:bg-surface-raised dark:hover:bg-surface-raised"
                             }`}
                           >
                             −%
@@ -657,7 +657,7 @@ export default function QuickToolsPopover() {
                             {mode === "add" ? "+" : "−"}{fmtUZS(diff)} UZS
                           </span>
                         </div>
-                        <div className="flex items-center justify-between border-t border-primary/20 dark:border-indigo-900/40 pt-2.5">
+                        <div className="flex items-center justify-between border-t border-primary/20 dark:border-primary/20 pt-2.5">
                           <span className="text-[11px] font-semibold text-foreground-muted uppercase tracking-wide">
                             {t("director.tools.calc_result")}
                           </span>
@@ -738,7 +738,7 @@ export default function QuickToolsPopover() {
                       {/* Loading skeleton */}
                       {ratesLoading && (
                         <div className="bg-surface-raised /40 rounded-xl border border-border-subtle/60 px-4 py-3 flex items-center gap-2.5">
-                          <div className="w-4 h-4 rounded-full border-2 border-primary/30 border-t-indigo-600 dark:border-t-indigo-400 animate-spin shrink-0" />
+                          <div className="w-4 h-4 rounded-full border-2 border-primary-ring border-t-primary animate-spin shrink-0" />
                           <span className="text-[12px] text-foreground-subtle">
                             {t("director.tools.currency_loading")}
                           </span>

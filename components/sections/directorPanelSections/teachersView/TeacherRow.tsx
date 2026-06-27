@@ -29,7 +29,7 @@ export default function TeacherRow({ teacher, onEdit, onDelete }: Props) {
             {/* Teacher */}
             <td className="py-4 px-5">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-slate-100  border border-border flex items-center justify-center overflow-hidden shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-hover  border border-border flex items-center justify-center overflow-hidden shrink-0">
                         {u.avatar ? (
                             <Image src={u.avatar} alt={u.full_name} width={40} height={40} className="w-full h-full object-cover" />
                         ) : (
@@ -65,7 +65,7 @@ export default function TeacherRow({ teacher, onEdit, onDelete }: Props) {
                         <span>{teacher.specialization || "—"}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-foreground-muted">
-                        <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                        <Star className="w-3.5 h-3.5 text-warning fill-amber-400" />
                         <span>{t("director.teachers.experience_years", { count: teacher.experience ?? 0 })}</span>
                     </div>
                 </div>

@@ -10,11 +10,11 @@ function StatusBadge({ status }: { status: Branch["status"] }) {
     return (
         <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${active
-                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
-                : "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400"
+                ? "bg-success-bg text-success dark:bg-success-bg0/10 dark:text-success"
+                : "bg-danger-bg text-danger dark:bg-danger-bg0/10 dark:text-danger"
                 }`}
         >
-            <span className={`h-1.5 w-1.5 rounded-full ${active ? "bg-emerald-500" : "bg-rose-500"}`} />
+            <span className={`h-1.5 w-1.5 rounded-full ${active ? "bg-success-bg0" : "bg-danger-bg0"}`} />
             {active ? t("common.active") : t("common.inactive")}
         </span>
     );
@@ -87,7 +87,7 @@ export default function BranchItem({ branch, onEdit, onDelete }: Props) {
                     </button>
                     <button
                         onClick={() => onDelete(branch)}
-                        className="rounded-lg p-2 text-foreground-subtle transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
+                        className="rounded-lg p-2 text-foreground-subtle transition hover:bg-danger-bg hover:text-danger dark:hover:bg-danger-bg0/10 dark:hover:text-danger"
                         title={t("common.delete")}
                     >
                         <Trash2 className="h-4 w-4" />

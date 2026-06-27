@@ -18,7 +18,7 @@ export default function AttendanceCell({ mark, mode, onClick, disabled }: Props)
   if (disabled) {
     return (
       <div
-        className={`${CIRCLE} bg-slate-100/70 dark:bg-slate-800/25 cursor-not-allowed`}
+        className={`${CIRCLE} bg-hover/70 cursor-not-allowed`}
         aria-hidden
       />
     );
@@ -33,15 +33,15 @@ export default function AttendanceCell({ mark, mode, onClick, disabled }: Props)
         <button
           onClick={onClick}
           title="Belgilanmagan — bosing"
-          className={`${CIRCLE} border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/40 dark:hover:bg-indigo-950/20 cursor-pointer hover:scale-110 active:scale-95`}
+          className={`${CIRCLE} border-2 border-dashed border-border hover:border-primary/40 hover:bg-primary-soft/40 cursor-pointer hover:scale-110 active:scale-95`}
         />
       );
     }
 
     const color =
-      pct >= 90 ? "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-600/25 text-emerald-700 dark:text-emerald-400"
-      : pct >= 80 ? "bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/25 text-amber-700 dark:text-amber-400"
-      : "bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/25 text-rose-600 dark:text-rose-400";
+      pct >= 90 ? "bg-success-bg border border-success/20 text-success"
+      : pct >= 80 ? "bg-warning-bg border border-warning/20 text-warning"
+      : "bg-danger-bg dark:bg-danger/10 border border-danger/20 dark:border-danger/25 text-danger";
 
     return (
       <button
@@ -62,7 +62,7 @@ export default function AttendanceCell({ mark, mode, onClick, disabled }: Props)
       <button
         onClick={onClick}
         title="Belgilanmagan — bosing"
-        className={`${CIRCLE} border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/40 dark:hover:bg-indigo-950/20 cursor-pointer hover:scale-110 active:scale-95`}
+        className={`${CIRCLE} border-2 border-dashed border-border hover:border-primary/40 hover:bg-primary-soft/40 cursor-pointer hover:scale-110 active:scale-95`}
       />
     );
   }
@@ -72,9 +72,9 @@ export default function AttendanceCell({ mark, mode, onClick, disabled }: Props)
       <button
         onClick={onClick}
         title="Keldi"
-        className={`${CIRCLE} bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-600/30 cursor-pointer hover:scale-110 active:scale-95`}
+        className={`${CIRCLE} bg-success-bg border border-success/20 cursor-pointer hover:scale-110 active:scale-95`}
       >
-        <Check className="w-[15px] h-[15px] text-emerald-600 dark:text-emerald-400" strokeWidth={2.5} />
+        <Check className="w-[15px] h-[15px] text-success" strokeWidth={2.5} />
       </button>
     );
   }
@@ -84,9 +84,9 @@ export default function AttendanceCell({ mark, mode, onClick, disabled }: Props)
       <button
         onClick={onClick}
         title="Kelmadi"
-        className={`${CIRCLE} bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/30 cursor-pointer hover:scale-110 active:scale-95`}
+        className={`${CIRCLE} bg-danger-bg dark:bg-danger/10 border border-danger/20 dark:border-danger/30 cursor-pointer hover:scale-110 active:scale-95`}
       >
-        <X className="w-[15px] h-[15px] text-rose-500 dark:text-rose-400" strokeWidth={2.5} />
+        <X className="w-[15px] h-[15px] text-danger dark:text-danger" strokeWidth={2.5} />
       </button>
     );
   }
@@ -96,9 +96,9 @@ export default function AttendanceCell({ mark, mode, onClick, disabled }: Props)
     <button
       onClick={onClick}
       title="Sababli"
-      className={`${CIRCLE} bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 cursor-pointer hover:scale-110 active:scale-95`}
+      className={`${CIRCLE} bg-warning-bg border border-warning/20 cursor-pointer hover:scale-110 active:scale-95`}
     >
-      <X className="w-[15px] h-[15px] text-amber-500 dark:text-amber-400" strokeWidth={2.5} />
+      <X className="w-[15px] h-[15px] text-warning dark:text-warning" strokeWidth={2.5} />
     </button>
   );
 }
