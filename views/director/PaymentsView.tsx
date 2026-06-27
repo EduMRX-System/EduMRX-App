@@ -751,15 +751,15 @@ export default function PaymentsView() {
               <AreaChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="payGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#b8860b" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#b8860b" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
-                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
-                <Tooltip content={<ChartTooltip />} cursor={{ stroke: "#94a3b8", strokeWidth: 1, strokeDasharray: "4 4" }} />
-                <Area type="monotone" dataKey="amount" stroke="#6366f1" strokeWidth={2.5} fillOpacity={1} fill="url(#payGrad)" />
+                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#78716c", fontSize: 12 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: "#78716c", fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
+                <Tooltip content={<ChartTooltip />} cursor={{ stroke: "#a8a29e", strokeWidth: 1, strokeDasharray: "4 4" }} />
+                <Area type="monotone" dataKey="amount" stroke="#b8860b" strokeWidth={2.5} fillOpacity={1} fill="url(#payGrad)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>

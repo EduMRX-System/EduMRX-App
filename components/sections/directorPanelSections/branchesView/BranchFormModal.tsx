@@ -177,7 +177,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
 
         const placemark = new ymaps.Placemark(
             coordinate, {},
-            { preset: "islands#violetDotIconWithCaption", iconColor: "#4F46E5" }
+            { preset: "islands#violetDotIconWithCaption", iconColor: "#b8860b" }
         );
         map.geoObjects.add(placemark);
         placemarkRef.current = placemark;

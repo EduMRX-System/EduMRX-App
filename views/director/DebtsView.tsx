@@ -510,8 +510,8 @@ export default function DebtsView() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={monthlyData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#78716c", fontSize: 12 }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: "#78716c", fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
                     <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(245,158,11,0.05)" }} />
                     <Bar dataKey="amount" fill="#f59e0b" radius={[4, 4, 0, 0]} />
                   </BarChart>

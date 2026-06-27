@@ -32,7 +32,7 @@ import {
 import Title from "@/components/ui/Title";
 import Text from "@/components/ui/Text";
 
-const CHART_COLORS = ["#4F46E5", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#06b6d4"];
+const CHART_COLORS = ["#b8860b", "#059669", "#d97706", "#e11d48", "#d4a017", "#78716c"];
 
 function fmtCompact(n: number): string {
   if (!n && n !== 0) return "0";
@@ -262,28 +262,28 @@ export default function AnalyticsView() {
                 <CartesianGrid
                   strokeDasharray="3 3"
                   vertical={false}
-                  stroke="#334155"
+                  stroke="#44403c"
                   opacity={0.25}
                 />
                 <XAxis
                   dataKey="name"
                   tickLine={false}
                   axisLine={false}
-                  stroke="#94a3b8"
+                  stroke="#a8a29e"
                   fontSize={11}
                 />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
-                  stroke="#94a3b8"
+                  stroke="#a8a29e"
                   fontSize={11}
                   width={48}
                   tickFormatter={(v) => `${(v / 1_000_000).toFixed(0)}M`}
                 />
                 <Tooltip
-                  cursor={{ fill: "#334155", opacity: 0.12 }}
+                  cursor={{ fill: "#44403c", opacity: 0.12 }}
                   contentStyle={{
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "#1c1917",
                     borderRadius: "12px",
                     border: "1px solid #1e293b",
                     color: "#fff",

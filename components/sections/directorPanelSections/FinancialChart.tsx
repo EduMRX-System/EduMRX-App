@@ -77,8 +77,8 @@ export default function FinancialTrendChart() {
                     <AreaChart data={data} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                         <defs>
                             <linearGradient id="colorC1" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
-                                <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                                <stop offset="5%" stopColor="#b8860b" stopOpacity={0.2} />
+                                <stop offset="95%" stopColor="#b8860b" stopOpacity={0} />
                             </linearGradient>
                             <linearGradient id="colorC2" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
@@ -104,22 +104,22 @@ export default function FinancialTrendChart() {
                             dataKey="name"
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+                            tick={{ fill: '#78716c', fontSize: 12, fontWeight: 500 }}
                             dy={10}
                         />
 
                         <YAxis
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+                            tick={{ fill: '#78716c', fontSize: 12, fontWeight: 500 }}
                             tickFormatter={(val) => `${val}M`}
                             domain={[0, 120]}
                             ticks={[0, 30, 60, 90, 120]}
                         />
 
-                        <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#94a3b8', strokeWidth: 1, strokeDasharray: '4 4' }} />
+                        <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#a8a29e', strokeWidth: 1, strokeDasharray: '4 4' }} />
 
-                        <Area type="monotone" dataKey="c1" stroke="#6366f1" strokeWidth={2.5} fillOpacity={1} fill="url(#colorC1)" />
+                        <Area type="monotone" dataKey="c1" stroke="#b8860b" strokeWidth={2.5} fillOpacity={1} fill="url(#colorC1)" />
                         <Area type="monotone" dataKey="c2" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#colorC2)" />
                         <Area type="monotone" dataKey="c3" stroke="#f59e0b" strokeWidth={2.5} fillOpacity={1} fill="url(#colorC3)" />
                         <Area type="monotone" dataKey="c4" stroke="#ec4899" strokeWidth={2.5} fillOpacity={1} fill="url(#colorC4)" />

@@ -28,7 +28,7 @@ import { formatAmount, formatDate } from "@/types/payment";
 import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 
 const PAGE_SIZE = 10;
-const PIE_COLORS = ["#6366f1", "#10b981", "#f59e0b", "#ec4899", "#06b6d4", "#8b5cf6", "#ef4444"];
+const PIE_COLORS = ["#b8860b", "#059669", "#d97706", "#e11d48", "#d4a017", "#a67a0a", "#78716c"];
 
 function formatAmountInput(raw: string): string {
   const n = raw.replace(/[^0-9]/g, "");
@@ -518,8 +518,8 @@ export default function ExpensesView() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={monthlyData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#78716c", fontSize: 12 }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: "#78716c", fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
                     <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(99,102,241,0.04)" }} />
                     <Bar dataKey="amount" fill="#ef4444" radius={[4, 4, 0, 0]} />
                   </BarChart>

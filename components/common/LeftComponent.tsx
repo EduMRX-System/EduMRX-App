@@ -32,7 +32,7 @@ export default function LeftComponent({
         >
           <div className={`flex items-center gap-3 ${collapsed ? "w-0 overflow-hidden" : ""}`}>
             <span
-              className={`w-10 h-10 text-white bg-[#4F46E5] text-base flex justify-center items-center rounded-xl font-bold shrink-0 ${collapsed ? "hidden" : ""
+              className={`w-10 h-10 text-primary-fg bg-primary text-base flex justify-center items-center rounded-xl font-bold shrink-0 ${collapsed ? "hidden" : ""
                 }`}
             >
               EX
@@ -83,7 +83,7 @@ export default function LeftComponent({
                   transition-all duration-200 text-sm font-medium mb-1
                   ${collapsed ? "px-0 py-3 justify-center" : "px-6 py-3 gap-4"}
                   ${isActive
-                    ? "bg-[#4F46E5] text-white border-l-[5px] border-[#3525CD]"
+                    ? "bg-primary text-primary-fg border-l-[5px] border-primary-hover"
                     : "text-foreground-muted hover:bg-hover border-l-[5px] border-transparent"
                   }
                 `}

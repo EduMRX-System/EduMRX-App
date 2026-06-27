@@ -179,7 +179,7 @@ function GroupItem({
           transition-all w-[90%] duration-200 text-sm font-medium mx-3 px-4 py-3 gap-4
           ${
             hasActiveChild && !open
-              ? "text-[#4F46E5] dark:text-primary"
+              ? "text-primary"
               : "text-foreground-muted hover:bg-hover dark:hover:bg-surface-raised"
           }
         `}

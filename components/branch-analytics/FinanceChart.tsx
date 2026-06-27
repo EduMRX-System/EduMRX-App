@@ -47,8 +47,8 @@ export default function FinanceChart({ data, loading }: Props) {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 5, right: 0, left: -22, bottom: 0 }} barGap={2}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11 }} tickFormatter={(v) => `${v}M`} />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#a8a29e", fontSize: 11 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#a8a29e", fontSize: 11 }} tickFormatter={(v) => `${v}M`} />
               <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(99,102,241,0.05)" }} />
               <Legend iconType="circle" iconSize={7} wrapperStyle={{ paddingTop: 12, fontSize: 11 }} />
               <Bar dataKey="revenue"  name="Daromad"  fill="#b8860b" radius={[3, 3, 0, 0]} barSize={data.length > 6 ? 14 : 22} />

@@ -195,8 +195,8 @@ function IncomeExpenseChart() {
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 11, fontWeight: 500 }} dy={6} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 11, fontWeight: 500 }} tickFormatter={(v) => `${v}M`} />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#78716c", fontSize: 11, fontWeight: 500 }} dy={6} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#78716c", fontSize: 11, fontWeight: 500 }} tickFormatter={(v) => `${v}M`} />
               <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(148,163,184,0.05)" }} />
               <Bar dataKey="income" name={t("director.dashboard.income")} fill="#059669" radius={[4, 4, 0, 0]} maxBarSize={24} />
               <Bar dataKey="expense" name={t("director.dashboard.expense")} fill="#e11d48" radius={[4, 4, 0, 0]} maxBarSize={24} />

@@ -56,9 +56,9 @@ export default function StudentGrowthChart({ data, loading }: Props) {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border-subtle dark:stroke-border" />
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11 }} />
-              <Tooltip content={<ChartTooltip />} cursor={{ stroke: "#94a3b8", strokeDasharray: "4 4", strokeWidth: 1 }} />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#a8a29e", fontSize: 11 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#a8a29e", fontSize: 11 }} />
+              <Tooltip content={<ChartTooltip />} cursor={{ stroke: "#a8a29e", strokeDasharray: "4 4", strokeWidth: 1 }} />
               <Area type="monotone" dataKey="total"        name="Jami"       stroke="#b8860b" strokeWidth={2} fill="url(#gradTotal)" dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
               <Area type="monotone" dataKey="new_students" name="Yangi"      stroke="#059669" strokeWidth={2} fill="url(#gradNew)"   dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
             </AreaChart>

@@ -265,7 +265,7 @@ export default function BranchesLocationView() {
             },
             {
               preset: "islands#violetDotIconWithCaption",
-              iconColor: branch.status === "active" ? "#4F46E5" : "#94A3B8",
+              iconColor: branch.status === "active" ? "#b8860b" : "#78716c",
             },
           );
 
