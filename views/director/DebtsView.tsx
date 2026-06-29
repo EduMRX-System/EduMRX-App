@@ -18,19 +18,10 @@ import { useDebts, useDebtSummary, useCreateDebt, useUpdateDebt, useDeleteDebt }
 import { type IDebt, type DebtPayload, DEBT_STATUS_OPTIONS, getDebtStatusOption, isOverdue } from "@/types/debt";
 import { formatAmount, formatDate } from "@/types/payment";
 import DatePicker from "@/components/ui/DatePicker";
+import MoneyInput from "@/components/ui/MoneyInput";
 
 const PAGE_SIZE = 10;
 const PIE_COLORS = ["#f59e0b", "#10b981", "#ef4444"];
-
-function formatAmountInput(raw: string): string {
-  const n = raw.replace(/[^0-9]/g, "");
-  if (!n) return "";
-  return Number(n).toLocaleString("uz-UZ");
-}
-
-function parseAmountRaw(formatted: string): string {
-  return formatted.replace(/[^0-9]/g, "");
-}
 
 // ── Simple Select ─────────────────────────────────────────────────
 function SimpleSelect({ value, onChange, options, placeholder }: {
@@ -218,7 +209,7 @@ function GroupSelect({ value, label, onChange, placeholder }: {
 interface DebtForm {
   student: string; studentName: string;
   group: string; groupName: string;
-  amount: string; amountDisplay: string;
+  amount: string;
   due_date: string; status: string;
 }
 
@@ -230,7 +221,6 @@ function initDebtForm(d?: IDebt | null): DebtForm {
     group: d?.group ?? "",
     groupName: d?.group_name ?? "",
     amount: d?.amount ?? "",
-    amountDisplay: d?.amount ? formatAmountInput(d.amount) : "",
     due_date: d?.due_date ?? next30.toISOString().slice(0, 10),
     status: d?.status ?? "unpaid",
   };
@@ -328,24 +318,20 @@ function DebtFormModal({ debt, onClose }: { debt?: IDebt | null; onClose: () => 
 
           {/* Amount + Due Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className={labelCls}>{t("director.debts.form.amount_label")}</label>
-              <input
-                value={form.amountDisplay}
-                onChange={(e) => { const raw = parseAmountRaw(e.target.value); setForm((f) => ({ ...f, amount: raw, amountDisplay: formatAmountInput(raw) })); }}
-                placeholder={t("director.debts.form.amount_placeholder")}
-                className={fieldCls(!!errors.amount)}
-              />
-              {errors.amount && <p className={errCls}>{errors.amount}</p>}
-            </div>
-            <div>
-              <DatePicker
-                label={t("director.debts.form.due_date_label")}
-                value={form.due_date}
-                onChange={(v) => set("due_date", v)}
-                error={errors.due_date}
-              />
-            </div>
+            <MoneyInput
+              label={t("director.debts.form.amount_label")}
+              value={form.amount}
+              onChange={(raw) => set("amount", raw)}
+              placeholder={t("director.debts.form.amount_placeholder")}
+              error={errors.amount}
+              required
+            />
+            <DatePicker
+              label={t("director.debts.form.due_date_label")}
+              value={form.due_date}
+              onChange={(v) => set("due_date", v)}
+              error={errors.due_date}
+            />
           </div>
 
           {/* Status */}

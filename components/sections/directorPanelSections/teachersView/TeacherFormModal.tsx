@@ -1,30 +1,19 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
-import { 
-    GraduationCap, X, Eye, EyeOff, Loader2, CalendarDays, 
-    ChevronLeft, ChevronRight 
-} from "lucide-react";
+import { GraduationCap, X, Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { formatUzPhone, splitFullName, type ITeacher } from "@/types/teacher";
 import { useTranslation } from "react-i18next";
 import ScopeFormFields from "@/components/common/ScopeFormFields";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
-
-// ── Calendar helpers ──────────────────────────────────────────────
-function daysInMonth(year: number, month: number) {
-    return new Date(year, month + 1, 0).getDate();
-}
-
-function firstWeekday(year: number, month: number) {
-    const d = new Date(year, month, 1).getDay();
-    return d === 0 ? 6 : d - 1; // Dushanba = 0
-}
+import DatePicker from "@/components/ui/DatePicker";
+import MoneyInput from "@/components/ui/MoneyInput";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -71,11 +60,6 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
     const [phoneDisplay, setPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    // Kalendar holatlari
-    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-    const [calendarView, setCalendarView] = useState<"days" | "months" | "years">("days");
-    const datePickerRef = useRef<HTMLDivElement>(null);
-
     const { activeCenter, isCentersLoaded } = useActiveCenterStore();
 
     const u = teacher?.user;
@@ -111,24 +95,11 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
         },
     });
 
-    // Kalendar ichki holati
     const dobValue = watch("date_of_birth");
-    const initDate = dobValue ? new Date(dobValue) : new Date();
-    const [calYear, setCalYear] = useState(initDate.getFullYear());
-    const [calMonth, setCalMonth] = useState(initDate.getMonth());
 
     useEffect(() => {
         setIsMounted(true);
         if (u?.phone) setPhoneDisplay(formatUzPhone(u.phone));
-
-        const onClick = (e: MouseEvent) => {
-            if (datePickerRef.current && !datePickerRef.current.contains(e.target as Node)) {
-                setIsDatePickerOpen(false);
-                setCalendarView("days");
-            }
-        };
-        document.addEventListener("mousedown", onClick);
-        return () => document.removeEventListener("mousedown", onClick);
     }, [u]);
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,39 +139,7 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
     const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
     const errCls = "text-red-400 dark:text-danger text-[11px] mt-1";
 
-    // Kalendar nomlari
-    const monthsRaw = t("director.tools.months", { returnObjects: true });
-    const months: string[] = Array.isArray(monthsRaw) ? monthsRaw : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const weekdaysRaw = t("director.tools.weekdays", { returnObjects: true });
-    const weekdays: string[] = Array.isArray(weekdaysRaw) ? weekdaysRaw : ["Mo","Tu","We","Th","Fr","Sa","Su"];
-    
-    const totalDays = daysInMonth(calYear, calMonth);
-    const startOffset = firstWeekday(calYear, calMonth);
-    const yearStartGrid = Math.floor(calYear / 12) * 12;
-
-    const prevMonth = () => {
-        if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); }
-        else setCalMonth((m) => m - 1);
-    };
-    
-    const nextMonth = () => {
-        if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); }
-        else setCalMonth((m) => m + 1);
-    };
-
-    const handleDateSelect = (day: number) => {
-        const y = calYear;
-        const m = String(calMonth + 1).padStart(2, "0");
-        const d = String(day).padStart(2, "0");
-        setValue("date_of_birth", `${y}-${m}-${d}`, { shouldValidate: true });
-        setIsDatePickerOpen(false);
-    };
-
-    let displayDob = dobValue || "";
-    if (displayDob && displayDob.includes("-")) {
-        const parts = displayDob.split("-");
-        if (parts.length === 3) displayDob = `${parts[2]}.${parts[1]}.${parts[0]}`;
-    }
+    const todayISO = new Date().toISOString().split("T")[0];
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -294,125 +233,16 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
                                 {errors.password && <p className={errCls}>{errors.password.message}</p>}
                             </div>
                         )}
-                        <div className={isEdit ? "sm:col-span-2" : ""} ref={datePickerRef}>
-                            <label className={labelCls}>{t("director.teachers.form.dob_label")} *</label>
-                            <div className="relative">
-                                <div
-                                    onClick={() => { setIsDatePickerOpen(!isDatePickerOpen); setCalendarView("days"); }}
-                                    className={`${fieldCls(!!errors.date_of_birth)} flex items-center justify-between cursor-pointer`}
-                                >
-                                    <span className={dobValue ? "text-foreground" : "text-foreground-subtle"}>
-                                        {displayDob || "YYYY-MM-DD"}
-                                    </span>
-                                    <CalendarDays className="w-4 h-4 text-foreground-subtle" />
-                                </div>
-                                
-                                {isDatePickerOpen && (
-                                    <div className="absolute top-full left-0 mt-1 w-[280px] bg-surface border border-border rounded-xl shadow-xl z-[60] p-3 animate-in fade-in slide-in-from-top-2 duration-200">
-                                        {calendarView === "days" && (
-                                            <>
-                                                <div className="flex items-center justify-between mb-2">
-                                                    <button type="button" onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">
-                                                        <ChevronLeft className="w-4 h-4" />
-                                                    </button>
-                                                    <div className="flex gap-1 text-[14px] font-semibold">
-                                                        <span onClick={() => setCalendarView("months")} className="hover:bg-hover px-2 py-0.5 rounded cursor-pointer text-primary transition-colors">
-                                                            {months[calMonth]}
-                                                        </span>
-                                                        <span onClick={() => setCalendarView("years")} className="hover:bg-hover px-2 py-0.5 rounded cursor-pointer text-primary transition-colors">
-                                                            {calYear}
-                                                        </span>
-                                                    </div>
-                                                    <button type="button" onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">
-                                                        <ChevronRight className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-
-                                                <div className="grid grid-cols-7 mb-1">
-                                                    {weekdays.map((d) => (
-                                                        <div key={d} className="text-[11px] font-semibold text-foreground-subtle text-center py-1">{d}</div>
-                                                    ))}
-                                                </div>
-
-                                                <div className="grid grid-cols-7 gap-y-0.5">
-                                                    {Array.from({ length: startOffset }).map((_, i) => (
-                                                        <div key={`empty-${i}`} />
-                                                    ))}
-                                                    {Array.from({ length: totalDays }).map((_, i) => {
-                                                        const day = i + 1;
-                                                        const formattedVal = `${calYear}-${String(calMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                                                        const isSel = dobValue === formattedVal;
-                                                        return (
-                                                            <button
-                                                                key={day}
-                                                                type="button"
-                                                                onClick={() => handleDateSelect(day)}
-                                                                className={`w-full aspect-square flex items-center justify-center text-[12px] rounded-lg transition-colors cursor-pointer font-medium ${isSel ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover"}`}
-                                                            >
-                                                                {day}
-                                                            </button>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </>
-                                        )}
-
-                                        {calendarView === "months" && (
-                                            <>
-                                                <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
-                                                    <span className="text-[14px] font-bold text-foreground">Oyni tanlang</span>
-                                                    <span onClick={() => setCalendarView("years")} className="text-[13px] text-primary font-semibold cursor-pointer hover:underline">{calYear}</span>
-                                                </div>
-                                                <div className="grid grid-cols-3 gap-1.5">
-                                                    {months.map((mName, index) => (
-                                                        <button
-                                                            key={mName}
-                                                            type="button"
-                                                            onClick={() => { setCalMonth(index); setCalendarView("days"); }}
-                                                            className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${calMonth === index ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover border border-border-subtle"}`}
-                                                        >
-                                                            {mName}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            </>
-                                        )}
-
-                                        {calendarView === "years" && (
-                                            <>
-                                                <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
-                                                    <button type="button" onClick={() => setCalYear(y => y - 12)} className="p-1 rounded hover:bg-hover text-foreground-muted cursor-pointer">
-                                                        <ChevronLeft className="w-4 h-4" />
-                                                    </button>
-                                                    <span className="text-[13px] font-bold text-foreground">
-                                                        {yearStartGrid} - {yearStartGrid + 11}
-                                                    </span>
-                                                    <button type="button" onClick={() => setCalYear(y => y + 12)} className="p-1 rounded hover:bg-hover text-foreground-muted cursor-pointer">
-                                                        <ChevronRight className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                                <div className="grid grid-cols-3 gap-1.5 max-h-[180px] overflow-y-auto">
-                                                    {Array.from({ length: 12 }).map((_, idx) => {
-                                                        const targetYear = yearStartGrid + idx;
-                                                        const isCurrentSelected = calYear === targetYear;
-                                                        return (
-                                                            <button
-                                                                key={targetYear}
-                                                                type="button"
-                                                                onClick={() => { setCalYear(targetYear); setCalendarView("days"); }}
-                                                                className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${isCurrentSelected ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover border border-border-subtle"}`}
-                                                            >
-                                                                {targetYear}
-                                                            </button>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                            {errors.date_of_birth && <p className={errCls}>{errors.date_of_birth.message}</p>}
+                        <div className={isEdit ? "sm:col-span-2" : ""}>
+                            <DatePicker
+                                value={dobValue || ""}
+                                onChange={(v) => setValue("date_of_birth", v, { shouldValidate: true })}
+                                label={`${t("director.teachers.form.dob_label")} *`}
+                                error={errors.date_of_birth?.message}
+                                required
+                                min="1950-01-01"
+                                max={todayISO}
+                            />
                         </div>
                     </div>
 
@@ -430,18 +260,16 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
                         </div>
                     </div>
 
-                    {/* Maosh miqdori va Turi (%) yki (UZS) */}
-                    <div>
-                        <label className={labelCls}>{t("director.teachers.form.salary_label")} *</label>
-                        <div className="relative flex items-center">
-                            <input 
-                                {...register("salary")} 
-                                type="number" 
-                                placeholder={watch("salary_type") === "percentage" ? "50" : "12000000"} 
-                                className={`${fieldCls(!!errors.salary)} pr-[100px]`} 
-                            />
-                            
-                            {/* Salary Type Toggle */}
+                    {/* Maosh miqdori va Turi (%) yoki (UZS) */}
+                    <MoneyInput
+                        label={`${t("director.teachers.form.salary_label")} *`}
+                        value={watch("salary") || ""}
+                        onChange={(raw) => setValue("salary", raw, { shouldValidate: true })}
+                        placeholder={watch("salary_type") === "percentage" ? "50" : "12,000,000"}
+                        error={errors.salary?.message}
+                        allowDecimal={watch("salary_type") === "percentage"}
+                        rightPadding="pr-[100px]"
+                        rightSlot={
                             <div className="absolute right-1.5 flex items-center bg-hover border border-border rounded-md p-0.5">
                                 <button
                                     type="button"
@@ -458,9 +286,8 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
                                     %
                                 </button>
                             </div>
-                        </div>
-                        {errors.salary && <p className={errCls}>{errors.salary.message}</p>}
-                    </div>
+                        }
+                    />
 
                     {/* Bio */}
                     <div>

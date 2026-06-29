@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import BranchMapPicker from "./BranchMapPicker";
 import { BranchFormValues, branchSchema } from "@/types/branch";
+import CustomSelect from "@/components/ui/CustomSelect";
 
 interface Props {
     defaultValues: BranchFormValues;
@@ -72,11 +73,21 @@ export default function BranchForm({
                     )}
                 </div>
                 <div>
-                    <label className={labelCls}>{t("director.branches.form.status_label")}</label>
-                    <select {...register("status")} className={inputCls}>
-                        <option value="active">{t("common.active")}</option>
-                        <option value="inactive">{t("common.inactive")}</option>
-                    </select>
+                    <Controller
+                        control={control}
+                        name="status"
+                        render={({ field }) => (
+                            <CustomSelect
+                                label={t("director.branches.form.status_label")}
+                                value={field.value ?? "active"}
+                                onChange={field.onChange}
+                                options={[
+                                    { value: "active", label: t("common.active") },
+                                    { value: "inactive", label: t("common.inactive") },
+                                ]}
+                            />
+                        )}
+                    />
                 </div>
             </div>
 

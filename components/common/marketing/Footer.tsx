@@ -124,7 +124,7 @@ export default function Footer() {
 
           {/* Link columns */}
           {columns.map((col) => (
-            <div key={col.title}>
+            <nav key={col.title} aria-label={col.title}>
               <h4 className="text-sm font-bold text-foreground mb-4">
                 {col.title}
               </h4>
@@ -140,7 +140,7 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
 

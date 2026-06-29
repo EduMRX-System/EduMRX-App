@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { X, Loader2, CalendarDays } from "lucide-react";
 import DatePicker from "@/components/ui/DatePicker";
+import TimePicker from "@/components/ui/TimePicker";
 import { toast } from "react-toastify";
 import { useGroupOptions } from "@/hooks/useLessons";
 import { toHHMM, type Lesson, type LessonPayload } from "@/types/lesson";
@@ -145,26 +146,18 @@ export default function LessonFormModal({ lesson, onClose, role = "director" }: 
 
                     {/* Vaqt */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className={labelCls}>{t("director.lessons.form.start_time_label")}</label>
-                            <input
-                                type="time"
-                                value={formData.start_time}
-                                onChange={(e) => setFormData((p) => ({ ...p, start_time: e.target.value }))}
-                                className={inputCls}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className={labelCls}>{t("director.lessons.form.end_time_label")}</label>
-                            <input
-                                type="time"
-                                value={formData.end_time}
-                                onChange={(e) => setFormData((p) => ({ ...p, end_time: e.target.value }))}
-                                className={inputCls}
-                                required
-                            />
-                        </div>
+                        <TimePicker
+                            label={t("director.lessons.form.start_time_label")}
+                            value={formData.start_time}
+                            onChange={(v) => setFormData((p) => ({ ...p, start_time: v }))}
+                            required
+                        />
+                        <TimePicker
+                            label={t("director.lessons.form.end_time_label")}
+                            value={formData.end_time}
+                            onChange={(v) => setFormData((p) => ({ ...p, end_time: v }))}
+                            required
+                        />
                     </div>
 
                     {/* Izoh */}

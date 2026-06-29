@@ -27,19 +27,11 @@ import {
 import { formatAmount, formatDate } from "@/types/payment";
 import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 import DatePicker, { MonthYearPicker } from "@/components/ui/DatePicker";
+import MoneyInput from "@/components/ui/MoneyInput";
+import CustomSelect from "@/components/ui/CustomSelect";
 
 const PAGE_SIZE = 10;
 const PIE_COLORS = ["#b8860b", "#059669", "#d97706", "#e11d48", "#d4a017", "#a67a0a", "#78716c"];
-
-function formatAmountInput(raw: string): string {
-  const n = raw.replace(/[^0-9]/g, "");
-  if (!n) return "";
-  return Number(n).toLocaleString("uz-UZ");
-}
-
-function parseAmountRaw(formatted: string): string {
-  return formatted.replace(/[^0-9]/g, "");
-}
 
 // ── Simple Select ─────────────────────────────────────────────────
 function SimpleSelect({ value, onChange, options, placeholder }: {
@@ -162,7 +154,7 @@ function CategoryFormModal({ cat, onClose }: { cat?: IExpenseCategory | null; on
 // ── Expense Form Modal ────────────────────────────────────────────
 interface ExpenseForm {
   title: string;
-  amount: string; amountDisplay: string;
+  amount: string;
   method: string; status: string;
   category: string; branch: string;
   expense_date: string;
@@ -175,7 +167,6 @@ function initExpenseForm(e?: IExpense | null): ExpenseForm {
   return {
     title: e?.title ?? "",
     amount: e?.amount ?? "",
-    amountDisplay: e?.amount ? formatAmountInput(e.amount) : "",
     method: e?.method ?? "cash",
     status: e?.status ?? "planned",
     category: e?.category ?? "",
@@ -285,16 +276,14 @@ function ExpenseFormModal({ expense, categories, onClose }: {
 
           {/* Amount + Method */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className={labelCls}>{t("director.expenses.form.amount_label")}</label>
-              <input
-                value={form.amountDisplay}
-                onChange={(e) => { const raw = parseAmountRaw(e.target.value); setForm((f) => ({ ...f, amount: raw, amountDisplay: formatAmountInput(raw) })); }}
-                placeholder={t("director.expenses.form.amount_placeholder")}
-                className={fieldCls(!!errors.amount)}
-              />
-              {errors.amount && <p className={errCls}>{errors.amount}</p>}
-            </div>
+            <MoneyInput
+              label={t("director.expenses.form.amount_label")}
+              value={form.amount}
+              onChange={(raw) => set("amount", raw)}
+              placeholder={t("director.expenses.form.amount_placeholder")}
+              error={errors.amount}
+              required
+            />
             <div>
               <label className={labelCls}>{t("director.expenses.form.method_label")}</label>
               <SimpleSelect value={form.method} onChange={(v) => set("method", v)} options={EXPENSE_METHOD_OPTIONS} />
@@ -308,18 +297,15 @@ function ExpenseFormModal({ expense, categories, onClose }: {
               <SimpleSelect value={form.status} onChange={(v) => set("status", v)} options={EXPENSE_STATUS_OPTIONS.map((o) => ({ value: o.value, label: o.label }))} />
             </div>
             <div>
-              <label className={labelCls}>{t("director.expenses.form.category_label")}</label>
-              <select
+              <CustomSelect
+                label={t("director.expenses.form.category_label")}
                 value={form.category}
-                onChange={(e) => set("category", e.target.value)}
-                className={fieldCls(!!errors.category)}
-              >
-                <option value="">{t("director.expenses.form.category_placeholder")}</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
-              {errors.category && <p className={errCls}>{errors.category}</p>}
+                onChange={(v) => set("category", v)}
+                options={categories.map((c) => ({ value: c.id, label: c.name }))}
+                placeholder={t("director.expenses.form.category_placeholder")}
+                error={errors.category}
+                required
+              />
             </div>
           </div>
 

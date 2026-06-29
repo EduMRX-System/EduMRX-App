@@ -24,19 +24,9 @@ import {
 } from "@/types/payment";
 import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 import DatePicker, { MonthYearPicker } from "@/components/ui/DatePicker";
+import MoneyInput from "@/components/ui/MoneyInput";
 
 const PAGE_SIZE = 10;
-
-// ── Helpers ───────────────────────────────────────────────────────
-function formatAmountInput(raw: string): string {
-  const n = raw.replace(/[^0-9]/g, "");
-  if (!n) return "";
-  return Number(n).toLocaleString("uz-UZ");
-}
-
-function parseAmountRaw(formatted: string): string {
-  return formatted.replace(/[^0-9]/g, "");
-}
 
 // ── Inline async student search select ────────────────────────────
 function StudentSelect({
@@ -285,8 +275,8 @@ interface FormState {
   student: string; studentName: string;
   group: string; groupName: string;
   branch: string;
-  amount: string; amountDisplay: string;
-  discount: string; discountDisplay: string;
+  amount: string;
+  discount: string;
   method: string;
   status: string;
   period_month: number; period_year: number;
@@ -304,9 +294,7 @@ function initForm(p?: IPayment | null): FormState {
     groupName: p?.group_name ?? "",
     branch: p?.branch ?? "",
     amount: p?.amount ?? "",
-    amountDisplay: p?.amount ? formatAmountInput(p.amount) : "",
     discount: p?.discount ?? "",
-    discountDisplay: p?.discount ? formatAmountInput(p.discount) : "",
     method: p?.method ?? "cash",
     status: p?.status ?? "pending",
     period_month: p?.period_month ?? now.getMonth() + 1,
@@ -462,31 +450,20 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
 
           {/* Amount + Discount */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className={labelCls}>{t("director.payments.form.amount_label")}</label>
-              <input
-                value={form.amountDisplay}
-                onChange={(e) => {
-                  const raw = parseAmountRaw(e.target.value);
-                  setForm((f) => ({ ...f, amount: raw, amountDisplay: formatAmountInput(raw) }));
-                }}
-                placeholder={t("director.payments.form.amount_placeholder")}
-                className={fieldCls(!!errors.amount)}
-              />
-              {errors.amount && <p className={errCls}>{errors.amount}</p>}
-            </div>
-            <div>
-              <label className={labelCls}>{t("director.payments.form.discount_label")}</label>
-              <input
-                value={form.discountDisplay}
-                onChange={(e) => {
-                  const raw = parseAmountRaw(e.target.value);
-                  setForm((f) => ({ ...f, discount: raw, discountDisplay: formatAmountInput(raw) }));
-                }}
-                placeholder="0"
-                className={fieldCls()}
-              />
-            </div>
+            <MoneyInput
+              label={t("director.payments.form.amount_label")}
+              value={form.amount}
+              onChange={(raw) => set("amount", raw)}
+              placeholder={t("director.payments.form.amount_placeholder")}
+              error={errors.amount}
+              required
+            />
+            <MoneyInput
+              label={t("director.payments.form.discount_label")}
+              value={form.discount}
+              onChange={(raw) => set("discount", raw)}
+              placeholder="0"
+            />
           </div>
 
           {/* Method + Status */}

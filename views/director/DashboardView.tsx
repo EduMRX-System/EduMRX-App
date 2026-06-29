@@ -12,13 +12,14 @@ import { useBranches } from "@/hooks/useBranches";
 import { toHHMM } from "@/types/lesson";
 import {
   Users, Wallet, AlertCircle, BarChart3, BookOpen,
-  Building2, ArrowUpRight, ChevronDown, GraduationCap,
+  Building2, ArrowUpRight, GraduationCap,
   UserPlus, DollarSign, CalendarDays,
 } from "lucide-react";
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell, Legend,
 } from "recharts";
+import CustomSelect from "@/components/ui/CustomSelect";
 
 // ── Helpers ───────────────────────────────────────────────────────────
 function fmtM(n: number | string | undefined): string {
@@ -535,17 +536,16 @@ export default function DashboardView() {
             {t("director.dashboard.greeting_sub")}
           </p>
         </div>
-        <div className="relative shrink-0">
-          <select
-            value={period}
-            onChange={(e) => setPeriod(e.target.value as "this_month" | "last_month")}
-            className="appearance-none pl-3 pr-8 h-9 text-[12px] font-semibold bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary cursor-pointer transition-colors"
-          >
-            <option value="this_month">{t("director.dashboard.period_this_month")}</option>
-            <option value="last_month">{t("director.dashboard.period_last_month")}</option>
-          </select>
-          <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-foreground-subtle pointer-events-none" />
-        </div>
+        <CustomSelect
+          size="sm"
+          value={period}
+          onChange={(v) => setPeriod(v as "this_month" | "last_month")}
+          options={[
+            { value: "this_month", label: t("director.dashboard.period_this_month") },
+            { value: "last_month", label: t("director.dashboard.period_last_month") },
+          ]}
+          className="w-[140px] shrink-0"
+        />
       </div>
 
       {/* ── KPI Cards ────────────────────────────────────── */}

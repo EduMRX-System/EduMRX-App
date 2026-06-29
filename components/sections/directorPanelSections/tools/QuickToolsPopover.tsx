@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import RightDrawer from "@/components/common/RightDrawer";
 import { useTranslation } from "react-i18next";
+import CustomSelect from "@/components/ui/CustomSelect";
 import { useAuthStore } from "@/store/authStore";
 import { useQuery } from "@tanstack/react-query";
 
@@ -610,31 +611,29 @@ export default function QuickToolsPopover() {
 
                       {/* From / swap / To selects */}
                       <div className="flex items-center gap-2">
-                        <select
+                        <CustomSelect
+                          size="sm"
                           value={fromCurrency}
-                          onChange={(e) => setFromCurrency(e.target.value as Currency)}
-                          className={selectCls}
-                        >
-                          {CURRENCIES.map((c) => (
-                            <option key={c} value={c}>{c}</option>
-                          ))}
-                        </select>
+                          onChange={(v) => setFromCurrency(v as Currency)}
+                          options={CURRENCIES.map((c) => ({ value: c, label: c }))}
+                          className="flex-1"
+                          triggerClassName="font-mono"
+                        />
                         <button
                           onClick={swapCurrencies}
-                          className="p-2 rounded-lg text-foreground-subtle hover:text-primary  hover:bg-hover transition-colors cursor-pointer shrink-0"
+                          className="p-2 rounded-lg text-foreground-subtle hover:text-primary hover:bg-hover transition-colors cursor-pointer shrink-0"
                           aria-label="Swap currencies"
                         >
                           <ArrowLeftRight className="w-4 h-4" />
                         </button>
-                        <select
+                        <CustomSelect
+                          size="sm"
                           value={toCurrency}
-                          onChange={(e) => setToCurrency(e.target.value as Currency)}
-                          className={selectCls}
-                        >
-                          {CURRENCIES.map((c) => (
-                            <option key={c} value={c}>{c}</option>
-                          ))}
-                        </select>
+                          onChange={(v) => setToCurrency(v as Currency)}
+                          options={CURRENCIES.map((c) => ({ value: c, label: c }))}
+                          className="flex-1"
+                          triggerClassName="font-mono"
+                        />
                       </div>
 
                       {/* Conversion amount input */}

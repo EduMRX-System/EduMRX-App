@@ -123,10 +123,9 @@ export const metadata: Metadata = {
   },
   manifest: "/icons/manifest.json",
 
-  // Google Search Console tasdiqlash kodi (o'zingiznikiga almashtiring)
   verification: {
-    google: "GOOGLE_SEARCH_CONSOLE_VERIFICATION_CODE",
-    yandex: "YANDEX_VERIFICATION_CODE",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
   },
 
   category: "education",

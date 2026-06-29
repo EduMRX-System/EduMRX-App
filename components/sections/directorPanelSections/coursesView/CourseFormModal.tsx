@@ -7,6 +7,7 @@ import { X, Loader2, BookOpen, ChevronDown, Check } from "lucide-react";
 import { toast } from "react-toastify";
 import { STATUS_OPTIONS, type Course, type CourseStatus, type CoursePayload } from "@/types/course";
 import { useTranslation } from "react-i18next";
+import MoneyInput from "@/components/ui/MoneyInput";
 
 interface Props {
     course?: Course | null;
@@ -156,19 +157,13 @@ export default function CourseFormModal({ course, onClose, role = "director" }: 
                                 required
                             />
                         </div>
-                        <div>
-                            <label className={labelCls}>{t("director.courses.form.price_label")}</label>
-                            <input
-                                type="number"
-                                min={0}
-                                step="1000"
-                                value={formData.price}
-                                onChange={(e) => setFormData((p) => ({ ...p, price: e.target.value }))}
-                                placeholder="500000"
-                                className={inputCls}
-                                required
-                            />
-                        </div>
+                        <MoneyInput
+                            label={t("director.courses.form.price_label")}
+                            value={String(formData.price)}
+                            onChange={(raw) => setFormData((p) => ({ ...p, price: raw }))}
+                            placeholder="500,000"
+                            required
+                        />
                     </div>
 
                     {/* Status */}
