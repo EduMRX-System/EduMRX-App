@@ -95,9 +95,9 @@ export default function Footer() {
               <Link href="/" className="mb-5 block">
                 {
                   theme == "dark" ?
-                    <Image src={LogoIcons.logoDark} width={250} height={350} alt="EduMRX Logo" />
+                    <Image src={LogoIcons.logoDark} width={250} height={350} alt="EduMRX — o'quv markazlari boshqaruv tizimi" />
                     :
-                    <Image src={LogoIcons.logo} width={250} height={350} alt="EduMRX Logo" />
+                    <Image src={LogoIcons.logo} width={250} height={350} alt="EduMRX — o'quv markazlari boshqaruv tizimi" />
                 }
               </Link>
             </div>

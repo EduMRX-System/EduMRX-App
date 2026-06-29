@@ -7,12 +7,30 @@ export const metadata: Metadata = {
   title: "EduMRX — O'quv markazlari uchun CRM va boshqaruv tizimi",
   description:
     "EduMRX — o'quv markazlari uchun to'liq CRM platforma. O'quvchilar qabuli, davomat, baholar, to'lovlar va hisobotlar bitta tizimda. 14 kun bepul sinab ko'ring.",
+  keywords: [
+    "o'quv markazi CRM",
+    "ta'lim markazi boshqaruv tizimi",
+    "CRM для учебного центра",
+    "система управления учебным центром",
+    "education CRM Uzbekistan",
+    "EduMRX",
+    "o'quvchilar boshqaruvi",
+    "davomat tizimi",
+    "to'lovlar boshqaruvi",
+  ],
   alternates: { canonical: "/" },
   openGraph: {
     title: "EduMRX — O'quv markazlari uchun CRM platforma",
     description:
       "Qabul, davomat, baholar, to'lovlar va real-vaqt hisobotlar — barchasi bitta platformada. Bepul sinab ko'ring.",
     url: SITE_URL,
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EduMRX — O'quv markazlari uchun CRM",
+    description: "Davomat, to'lovlar, hisobotlar — barchasi bitta tizimda. Bepul boshlang.",
+    images: ["/og-image.png"],
   },
 };
 

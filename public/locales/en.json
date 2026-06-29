@@ -29,8 +29,8 @@
     },
     "home": {
       "badge": "The #1 educational CRM platform in Uzbekistan",
-      "title_1": "Digitize your",
-      "title_2": "educational center",
+      "title_1": "CRM and Management System",
+      "title_2": "for Education Centers",
       "subtitle": "Students, attendance, payments, and reports — all in one secure system. Manage your center at a professional level.",
       "cta_primary": "Try for free",
       "cta_secondary": "Request a demo",
@@ -150,7 +150,7 @@
     },
     "features": {
       "label": "Features",
-      "title": "All features in one place",
+      "title": "CRM Features for Education Centers",
       "subtitle": "All the tools you need to professionally manage your educational center.",
       "categories": {
         "academic": {
@@ -256,7 +256,7 @@
     },
     "pricing": {
       "label": "Pricing",
-      "title": "Choose the right plan for you",
+      "title": "CRM Pricing for Education Centers",
       "subtitle": "Transparent pricing for everyone. No hidden fees.",
       "monthly": "Monthly",
       "yearly": "Yearly",

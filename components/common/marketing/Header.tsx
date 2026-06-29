@@ -84,9 +84,9 @@ export default function Header() {
                         <Link href="/" className="flex items-center gap-2 group shrink-0 pl-1">
                             {
                                 theme == "dark" ?
-                                    <Image src={LogoIcons.logoDark} width={150} height={250} alt="EduMRX Logo" />
+                                    <Image src={LogoIcons.logoDark} width={150} height={250} alt="EduMRX — o'quv markazlari uchun CRM va boshqaruv tizimi" />
                                     :
-                                    <Image src={LogoIcons.logo} width={150} height={250} alt="EduMRX Logo" />
+                                    <Image src={LogoIcons.logo} width={150} height={250} alt="EduMRX — o'quv markazlari uchun CRM va boshqaruv tizimi" />
                             }
                         </Link>
 

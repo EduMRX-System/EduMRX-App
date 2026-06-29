@@ -29,8 +29,8 @@
     },
     "home": {
       "badge": "O'zbekistondagi #1 ta'lim CRM platformasi",
-      "title_1": "Ta'lim markazingizni",
-      "title_2": "raqamlashtiring",
+      "title_1": "O'quv markazingiz uchun to'liq",
+      "title_2": "CRM va boshqaruv tizimi",
       "subtitle": "O'quvchilar, davomat, to'lovlar va hisobotlar — barchasi bitta xavfsiz tizimda. Markazingizni professional darajada boshqaring.",
       "cta_primary": "Bepul sinab ko'rish",
       "cta_secondary": "Demo so'rash",
@@ -150,7 +150,7 @@
     },
     "features": {
       "label": "Imkoniyatlar",
-      "title": "Barcha funksiyalar bir joyda",
+      "title": "CRM funksiyalari: davomat, to'lovlar va hisobotlar",
       "subtitle": "Ta'lim markazini professional darajada boshqarish uchun kerakli barcha vositalar.",
       "categories": {
         "academic": {
@@ -256,7 +256,7 @@
     },
     "pricing": {
       "label": "Narxlar",
-      "title": "Sizga mos tarif tanlang",
+      "title": "O'quv markazi uchun CRM tariflari",
       "subtitle": "Hamma uchun ochiq narxlar. Yashirin to'lovlar yo'q.",
       "monthly": "Oylik",
       "yearly": "Yillik",
