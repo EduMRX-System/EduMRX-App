@@ -1,7 +1,5 @@
-import React from 'react'
-
+"use client";
+import DirectorGroupsView from "@/views/director/GroupsView";
 export default function GroupsView() {
-  return (
-    <div>GroupsView</div>
-  )
+  return <DirectorGroupsView role="manager" />;
 }

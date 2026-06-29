@@ -13,6 +13,8 @@ import {
   CreditCard,
   Settings,
   AlertCircle,
+  CalendarCheck,
+  User,
   type LucideIcon,
 } from "lucide-react";
 
@@ -51,6 +53,7 @@ export const managerMenu: NavEntry[] = [
     children: [
       { title: "manager.nav.courses", href: "/courses", icon: BookOpen },
       { title: "manager.nav.groups", href: "/groups", icon: Users2 },
+      { title: "manager.nav.lessons", href: "/lessons", icon: CalendarCheck },
       { title: "manager.nav.attendance", href: "/attendance", icon: ClipboardCheck },
     ],
   },
@@ -82,5 +85,5 @@ export const managerMenu: NavEntry[] = [
     ],
   },
 
-  { title: "manager.nav.settings", href: "/settings", icon: Settings },
+  { title: "manager.nav.profile", href: "/profile", icon: User },
 ];

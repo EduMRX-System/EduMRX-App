@@ -17,6 +17,7 @@ import { useActiveCenterStore } from "@/store/activeCenterStore";
 import { useDebts, useDebtSummary, useCreateDebt, useUpdateDebt, useDeleteDebt } from "@/hooks/useDebts";
 import { type IDebt, type DebtPayload, DEBT_STATUS_OPTIONS, getDebtStatusOption, isOverdue } from "@/types/debt";
 import { formatAmount, formatDate } from "@/types/payment";
+import DatePicker from "@/components/ui/DatePicker";
 
 const PAGE_SIZE = 10;
 const PIE_COLORS = ["#f59e0b", "#10b981", "#ef4444"];
@@ -338,9 +339,12 @@ function DebtFormModal({ debt, onClose }: { debt?: IDebt | null; onClose: () => 
               {errors.amount && <p className={errCls}>{errors.amount}</p>}
             </div>
             <div>
-              <label className={labelCls}>{t("director.debts.form.due_date_label")}</label>
-              <input type="date" value={form.due_date} onChange={(e) => set("due_date", e.target.value)} className={fieldCls(!!errors.due_date)} />
-              {errors.due_date && <p className={errCls}>{errors.due_date}</p>}
+              <DatePicker
+                label={t("director.debts.form.due_date_label")}
+                value={form.due_date}
+                onChange={(v) => set("due_date", v)}
+                error={errors.due_date}
+              />
             </div>
           </div>
 

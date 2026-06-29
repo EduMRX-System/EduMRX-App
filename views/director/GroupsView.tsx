@@ -12,7 +12,11 @@ import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 10;
 
-export default function GroupsView() {
+interface Props {
+    role?: "director" | "manager";
+}
+
+export default function GroupsView({ role = "director" }: Props) {
     const { t } = useTranslation();
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
@@ -20,7 +24,7 @@ export default function GroupsView() {
     const [editing, setEditing] = useState<Group | null>(null);
     const [deleting, setDeleting] = useState<Group | null>(null);
 
-    const { data, isLoading, isError, isFetching } = useGroups({ page, pageSize: PAGE_SIZE, search });
+    const { data, isLoading, isError, isFetching } = useGroups({ page, pageSize: PAGE_SIZE, search, role });
 
     const groups = data?.results ?? [];
     const count = data?.count ?? 0;
@@ -123,9 +127,9 @@ export default function GroupsView() {
             </div>
 
             {/* Modals */}
-            {addOpen && <GroupFormModal onClose={() => setAddOpen(false)} />}
-            {editing && <GroupFormModal group={editing} onClose={() => setEditing(null)} />}
-            {deleting && <DeleteGroupModal group={deleting} onClose={() => setDeleting(null)} />}
+            {addOpen && <GroupFormModal onClose={() => setAddOpen(false)} role={role} />}
+            {editing && <GroupFormModal group={editing} onClose={() => setEditing(null)} role={role} />}
+            {deleting && <DeleteGroupModal group={deleting} onClose={() => setDeleting(null)} role={role} />}
         </div>
     );
 }

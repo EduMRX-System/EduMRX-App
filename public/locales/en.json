@@ -447,7 +447,24 @@
     "delete_confirm_suffix": "Are you sure you want to delete? This action cannot be undone.",
     "no_results": "Not found",
     "enter": "Enter",
-    "detail": "Detail"
+    "detail": "Detail",
+    "datepicker": {
+      "calendar": "Calendar",
+      "select_mode": "Select",
+      "text_mode": "Type",
+      "today": "Today",
+      "placeholder": "Select date",
+      "day": "Day",
+      "month": "Month",
+      "year": "Year",
+      "default_mode": "Date input mode",
+      "text_hint": "Day.Month.Year (DD.MM.YYYY)",
+      "text_invalid": "Invalid date",
+      "text_out_of_range": "Date out of allowed range",
+      "calendar_desc": "Monthly view",
+      "select_desc": "Day / Month / Year",
+      "text_desc": "Type manually"
+    }
   },
   "auth": {
     "common": {
@@ -1244,11 +1261,37 @@
         "title": "Appearance",
         "desc": "Choose app theme",
         "modal_title": "Appearance",
-        "modal_desc": "Choose a comfortable theme",
+        "modal_desc": "Choose interface theme",
         "light": "Light",
         "dark": "Dark",
         "current_light": "Light mode",
-        "current_dark": "Dark mode"
+        "current_dark": "Dark mode",
+        "mode_label": "Mode",
+        "accent_label": "Color scheme",
+        "color_card_title": "Appearance & Color",
+        "color_card_desc": "Choose interface mode and color scheme",
+        "date_card_title": "Date Input Method",
+        "date_card_desc": "Choose how the DatePicker opens by default",
+        "themes": {
+          "indigo": "Indigo",
+          "lime": "Lime",
+          "teal": "Teal",
+          "royal": "Royal",
+          "sun": "Sun",
+          "mint": "Mint"
+        }
+      },
+      "color": {
+        "title": "Color",
+        "desc": "Change the interface color scheme",
+        "modal_title": "Color Scheme",
+        "modal_desc": "Choose your preferred color scheme"
+      },
+      "datepicker": {
+        "title": "Date Input",
+        "desc": "Change the default DatePicker mode",
+        "modal_title": "Date Input Method",
+        "modal_desc": "Choose how the date picker opens by default"
       },
       "language": {
         "title": "Language",
@@ -1443,6 +1486,7 @@
       "lessons_group": "Lessons",
       "courses": "Courses",
       "groups": "Groups",
+      "lessons": "Lesson Schedule",
       "attendance": "Attendance",
       "analytics_group": "Analytics",
       "analytics": "Analytics",
@@ -1454,6 +1498,7 @@
       "expenses": "Expenses",
       "payment_types": "Payment Types",
       "settings": "Settings",
+      "profile": "Profile",
       "collapse": "Collapse",
       "expand": "Expand"
     }

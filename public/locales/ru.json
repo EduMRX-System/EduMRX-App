@@ -447,7 +447,24 @@
     "delete_confirm_suffix": "Удалить? Это действие нельзя отменить.",
     "no_results": "Не найдено",
     "enter": "Введите",
-    "detail": "Подробнее"
+    "detail": "Подробнее",
+    "datepicker": {
+      "calendar": "Календарь",
+      "select_mode": "Выбор",
+      "text_mode": "Ввод",
+      "today": "Сегодня",
+      "placeholder": "Выберите дату",
+      "day": "День",
+      "month": "Месяц",
+      "year": "Год",
+      "default_mode": "Способ ввода даты",
+      "text_hint": "День.Месяц.Год (ДД.ММ.ГГГГ)",
+      "text_invalid": "Неверная дата",
+      "text_out_of_range": "Дата вне допустимого диапазона",
+      "calendar_desc": "Месячный вид",
+      "select_desc": "День / Месяц / Год",
+      "text_desc": "Ввод вручную"
+    }
   },
   "auth": {
     "common": {
@@ -1244,11 +1261,37 @@
         "title": "Внешний вид",
         "desc": "Выберите тему приложения",
         "modal_title": "Внешний вид",
-        "modal_desc": "Выберите удобную для вас тему",
+        "modal_desc": "Выберите тему интерфейса",
         "light": "Светлая",
         "dark": "Тёмная",
         "current_light": "Светлый режим",
-        "current_dark": "Тёмный режим"
+        "current_dark": "Тёмный режим",
+        "mode_label": "Режим",
+        "accent_label": "Цветовая схема",
+        "color_card_title": "Внешний вид и цвет",
+        "color_card_desc": "Выберите режим интерфейса и цветовую схему",
+        "date_card_title": "Способ ввода даты",
+        "date_card_desc": "Выберите режим открытия DatePicker по умолчанию",
+        "themes": {
+          "indigo": "Индиго",
+          "lime": "Лайм",
+          "teal": "Бирюза",
+          "royal": "Синий",
+          "sun": "Солнце",
+          "mint": "Мята"
+        }
+      },
+      "color": {
+        "title": "Цвет",
+        "desc": "Измените цветовую схему интерфейса",
+        "modal_title": "Цветовая схема",
+        "modal_desc": "Выберите понравившуюся цветовую схему"
+      },
+      "datepicker": {
+        "title": "Ввод даты",
+        "desc": "Измените способ открытия DatePicker",
+        "modal_title": "Способ ввода даты",
+        "modal_desc": "Выберите режим открытия при выборе даты"
       },
       "language": {
         "title": "Язык",
@@ -1443,6 +1486,7 @@
       "lessons_group": "Занятия",
       "courses": "Курсы",
       "groups": "Группы",
+      "lessons": "Расписание занятий",
       "attendance": "Посещаемость",
       "analytics_group": "Аналитика",
       "analytics": "Аналитика",
@@ -1454,6 +1498,7 @@
       "expenses": "Расходы",
       "payment_types": "Типы оплат",
       "settings": "Настройки",
+      "profile": "Профиль",
       "collapse": "Свернуть",
       "expand": "Развернуть"
     }

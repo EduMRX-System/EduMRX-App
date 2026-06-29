@@ -73,7 +73,6 @@ export const directorMenu: NavEntry[] = [
           { title: "director.nav.rooms", href: "/rooms", icon: DoorOpen },
           { title: "director.nav.managers", href: "/managers", icon: Users },
           { title: "director.nav.branches", href: "/branches", icon: Building2 },
-          { title: "director.nav.my_centers", href: "/my-centers", icon: Layers },
       ],
   },
   {

@@ -31,13 +31,14 @@ export default function ChooseProfileView({ onChoose }: Props) {
   const { theme, setTheme } = useUIStore();
   const [selected, setSelected] = useState<ProfileType | null>(null);
 
-  const profiles: { type: ProfileType; icon: React.ElementType; color: string; ring: string; bg: string }[] = [
+  const profiles: { type: ProfileType; icon: React.ElementType; color: string; ring: string; bg: string; iconBg: string }[] = [
     {
       type: "student",
       icon: GraduationCap,
       color: "text-primary",
       ring: "border-primary",
       bg: "bg-primary-soft",
+      iconBg: "bg-primary-soft",
     },
     {
       type: "staff",
@@ -45,6 +46,7 @@ export default function ChooseProfileView({ onChoose }: Props) {
       color: "text-foreground",
       ring: "border-border-subtle",
       bg: "bg-hover",
+      iconBg: "bg-hover",
     },
   ];
 
@@ -174,8 +176,8 @@ export default function ChooseProfileView({ onChoose }: Props) {
                   onClick={() => setSelected(type)}
                   aria-pressed={active}
                   className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 transition-all duration-200 text-left ${active
-                      ? `${ring} ${bg} shadow-sm`
-                      : "border-border hover:border-border-subtle hover:bg-hover"
+                    ? `${ring} ${bg} shadow-sm`
+                    : "border-border hover:border-border-subtle hover:bg-hover"
                     }`}
                 >
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${active ? iconBg : "bg-hover"}`}>
@@ -194,8 +196,8 @@ export default function ChooseProfileView({ onChoose }: Props) {
                   {/* Radio / check */}
                   <div
                     className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 ${active
-                        ? "bg-primary text-primary-fg"
-                        : "border-2 border-border"
+                      ? "bg-primary text-primary-fg"
+                      : "border-2 border-border"
                       }`}
                   >
                     {active && <Check className="w-3.5 h-3.5" strokeWidth={3} />}

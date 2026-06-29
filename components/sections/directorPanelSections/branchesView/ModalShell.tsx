@@ -29,13 +29,16 @@ export default function ModalShell({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 overflow-y-auto overscroll-contain">
+      {/* Backdrop — fixed so it doesn't scroll with content */}
       <div
-        className="absolute inset-0 bg-overlay backdrop-blur-sm"
+        className="fixed inset-0 bg-overlay backdrop-blur-sm"
         onClick={onClose}
       />
+      {/* Centering wrapper — min-h-full keeps it scrollable when keyboard opens */}
+      <div className="flex min-h-full items-end sm:items-center justify-center p-0 sm:p-4">
       <div
-        className={`relative z-10 w-full ${maxWidth} max-h-[90vh] overflow-y-auto rounded-2xl bg-surface p-6 shadow-2xl`}
+        className={`relative z-10 w-full ${maxWidth} max-h-[85dvh] sm:max-h-[90dvh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-surface p-6 shadow-2xl`}
       >
         <div className="mb-5 flex items-start justify-between">
           <div>
@@ -56,6 +59,7 @@ export default function ModalShell({
           </button>
         </div>
         {children}
+      </div>
       </div>
     </div>
   );

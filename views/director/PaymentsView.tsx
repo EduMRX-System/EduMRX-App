@@ -19,10 +19,11 @@ import {
 } from "@/hooks/usePayments";
 import {
   type IPayment, type PaymentPayload, type PaymentPatchPayload,
-  PAYMENT_METHOD_OPTIONS, PAYMENT_STATUS_OPTIONS, MONTHS_UZ,
+  PAYMENT_METHOD_OPTIONS, PAYMENT_STATUS_OPTIONS,
   formatAmount, formatDate, formatPeriod, getPaymentStatusOption, getMethodLabel,
 } from "@/types/payment";
 import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
+import DatePicker, { MonthYearPicker } from "@/components/ui/DatePicker";
 
 const PAGE_SIZE = 10;
 
@@ -399,9 +400,6 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
     `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring/50 ${err ? "border-danger/50" : "border-border focus:border-primary"}`;
   const errCls = "text-red-400 text-[11px] mt-0.5";
 
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
@@ -512,37 +510,22 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
             </div>
           </div>
 
-          {/* Period */}
+          {/* Period + Due date */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div>
-              <label className={labelCls}>{t("director.payments.form.period_month_label")}</label>
-              <select
-                value={form.period_month}
-                onChange={(e) => set("period_month", Number(e.target.value))}
-                className={fieldCls()}
-              >
-                {MONTHS_UZ.map((m, i) => (
-                  <option key={i} value={i + 1}>{m}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className={labelCls}>{t("director.payments.form.period_year_label")}</label>
-              <select
-                value={form.period_year}
-                onChange={(e) => set("period_year", Number(e.target.value))}
-                className={fieldCls()}
-              >
-                {years.map((y) => <option key={y} value={y}>{y}</option>)}
-              </select>
+            <div className="col-span-2">
+              <MonthYearPicker
+                label={`${t("director.payments.form.period_month_label")} / ${t("director.payments.form.period_year_label")}`}
+                month={form.period_month}
+                year={form.period_year}
+                onChangeMonth={(m) => set("period_month", m)}
+                onChangeYear={(y) => set("period_year", y)}
+              />
             </div>
             <div className="col-span-2">
-              <label className={labelCls}>{t("director.payments.form.due_date_label")}</label>
-              <input
-                type="date"
+              <DatePicker
+                label={t("director.payments.form.due_date_label")}
                 value={form.due_date}
-                onChange={(e) => set("due_date", e.target.value)}
-                className={fieldCls()}
+                onChange={(v) => set("due_date", v)}
               />
             </div>
           </div>

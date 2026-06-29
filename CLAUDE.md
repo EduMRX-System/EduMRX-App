@@ -1,1 +1,8 @@
-@AGENTS.md
+- Package manager: npm
+- Tailwind v4 (CSS @theme, config emas)
+- Theme: globals.css token (bg-primary, bg-surface, text-foreground...)
+- Til: i18n t() har joyда (uz/ru/en), hardcode matn yo'q
+- Center: me/ center_ids[0] auto, branch select'дан
+- API: /api/v1 env'да (yo'lда yozma)
+- Dark mode har komponentда
+- AI-gradient/binafsha-pushti YO'Q

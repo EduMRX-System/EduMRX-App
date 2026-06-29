@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  StickyNote, CheckSquare2, Percent, X, Plus, Trash2, Check,
+  StickyNote, CheckSquare2, Percent, Plus, Trash2, Check,
   ArrowLeftRight, RefreshCw,
 } from "lucide-react";
+import RightDrawer from "@/components/common/RightDrawer";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/store/authStore";
 import { useQuery } from "@tanstack/react-query";
@@ -18,28 +19,13 @@ interface Todo { id: string; text: string; done: boolean; }
 const CURRENCIES = ["USD", "UZS", "RUB", "EUR"] as const;
 type Currency = (typeof CURRENCIES)[number];
 
-// ── Cookie storage ────────────────────────────────────────────────
-// TODO: Replace with backend API (GET/POST /api/v1/director/notes/, /todos/)
-// Cookies used (not localStorage) so data persists across *.edumrx.uz subdomains.
-function writeCookie(name: string, value: string) {
-  if (typeof document === "undefined") return;
-  const isLocal = window.location.hostname.includes("localhost");
-  const opts = isLocal
-    ? `path=/; max-age=${365 * 24 * 3600}; samesite=lax`
-    : `path=/; domain=.edumrx.uz; secure; samesite=none; max-age=${365 * 24 * 3600}`;
-  try { document.cookie = `${name}=${encodeURIComponent(value)}; ${opts}`; } catch {}
+// ── localStorage storage (per-role, subdomain-isolated) ──────────
+function saveLocal<T>(key: string, data: T) {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
 }
-function readCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  const m = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-  return m ? decodeURIComponent(m[2]) : null;
-}
-function saveData<T>(key: string, data: T) {
-  try { writeCookie(key, JSON.stringify(data)); } catch {}
-}
-function loadData<T>(key: string, fallback: T): T {
+function loadLocal<T>(key: string, fallback: T): T {
   try {
-    const raw = readCookie(key);
+    const raw = localStorage.getItem(key);
     return raw ? (JSON.parse(raw) as T) : fallback;
   } catch { return fallback; }
 }
@@ -121,12 +107,10 @@ function convertCurrency(
 export default function QuickToolsPopover() {
   const { t } = useTranslation();
   const { user } = useAuthStore();
-  const userId = user?.id ?? "guest";
+  const userRole = user?.role ?? "guest";
 
-  const [isOpen, setIsOpen]     = useState(false);
-  const [tab, setTab]           = useState<QTab>("notes");
-  const [isMobile, setIsMobile] = useState(false);
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [tab, setTab]       = useState<QTab>("notes");
 
   // ── Notes ────────────────────────────────────────────────────
   const [notes, setNotes]           = useState<Note[]>([]);
@@ -161,59 +145,30 @@ export default function QuickToolsPopover() {
     staleTime: 60 * 60 * 1000,
   });
 
-  // Detect mobile (< 640px)
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 640);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  // Load from cookies
+  // Load from localStorage
   useEffect(() => {
     if (!user) return;
-    setNotes(loadData<Note[]>(`director_notes_${userId}`, []));
-    setTodos(loadData<Todo[]>(`director_todos_${userId}`, []));
-  }, [userId, user]);
+    setNotes(loadLocal<Note[]>(`notes_${userRole}`, []));
+    setTodos(loadLocal<Todo[]>(`todos_${userRole}`, []));
+  }, [userRole, user]);
 
   // Auto-save notes (debounced) + flash indicator
   useEffect(() => {
     if (!user) return;
     const timer = setTimeout(() => {
-      saveData(`director_notes_${userId}`, notes);
+      saveLocal(`notes_${userRole}`, notes);
       setSavedFlash(true);
       const clear = setTimeout(() => setSavedFlash(false), 1500);
       return () => clearTimeout(clear);
     }, 400);
     return () => clearTimeout(timer);
-  }, [notes, userId, user]);
+  }, [notes, userRole, user]);
 
   // Save todos immediately
   useEffect(() => {
     if (!user) return;
-    saveData(`director_todos_${userId}`, todos);
-  }, [todos, userId, user]);
-
-  // Click-outside → close (desktop only; mobile uses overlay)
-  useEffect(() => {
-    if (!isOpen || isMobile) return;
-    const handle = (e: MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node))
-        setIsOpen(false);
-    };
-    document.addEventListener("mousedown", handle);
-    return () => document.removeEventListener("mousedown", handle);
-  }, [isOpen, isMobile]);
-
-  // Prevent body scroll when mobile sheet is open
-  useEffect(() => {
-    if (isMobile && isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [isMobile, isOpen]);
+    saveLocal(`todos_${userRole}`, todos);
+  }, [todos, userRole, user]);
 
   // ── Notes handlers ────────────────────────────────────────────
   const addNote = () => {
@@ -289,20 +244,16 @@ export default function QuickToolsPopover() {
     "outline-none focus:border-primary dark:focus:border-primary " +
     "focus:ring-2 focus:ring-primary-ring/50 transition-colors cursor-pointer";
 
-  const panelCls = isMobile
-    ? "fixed bottom-0 inset-x-0 z-[71] bg-surface rounded-t-2xl shadow-2xl flex flex-col max-h-[88vh]"
-    : "absolute right-0 mt-2 w-[380px] bg-surface rounded-xl border border-border shadow-2xl z-50 flex flex-col max-h-[540px] origin-top-right";
-
   // ── Render ────────────────────────────────────────────────────
   return (
-    <div className="relative" ref={wrapRef}>
+    <>
       {/* Trigger button */}
       <button
         onClick={() => setIsOpen((o) => !o)}
         aria-label={t("director.tools.quick_tools")}
         className={`relative w-9 h-9 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${
           isOpen
-            ? "bg-hover  text-foreground"
+            ? "bg-hover text-foreground"
             : "text-foreground-muted hover:bg-hover hover:text-foreground dark:hover:text-white"
         }`}
       >
@@ -314,71 +265,32 @@ export default function QuickToolsPopover() {
         )}
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            {/* Mobile full-screen overlay */}
-            {isMobile && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[70]"
-                onClick={() => setIsOpen(false)}
-              />
-            )}
-
-            {/* Panel — bottom-sheet on mobile, popover on desktop */}
-            <motion.div
-              initial={isMobile ? { y: "100%" } : { opacity: 0, y: -6, scale: 0.97 }}
-              animate={isMobile ? { y: 0 }       : { opacity: 1, y: 0,  scale: 1    }}
-              exit={isMobile    ? { y: "100%" } : { opacity: 0, y: -6, scale: 0.97 }}
-              transition={isMobile
-                ? { duration: 0.28, ease: [0.32, 0.72, 0, 1] }
-                : { duration: 0.16, ease: "easeOut" }
-              }
-              className={panelCls}
+      <RightDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} title={t("director.tools.quick_tools")}>
+        {/* Tab bar */}
+        <div className="flex items-center border-b border-border-subtle shrink-0 px-1 gap-0.5">
+          {TABS.map(({ id, icon, label }) => (
+            <button
+              key={id}
+              onClick={() => setTab(id)}
+              className={`flex items-center justify-center gap-1.5 flex-1 px-3 h-11 text-[12px] font-semibold transition-colors cursor-pointer border-b-2 -mb-px whitespace-nowrap ${
+                tab === id
+                  ? "text-primary border-primary"
+                  : "text-foreground-subtle border-transparent hover:text-foreground dark:hover:text-foreground-subtle"
+              }`}
             >
-              {/* Mobile drag handle */}
-              {isMobile && (
-                <div className="flex justify-center pt-3 pb-1 shrink-0">
-                  <div className="w-10 h-1 rounded-full bg-border" />
-                </div>
+              {icon}
+              <span>{label}</span>
+              {id === "todos" && pendingCount > 0 && (
+                <span className="min-w-[16px] h-4 px-1 rounded-full bg-primary-soft text-primary text-[10px] font-bold flex items-center justify-center">
+                  {pendingCount}
+                </span>
               )}
+            </button>
+          ))}
+        </div>
 
-              {/* Tab bar */}
-              <div className="flex items-center border-b border-border-subtle shrink-0 px-1 gap-0.5">
-                {TABS.map(({ id, icon, label }) => (
-                  <button
-                    key={id}
-                    onClick={() => setTab(id)}
-                    className={`flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:justify-start px-3 h-11 text-[12px] font-semibold transition-colors cursor-pointer border-b-2 -mb-px whitespace-nowrap ${
-                      tab === id
-                        ? "text-primary border-primary"
-                        : "text-foreground-subtle border-transparent hover:text-foreground dark:hover:text-foreground-subtle"
-                    }`}
-                  >
-                    {icon}
-                    <span>{label}</span>
-                    {id === "todos" && pendingCount > 0 && (
-                      <span className="min-w-[16px] h-4 px-1 rounded-full bg-primary-soft text-primary text-[10px] font-bold flex items-center justify-center">
-                        {pendingCount}
-                      </span>
-                    )}
-                  </button>
-                ))}
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="ml-auto mr-1.5 p-2 rounded-lg text-foreground-subtle hover:text-foreground-muted dark:hover:text-foreground hover:bg-hover transition-colors cursor-pointer shrink-0"
-                  aria-label="Close"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Scrollable content area */}
-              <div className="overflow-y-auto flex-1 overscroll-contain">
+        {/* Scrollable content area */}
+        <div className="overflow-y-auto flex-1 overscroll-contain">
 
                 {/* ── NOTES ──────────────────────────────────── */}
                 {tab === "notes" && (
@@ -788,11 +700,8 @@ export default function QuickToolsPopover() {
                     </div>
                   </div>
                 )}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </div>
+        </div>
+      </RightDrawer>
+    </>
   );
 }

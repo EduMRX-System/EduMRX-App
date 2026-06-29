@@ -11,9 +11,10 @@ import { useTranslation } from "react-i18next";
 interface Props {
     course?: Course | null;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function CourseFormModal({ course, onClose }: Props) {
+export default function CourseFormModal({ course, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!course;
@@ -49,8 +50,8 @@ export default function CourseFormModal({ course, onClose }: Props) {
                 status: formData.status,
             };
             const res = isEdit
-                ? await API.patch(`director/courses/${course!.id}/`, payload)
-                : await API.post("director/courses/", payload);
+                ? await API.patch(`${role}/courses/${course!.id}/`, payload)
+                : await API.post(`${role}/courses/`, payload);
             return res.data;
         },
         onSuccess: () => {

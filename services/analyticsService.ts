@@ -61,17 +61,16 @@ export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary> {
 
 export async function fetchAnalyticsChart(): Promise<AnalyticsChart> {
   const res = await API.get("/director/analytics/chart/");
-
-  console.log(res);
-  
-  return res.data;
+  const d = res.data;
+  return d?.data ?? d;
 }
 
 export async function fetchAnalyticsCenters(page = 1): Promise<AnalyticsCentersResponse> {
   const res = await API.get("/director/analytics/centers/", {
     params: { page },
   });
-  return res.data;
+  const d = res.data;
+  return d?.data ?? d;
 }
 
 export async function fetchAnalyticsBranches(): Promise<AnalyticsBranch[]> {

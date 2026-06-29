@@ -11,9 +11,10 @@ import { useTranslation } from "react-i18next";
 interface Props {
     room: Room;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function DeleteRoomModal({ room, onClose }: Props) {
+export default function DeleteRoomModal({ room, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [isMounted, setIsMounted] = useState(false);
@@ -27,7 +28,7 @@ export default function DeleteRoomModal({ room, onClose }: Props) {
 
     const { mutate: deleteRoom, isPending } = useMutation({
         mutationFn: async () => {
-            await API.delete(`director/rooms/${room.id}/`);
+            await API.delete(`${role}/rooms/${room.id}/`);
         },
         onSuccess: () => {
             toast.success(t("director.rooms.toast.deleted"));

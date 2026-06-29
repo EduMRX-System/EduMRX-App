@@ -12,7 +12,11 @@ import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 10;
 
-export default function RoomsView() {
+interface Props {
+    role?: "director" | "manager";
+}
+
+export default function RoomsView({ role = "director" }: Props) {
     const { t } = useTranslation();
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
@@ -20,7 +24,7 @@ export default function RoomsView() {
     const [editing, setEditing] = useState<Room | null>(null);
     const [deleting, setDeleting] = useState<Room | null>(null);
 
-    const { data, isLoading, isError, isFetching } = useRooms({ page, pageSize: PAGE_SIZE, search });
+    const { data, isLoading, isError, isFetching } = useRooms({ page, pageSize: PAGE_SIZE, search, role });
     const rooms = data?.results ?? [];
     const count = data?.count ?? 0;
     const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
@@ -114,9 +118,9 @@ export default function RoomsView() {
             </div>
 
             {/* Modals */}
-            {addOpen && <RoomFormModal onClose={() => setAddOpen(false)} />}
-            {editing && <RoomFormModal room={editing} onClose={() => setEditing(null)} />}
-            {deleting && <DeleteRoomModal room={deleting} onClose={() => setDeleting(null)} />}
+            {addOpen && <RoomFormModal onClose={() => setAddOpen(false)} role={role} />}
+            {editing && <RoomFormModal room={editing} onClose={() => setEditing(null)} role={role} />}
+            {deleting && <DeleteRoomModal room={deleting} onClose={() => setDeleting(null)} role={role} />}
         </div>
     );
 }

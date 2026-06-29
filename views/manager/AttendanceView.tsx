@@ -1,5 +1,1 @@
-export default function AttendanceView() {
-  return (
-    <div>AttendanceView</div>
-  )
-}
+export { default } from "@/components/attendance/AttendanceView";

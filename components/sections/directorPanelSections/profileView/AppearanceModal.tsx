@@ -1,8 +1,7 @@
 "use client";
 
-// components/profile/AppearanceModal.tsx
 import { useState } from "react";
-import { Contrast, Check } from "lucide-react";
+import { Contrast, Check, Sun, Moon } from "lucide-react";
 import { useUIStore } from "@/store/useUIStore";
 import { useTranslation } from "react-i18next";
 import ModalShell from "./ModalShell";
@@ -10,75 +9,63 @@ import ModalShell from "./ModalShell";
 export default function AppearanceModal({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
   const { theme, setTheme } = useUIStore();
-  const [selected, setSelected] = useState<"light" | "dark">(theme === "dark" ? "dark" : "light");
+  const [origTheme] = useState(theme);
 
-  const save = () => {
-    setTheme(selected);
+  const handleCancel = () => {
+    if (theme !== origTheme) setTheme(origTheme);
     onClose();
   };
 
   return (
     <ModalShell
       icon={<Contrast className="w-7 h-7" />}
-      iconBg="bg-success-bg0"
+      iconBg="bg-success"
       title={t("director.profile.appearance.modal_title")}
       desc={t("director.profile.appearance.modal_desc")}
-      onClose={onClose}
+      onClose={handleCancel}
       footer={
         <>
           <button
-            onClick={onClose}
-            className="px-5 h-11 rounded-xl bg-hover text-foreground text-sm font-bold hover:bg-border transition-colors"
+            onClick={handleCancel}
+            className="px-5 h-11 rounded-xl bg-hover text-foreground text-sm font-bold hover:bg-border transition-colors cursor-pointer"
           >
             {t("common.cancel")}
           </button>
           <button
-            onClick={save}
-            className="px-5 h-11 rounded-xl bg-primary hover:bg-primary-hover text-primary-fg text-sm font-bold transition-colors"
+            onClick={onClose}
+            className="px-5 h-11 rounded-xl bg-primary hover:bg-primary-hover text-primary-fg text-sm font-bold transition-colors cursor-pointer"
           >
             {t("common.save")}
           </button>
         </>
       }
     >
-      <div className="grid grid-cols-2 gap-3 py-2">
+      <div className="grid grid-cols-2 gap-3 pb-2">
         {(["light", "dark"] as const).map((mode) => {
-          const active = selected === mode;
+          const active = theme === mode;
           return (
             <button
               key={mode}
-              onClick={() => setSelected(mode)}
-              className={`relative p-3 rounded-2xl border-2 transition-all ${
-                active
-                  ? "border-primary bg-primary-soft/50"
-                  : "border-border hover:border-border-subtle"
+              onClick={() => setTheme(mode)}
+              className={`relative p-3 rounded-2xl border-2 transition-all cursor-pointer ${
+                active ? "border-primary bg-primary-soft/50" : "border-border hover:border-border-subtle"
               }`}
             >
-              {/* Mini preview */}
-              <div
-                className={`h-24 rounded-xl overflow-hidden border ${
-                  mode === "light"
-                    ? "bg-slate-100 border-border"
-                    : "bg-slate-900 border-slate-700"
-                }`}
-              >
-                <div className="flex h-full">
-                  <div className={`w-1/4 ${mode === "light" ? "bg-surface" : "bg-slate-950"}`} />
-                  <div className="flex-1 p-2 space-y-1.5">
-                    <div className={`h-2 w-3/4 rounded-full ${mode === "light" ? "bg-slate-300" : "bg-slate-700"}`} />
-                    <div className={`h-2 w-1/2 rounded-full ${mode === "light" ? "bg-slate-200" : "bg-slate-800"}`} />
-                    <div className="h-6 w-full rounded-md bg-primary/80 mt-2" />
-                  </div>
-                </div>
+              <div className={`h-20 rounded-xl overflow-hidden border flex items-center justify-center ${
+                mode === "light" ? "bg-slate-100 border-slate-200" : "bg-slate-900 border-slate-700"
+              }`}>
+                {mode === "light"
+                  ? <Sun className="w-8 h-8 text-amber-500" />
+                  : <Moon className="w-8 h-8 text-slate-400" />}
               </div>
-
-              <p className="text-sm font-bold text-foreground mt-3">
-                {mode === "light" ? t("director.profile.appearance.light") : t("director.profile.appearance.dark")}
+              <p className="text-sm font-bold text-foreground mt-2.5 text-center">
+                {mode === "light"
+                  ? t("director.profile.appearance.light")
+                  : t("director.profile.appearance.dark")}
               </p>
-
               {active && (
                 <span className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                  <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                  <Check className="w-3 h-3 text-primary-fg" strokeWidth={3} />
                 </span>
               )}
             </button>

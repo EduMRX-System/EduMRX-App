@@ -2,15 +2,19 @@
 
 import { useAuthStore } from "@/store/authStore";
 import { useUIStore } from "@/store/useUIStore";
-import { Menu, Sun, Moon, Bell, X, Check } from "lucide-react";
+import { Menu, Bell, Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavItem } from "@/constants/navigation";
 import QuickToolsPopover from "@/components/sections/directorPanelSections/tools/QuickToolsPopover";
-import ToolsWidgetHeader from "@/components/common/ToolsWidgetHeader";
+import ThemePickerButton from "@/components/common/header/ThemePickerButton";
+import DarkLightButton from "@/components/common/header/DarkLightButton";
+import CalculatorButton from "@/components/common/header/CalculatorButton";
+import CalendarButton from "@/components/common/header/CalendarButton";
+import RightDrawer from "@/components/common/RightDrawer";
 
 interface HeaderProps {
     menuItems?: NavItem[];
@@ -28,11 +32,10 @@ interface Notification {
 export default function Header({ menuItems = [], showQuickTools = false }: HeaderProps) {
     const { t } = useTranslation();
     const { user } = useAuthStore();
-    const { setTheme, theme, toggleSidebar } = useUIStore();
+    const { toggleSidebar } = useUIStore();
     const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [notifOpen, setNotifOpen] = useState(false);
-    const notifRef = useRef<HTMLDivElement>(null);
 
     // TODO: backenddan keladi — hozircha bo'sh
     const [notifications] = useState<Notification[]>([]);
@@ -41,17 +44,6 @@ export default function Header({ menuItems = [], showQuickTools = false }: Heade
     useEffect(() => {
         setMounted(true);
     }, []);
-
-    // Tashqariga bosilganda dropdown yopiladi
-    useEffect(() => {
-        function handleClickOutside(e: MouseEvent) {
-            if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
-                setNotifOpen(false);
-            }
-        }
-        if (notifOpen) document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [notifOpen]);
 
     // Joriy sahifa nomini menu'dan topish
     const current = menuItems
@@ -80,16 +72,19 @@ export default function Header({ menuItems = [], showQuickTools = false }: Heade
                     >
                         <Menu className="w-6 h-6" />
                     </button>
-
+                    <span className="text-sm font-semibold text-foreground truncate">{pageTitle}</span>
                 </div>
 
                 {/* RIGHT cluster */}
                 <div className="flex items-center gap-1 shrink-0">
-                    {showQuickTools && <ToolsWidgetHeader />}
+                    <ThemePickerButton />
+                    <DarkLightButton />
+                    {showQuickTools && <CalculatorButton />}
+                    {showQuickTools && <CalendarButton />}
                     {showQuickTools && <QuickToolsPopover />}
 
-                    {/* Notifications — dropdown bilan */}
-                    <div className="relative" ref={notifRef}>
+                    {/* Notifications — drawer bilan */}
+                    <div className="relative">
                         <button
                             onClick={() => setNotifOpen((o) => !o)}
                             className={`relative w-9 h-9 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${notifOpen
@@ -105,87 +100,68 @@ export default function Header({ menuItems = [], showQuickTools = false }: Heade
                                 </span>
                             )}
                         </button>
+                    </div>
 
-                        {/* DROPDOWN */}
-                        {notifOpen && (
-                            <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-surface border border-border shadow-xl overflow-hidden z-50 animate-[notifIn_0.15s_ease-out]">
-                                {/* Header */}
-                                <div className="px-5 py-4 bg-primary">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-base font-black text-white">
-                                            {t("notifications.title") || "Bildirishnomalar"}
-                                        </h3>
-                                        <button
-                                            onClick={() => setNotifOpen(false)}
-                                            className="w-7 h-7 flex items-center justify-center rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors"
-                                            aria-label="Close"
-                                        >
-                                            <X className="w-4 h-4" />
-                                        </button>
+                    <RightDrawer
+                        isOpen={notifOpen}
+                        onClose={() => setNotifOpen(false)}
+                        title={t("notifications.title") || "Bildirishnomalar"}
+                    >
+                        {/* Count info */}
+                        <div className="px-5 py-3 bg-primary shrink-0">
+                            <p className="text-xs text-primary-fg/70">
+                                Jami: {notifications.length} • O'qilmagan:{" "}
+                                <span className="font-bold text-white">{unreadCount}</span>
+                            </p>
+                        </div>
+
+                        {/* List yoki empty */}
+                        <div className="flex-1 overflow-y-auto">
+                            {notifications.length === 0 ? (
+                                <div className="py-12 flex flex-col items-center justify-center text-center px-6">
+                                    <div className="w-14 h-14 rounded-2xl bg-hover flex items-center justify-center mb-3">
+                                        <Bell className="w-6 h-6 text-foreground-subtle" />
                                     </div>
-                                    <p className="text-xs text-primary-fg/70 mt-0.5">
-                                        Jami: {notifications.length} • O'qilmagan:{" "}
-                                        <span className="font-bold text-white">{unreadCount}</span>
+                                    <p className="text-sm font-medium text-foreground-muted">
+                                        Bildirishnomalar yo'q
                                     </p>
                                 </div>
-
-                                {/* List yoki empty */}
-                                <div className="max-h-80 overflow-y-auto">
-                                    {notifications.length === 0 ? (
-                                        <div className="py-12 flex flex-col items-center justify-center text-center px-6">
-                                            <div className="w-14 h-14 rounded-2xl bg-hover flex items-center justify-center mb-3">
-                                                <Bell className="w-6 h-6 text-foreground-subtle" />
-                                            </div>
-                                            <p className="text-sm font-medium text-foreground-muted">
-                                                Bildirishnomalar yo'q
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <div className="divide-y divide-border-subtle">
-                                            {notifications.map((n) => (
-                                                <div
-                                                    key={n.id}
-                                                    className={`px-5 py-3.5 flex gap-3 hover:bg-hover transition-colors cursor-pointer ${!n.read ? "bg-primary-soft/40" : ""
-                                                        }`}
-                                                >
-                                                    <div
-                                                        className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${n.read ? "bg-transparent" : "bg-primary"
-                                                            }`}
-                                                    />
-                                                    <div className="min-w-0">
-                                                        <p className="text-sm font-bold text-foreground truncate">
-                                                            {n.title}
-                                                        </p>
-                                                        <p className="text-xs text-foreground-muted mt-0.5 line-clamp-2">
-                                                            {n.body}
-                                                        </p>
-                                                        <p className="text-[10px] text-foreground-subtle mt-1">{n.time}</p>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Footer — faqat bildirishnoma bo'lsa */}
-                                {notifications.length > 0 && (
-                                    <div className="px-5 py-3 border-t border-border-subtle flex items-center justify-between">
-                                        <button className="flex items-center gap-1.5 text-xs font-bold text-foreground-muted hover:text-primary transition-colors">
-                                            <Check className="w-3.5 h-3.5" />
-                                            Hammasini o'qilgan
-                                        </button>
-                                        <Link
-                                            href="/notifications"
-                                            onClick={() => setNotifOpen(false)}
-                                            className="text-xs font-bold text-primary hover:underline"
+                            ) : (
+                                <div className="divide-y divide-border-subtle">
+                                    {notifications.map((n) => (
+                                        <div
+                                            key={n.id}
+                                            className={`px-5 py-3.5 flex gap-3 hover:bg-hover transition-colors cursor-pointer ${!n.read ? "bg-primary-soft/40" : ""}`}
                                         >
-                                            Barchasini ko'rish
-                                        </Link>
-                                    </div>
-                                )}
+                                            <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${n.read ? "bg-transparent" : "bg-primary"}`} />
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-bold text-foreground truncate">{n.title}</p>
+                                                <p className="text-xs text-foreground-muted mt-0.5 line-clamp-2">{n.body}</p>
+                                                <p className="text-[10px] text-foreground-subtle mt-1">{n.time}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Footer — faqat bildirishnoma bo'lsa */}
+                        {notifications.length > 0 && (
+                            <div className="px-5 py-3 border-t border-border-subtle flex items-center justify-between shrink-0">
+                                <button className="flex items-center gap-1.5 text-xs font-bold text-foreground-muted hover:text-primary transition-colors">
+                                    <Check className="w-3.5 h-3.5" />
+                                    Hammasini o'qilgan
+                                </button>
+                                <Link
+                                    href="/notifications"
+                                    onClick={() => setNotifOpen(false)}
+                                    className="text-xs font-bold text-primary hover:underline"
+                                >
+                                    Barchasini ko'rish
+                                </Link>
                             </div>
                         )}
-                    </div>
+                    </RightDrawer>
 
 
 
@@ -221,18 +197,6 @@ export default function Header({ menuItems = [], showQuickTools = false }: Heade
                     </Link>
                 </div>
 
-                <style jsx>{`
-        @keyframes notifIn {
-          from {
-            opacity: 0;
-            transform: translateY(-8px) scale(0.97);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-      `}</style>
             </div>
         </header>
     );

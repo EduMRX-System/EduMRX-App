@@ -21,11 +21,12 @@ import {
 } from "@/hooks/useExpenseCategories";
 import {
   type IExpense, type IExpenseCategory, type ExpensePayload,
-  EXPENSE_STATUS_OPTIONS, EXPENSE_METHOD_OPTIONS, MONTHS_UZ,
+  EXPENSE_STATUS_OPTIONS, EXPENSE_METHOD_OPTIONS,
   getExpenseStatusOption,
 } from "@/types/expense";
 import { formatAmount, formatDate } from "@/types/payment";
 import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
+import DatePicker, { MonthYearPicker } from "@/components/ui/DatePicker";
 
 const PAGE_SIZE = 10;
 const PIE_COLORS = ["#b8860b", "#059669", "#d97706", "#e11d48", "#d4a017", "#a67a0a", "#78716c"];
@@ -258,9 +259,6 @@ function ExpenseFormModal({ expense, categories, onClose }: {
   const fieldCls = (err?: boolean) =>
     `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring/50 ${err ? "border-danger/50" : "border-border focus:border-primary"}`;
   const errCls = "text-red-400 text-[11px] mt-0.5";
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
@@ -340,20 +338,20 @@ function ExpenseFormModal({ expense, categories, onClose }: {
           {/* Date + Period */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="col-span-2">
-              <label className={labelCls}>{t("director.expenses.form.date_label")}</label>
-              <input type="date" value={form.expense_date} onChange={(e) => set("expense_date", e.target.value)} className={fieldCls()} />
+              <DatePicker
+                label={t("director.expenses.form.date_label")}
+                value={form.expense_date}
+                onChange={(v) => set("expense_date", v)}
+              />
             </div>
-            <div>
-              <label className={labelCls}>{t("director.expenses.form.period_month_label")}</label>
-              <select value={form.period_month} onChange={(e) => set("period_month", Number(e.target.value))} className={fieldCls()}>
-                {MONTHS_UZ.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className={labelCls}>{t("director.expenses.form.period_year_label")}</label>
-              <select value={form.period_year} onChange={(e) => set("period_year", Number(e.target.value))} className={fieldCls()}>
-                {years.map((y) => <option key={y} value={y}>{y}</option>)}
-              </select>
+            <div className="col-span-2">
+              <MonthYearPicker
+                label={`${t("director.expenses.form.period_month_label")} / ${t("director.expenses.form.period_year_label")}`}
+                month={form.period_month}
+                year={form.period_year}
+                onChangeMonth={(m) => set("period_month", m)}
+                onChangeYear={(y) => set("period_year", y)}
+              />
             </div>
           </div>
 

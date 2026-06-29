@@ -1,7 +1,5 @@
-import React from 'react'
-
+"use client";
+import DirectorRoomsView from "@/views/director/RoomsView";
 export default function RoomsView() {
-  return (
-    <div>RoomsView</div>
-  )
+  return <DirectorRoomsView role="manager" />;
 }

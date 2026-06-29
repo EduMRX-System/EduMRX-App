@@ -12,17 +12,19 @@ import {
   MapPin,
   LogOut,
   ShieldCheck,
-  Loader2,
+  Palette,
+  CalendarDays,
 } from "lucide-react";
 import { API } from "@/services/api";
 import { useAuthStore } from "@/store/authStore";
 import { useUIStore } from "@/store/useUIStore";
+import Skeleton from "@/components/common/Skeleton";
 import AppearanceModal from "@/components/sections/directorPanelSections/profileView/AppearanceModal";
+import ColorModal from "@/components/sections/directorPanelSections/profileView/ColorModal";
+import DatePickerModal from "@/components/sections/directorPanelSections/profileView/DatePickerModal";
 import LanguageModal from "@/components/sections/directorPanelSections/profileView/LanguageModal";
 import PasswordModal from "@/components/sections/directorPanelSections/profileView/PasswordModal";
 import ConfirmModal from "@/components/sections/directorPanelSections/profileView/ConfirmModal";
-
-
 
 interface ProfileData {
   id: string;
@@ -35,14 +37,32 @@ interface ProfileData {
   avatar: string | null;
 }
 
+type ModalType = "appearance" | "color" | "datepicker" | "language" | "password" | null;
 
-type ModalType = "appearance" | "language" | "password" | null;
+interface Props {
+  role?: "director" | "manager";
+}
 
-export default function ProfileView() {
+const THEME_LABELS: Record<string, string> = {
+  indigo: "Indigo",
+  lime: "Yashil",
+  teal: "Ko'kim",
+  royal: "Ko'k",
+  sun: "Quyosh",
+  mint: "Nane",
+};
+
+const PICKER_MODE_KEYS: Record<string, string> = {
+  calendar: "common.datepicker.calendar",
+  select:   "common.datepicker.select_mode",
+  text:     "common.datepicker.text_mode",
+};
+
+export default function ProfileView({ role = "director" }: Props) {
   const router = useRouter();
   const { t } = useTranslation();
   const { logout } = useAuthStore();
-  const { theme, language } = useUIStore();
+  const { theme, language, accentTheme, datePickerMode } = useUIStore();
   const [modal, setModal] = useState<ModalType>(null);
   const [logoutOpen, setLogoutOpen] = useState(false);
 
@@ -53,8 +73,41 @@ export default function ProfileView() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-24">
-        <Loader2 className="w-7 h-7 text-primary animate-spin" />
+      <div className="space-y-4">
+        {/* Profile card skeleton */}
+        <div className="w-full flex items-center gap-4 p-4 rounded-2xl bg-surface border border-border">
+          <Skeleton variant="circle" className="w-14 h-14" />
+          <div className="flex-1 min-w-0 space-y-2">
+            <Skeleton variant="text" className="w-40 h-4" />
+            <Skeleton variant="text" className="w-24" />
+          </div>
+          <Skeleton variant="block" className="w-5 h-5" />
+        </div>
+
+        {/* Settings rows skeleton (5 items) */}
+        <div className="rounded-2xl bg-surface border border-border overflow-hidden divide-y divide-border-subtle dark:divide-border">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <SkeletonSettingRow key={i} />
+          ))}
+        </div>
+
+        {/* Director locations row skeleton */}
+        {role === "director" && (
+          <div className="rounded-2xl bg-surface border border-border overflow-hidden">
+            <SkeletonSettingRow />
+          </div>
+        )}
+
+        {/* Logout row skeleton */}
+        <div className="rounded-2xl bg-surface border border-border overflow-hidden">
+          <div className="flex items-center gap-4 p-4">
+            <Skeleton variant="block" className="w-10 h-10" />
+            <div className="flex-1 min-w-0 space-y-2">
+              <Skeleton variant="text" className="w-28 h-3.5" />
+              <Skeleton variant="text" className="w-44" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -68,7 +121,7 @@ export default function ProfileView() {
 
   return (
     <div className="space-y-4">
-      {/* ─── PROFILE CARD (bosilganda → detail) ─── */}
+      {/* ─── PROFILE CARD ─── */}
       <button
         onClick={() => router.push("/profile/details")}
         className="group w-full flex items-center gap-4 p-4 rounded-2xl bg-surface border border-border hover:border-primary/40 transition-colors text-left"
@@ -88,9 +141,7 @@ export default function ProfileView() {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-base font-black text-foreground truncate">
-            {profile.full_name}
-          </p>
+          <p className="text-base font-black text-foreground truncate">{profile.full_name}</p>
           <p className="text-sm text-foreground-muted mt-0.5">
             {t(`director.profile.role.${profile.role}`) || profile.role}
           </p>
@@ -110,6 +161,22 @@ export default function ProfileView() {
           onClick={() => setModal("appearance")}
         />
         <SettingRow
+          icon={<Palette className="w-5 h-5" />}
+          iconBg="bg-violet-500"
+          title={t("director.profile.color.title")}
+          desc={t("director.profile.color.desc")}
+          value={t(`director.profile.appearance.themes.${accentTheme}`) || THEME_LABELS[accentTheme] || accentTheme}
+          onClick={() => setModal("color")}
+        />
+        <SettingRow
+          icon={<CalendarDays className="w-5 h-5" />}
+          iconBg="bg-sky-500"
+          title={t("director.profile.datepicker.title")}
+          desc={t("director.profile.datepicker.desc")}
+          value={t(PICKER_MODE_KEYS[datePickerMode] ?? "common.datepicker.select_mode")}
+          onClick={() => setModal("datepicker")}
+        />
+        <SettingRow
           icon={<Globe className="w-5 h-5" />}
           iconBg="bg-orange-500"
           title={t("director.profile.language.title")}
@@ -127,16 +194,18 @@ export default function ProfileView() {
         />
       </div>
 
-      {/* ─── MARKAZ GURUHI ─── */}
-      <div className="rounded-2xl bg-surface border border-border overflow-hidden">
-        <SettingRow
-          icon={<MapPin className="w-5 h-5" />}
-          iconBg="bg-danger"
-          title={t("director.profile.locations.title")}
-          desc={t("director.profile.locations.desc")}
-          onClick={() => router.push("/profile/locations")}
-        />
-      </div>
+      {/* ─── MARKAZ GURUHI (faqat director) ─── */}
+      {role === "director" && (
+        <div className="rounded-2xl bg-surface border border-border overflow-hidden">
+          <SettingRow
+            icon={<MapPin className="w-5 h-5" />}
+            iconBg="bg-danger"
+            title={t("director.profile.locations.title")}
+            desc={t("director.profile.locations.desc")}
+            onClick={() => router.push("/profile/locations")}
+          />
+        </div>
+      )}
 
       {/* ─── LOG OUT ─── */}
       <div className="rounded-2xl bg-surface border border-border overflow-hidden">
@@ -149,17 +218,17 @@ export default function ProfileView() {
           </span>
           <div className="flex-1">
             <p className="text-sm font-bold text-red-600 dark:text-red-400">{t("director.profile.logout.title")}</p>
-            <p className="text-xs text-foreground-muted mt-0.5">
-              {t("director.profile.logout.desc")}
-            </p>
+            <p className="text-xs text-foreground-muted mt-0.5">{t("director.profile.logout.desc")}</p>
           </div>
         </button>
       </div>
 
       {/* ─── MODALLAR ─── */}
-      {modal === "appearance" && <AppearanceModal onClose={() => setModal(null)} />}
-      {modal === "language" && <LanguageModal onClose={() => setModal(null)} />}
-      {modal === "password" && <PasswordModal onClose={() => setModal(null)} />}
+      {modal === "appearance"  && <AppearanceModal  onClose={() => setModal(null)} />}
+      {modal === "color"       && <ColorModal       onClose={() => setModal(null)} />}
+      {modal === "datepicker"  && <DatePickerModal  onClose={() => setModal(null)} />}
+      {modal === "language"    && <LanguageModal    onClose={() => setModal(null)} />}
+      {modal === "password"    && <PasswordModal    onClose={() => setModal(null)} />}
 
       {logoutOpen && (
         <ConfirmModal
@@ -174,6 +243,21 @@ export default function ProfileView() {
           onClose={() => setLogoutOpen(false)}
         />
       )}
+    </div>
+  );
+}
+
+/* ─── Skeleton setting qatori ─── */
+function SkeletonSettingRow() {
+  return (
+    <div className="flex items-center gap-4 p-4">
+      <Skeleton variant="block" className="w-10 h-10" />
+      <div className="flex-1 min-w-0 space-y-2">
+        <Skeleton variant="text" className="w-36 h-3.5" />
+        <Skeleton variant="text" className="w-52" />
+      </div>
+      <Skeleton variant="text" className="w-16 hidden sm:block" />
+      <Skeleton variant="block" className="w-5 h-5" />
     </div>
   );
 }
@@ -211,7 +295,7 @@ function SettingRow({
           {value}
         </span>
       )}
-      <ChevronRight className="w-5 h-5 text-foreground-muted group-hover:text-foreground-muted shrink-0" />
+      <ChevronRight className="w-5 h-5 text-foreground-muted group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
     </button>
   );
-} 
+}

@@ -1,7 +1,5 @@
-import React from 'react'
-
+"use client";
+import DirectorStudentsView from "@/views/director/StudentsView";
 export default function StudentsView() {
-  return (
-    <div>StudentsView</div>
-  )
+  return <DirectorStudentsView role="manager" />;
 }

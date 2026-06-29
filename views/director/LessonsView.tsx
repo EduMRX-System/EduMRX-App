@@ -11,7 +11,11 @@ import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 10;
 
-export default function LessonsView() {
+interface Props {
+    role?: "director" | "manager";
+}
+
+export default function LessonsView({ role = "director" }: Props) {
     const { t } = useTranslation();
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
@@ -19,7 +23,7 @@ export default function LessonsView() {
     const [editing, setEditing] = useState<Lesson | null>(null);
     const [deleting, setDeleting] = useState<Lesson | null>(null);
 
-    const { data, isLoading, isError, isFetching } = useLessons({ page, pageSize: PAGE_SIZE, search });
+    const { data, isLoading, isError, isFetching } = useLessons({ page, pageSize: PAGE_SIZE, search, role });
     const lessons = data?.results ?? [];
     const count = data?.count ?? 0;
     const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
@@ -112,9 +116,9 @@ export default function LessonsView() {
             </div>
 
             {/* Modals */}
-            {addOpen && <LessonFormModal onClose={() => setAddOpen(false)} />}
-            {editing && <LessonFormModal lesson={editing} onClose={() => setEditing(null)} />}
-            {deleting && <DeleteLessonModal lesson={deleting} onClose={() => setDeleting(null)} />}
+            {addOpen && <LessonFormModal onClose={() => setAddOpen(false)} role={role} />}
+            {editing && <LessonFormModal lesson={editing} onClose={() => setEditing(null)} role={role} />}
+            {deleting && <DeleteLessonModal lesson={deleting} onClose={() => setDeleting(null)} role={role} />}
         </div>
     );
 }

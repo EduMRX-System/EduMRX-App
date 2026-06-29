@@ -3,15 +3,26 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import i18n from "@/i18n";
-import { getLangCookie, setLangCookie, getThemeCookie, setThemeCookie } from "@/lib/cookies";
+import {
+  getLangCookie, setLangCookie,
+  getThemeCookie, setThemeCookie,
+  getAccentThemeCookie, setAccentThemeCookie,
+  getDatePickerModeCookie, setDatePickerModeCookie,
+  type AccentTheme,
+  type DatePickerMode,
+} from "@/lib/cookies";
 
 interface UIState {
   theme: "light" | "dark";
+  accentTheme: AccentTheme;
+  datePickerMode: DatePickerMode;
   language: string;
   isSidebarOpen: boolean;
   isSidebarCollapsed: boolean;
 
   setTheme: (theme: "light" | "dark") => void;
+  setAccentTheme: (accent: AccentTheme) => void;
+  setDatePickerMode: (mode: DatePickerMode) => void;
   setLanguage: (lang: string) => void;
   toggleSidebar: () => void;
   setSidebarOpen: (isOpen: boolean) => void;
@@ -21,8 +32,9 @@ interface UIState {
 export const useUIStore = create<UIState>()(
   persist(
     (set) => ({
-      // Both theme and language come from shared cookies (not localStorage)
       theme: getThemeCookie(),
+      accentTheme: getAccentThemeCookie(),
+      datePickerMode: getDatePickerModeCookie(),
       language: getLangCookie(),
       isSidebarOpen: false,
       isSidebarCollapsed: false,
@@ -33,6 +45,19 @@ export const useUIStore = create<UIState>()(
           document.documentElement.classList.toggle("dark", theme === "dark");
         }
         set({ theme });
+      },
+
+      setAccentTheme: (accent) => {
+        setAccentThemeCookie(accent);
+        if (typeof window !== "undefined") {
+          document.documentElement.setAttribute("data-theme", accent);
+        }
+        set({ accentTheme: accent });
+      },
+
+      setDatePickerMode: (mode) => {
+        setDatePickerModeCookie(mode);
+        set({ datePickerMode: mode });
       },
 
       setLanguage: (language) => {
@@ -51,11 +76,7 @@ export const useUIStore = create<UIState>()(
     }),
     {
       name: "ui-storage",
-      // Only isSidebarCollapsed lives in localStorage; theme/language are in cookies
       partialize: (state) => ({ isSidebarCollapsed: state.isSidebarCollapsed }),
-      // Custom merge: only apply isSidebarCollapsed from old localStorage data.
-      // Prevents stale theme/language values from a previous localStorage entry
-      // from overwriting the cookie-based initial values.
       merge: (persistedState, currentState) => ({
         ...currentState,
         isSidebarCollapsed:

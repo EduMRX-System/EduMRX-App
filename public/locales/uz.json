@@ -447,7 +447,24 @@
     "delete_confirm_suffix": "O'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.",
     "no_results": "Topilmadi",
     "enter": "Kiriting",
-    "detail": "Tafsilot"
+    "detail": "Tafsilot",
+    "datepicker": {
+      "calendar": "Kalendar",
+      "select_mode": "Select",
+      "text_mode": "Yozish",
+      "today": "Bugun",
+      "placeholder": "Sana tanlang",
+      "day": "Kun",
+      "month": "Oy",
+      "year": "Yil",
+      "default_mode": "Sana kiritish usuli",
+      "text_hint": "Kun.Oy.Yil (KK.OO.YYYY)",
+      "text_invalid": "Noto'g'ri sana",
+      "text_out_of_range": "Sana chegaradan tashqari",
+      "calendar_desc": "Oylik ko'rinish",
+      "select_desc": "Kun / Oy / Yil",
+      "text_desc": "Qo'lda yozish"
+    }
   },
   "auth": {
     "common": {
@@ -1244,11 +1261,37 @@
         "title": "Ko'rinish",
         "desc": "Ilova mavzusini tanlang",
         "modal_title": "Ko'rinish",
-        "modal_desc": "O'zingizga qulay mavzuni tanlang",
+        "modal_desc": "Interfeys mavzusini tanlang",
         "light": "Kunduzgi",
         "dark": "Tungi",
         "current_light": "Kunduzgi rejim",
-        "current_dark": "Tungi rejim"
+        "current_dark": "Tungi rejim",
+        "mode_label": "Rejim",
+        "accent_label": "Rang sxemasi",
+        "color_card_title": "Ko'rinish va rang",
+        "color_card_desc": "Interfeys rejimi va rang sxemasini tanlang",
+        "date_card_title": "Sana kiritish usuli",
+        "date_card_desc": "DatePicker standart ochilish usulini tanlang",
+        "themes": {
+          "indigo": "Indigo",
+          "lime": "Yashil",
+          "teal": "Ko'kim",
+          "royal": "Ko'k",
+          "sun": "Quyosh",
+          "mint": "Nane"
+        }
+      },
+      "color": {
+        "title": "Rang",
+        "desc": "Interfeys rang sxemasini o'zgartiring",
+        "modal_title": "Rang sxemasi",
+        "modal_desc": "O'zingizga yoqqan rang sxemasini tanlang"
+      },
+      "datepicker": {
+        "title": "Sana kiritish",
+        "desc": "DatePicker standart usulini o'zgartiring",
+        "modal_title": "Sana kiritish usuli",
+        "modal_desc": "Sana tanlaganda qaysi usul ochilishini tanlang"
       },
       "language": {
         "title": "Til",
@@ -1443,6 +1486,7 @@
       "lessons_group": "Darslar",
       "courses": "Kurslar",
       "groups": "Guruhlar",
+      "lessons": "Dars jadvali",
       "attendance": "Davomat",
       "analytics_group": "Analitika",
       "analytics": "Analitika",
@@ -1454,6 +1498,7 @@
       "expenses": "Xarajatlar",
       "payment_types": "To'lov turlari",
       "settings": "Sozlamalar",
+      "profile": "Profil",
       "collapse": "Yig'ish",
       "expand": "Yoyish"
     }

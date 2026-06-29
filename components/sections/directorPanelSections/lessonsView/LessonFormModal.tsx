@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { X, Loader2, CalendarDays } from "lucide-react";
+import DatePicker from "@/components/ui/DatePicker";
 import { toast } from "react-toastify";
 import { useGroupOptions } from "@/hooks/useLessons";
 import { toHHMM, type Lesson, type LessonPayload } from "@/types/lesson";
@@ -13,9 +14,10 @@ import { useTranslation } from "react-i18next";
 interface Props {
     lesson?: Lesson | null;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function LessonFormModal({ lesson, onClose }: Props) {
+export default function LessonFormModal({ lesson, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!lesson;
@@ -30,7 +32,7 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
         notes: lesson?.notes ?? "",
     });
 
-    const { data: groups = [], isLoading: groupsLoading } = useGroupOptions();
+    const { data: groups = [], isLoading: groupsLoading } = useGroupOptions(role);
 
     useEffect(() => { setIsMounted(true); }, []);
 
@@ -45,8 +47,8 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                 notes: formData.notes.trim(),
             };
             return isEdit
-                ? (await API.patch(`director/lessons/${lesson!.id}/`, payload)).data
-                : (await API.post("director/lessons/", payload)).data;
+                ? (await API.patch(`${role}/lessons/${lesson!.id}/`, payload)).data
+                : (await API.post(`${role}/lessons/`, payload)).data;
         },
         onSuccess: () => {
             toast.success(t(isEdit ? "director.lessons.toast.updated" : "director.lessons.toast.created"));
@@ -121,12 +123,10 @@ export default function LessonFormModal({ lesson, onClose }: Props) {
                     {/* Sana + Mavzu */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className={labelCls}>{t("director.lessons.form.date_label")}</label>
-                            <input
-                                type="date"
+                            <DatePicker
+                                label={t("director.lessons.form.date_label")}
                                 value={formData.date}
-                                onChange={(e) => setFormData((p) => ({ ...p, date: e.target.value }))}
-                                className={inputCls}
+                                onChange={(v) => setFormData((p) => ({ ...p, date: v }))}
                                 required
                             />
                         </div>

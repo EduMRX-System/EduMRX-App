@@ -6,25 +6,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
-import { 
-    User, X, Eye, EyeOff, Loader2, ChevronDown, Check, Notebook, 
-    CalendarDays, ChevronLeft, ChevronRight 
+import {
+    User, X, Eye, EyeOff, Loader2, ChevronDown, Check, Notebook,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { STATUS_OPTIONS, formatUzPhone, splitFullName, type IStudent } from "@/types/student";
 import { useTranslation } from "react-i18next";
 import ScopeFormFields from "@/components/common/ScopeFormFields";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
-
-// ── Calendar helpers ──────────────────────────────────────────────
-function daysInMonth(year: number, month: number) {
-    return new Date(year, month + 1, 0).getDate();
-}
-
-function firstWeekday(year: number, month: number) {
-    const d = new Date(year, month, 1).getDay();
-    return d === 0 ? 6 : d - 1; // Dushanba = 0
-}
+import DatePicker from "@/components/ui/DatePicker";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -54,9 +44,10 @@ type FormData = yup.InferType<typeof schema>;
 interface Props {
     student?: IStudent | null;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function StudentFormModal({ student, onClose }: Props) {
+export default function StudentFormModal({ student, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!student;
@@ -66,11 +57,7 @@ export default function StudentFormModal({ student, onClose }: Props) {
     const [showPassword, setShowPassword] = useState(false);
     
     const [isStatusOpen, setIsStatusOpen] = useState(false);
-    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-    const [calendarView, setCalendarView] = useState<"days" | "months" | "years">("days");
-    
     const statusRef = useRef<HTMLDivElement>(null);
-    const datePickerRef = useRef<HTMLDivElement>(null);
     
     const { activeCenter, isCentersLoaded } = useActiveCenterStore();
     
@@ -101,9 +88,6 @@ export default function StudentFormModal({ student, onClose }: Props) {
     });
 
     const dobValue = watch("date_of_birth");
-    const initDate = dobValue ? new Date(dobValue) : new Date();
-    const [calYear, setCalYear] = useState(initDate.getFullYear());
-    const [calMonth, setCalMonth] = useState(initDate.getMonth());
 
     useEffect(() => {
         setIsMounted(true);
@@ -112,10 +96,6 @@ export default function StudentFormModal({ student, onClose }: Props) {
         
         const onClick = (e: MouseEvent) => {
             if (statusRef.current && !statusRef.current.contains(e.target as Node)) setIsStatusOpen(false);
-            if (datePickerRef.current && !datePickerRef.current.contains(e.target as Node)) {
-                setIsDatePickerOpen(false);
-                setCalendarView("days");
-            }
         };
         document.addEventListener("mousedown", onClick);
         return () => document.removeEventListener("mousedown", onClick);
@@ -142,8 +122,8 @@ export default function StudentFormModal({ student, onClose }: Props) {
             }
 
             return isEdit
-                ? (await API.patch(`director/students/${student!.id}/`, payload)).data // Qisman yangilash uchun PATCH ishlatamiz
-                : (await API.post("director/students/", payload)).data;
+                ? (await API.patch(`${role}/students/${student!.id}/`, payload)).data
+                : (await API.post(`${role}/students/`, payload)).data;
         },
         onSuccess: (data: any) => {
             toast.success(data?.message || t(isEdit ? "director.students.toast.updated" : "director.students.toast.created"));
@@ -164,46 +144,14 @@ export default function StudentFormModal({ student, onClose }: Props) {
     });
 
     const currentStatus = STATUS_OPTIONS.find((o) => o.value === watch("status")) || STATUS_OPTIONS[0];
-    
+
     const fieldCls = (hasError?: boolean) =>
         `border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring ${hasError ? "border-danger/50" : "border-border focus:border-primary"}`;
-    
+
     const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
     const errCls = "text-red-400 dark:text-danger text-[11px] mt-1";
 
-    const monthsRaw = t("director.tools.months", { returnObjects: true });
-    const months: string[] = Array.isArray(monthsRaw) ? monthsRaw : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const weekdaysRaw = t("director.tools.weekdays", { returnObjects: true });
-    const weekdays: string[] = Array.isArray(weekdaysRaw) ? weekdaysRaw : ["Mo","Tu","We","Th","Fr","Sa","Su"];
-    
-    const totalDays = daysInMonth(calYear, calMonth);
-    const startOffset = firstWeekday(calYear, calMonth);
-
-    const prevMonth = () => {
-        if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); }
-        else setCalMonth((m) => m - 1);
-    };
-    
-    const nextMonth = () => {
-        if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); }
-        else setCalMonth((m) => m + 1);
-    };
-
-    const handleDateSelect = (day: number) => {
-        const y = calYear;
-        const m = String(calMonth + 1).padStart(2, "0");
-        const d = String(day).padStart(2, "0");
-        setValue("date_of_birth", `${y}-${m}-${d}`, { shouldValidate: true });
-        setIsDatePickerOpen(false);
-    };
-
-    let displayDob = dobValue || "";
-    if (displayDob && displayDob.includes("-")) {
-        const parts = displayDob.split("-");
-        if (parts.length === 3) displayDob = `${parts[2]}.${parts[1]}.${parts[0]}`;
-    }
-
-    const yearStartGrid = Math.floor(calYear / 12) * 12;
+    const todayISO = new Date().toISOString().split("T")[0];
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -281,128 +229,15 @@ export default function StudentFormModal({ student, onClose }: Props) {
                             {errors.password && <p className={errCls}>{errors.password.message}</p>}
                         </div>
                         
-                        <div ref={datePickerRef}>
-                            <label className={labelCls}>{t("director.students.form.dob_label")} *</label>
-                            <div className="relative">
-                                <div
-                                    onClick={() => { setIsDatePickerOpen(!isDatePickerOpen); setCalendarView("days"); }}
-                                    className={`${fieldCls(!!errors.date_of_birth)} flex items-center justify-between cursor-pointer`}
-                                >
-                                    <span className={dobValue ? "text-foreground" : "text-foreground-subtle"}>
-                                        {displayDob || "YYYY-MM-DD"}
-                                    </span>
-                                    <CalendarDays className="w-4 h-4 text-foreground-subtle" />
-                                </div>
-                                
-                                {isDatePickerOpen && (
-                                    <div className="absolute top-full left-0 mt-1 w-[280px] bg-surface border border-border rounded-xl shadow-xl z-[60] p-3 animate-in fade-in slide-in-from-top-2 duration-200">
-                                        
-                                        {calendarView === "days" && (
-                                            <>
-                                                <div className="flex items-center justify-between mb-2">
-                                                    <button type="button" onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">
-                                                        <ChevronLeft className="w-4 h-4" />
-                                                    </button>
-                                                    <div className="flex gap-1 text-[14px] font-semibold">
-                                                        <span onClick={() => setCalendarView("months")} className="hover:bg-hover px-2 py-0.5 rounded cursor-pointer text-primary transition-colors">
-                                                            {months[calMonth]}
-                                                        </span>
-                                                        <span onClick={() => setCalendarView("years")} className="hover:bg-hover px-2 py-0.5 rounded cursor-pointer text-primary transition-colors">
-                                                            {calYear}
-                                                        </span>
-                                                    </div>
-                                                    <button type="button" onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">
-                                                        <ChevronRight className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-
-                                                <div className="grid grid-cols-7 mb-1">
-                                                    {weekdays.map((d) => (
-                                                        <div key={d} className="text-[11px] font-semibold text-foreground-subtle text-center py-1">{d}</div>
-                                                    ))}
-                                                </div>
-
-                                                <div className="grid grid-cols-7 gap-y-0.5">
-                                                    {Array.from({ length: startOffset }).map((_, i) => (
-                                                        <div key={`empty-${i}`} />
-                                                    ))}
-                                                    {Array.from({ length: totalDays }).map((_, i) => {
-                                                        const day = i + 1;
-                                                        const formattedVal = `${calYear}-${String(calMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                                                        const isSel = dobValue === formattedVal;
-                                                        
-                                                        return (
-                                                            <button
-                                                                key={day}
-                                                                type="button"
-                                                                onClick={() => handleDateSelect(day)}
-                                                                className={`w-full aspect-square flex items-center justify-center text-[12px] rounded-lg transition-colors cursor-pointer font-medium ${isSel ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover"}`}
-                                                            >
-                                                                {day}
-                                                            </button>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </>
-                                        )}
-
-                                        {calendarView === "months" && (
-                                            <>
-                                                <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
-                                                    <span className="text-[14px] font-bold text-foreground">Oyni tanlang</span>
-                                                    <span onClick={() => setCalendarView("years")} className="text-[13px] text-primary font-semibold cursor-pointer hover:underline">{calYear}</span>
-                                                </div>
-                                                <div className="grid grid-cols-3 gap-1.5">
-                                                    {months.map((mName, index) => (
-                                                        <button
-                                                            key={mName}
-                                                            type="button"
-                                                            onClick={() => { setCalMonth(index); setCalendarView("days"); }}
-                                                            className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${calMonth === index ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover border border-border-subtle"}`}
-                                                        >
-                                                            {mName}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            </>
-                                        )}
-
-                                        {calendarView === "years" && (
-                                            <>
-                                                <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
-                                                    <button type="button" onClick={() => setCalYear(y => y - 12)} className="p-1 rounded hover:bg-hover text-foreground-muted cursor-pointer">
-                                                        <ChevronLeft className="w-4 h-4" />
-                                                    </button>
-                                                    <span className="text-[13px] font-bold text-foreground">
-                                                        {yearStartGrid} - {yearStartGrid + 11}
-                                                    </span>
-                                                    <button type="button" onClick={() => setCalYear(y => y + 12)} className="p-1 rounded hover:bg-hover text-foreground-muted cursor-pointer">
-                                                        <ChevronRight className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                                <div className="grid grid-cols-3 gap-1.5 max-h-[180px] overflow-y-auto">
-                                                    {Array.from({ length: 12 }).map((_, idx) => {
-                                                        const targetYear = yearStartGrid + idx;
-                                                        const isCurrentSelected = calYear === targetYear;
-                                                        return (
-                                                            <button
-                                                                key={targetYear}
-                                                                type="button"
-                                                                onClick={() => { setCalYear(targetYear); setCalendarView("days"); }}
-                                                                className={`py-2 text-[12px] font-medium rounded-lg transition-colors cursor-pointer ${isCurrentSelected ? "bg-primary text-primary-fg" : "text-foreground hover:bg-hover border border-border-subtle"}`}
-                                                            >
-                                                                {targetYear}
-                                                            </button>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                            {errors.date_of_birth && <p className={errCls}>{errors.date_of_birth.message}</p>}
-                        </div>
+                        <DatePicker
+                            value={dobValue || ""}
+                            onChange={(v) => setValue("date_of_birth", v, { shouldValidate: true })}
+                            label={`${t("director.students.form.dob_label")} *`}
+                            error={errors.date_of_birth?.message}
+                            required
+                            min="1950-01-01"
+                            max={todayISO}
+                        />
                     </div>
 
                     {/* Filial selection */}

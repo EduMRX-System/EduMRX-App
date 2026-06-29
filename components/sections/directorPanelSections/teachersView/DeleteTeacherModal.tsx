@@ -11,9 +11,10 @@ import { useTranslation } from "react-i18next";
 interface Props {
     teacher: ITeacher;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function DeleteTeacherModal({ teacher, onClose }: Props) {
+export default function DeleteTeacherModal({ teacher, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [isMounted, setIsMounted] = useState(false);
@@ -27,7 +28,7 @@ export default function DeleteTeacherModal({ teacher, onClose }: Props) {
 
     const { mutate: deleteTeacher, isPending } = useMutation({
         mutationFn: async () => {
-            await API.delete(`director/teachers/${teacher.id}/`);
+            await API.delete(`${role}/teachers/${teacher.id}/`);
         },
         onSuccess: () => {
             toast.success(t("director.teachers.toast.deleted"));

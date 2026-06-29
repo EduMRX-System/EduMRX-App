@@ -78,6 +78,34 @@ export function deleteActiveCenterCookie(): void {
   document.cookie = `active_center=; ${deleteOpts()}`;
 }
 
+// ─── Accent Theme cookie ──────────────────────────────────
+export type AccentTheme = "indigo" | "lime" | "teal" | "royal" | "sun" | "mint";
+const VALID_ACCENTS: AccentTheme[] = ["indigo", "lime", "teal", "royal", "sun", "mint"];
+
+export function getAccentThemeCookie(): AccentTheme {
+  const val = getCookie("accent_theme");
+  return VALID_ACCENTS.includes(val as AccentTheme) ? (val as AccentTheme) : "indigo";
+}
+
+export function setAccentThemeCookie(theme: AccentTheme): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `accent_theme=${theme}; ${sharedOpts()}`;
+}
+
+// ─── Date Picker Mode cookie ──────────────────────────────
+export type DatePickerMode = "calendar" | "select" | "text";
+
+export function getDatePickerModeCookie(): DatePickerMode {
+  const v = getCookie("date_picker_mode");
+  if (v === "calendar" || v === "select" || v === "text") return v;
+  return "select";
+}
+
+export function setDatePickerModeCookie(mode: DatePickerMode): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `date_picker_mode=${mode}; ${sharedOpts()}`;
+}
+
 // ─── Active Branch cookie ─────────────────────────────────
 export function getActiveBranchCookie(): string | null {
   return getCookie("active_branch");

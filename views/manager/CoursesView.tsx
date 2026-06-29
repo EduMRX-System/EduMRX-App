@@ -1,5 +1,5 @@
+"use client";
+import DirectorCoursesView from "@/views/director/CoursesView";
 export default function CoursesView() {
-  return (
-    <div>CoursesView</div>
-  )
+  return <DirectorCoursesView role="manager" />;
 }

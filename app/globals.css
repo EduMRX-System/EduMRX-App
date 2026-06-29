@@ -84,8 +84,8 @@
     /* stone-100 */
     --foreground-muted: #a8a29e;
     /* stone-400 */
-    --foreground-subtle: #57534e;
-    /* stone-600 */
+    --foreground-subtle: #78716c;
+    /* stone-500 */
 
     /* Primary — GOLD (dark: yorqinroq, qora fonda porlasin) */
     --primary: #d4a017;
@@ -152,37 +152,119 @@
     --color-overlay: var(--overlay);
 }
 
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
-/* ============ others ============ */
+/* ============ ACCENT THEMES — panel only (applied via data-theme on layout div) ============ */
+
+/* ── indigo ── */
+[data-theme="indigo"] {
+    --primary: #6260ff;
+    --primary-hover: #4c4ae8;
+    --primary-soft: #e4e4ff;
+    --primary-ring: #c5c4ff;
+    --primary-fg: #ffffff;
+}
+.dark[data-theme="indigo"] {
+    --primary: #7b79ff;
+    --primary-hover: #6260ff;
+    --primary-soft: rgb(98 96 255 / 0.15);
+    --primary-ring: rgb(98 96 255 / 0.3);
+    --primary-fg: #ffffff;
+}
+
+/* ── lime ── */
+[data-theme="lime"] {
+    --primary: #9fe870;
+    --primary-hover: #88d456;
+    --primary-soft: #eafadd;
+    --primary-ring: #c5f0a0;
+    --primary-fg: #163300;
+}
+.dark[data-theme="lime"] {
+    --primary: #a8f07a;
+    --primary-hover: #9fe870;
+    --primary-soft: rgb(159 232 112 / 0.15);
+    --primary-ring: rgb(159 232 112 / 0.3);
+    --primary-fg: #163300;
+}
+
+/* ── teal ── */
+[data-theme="teal"] {
+    --primary: #bdd9d7;
+    --primary-hover: #a5c5c3;
+    --primary-soft: #eaf3f2;
+    --primary-ring: #c5e0de;
+    --primary-fg: #03363d;
+}
+.dark[data-theme="teal"] {
+    --primary: #c8e0de;
+    --primary-hover: #bdd9d7;
+    --primary-soft: rgb(189 217 215 / 0.15);
+    --primary-ring: rgb(189 217 215 / 0.3);
+    --primary-fg: #03363d;
+}
+
+/* ── royal ── */
+[data-theme="royal"] {
+    --primary: #3447aa;
+    --primary-hover: #2a3a91;
+    --primary-soft: #e8ecf8;
+    --primary-ring: #b3bddd;
+    --primary-fg: #ffffff;
+}
+.dark[data-theme="royal"] {
+    --primary: #5570d4;
+    --primary-hover: #3447aa;
+    --primary-soft: rgb(52 71 170 / 0.18);
+    --primary-ring: rgb(52 71 170 / 0.35);
+    --primary-fg: #ffffff;
+}
+
+/* ── sun ── */
+[data-theme="sun"] {
+    --primary: #fcdb32;
+    --primary-hover: #e8c91e;
+    --primary-soft: #fef7d0;
+    --primary-ring: #fde99a;
+    --primary-fg: #141d38;
+}
+.dark[data-theme="sun"] {
+    --primary: #fde44a;
+    --primary-hover: #fcdb32;
+    --primary-soft: rgb(252 219 50 / 0.15);
+    --primary-ring: rgb(252 219 50 / 0.3);
+    --primary-fg: #141d38;
+}
+
+/* ── mint ── */
+[data-theme="mint"] {
+    --primary: #34e0a1;
+    --primary-hover: #1dcb8d;
+    --primary-soft: #dffaf0;
+    --primary-ring: #a8f0d8;
+    --primary-fg: #003322;
+}
+.dark[data-theme="mint"] {
+    --primary: #4ee8ae;
+    --primary-hover: #34e0a1;
+    --primary-soft: rgb(52 224 161 / 0.15);
+    --primary-ring: rgb(52 224 161 / 0.3);
+    --primary-fg: #003322;
+}
 
 
 
-
+    
 /* ============ BASE ============ */
 html,
 body {
     overscroll-behavior-y: none;
 }
 
-/* iOS input zoom oldini olish */
-input,
-textarea,
-select {
+/* iOS input zoom oldini olish — 16px dan kichik bo'lsa iOS zoom qiladi */
+/* :root selektor (0,1,0) + element (0,0,1) = 0,1,1 — Tailwind text-sm (0,1,0) dan kuchli */
+:root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+:root textarea,
+:root select {
     font-size: 16px;
-}
-
-/* Mobil viewport balandligi (klaviatura sakrashini oldini oladi) */
-.h-screen {
-    height: 100dvh;
 }
 
 /* ============ SCROLLBAR ============ */

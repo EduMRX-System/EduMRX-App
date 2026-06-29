@@ -3,24 +3,22 @@ import { API } from "@/services/api";
 import type { LessonsResponse } from "@/types/lesson";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
 
-const LESSONS_URL = "director/lessons/";
-const GROUPS_URL = "director/groups/";
-
 interface ListParams {
     page?: number;
     pageSize?: number;
     search?: string;
     date?: string;
+    role?: "director" | "manager";
 }
 
-export function useLessons({ page = 1, pageSize = 10, search = "", date }: ListParams = {}) {
+export function useLessons({ page = 1, pageSize = 10, search = "", date, role = "director" }: ListParams = {}) {
     const activeCenter = useActiveCenterStore((s) => s.activeCenter);
     const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
     return useQuery<LessonsResponse>({
-        queryKey: ["lessons", { page, pageSize, search, date, centerId: activeCenter, branchId: activeBranch }],
+        queryKey: ["lessons", { page, pageSize, search, date, centerId: activeCenter, branchId: activeBranch, role }],
         queryFn: async () => {
-            const res = await API.get<LessonsResponse>(LESSONS_URL, {
+            const res = await API.get<LessonsResponse>(`${role}/lessons/`, {
                 params: {
                     page,
                     page_size: pageSize,
@@ -42,14 +40,14 @@ export interface GroupOption {
     description?: string;
 }
 
-export function useGroupOptions() {
+export function useGroupOptions(role: "director" | "manager" = "director") {
     const activeCenter = useActiveCenterStore((s) => s.activeCenter);
     const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
     return useQuery<GroupOption[]>({
-        queryKey: ["groups", "options", activeCenter, activeBranch],
+        queryKey: ["groups", "options", activeCenter, activeBranch, role],
         queryFn: async () => {
-            const res = await API.get(GROUPS_URL, {
+            const res = await API.get(`${role}/groups/`, {
                 params: {
                     page_size: 200,
                     center_id: activeCenter || undefined,

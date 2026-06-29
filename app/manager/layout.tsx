@@ -6,6 +6,7 @@ import { useUIStore } from "@/store/useUIStore";
 import { managerMenu } from "@/constants/navigation";
 import ManagerNav from "@/components/sections/managerPanelSections/navbar/ManagerNav";
 import Breadcrumb from "@/components/ui/Breadcrumb";
+import PanelThemeInitializer from "@/components/PanelThemeInitializer";
 
 export default function ManagerLayout({
   children,
@@ -20,6 +21,7 @@ export default function ManagerLayout({
 
   return (
     <ProtectedRoute allowedRoles={["manager", "admin"]}>
+      <PanelThemeInitializer />
       <div className="bg-layout h-screen w-screen flex overflow-hidden transition-colors duration-300">
 
         {isSidebarOpen && (
@@ -41,7 +43,7 @@ export default function ManagerLayout({
         </div>
 
         <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden transition-all duration-300">
-          <Header menuItems={managerMenu} />
+          <Header menuItems={managerMenu} showQuickTools />
 
           <main className="px-3 pb-3 pt-4 md:px-5 md:pb-5 flex-1 overflow-y-auto transition-all duration-300">
             <Breadcrumb />

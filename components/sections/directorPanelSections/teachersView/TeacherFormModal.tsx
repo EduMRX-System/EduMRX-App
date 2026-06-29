@@ -59,9 +59,10 @@ type FormData = yup.InferType<typeof schema>;
 interface Props {
     teacher?: ITeacher | null;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function TeacherFormModal({ teacher, onClose }: Props) {
+export default function TeacherFormModal({ teacher, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!teacher;
@@ -150,8 +151,8 @@ export default function TeacherFormModal({ teacher, onClose }: Props) {
                 : { ...rest, password, salary: finalSalary, center: activeCenter };
                 
             const res = isEdit
-                ? await API.put(`director/teachers/${teacher!.id}/`, payload)
-                : await API.post("director/teachers/", payload);
+                ? await API.put(`${role}/teachers/${teacher!.id}/`, payload)
+                : await API.post(`${role}/teachers/`, payload);
             return res.data;
         },
         onSuccess: (data: any) => {

@@ -11,9 +11,10 @@ import { useTranslation } from "react-i18next";
 interface Props {
     group: Group;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function DeleteGroupModal({ group, onClose }: Props) {
+export default function DeleteGroupModal({ group, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const [isMounted, setIsMounted] = useState(false);
@@ -27,7 +28,7 @@ export default function DeleteGroupModal({ group, onClose }: Props) {
 
     const { mutate: deleteGroup, isPending } = useMutation({
         mutationFn: async () => {
-            await API.delete(`director/courses/${group.id}/`);
+            await API.delete(`${role}/groups/${group.id}/`);
         },
         onSuccess: () => {
             toast.success(t("director.groups.toast.deleted"));

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { X, Loader2, Users2, ChevronDown, Check } from "lucide-react";
+import DatePicker from "@/components/ui/DatePicker";
 import { toast } from "react-toastify";
 import {
     useCourseOptions,
@@ -25,11 +26,12 @@ import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
 
 interface Props {
-    group?: Group | null; // berilsa — tahrirlash
+    group?: Group | null;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function GroupFormModal({ group, onClose }: Props) {
+export default function GroupFormModal({ group, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!group;
@@ -54,9 +56,9 @@ export default function GroupFormModal({ group, onClose }: Props) {
     const [isStatusOpen, setIsStatusOpen] = useState(false);
     const statusRef = useRef<HTMLDivElement>(null);
 
-    const { data: courses = [], isLoading: coursesLoading } = useCourseOptions();
-    const { data: teachers = [], isLoading: teachersLoading } = useTeacherOptions();
-    const { data: rooms = [], isLoading: roomsLoading } = useRoomOptions();
+    const { data: courses = [], isLoading: coursesLoading } = useCourseOptions(true, role);
+    const { data: teachers = [], isLoading: teachersLoading } = useTeacherOptions(true, role);
+    const { data: rooms = [], isLoading: roomsLoading } = useRoomOptions(true, role);
 
     useEffect(() => {
         setIsMounted(true);
@@ -92,8 +94,8 @@ export default function GroupFormModal({ group, onClose }: Props) {
                 ...(formData.branch ? { branch: formData.branch } : {}),
             };
             const res = isEdit
-                ? await API.patch(`director/courses/${group!.id}/`, payload)
-                : await API.post("director/courses/", payload);
+                ? await API.patch(`${role}/groups/${group!.id}/`, payload)
+                : await API.post(`${role}/groups/`, payload);
             return res.data;
         },
         onSuccess: () => {
@@ -254,26 +256,18 @@ export default function GroupFormModal({ group, onClose }: Props) {
 
                     {/* Sanalar */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className={labelCls}>{t("director.groups.form.start_date_label")}</label>
-                            <input
-                                type="date"
-                                value={formData.start_date}
-                                onChange={(e) => setFormData((p) => ({ ...p, start_date: e.target.value }))}
-                                className={inputCls}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className={labelCls}>{t("director.groups.form.end_date_label")}</label>
-                            <input
-                                type="date"
-                                value={formData.end_date}
-                                onChange={(e) => setFormData((p) => ({ ...p, end_date: e.target.value }))}
-                                className={inputCls}
-                                required
-                            />
-                        </div>
+                        <DatePicker
+                            label={t("director.groups.form.start_date_label")}
+                            value={formData.start_date}
+                            onChange={(v) => setFormData((p) => ({ ...p, start_date: v }))}
+                            required
+                        />
+                        <DatePicker
+                            label={t("director.groups.form.end_date_label")}
+                            value={formData.end_date}
+                            onChange={(v) => setFormData((p) => ({ ...p, end_date: v }))}
+                            required
+                        />
                     </div>
 
                     {/* Dars kunlari */}

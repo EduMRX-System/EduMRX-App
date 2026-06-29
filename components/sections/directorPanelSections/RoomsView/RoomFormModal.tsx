@@ -13,9 +13,10 @@ import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 interface Props {
     room?: Room | null;
     onClose: () => void;
+    role?: "director" | "manager";
 }
 
-export default function RoomFormModal({ room, onClose }: Props) {
+export default function RoomFormModal({ room, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!room;
@@ -43,8 +44,8 @@ export default function RoomFormModal({ room, onClose }: Props) {
                 branch: formData.branch,
             };
             return isEdit
-                ? (await API.patch(`director/rooms/${room!.id}/`, payload)).data
-                : (await API.post("director/rooms/", payload)).data;
+                ? (await API.patch(`${role}/rooms/${room!.id}/`, payload)).data
+                : (await API.post(`${role}/rooms/`, payload)).data;
         },
         onSuccess: () => {
             toast.success(t(isEdit ? "director.rooms.toast.updated" : "director.rooms.toast.created"));

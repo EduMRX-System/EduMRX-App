@@ -7,13 +7,14 @@ import { useUIStore } from "@/store/useUIStore";
 import { directorMenu } from "@/constants/navigation";
 import DirectorNav from "@/components/sections/directorPanelSections/navbar/DirectorNav";
 import Breadcrumb from "@/components/ui/Breadcrumb";
+import PanelThemeInitializer from "@/components/PanelThemeInitializer";
 
 export default function DirectorLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isSidebarOpen, setSidebarOpen, isSidebarCollapsed, setSidebarCollapsed, theme } = useUIStore();
+  const { isSidebarOpen, setSidebarOpen, isSidebarCollapsed, setSidebarCollapsed } = useUIStore();
 
   const handleNavigate = () => {
     setSidebarOpen(false);   // mobil drawer yopiladi
@@ -21,6 +22,7 @@ export default function DirectorLayout({
 
   return (
     <ProtectedRoute allowedRoles="director">
+      <PanelThemeInitializer />
       <div className="bg-[#F8F9FA] dark:bg-layout h-screen w-screen flex overflow-hidden transition-colors duration-300">
 
         {/* MOBILE OVERLAY BACKDROP */}

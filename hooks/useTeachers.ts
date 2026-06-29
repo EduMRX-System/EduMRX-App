@@ -3,8 +3,6 @@ import { API } from "@/services/api";
 import type { ITeacher } from "@/types/teacher";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
 
-const TEACHERS_URL = "director/teachers/";
-
 export interface TeachersResult {
     results: ITeacher[];
     count: number;
@@ -16,16 +14,17 @@ interface ListParams {
     page?: number;
     pageSize?: number;
     search?: string;
+    role?: "director" | "manager";
 }
 
-export function useTeachers({ page = 1, pageSize = 10, search = "" }: ListParams = {}) {
+export function useTeachers({ page = 1, pageSize = 10, search = "", role = "director" }: ListParams = {}) {
     const activeCenter = useActiveCenterStore((s) => s.activeCenter);
     const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
     return useQuery<TeachersResult>({
-        queryKey: ["teachers", { page, pageSize, search, centerId: activeCenter, branchId: activeBranch }],
+        queryKey: ["teachers", { page, pageSize, search, centerId: activeCenter, branchId: activeBranch, role }],
         queryFn: async () => {
-            const res = await API.get(TEACHERS_URL, {
+            const res = await API.get(`${role}/teachers/`, {
                 params: {
                     page,
                     page_size: pageSize,

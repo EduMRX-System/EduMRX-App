@@ -48,9 +48,7 @@ function ChangeBadge({ value }: { value: number | undefined }) {
   return (
     <span
       className={`inline-flex items-center gap-0.5 text-[11px] font-bold px-1.5 py-0.5 rounded-full ${
-        pos
-          ? "bg-success-bg text-success"
-          : "bg-red-50 text-red-600 dark:bg-danger/10 dark:text-red-400"
+        pos ? "bg-success-bg text-success" : "bg-danger-bg text-danger"
       }`}
     >
       <Icon className="w-3 h-3" />
@@ -65,9 +63,7 @@ function StatusDot({ status }: { status: string }) {
   return (
     <span
       className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-        active
-          ? "bg-success-bg text-success"
-          : "bg-hover text-foreground-muted  "
+        active ? "bg-success-bg text-success" : "bg-hover text-foreground-muted"
       }`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-success" : "bg-foreground-subtle"}`} />
@@ -80,13 +76,10 @@ function CardSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 animate-pulse">
       {[0, 1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 h-36"
-        >
-          <div className="w-10 h-10 rounded-xl bg-border  mb-3" />
-          <div className="h-3 bg-border  rounded w-1/2 mb-2" />
-          <div className="h-7 bg-border  rounded w-2/3" />
+        <div key={i} className="bg-surface border border-border rounded-2xl p-5 h-36">
+          <div className="w-10 h-10 rounded-xl bg-hover mb-3" />
+          <div className="h-3 bg-hover rounded w-1/2 mb-2" />
+          <div className="h-7 bg-hover rounded w-2/3" />
         </div>
       ))}
     </div>
@@ -97,7 +90,7 @@ function RowSkeleton({ rows = 4 }: { rows?: number }) {
   return (
     <div className="p-5 space-y-3 animate-pulse">
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="h-11 bg-hover  rounded-xl" />
+        <div key={i} className="h-11 bg-hover rounded-xl" />
       ))}
     </div>
   );
@@ -158,8 +151,8 @@ export default function AnalyticsView() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Total revenue */}
-          <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary dark:bg-primary-soft0/10  flex items-center justify-center mb-3">
+          <div className="bg-surface border border-border rounded-2xl p-5 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary flex items-center justify-center mb-3">
               <Wallet className="w-5 h-5" />
             </div>
             <p className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
@@ -172,7 +165,7 @@ export default function AnalyticsView() {
           </div>
 
           {/* Monthly revenue */}
-          <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
+          <div className="bg-surface border border-border rounded-2xl p-5 shadow-xs">
             <div className="w-10 h-10 rounded-xl bg-success-bg text-success flex items-center justify-center mb-3">
               <TrendingUp className="w-5 h-5" />
             </div>
@@ -189,8 +182,8 @@ export default function AnalyticsView() {
           </div>
 
           {/* Centers */}
-          <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 flex items-center justify-center mb-3">
+          <div className="bg-surface border border-border rounded-2xl p-5 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary flex items-center justify-center mb-3">
               <Building2 className="w-5 h-5" />
             </div>
             <p className="text-[11px] font-bold text-foreground-subtle uppercase tracking-wide">
@@ -206,7 +199,7 @@ export default function AnalyticsView() {
           </div>
 
           {/* Debts */}
-          <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
+          <div className="bg-surface border border-border rounded-2xl p-5 shadow-xs">
             <div className="w-10 h-10 rounded-xl bg-warning-bg text-warning flex items-center justify-center mb-3">
               <AlertCircle className="w-5 h-5" />
             </div>
@@ -230,7 +223,7 @@ export default function AnalyticsView() {
       )}
 
       {/* Main revenue bar chart */}
-      <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-6 shadow-xs">
+      <div className="bg-surface border border-border rounded-2xl p-6 shadow-xs">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-foreground-subtle" />
@@ -239,14 +232,14 @@ export default function AnalyticsView() {
             </h3>
           </div>
           {chartData?.total_sum_formatted && (
-            <span className="text-xs font-semibold text-foreground-muted bg-surface-raised  px-3 py-1 rounded-full">
+            <span className="text-xs font-semibold text-foreground-muted bg-surface-raised px-3 py-1 rounded-full">
               {t("director.analytics.chart_section.total")} {chartData.total_sum_formatted}
             </span>
           )}
         </div>
 
         {chartQ.isLoading ? (
-          <div className="h-72 animate-pulse bg-hover  rounded-xl" />
+          <div className="h-72 animate-pulse bg-hover rounded-xl" />
         ) : !chartData || chartData?.chart?.length === 0 || chartSeries?.length === 0 ? (
           <div className="h-72 flex flex-col items-center justify-center gap-3 text-foreground-subtle">
             <TrendingUp className="w-10 h-10 opacity-30" />
@@ -285,7 +278,7 @@ export default function AnalyticsView() {
                   contentStyle={{
                     backgroundColor: "#1c1917",
                     borderRadius: "12px",
-                    border: "1px solid #1e293b",
+                    border: "1px solid #292524",
                     color: "#fff",
                     fontSize: "12px",
                   }}
@@ -320,7 +313,7 @@ export default function AnalyticsView() {
       {/* Bottom 2-column: centers table + transactions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Centers table (2/3) */}
-        <div className="lg:col-span-2 bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl shadow-xs overflow-hidden">
+        <div className="lg:col-span-2 bg-surface border border-border rounded-2xl shadow-xs overflow-hidden">
           <div className="flex items-center gap-2 px-5 py-4 border-b border-border-subtle">
             <Building2 className="w-4 h-4 text-foreground-subtle" />
             <h3 className="text-sm font-bold text-foreground">
@@ -360,12 +353,9 @@ export default function AnalyticsView() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border-subtle dark:divide-border">
+                  <tbody className="divide-y divide-border-subtle">
                     {centers.data.map((c) => (
-                      <tr
-                        key={c.id}
-                        className="hover:bg-surface-raised dark:hover:bg-hover/40 transition-colors"
-                      >
+                      <tr key={c.id} className="hover:bg-hover transition-colors">
                         <td className="px-5 py-3.5 font-semibold text-foreground">
                           {c.name}
                         </td>
@@ -422,7 +412,7 @@ export default function AnalyticsView() {
         </div>
 
         {/* Transactions (1/3) — safe empty state */}
-        <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl shadow-xs overflow-hidden">
+        <div className="bg-surface border border-border rounded-2xl shadow-xs overflow-hidden">
           <div className="flex items-center gap-2 px-5 py-4 border-b border-border-subtle">
             <Wallet className="w-4 h-4 text-foreground-subtle" />
             <h3 className="text-sm font-bold text-foreground">
@@ -440,11 +430,11 @@ export default function AnalyticsView() {
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-border-subtle dark:divide-border max-h-80 overflow-y-auto">
+            <div className="divide-y divide-border-subtle max-h-80 overflow-y-auto">
               {transactions.map((tx: any, i: number) => (
                 <div
                   key={tx.id ?? i}
-                  className="px-5 py-3 flex items-center justify-between gap-3 hover:bg-surface-raised dark:hover:bg-hover/40 transition-colors"
+                  className="px-5 py-3 flex items-center justify-between gap-3 hover:bg-hover transition-colors"
                 >
                   <span className="text-sm text-foreground truncate">
                     {tx.name ?? tx.description ?? tx.title ?? `#${i + 1}`}
@@ -460,7 +450,7 @@ export default function AnalyticsView() {
       </div>
 
       {/* Branches chips */}
-      <div className="bg-surface dark:bg-[#1A2035] border border-border/60 rounded-2xl p-5 shadow-xs">
+      <div className="bg-surface border border-border rounded-2xl p-5 shadow-xs">
         <div className="flex items-center gap-2 mb-4">
           <Building2 className="w-4 h-4 text-foreground-subtle" />
           <h3 className="text-sm font-bold text-foreground">
@@ -471,7 +461,7 @@ export default function AnalyticsView() {
         {branchesQ.isLoading ? (
           <div className="flex gap-2 flex-wrap animate-pulse">
             {[0, 1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-7 w-24 bg-hover  rounded-full" />
+              <div key={i} className="h-7 w-24 bg-hover rounded-full" />
             ))}
           </div>
         ) : branches?.length === 0 ? (
@@ -481,7 +471,7 @@ export default function AnalyticsView() {
             {branches.map((b) => (
               <span
                 key={b.id}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border border-border text-foreground bg-surface-raised /60"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border border-border text-foreground bg-surface-raised"
               >
                 <span
                   className={`w-2 h-2 rounded-full ${
