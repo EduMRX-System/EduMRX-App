@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useAuthStore } from "@/store/authStore";
-import { getUrlForRole } from "@/utils/redirect";
+import { useState } from "react";
 import ChooseProfileView from "@/views/auth/ChooseProfileView";
 import StudentLoginView from "@/views/auth/StudentLoginView";
 import StaffLoginView from "@/views/auth/StaffLoginView";
@@ -19,46 +17,6 @@ function getInitialStep(): Step {
 
 export default function LoginClient() {
   const [step, setStep] = useState<Step>(getInitialStep);
-
-  const isInitialized = useAuthStore((s) => s.isInitialized);
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const user = useAuthStore((s) => s.user);
-  const initAuth = useAuthStore((s) => s.initAuth);
-
-  const [redirecting, setRedirecting] = useState(false);
-
-  // ?logout=1 bo'lsa — foydalanuvchi ataylab chiqdi, avtomatik redirect qilmaymiz
-  const isLogout =
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("logout") === "1";
-
-  useEffect(() => {
-    if (!isLogout) initAuth();
-  }, []);
-
-  useEffect(() => {
-    if (isLogout || !isInitialized || !isAuthenticated || !user) return;
-    const url = getUrlForRole(user.role);
-    if (url) {
-      setRedirecting(true);
-      window.location.replace(url);
-    }
-  }, [isInitialized, isAuthenticated, user, isLogout]);
-
-  // Tekshiruv yoki redirect davomida — forma ko'rinmasin
-  const showLoader =
-    !isLogout && (!isInitialized || redirecting || (isInitialized && isAuthenticated && !!user));
-
-  if (showLoader) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-layout transition-colors">
-        <div className="w-10 h-10 rounded-full border-[3px] border-primary-ring border-t-primary animate-spin" />
-        <p className="text-sm font-medium text-foreground-subtle">
-          {redirecting ? "Panelingizga yo'naltirilmoqda…" : "Tekshirilmoqda…"}
-        </p>
-      </div>
-    );
-  }
 
   if (step === "student")
     return <StudentLoginView onBack={() => setStep("choose")} />;

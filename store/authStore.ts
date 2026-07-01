@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import axios from "axios";
+import { parseMeResponse } from "@/utils/parseMeResponse";
 
 interface Tokens {
   access_token: string;
@@ -20,6 +21,11 @@ interface User {
   is_active: boolean;
   is_staff: boolean;
   center_ids?: string[];
+  // Profile-specific maydonlar — role'ga qarab mavjud bo'lishi mumkin
+  specialization?: string;
+  experience?: string | number;
+  salary?: string | number;
+  bio?: string;
 }
 
 interface AuthState {
@@ -124,7 +130,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const res = await axios.get(`${BASE}/me/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return res.data;
+      return parseMeResponse<User>(res.data);
     };
 
     // 1. access_token bilan me/ ga urinib ko'r

@@ -1602,6 +1602,19 @@
       "expand": "Развернуть"
     }
   },
+  "teacher": {
+    "nav": {
+      "dashboard": "Дашборд",
+      "groups": "Мои группы",
+      "students": "Ученики",
+      "schedule": "Расписание занятий",
+      "tests": "Тесты",
+      "reports": "Отчёты",
+      "settings": "Настройки",
+      "collapse": "Свернуть",
+      "expand": "Развернуть"
+    }
+  },
   "brand": {
     "name": "EduMRX"
   },
@@ -1641,6 +1654,18 @@
     "suspended": "Приостановлен"
   },
   "student": {
+    "nav": {
+      "dashboard": "Дашборд",
+      "groups": "Мои группы",
+      "schedule": "Расписание занятий",
+      "attendance": "Посещаемость",
+      "homeworks": "Домашние задания",
+      "tests": "Тесты",
+      "payments": "Мои платежи",
+      "settings": "Настройки",
+      "collapse": "Свернуть",
+      "expand": "Развернуть"
+    },
     "center": "Учебный центр",
     "personal_info": "Личные данные",
     "phone": "Номер телефона",

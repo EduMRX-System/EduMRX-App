@@ -4,6 +4,7 @@ import {
   BarChart3,
   TrendingUp,
   Users,
+  Users2,
   Building2,
   CreditCard,
   Wallet,
@@ -15,6 +16,9 @@ import {
   UserCog,
   GraduationCap,
   Layers,
+  CalendarDays,
+  BookOpen,
+  FileCheck2,
 } from "lucide-react";
 
 export interface NavItem {
@@ -52,16 +56,25 @@ export const managerMenu: NavItem[] = [
   { title: "Sozlamalar", href: "/settings", icon: User },
 ];
 
-// ─── TEACHER (namuna) ───────────────────────────────────
+// ─── TEACHER ────────────────────────────────────────────
 export const teacherMenu: NavItem[] = [
-  { title: "Dashboard", href: "/teacher", icon: LayoutDashboard },
-  { title: "Guruhlarim", href: "/teacher/groups", icon: Users },
-  { title: "Profil", href: "/teacher/profile", icon: User },
+  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "Guruhlarim", href: "/groups", icon: Users2 },
+  { title: "O'quvchilar", href: "/students", icon: GraduationCap },
+  { title: "Dars jadvali", href: "/schedule", icon: CalendarDays },
+  { title: "Testlar", href: "/tests", icon: FileCheck2 },
+  { title: "Hisobotlar", href: "/reports", icon: BarChart3 },
+  { title: "Sozlamalar", href: "/settings", icon: Settings },
 ];
 
-// ─── STUDENT (namuna) ───────────────────────────────────
+// ─── STUDENT ────────────────────────────────────────────
 export const studentMenu: NavItem[] = [
-  { title: "Dashboard", href: "/student", icon: LayoutDashboard },
-  { title: "To'lovlarim", href: "/student/payments", icon: CreditCard },
-  { title: "Profil", href: "/student/profile", icon: User },
+  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "Guruhlarim", href: "/groups", icon: Users2 },
+  { title: "Dars jadvali", href: "/schedule", icon: CalendarDays },
+  { title: "Davomat", href: "/attendance", icon: ClipboardCheck },
+  { title: "Uy vazifalari", href: "/homeworks", icon: BookOpen },
+  { title: "Testlar", href: "/tests", icon: FileCheck2 },
+  { title: "To'lovlarim", href: "/payments", icon: CreditCard },
+  { title: "Sozlamalar", href: "/settings", icon: Settings },
 ];

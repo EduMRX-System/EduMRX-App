@@ -12,6 +12,7 @@ import { ArrowLeft, User, Phone, Mail, Camera, Loader2, ShieldCheck } from "luci
 import { API } from "@/services/api";
 import { useAuthStore } from "@/store/authStore";
 import { formatUzPhone } from "@/utils/formatters";
+import { parseMeResponse } from "@/utils/parseMeResponse";
 import Skeleton from "@/components/common/Skeleton";
 
 interface ProfileData {
@@ -49,7 +50,7 @@ export default function DirectorDetailsView() {
 
   const { data: profile, isLoading } = useQuery<ProfileData>({
     queryKey: ["profile"],
-    queryFn: async () => (await API.get("me/")).data,
+    queryFn: async () => parseMeResponse<ProfileData>((await API.get("me/")).data),
   });
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -102,7 +103,7 @@ export default function DirectorDetailsView() {
       fd.append("email", data.email ?? "");
       if (avatarFile) fd.append("avatar", avatarFile);
       const res = await API.patch("me/", fd);
-      return res.data as ProfileData;
+      return parseMeResponse<ProfileData>(res.data);
     },
     onSuccess: (updated) => {
       toast.success(t("director.profile.details.toast.updated"));

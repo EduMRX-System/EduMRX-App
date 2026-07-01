@@ -30,6 +30,7 @@ import { PasswordInput } from "@/components/ui/PasswordInput";
 import { TelegramLoginButton } from "@/components/auth/TelegramLoginButton";
 import { useAuthStore } from "@/store/authStore";
 import { useUIStore } from "@/store/useUIStore";
+import { parseMeResponse } from "@/utils/parseMeResponse";
 import Image from "next/image";
 import { LogoIcons } from "@/constants/icons";
 import Link from "next/link";
@@ -100,9 +101,10 @@ export default function StaffLoginView({ onBack }: Props) {
       if (!role) {
         try {
           const meRes = await API.get("me/");
-          role = meRes.data?.role;
-          document.cookie = `user=${encodeURIComponent(JSON.stringify(meRes.data))}; ${cookieOptions}`;
-          login(meRes.data, { access_token, refresh_token });
+          const meUser = parseMeResponse(meRes.data);
+          role = meUser?.role;
+          document.cookie = `user=${encodeURIComponent(JSON.stringify(meUser))}; ${cookieOptions}`;
+          login(meUser, { access_token, refresh_token });
         } catch {
           toast.error("Foydalanuvchi ma'lumotini olishda xatolik");
           return;

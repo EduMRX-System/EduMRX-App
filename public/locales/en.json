@@ -1602,6 +1602,19 @@
       "expand": "Expand"
     }
   },
+  "teacher": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "groups": "My Groups",
+      "students": "Students",
+      "schedule": "Schedule",
+      "tests": "Tests",
+      "reports": "Reports",
+      "settings": "Settings",
+      "collapse": "Collapse",
+      "expand": "Expand"
+    }
+  },
   "brand": {
     "name": "EduMRX"
   },
@@ -1641,6 +1654,18 @@
     "suspended": "Suspended"
   },
   "student": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "groups": "My Groups",
+      "schedule": "Schedule",
+      "attendance": "Attendance",
+      "homeworks": "Homeworks",
+      "tests": "Tests",
+      "payments": "My Payments",
+      "settings": "Settings",
+      "collapse": "Collapse",
+      "expand": "Expand"
+    },
     "center": "Learning Center",
     "personal_info": "Personal Info",
     "phone": "Phone Number",

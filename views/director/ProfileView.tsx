@@ -21,6 +21,7 @@ import {
 import { API } from "@/services/api";
 import { useAuthStore } from "@/store/authStore";
 import { useUIStore } from "@/store/useUIStore";
+import { parseMeResponse } from "@/utils/parseMeResponse";
 import Skeleton from "@/components/common/Skeleton";
 import AppearanceModal from "@/components/sections/directorPanelSections/profileView/AppearanceModal";
 import ColorModal from "@/components/sections/directorPanelSections/profileView/ColorModal";
@@ -77,7 +78,7 @@ export default function ProfileView({ role = "director" }: Props) {
 
   const { data: profile, isLoading } = useQuery<ProfileData>({
     queryKey: ["profile"],
-    queryFn: async () => (await API.get("me/")).data,
+    queryFn: async () => parseMeResponse<ProfileData>((await API.get("me/")).data),
   });
 
   if (isLoading) {

@@ -1602,6 +1602,19 @@
       "expand": "Yoyish"
     }
   },
+  "teacher": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "groups": "Guruhlarim",
+      "students": "O'quvchilar",
+      "schedule": "Dars jadvali",
+      "tests": "Testlar",
+      "reports": "Hisobotlar",
+      "settings": "Sozlamalar",
+      "collapse": "Yig'ish",
+      "expand": "Yoyish"
+    }
+  },
   "brand": {
     "name": "EduMRX"
   },
@@ -1641,6 +1654,18 @@
     "suspended": "To'xtatilgan"
   },
   "student": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "groups": "Guruhlarim",
+      "schedule": "Dars jadvali",
+      "attendance": "Davomat",
+      "homeworks": "Uy vazifalari",
+      "tests": "Testlar",
+      "payments": "To'lovlarim",
+      "settings": "Sozlamalar",
+      "collapse": "Yig'ish",
+      "expand": "Yoyish"
+    },
     "center": "O'quv Markaz",
     "personal_info": "Shaxsiy Ma'lumotlar",
     "phone": "Telefon Raqami",
