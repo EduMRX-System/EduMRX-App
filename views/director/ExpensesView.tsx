@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import {
   Plus, Search, X, ChevronLeft, ChevronRight, Loader2, AlertCircle,
   TrendingDown, TrendingUp, Check, ChevronDown, Trash2, Edit2,
@@ -29,6 +30,8 @@ import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 import DatePicker, { MonthYearPicker } from "@/components/ui/DatePicker";
 import MoneyInput from "@/components/ui/MoneyInput";
 import CustomSelect from "@/components/ui/CustomSelect";
+import FormModalShell from "@/components/common/FormModalShell";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
 
 const PAGE_SIZE = 10;
 const PIE_COLORS = ["#b8860b", "#059669", "#d97706", "#e11d48", "#d4a017", "#a67a0a", "#78716c"];
@@ -87,17 +90,18 @@ function StatusBadge({ status, display }: { status?: string; display?: string })
 // ── Category Form Modal ───────────────────────────────────────────
 function CategoryFormModal({ cat, onClose }: { cat?: IExpenseCategory | null; onClose: () => void }) {
   const { t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-  const [name, setName] = useState(cat?.name ?? "");
-  const [icon, setIcon] = useState(cat?.icon ?? "");
-  const [err, setErr] = useState("");
   const isEdit = !!cat;
+  const draftKey = isEdit ? `edit-expense-category-${cat!.id}-draft` : "expense-category-form-draft";
+  const draft = getFormDraft<{ name: string; icon: string }>(draftKey);
+  const [name, setName] = useState(draft?.name ?? (cat?.name ?? ""));
+  const [icon, setIcon] = useState(draft?.icon ?? (cat?.icon ?? ""));
+  const [err, setErr] = useState("");
+
+  useFormDraftSave(draftKey, { name, icon });
 
   const createMut = useCreateExpenseCategory();
   const updateMut = useUpdateExpenseCategory();
   const isPending = createMut.isPending || updateMut.isPending;
-
-  useEffect(() => { setMounted(true); }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -110,6 +114,7 @@ function CategoryFormModal({ cat, onClose }: { cat?: IExpenseCategory | null; on
         await createMut.mutateAsync({ name, icon });
         toast.success(t("director.expenses.toast.cat_created"));
       }
+      clearFormDraft(draftKey);
       onClose();
     } catch {
       toast.error(t("director.expenses.toast.error_generic"));
@@ -119,9 +124,7 @@ function CategoryFormModal({ cat, onClose }: { cat?: IExpenseCategory | null; on
   const fieldCls = "border border-border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:border-primary focus:ring-2 focus:ring-primary-ring/50";
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
-      <div className={`bg-surface rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+    <FormModalShell onClose={onClose} maxWidth="max-w-sm">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-base font-semibold text-foreground">
             {isEdit ? t("director.expenses.categories.form_edit") : t("director.expenses.categories.form_add")}
@@ -146,8 +149,7 @@ function CategoryFormModal({ cat, onClose }: { cat?: IExpenseCategory | null; on
             </button>
           </div>
         </form>
-      </div>
-    </div>
+    </FormModalShell>
   );
 }
 
@@ -184,13 +186,14 @@ function ExpenseFormModal({ expense, categories, onClose }: {
   onClose: () => void;
 }) {
   const { t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-  const [form, setForm] = useState<ExpenseForm>(() => initExpenseForm(expense));
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const isEdit = !!expense;
+  const draftKey = isEdit ? `edit-expense-${expense!.id}-draft` : "expense-form-draft";
+  const draft = getFormDraft<ExpenseForm>(draftKey);
+  const [form, setForm] = useState<ExpenseForm>(() => ({ ...initExpenseForm(expense), ...draft }));
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
-  useEffect(() => { setMounted(true); }, []);
+  useFormDraftSave(draftKey, form);
 
   const createMut = useCreateExpense();
   const updateMut = useUpdateExpense();
@@ -232,6 +235,7 @@ function ExpenseFormModal({ expense, categories, onClose }: {
         await createMut.mutateAsync(payload);
         toast.success(t("director.expenses.toast.created"));
       }
+      clearFormDraft(draftKey);
       onClose();
     } catch (err: any) {
       const d = err?.response?.data;
@@ -251,22 +255,26 @@ function ExpenseFormModal({ expense, categories, onClose }: {
     `border rounded-lg w-full h-10 px-3 text-sm outline-none transition-all bg-surface text-foreground focus:ring-2 focus:ring-primary-ring/50 ${err ? "border-danger/50" : "border-border focus:border-primary"}`;
   const errCls = "text-red-400 text-[11px] mt-0.5";
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
-      <div className={`bg-surface rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}>
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border-subtle bg-surface">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-primary-soft  flex items-center justify-center">
-              <TrendingDown className="w-5 h-5 text-primary" />
-            </div>
-            <h3 className="text-base font-semibold text-foreground">
-              {isEdit ? t("director.expenses.form.title_edit") : t("director.expenses.form.title_add")}
-            </h3>
-          </div>
-          <button onClick={onClose} className="text-foreground-subtle hover:text-foreground-muted p-1.5 rounded-lg hover:bg-hover cursor-pointer"><X className="w-5 h-5" /></button>
+    <FormModalShell onClose={onClose} maxWidth="max-w-2xl">
+        <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
+          <button
+            type="button"
+            onClick={onClose}
+            className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-primary bg-primary-soft/10">
+          <TrendingDown className="w-6 h-6" />
+        </div>
+
+        <h3 className="text-foreground text-[18px] font-semibold mb-4">
+          {isEdit ? t("director.expenses.form.title_edit") : t("director.expenses.form.title_add")}
+        </h3>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Title */}
           <div>
             <label className={labelCls}>{t("director.expenses.form.title_label")}</label>
@@ -355,17 +363,14 @@ function ExpenseFormModal({ expense, categories, onClose }: {
             </button>
           </div>
         </form>
-      </div>
-    </div>
+    </FormModalShell>
   );
 }
 
 // ── Delete Expense Modal ──────────────────────────────────────────
 function DeleteExpenseModal({ expense, onClose }: { expense: IExpense; onClose: () => void }) {
   const { t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
   const deleteMut = useDeleteExpense();
-  useEffect(() => { setMounted(true); }, []);
 
   async function handleDelete() {
     try {
@@ -376,9 +381,7 @@ function DeleteExpenseModal({ expense, onClose }: { expense: IExpense; onClose: 
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
-      <div className={`bg-surface rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+    <FormModalShell onClose={onClose} variant="center" maxWidth="max-w-sm">
         <div className="w-12 h-12 rounded-full bg-danger-bg flex items-center justify-center mb-4 mx-auto"><Trash2 className="w-6 h-6 text-danger" /></div>
         <h3 className="text-center text-base font-semibold text-foreground mb-2">{t("director.expenses.delete.title")}</h3>
         <p className="text-center text-sm text-foreground-muted mb-6">{t("director.expenses.delete.desc")}</p>
@@ -389,8 +392,7 @@ function DeleteExpenseModal({ expense, onClose }: { expense: IExpense; onClose: 
             {t("common.delete") || "O'chirish"}
           </button>
         </div>
-      </div>
-    </div>
+    </FormModalShell>
   );
 }
 
@@ -681,11 +683,13 @@ export default function ExpensesView() {
       </div>
 
       {/* Modals */}
-      {addOpen && <ExpenseFormModal categories={categories} onClose={() => setAddOpen(false)} />}
-      {editing && <ExpenseFormModal expense={editing} categories={categories} onClose={() => setEditing(null)} />}
-      {deleting && <DeleteExpenseModal expense={deleting} onClose={() => setDeleting(null)} />}
-      {addCatOpen && <CategoryFormModal onClose={() => setAddCatOpen(false)} />}
-      {editingCat && <CategoryFormModal cat={editingCat} onClose={() => setEditingCat(null)} />}
+      <AnimatePresence>
+        {addOpen && <ExpenseFormModal key="add" categories={categories} onClose={() => setAddOpen(false)} />}
+        {editing && <ExpenseFormModal key="edit" expense={editing} categories={categories} onClose={() => setEditing(null)} />}
+        {deleting && <DeleteExpenseModal key="delete" expense={deleting} onClose={() => setDeleting(null)} />}
+        {addCatOpen && <CategoryFormModal key="addCat" onClose={() => setAddCatOpen(false)} />}
+        {editingCat && <CategoryFormModal key="editCat" cat={editingCat} onClose={() => setEditingCat(null)} />}
+      </AnimatePresence>
     </div>
   );
 }

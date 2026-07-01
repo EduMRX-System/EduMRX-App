@@ -464,7 +464,8 @@
       "calendar_desc": "Monthly view",
       "select_desc": "Day / Month / Year",
       "text_desc": "Type manually"
-    }
+    },
+    "all": "All"
   },
   "auth": {
     "common": {
@@ -473,6 +474,7 @@
       "phone_label": "Phone number",
       "password_label": "Password",
       "forgot_password": "Forgot password?",
+      "remember_me": "Remember me",
       "submit": "Sign in",
       "legal_prefix": "By signing in, you agree to our",
       "legal_terms": "terms",
@@ -579,6 +581,7 @@
   "director": {
     "nav": {
       "dashboard": "Dashboard",
+      "board": "Board",
       "learning": "Learning",
       "students": "Students",
       "teachers": "Teachers",
@@ -602,6 +605,12 @@
       "collapse": "Collapse",
       "expand": "Expand",
       "my_centers": "My Centers"
+    },
+    "board": {
+      "load_error": "The board failed to load. Check your internet connection and try again.",
+      "retry": "Retry",
+      "fullscreen_enter": "Fullscreen",
+      "fullscreen_exit": "Exit fullscreen"
     },
     "dashboard": {
       "title": "Welcome 👋",
@@ -694,6 +703,9 @@
         "title_add": "Add new manager",
         "title_edit": "Edit manager",
         "branch_placeholder": "Select branch...",
+        "sex_label": "Sex *",
+        "sex_male": "Male",
+        "sex_female": "Female",
         "password_label": "Password",
         "password_label_edit": "Password (to change)",
         "password_placeholder_edit": "Leave blank to keep unchanged",
@@ -885,6 +897,28 @@
         "error_time": "Enter lesson time",
         "error_generic": "An error occurred",
         "delete_error": "Error during deletion"
+      },
+      "filter": {
+        "odd_days": "Odd days",
+        "even_days": "Even days"
+      },
+      "card": {
+        "no_teacher": "No teacher assigned",
+        "no_room": "No room assigned",
+        "students": "students"
+      },
+      "view": {
+        "grid": "Grid view",
+        "list": "List view"
+      },
+      "students": {
+        "label": "Students (optional)",
+        "search_placeholder": "Search by name or phone...",
+        "type_to_search": "Type to search students",
+        "not_found": "No students found",
+        "over_capacity": "Room capacity: {{capacity}}, selected: {{selected}} — {{over}} over limit",
+        "count_suffix": "selected",
+        "selected_count": "{{count}} selected"
       }
     },
     "lessons": {
@@ -955,6 +989,9 @@
         "title_add": "Add new teacher",
         "title_edit": "Edit teacher",
         "branch_placeholder": "Select branch...",
+        "sex_label": "Sex *",
+        "sex_male": "Male",
+        "sex_female": "Female",
         "dob_label": "Date of birth *",
         "specialization_label": "Specialization *",
         "experience_label": "Experience (years) *",
@@ -994,6 +1031,10 @@
         "title_add": "Add new student",
         "title_edit": "Edit student",
         "branch_placeholder": "Select branch...",
+        "sex_label": "Sex *",
+        "sex_male": "Male",
+        "sex_female": "Female",
+        "parent_phone_label": "Parent phone number *",
         "dob_label": "Date of birth *",
         "note_label": "Note (optional)",
         "note_placeholder": "Additional info about student...",
@@ -1293,6 +1334,28 @@
         "modal_title": "Date Input Method",
         "modal_desc": "Choose how the date picker opens by default"
       },
+      "datepickerVariant": {
+        "title": "Date Picker Layout",
+        "desc": "Choose how the date picker window opens",
+        "modal_title": "Date Picker Layout",
+        "modal_desc": "Choose how the picker window opens when clicked",
+        "anchor": "Default",
+        "anchor_desc": "Next to the field",
+        "center": "Centered",
+        "center_desc": "Modal window",
+        "right": "From the right",
+        "right_desc": "Drawer panel"
+      },
+      "modalVariant": {
+        "title": "Modal Layout",
+        "desc": "Choose how form modals open",
+        "modal_title": "Modal Layout",
+        "modal_desc": "Choose how add/edit form modals open",
+        "center": "Centered",
+        "center_desc": "Modal window",
+        "right": "From the right",
+        "right_desc": "Drawer panel"
+      },
       "language": {
         "title": "Language",
         "desc": "Choose interface language",
@@ -1326,6 +1389,42 @@
         "page_subtitle": "Our branches are open from Monday to Saturday, 9:00 to 20:00",
         "map_placeholder": "Map",
         "map_coming_soon": "Yandex Maps will be connected soon"
+      },
+      "center": {
+        "title": "Center information",
+        "desc": "Edit the center's name, contact and address details",
+        "logo_upload": "Upload logo",
+        "name_label": "Center name",
+        "address_label": "Address",
+        "map_title": "Location",
+        "kpi": {
+          "students": "Students",
+          "teachers": "Teachers",
+          "managers": "Managers",
+          "branches": "Branches",
+          "groups": "Groups"
+        },
+        "readonly_title": "View only",
+        "slug_label": "Slug",
+        "status_label": "Status",
+        "plan_label": "Plan",
+        "director_label": "Director",
+        "students_count_label": "Students count",
+        "subscription_label": "Subscription expires",
+        "toast": {
+          "updated": "Center information saved",
+          "error": "Failed to save"
+        }
+      },
+      "details": {
+        "title": "Personal details",
+        "avatar_upload": "Upload photo",
+        "first_name_label": "First name",
+        "last_name_label": "Last name",
+        "toast": {
+          "updated": "Details saved",
+          "error": "Failed to save"
+        }
       },
       "logout": {
         "title": "Logout",
@@ -1509,7 +1608,23 @@
   "header": {
     "page": "Page",
     "user_name": "User",
-    "admin": "Admin"
+    "admin": "Admin",
+    "hide_sidebar": "Hide sidebar",
+    "show_sidebar": "Show sidebar",
+    "search": {
+      "placeholder": "Name or phone number...",
+      "type_hint": "Start typing to search",
+      "not_found": "No results found",
+      "title": "Search student"
+    },
+    "profile_menu": {
+      "profile": "Profile",
+      "dashboard": "Dashboard",
+      "settings": "Settings",
+      "logout": "Log out",
+      "dark_mode": "Dark mode",
+      "theme": "Color"
+    }
   },
   "notifications": {
     "title": "Notifications"

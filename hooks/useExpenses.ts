@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { IExpense, ExpensePayload, ExpenseSummary } from "@/types/expense";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 const EXPENSES_URL = "/expenses/";
 
@@ -33,10 +34,7 @@ export function useExpenses({
   const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
   return useQuery<ExpensesResult>({
-    queryKey: [
-      "expenses-list",
-      { page, pageSize, search, status, category, centerId: activeCenter, branchId: branchId || activeBranch },
-    ],
+    queryKey: queryKeys.expenses.list({ page, pageSize, search, status, category, centerId: activeCenter, branchId: branchId || activeBranch }),
     queryFn: async () => {
       const res = await API.get(EXPENSES_URL, {
         params: {
@@ -67,7 +65,7 @@ export function useExpenseSummary() {
   const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
   return useQuery<ExpenseSummary>({
-    queryKey: ["expenses-summary", { centerId: activeCenter, branchId: activeBranch }],
+    queryKey: queryKeys.expenses.summary(activeCenter, activeBranch),
     queryFn: async () => {
       try {
         const res = await API.get("/expenses/summary/", {
@@ -91,8 +89,8 @@ export function useCreateExpense() {
     mutationFn: (payload: ExpensePayload) =>
       API.post(EXPENSES_URL, payload).then((r) => r.data),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["expenses-list"] });
-      qc.invalidateQueries({ queryKey: ["expenses-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.expenses.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.expenses.summaryAll });
     },
   });
 }
@@ -103,8 +101,8 @@ export function useUpdateExpense() {
     mutationFn: ({ id, ...payload }: Partial<ExpensePayload> & { id: string }) =>
       API.patch(`${EXPENSES_URL}${id}/`, payload).then((r) => r.data),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["expenses-list"] });
-      qc.invalidateQueries({ queryKey: ["expenses-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.expenses.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.expenses.summaryAll });
     },
   });
 }
@@ -114,8 +112,8 @@ export function useDeleteExpense() {
   return useMutation({
     mutationFn: (id: string) => API.delete(`${EXPENSES_URL}${id}/`),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["expenses-list"] });
-      qc.invalidateQueries({ queryKey: ["expenses-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.expenses.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.expenses.summaryAll });
     },
   });
 }

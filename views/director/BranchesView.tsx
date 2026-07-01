@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import {
     Plus, Search, Building2, ChevronLeft, ChevronRight, Loader2,
 } from "lucide-react";
@@ -133,9 +134,11 @@ export default function BranchesView() {
             </div>
 
             {/* Modals */}
-            {addOpen && <BranchFormModal onClose={() => setAddOpen(false)} />}
-            {editing && <BranchFormModal branch={editing} onClose={() => setEditing(null)} />}
-            {deleting && <DeleteBranchModal branch={deleting} onClose={() => setDeleting(null)} />}
+            <AnimatePresence>
+                {addOpen && <BranchFormModal key="add" onClose={() => setAddOpen(false)} />}
+                {editing && <BranchFormModal key="edit" branch={editing} onClose={() => setEditing(null)} />}
+                {deleting && <DeleteBranchModal key="delete" branch={deleting} onClose={() => setDeleting(null)} />}
+            </AnimatePresence>
         </div>
     );
 }

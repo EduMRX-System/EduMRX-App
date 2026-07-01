@@ -11,7 +11,10 @@ import { toast } from "react-toastify";
 import { formatUzPhone, splitFullName, type IManager } from "@/types/manager";
 import { useTranslation } from "react-i18next";
 import ScopeFormFields from "@/components/common/ScopeFormFields";
+import FormModalShell from "@/components/common/FormModalShell";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
+import { queryKeys } from "@/lib/queryKeys";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
@@ -41,7 +44,6 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!manager;
-    const [isMounted, setIsMounted] = useState(false);
     const [phoneDisplay, setPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
@@ -49,6 +51,9 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
 
     const u = manager?.user;
     const nameFromFull = splitFullName(u?.full_name);
+
+    const draftKey = isEdit ? `edit-manager-${manager!.id}-draft` : "manager-form-draft";
+    const draft = getFormDraft<Partial<Omit<FormData, "password">>>(draftKey);
 
     const {
         register,
@@ -60,19 +65,22 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
         resolver: yupResolver(schema),
         context: { isEdit },
         defaultValues: {
-            first_name: u?.first_name || nameFromFull.first,
-            last_name: u?.last_name || nameFromFull.last,
-            phone: u?.phone || "998",
-            email: u?.email || "",
+            first_name: draft?.first_name ?? (u?.first_name || nameFromFull.first),
+            last_name: draft?.last_name ?? (u?.last_name || nameFromFull.last),
+            phone: draft?.phone ?? (u?.phone || "998"),
+            email: draft?.email ?? (u?.email || ""),
             password: "",
-            branch: (manager as any)?.branch || "",
-            notes: manager?.notes || "",
+            branch: draft?.branch ?? ((manager as any)?.branch || ""),
+            notes: draft?.notes ?? (manager?.notes || ""),
         },
     });
 
+    const watchedValues = watch();
+    useFormDraftSave(draftKey, { ...watchedValues, password: undefined });
+
     useEffect(() => {
-        setIsMounted(true);
-        if (u?.phone) setPhoneDisplay(formatUzPhone(u.phone));
+        const currentPhone = draft?.phone ?? u?.phone;
+        if (currentPhone) setPhoneDisplay(formatUzPhone(currentPhone));
     }, [u]);
 
 
@@ -94,7 +102,8 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
         },
         onSuccess: (data: any) => {
             toast.success(data?.message || t(isEdit ? "director.managers.toast.updated" : "director.managers.toast.created"));
-            queryClient.invalidateQueries({ queryKey: ["managers"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.managers.all });
+            clearFormDraft(draftKey);
             onClose();
         },
         onError: (err: any) => {
@@ -116,15 +125,7 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
     const errCls = "text-red-400 dark:text-danger text-[11px] mt-1";
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={onClose}
-            />
-
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
-            >
+        <FormModalShell onClose={onClose} maxWidth="max-w-xl">
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
                         type="button"
@@ -230,7 +231,6 @@ export default function ManagerFormModal({ manager, onClose }: Props) {
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

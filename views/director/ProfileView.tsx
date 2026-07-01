@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -14,6 +15,8 @@ import {
   ShieldCheck,
   Palette,
   CalendarDays,
+  LayoutTemplate,
+  Building2,
 } from "lucide-react";
 import { API } from "@/services/api";
 import { useAuthStore } from "@/store/authStore";
@@ -22,6 +25,7 @@ import Skeleton from "@/components/common/Skeleton";
 import AppearanceModal from "@/components/sections/directorPanelSections/profileView/AppearanceModal";
 import ColorModal from "@/components/sections/directorPanelSections/profileView/ColorModal";
 import DatePickerModal from "@/components/sections/directorPanelSections/profileView/DatePickerModal";
+import ModalVariantModal from "@/components/sections/directorPanelSections/profileView/ModalVariantModal";
 import LanguageModal from "@/components/sections/directorPanelSections/profileView/LanguageModal";
 import PasswordModal from "@/components/sections/directorPanelSections/profileView/PasswordModal";
 import ConfirmModal from "@/components/sections/directorPanelSections/profileView/ConfirmModal";
@@ -37,7 +41,7 @@ interface ProfileData {
   avatar: string | null;
 }
 
-type ModalType = "appearance" | "color" | "datepicker" | "language" | "password" | null;
+type ModalType = "appearance" | "color" | "datepicker" | "modalVariant" | "language" | "password" | null;
 
 interface Props {
   role?: "director" | "manager";
@@ -58,11 +62,16 @@ const PICKER_MODE_KEYS: Record<string, string> = {
   text:     "common.datepicker.text_mode",
 };
 
+const MODAL_VARIANT_KEYS: Record<string, string> = {
+  center: "director.profile.modalVariant.center",
+  right:  "director.profile.modalVariant.right",
+};
+
 export default function ProfileView({ role = "director" }: Props) {
   const router = useRouter();
   const { t } = useTranslation();
   const { logout } = useAuthStore();
-  const { theme, language, accentTheme, datePickerMode } = useUIStore();
+  const { theme, language, accentTheme, datePickerMode, modalVariant } = useUIStore();
   const [modal, setModal] = useState<ModalType>(null);
   const [logoutOpen, setLogoutOpen] = useState(false);
 
@@ -84,16 +93,17 @@ export default function ProfileView({ role = "director" }: Props) {
           <Skeleton variant="block" className="w-5 h-5" />
         </div>
 
-        {/* Settings rows skeleton (5 items) */}
+        {/* Settings rows skeleton (6 items) */}
         <div className="rounded-2xl bg-surface border border-border overflow-hidden divide-y divide-border-subtle dark:divide-border">
-          {Array.from({ length: 5 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <SkeletonSettingRow key={i} />
           ))}
         </div>
 
-        {/* Director locations row skeleton */}
+        {/* Director markaz guruhi skeleton (center + locations) */}
         {role === "director" && (
-          <div className="rounded-2xl bg-surface border border-border overflow-hidden">
+          <div className="rounded-2xl bg-surface border border-border overflow-hidden divide-y divide-border-subtle dark:divide-border">
+            <SkeletonSettingRow />
             <SkeletonSettingRow />
           </div>
         )}
@@ -177,6 +187,14 @@ export default function ProfileView({ role = "director" }: Props) {
           onClick={() => setModal("datepicker")}
         />
         <SettingRow
+          icon={<LayoutTemplate className="w-5 h-5" />}
+          iconBg="bg-indigo-500"
+          title={t("director.profile.modalVariant.title")}
+          desc={t("director.profile.modalVariant.desc")}
+          value={t(MODAL_VARIANT_KEYS[modalVariant] ?? "director.profile.modalVariant.right")}
+          onClick={() => setModal("modalVariant")}
+        />
+        <SettingRow
           icon={<Globe className="w-5 h-5" />}
           iconBg="bg-orange-500"
           title={t("director.profile.language.title")}
@@ -196,7 +214,14 @@ export default function ProfileView({ role = "director" }: Props) {
 
       {/* ─── MARKAZ GURUHI (faqat director) ─── */}
       {role === "director" && (
-        <div className="rounded-2xl bg-surface border border-border overflow-hidden">
+        <div className="rounded-2xl bg-surface border border-border overflow-hidden divide-y divide-border-subtle dark:divide-border">
+          <SettingRow
+            icon={<Building2 className="w-5 h-5" />}
+            iconBg="bg-primary"
+            title={t("director.profile.center.title")}
+            desc={t("director.profile.center.desc")}
+            onClick={() => router.push("/profile/center")}
+          />
           <SettingRow
             icon={<MapPin className="w-5 h-5" />}
             iconBg="bg-danger"
@@ -227,22 +252,25 @@ export default function ProfileView({ role = "director" }: Props) {
       {modal === "appearance"  && <AppearanceModal  onClose={() => setModal(null)} />}
       {modal === "color"       && <ColorModal       onClose={() => setModal(null)} />}
       {modal === "datepicker"  && <DatePickerModal  onClose={() => setModal(null)} />}
+      {modal === "modalVariant" && <ModalVariantModal onClose={() => setModal(null)} />}
       {modal === "language"    && <LanguageModal    onClose={() => setModal(null)} />}
       {modal === "password"    && <PasswordModal    onClose={() => setModal(null)} />}
 
-      {logoutOpen && (
-        <ConfirmModal
-          icon={LogOut}
-          iconBg="bg-danger"
-          title={t("director.profile.logout.confirm_title")}
-          desc={t("director.profile.logout.confirm_desc")}
-          confirmText={t("director.profile.logout.confirm_btn")}
-          cancelText={t("common.cancel")}
-          confirmClass="bg-danger hover:bg-danger/90"
-          onConfirm={logout}
-          onClose={() => setLogoutOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {logoutOpen && (
+          <ConfirmModal
+            icon={LogOut}
+            iconBg="bg-danger"
+            title={t("director.profile.logout.confirm_title")}
+            desc={t("director.profile.logout.confirm_desc")}
+            confirmText={t("director.profile.logout.confirm_btn")}
+            cancelText={t("common.cancel")}
+            confirmClass="bg-danger hover:bg-danger/90"
+            onConfirm={logout}
+            onClose={() => setLogoutOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

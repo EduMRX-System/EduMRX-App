@@ -3,6 +3,7 @@
 // components/profile/ConfirmModal.tsx — umumiy tasdiqlash modali
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { motion } from "framer-motion";
 import { LucideIcon, Loader2 } from "lucide-react";
 
 interface ConfirmModalProps {
@@ -45,13 +46,22 @@ export default function ConfirmModal({
     return createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             {/* Backdrop */}
-            <div
-                className="absolute inset-0 bg-overlay backdrop-blur-sm animate-[cfFadeIn_0.2s_ease-out]"
-                onClick={() => !loading && onClose()}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="absolute inset-0 bg-overlay backdrop-blur-sm"
             />
 
             {/* Modal */}
-            <div className="relative w-full max-w-sm rounded-3xl bg-surface border border-border shadow-2xl animate-[cfModalIn_0.25s_cubic-bezier(0.16,1,0.3,1)] overflow-hidden">
+            <motion.div
+                initial={{ opacity: 0, y: 16, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 16, scale: 0.96 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full max-w-sm rounded-3xl bg-surface border border-border shadow-2xl overflow-hidden"
+            >
                 <div className="pt-8 pb-5 px-6 text-center">
                     <div className={`w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center text-primary-fg mx-auto shadow-lg`}>
                         <Icon className="w-7 h-7" />
@@ -79,18 +89,7 @@ export default function ConfirmModal({
                         {confirmText}
                     </button>
                 </div>
-            </div>
-
-            <style jsx>{`
-        @keyframes cfFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes cfModalIn {
-          from { opacity: 0; transform: translateY(16px) scale(0.96); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-      `}</style>
+            </motion.div>
         </div>,
         document.body,
     );

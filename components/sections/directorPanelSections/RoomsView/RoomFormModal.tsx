@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { X, Loader2, DoorOpen } from "lucide-react";
@@ -9,6 +9,9 @@ import { Room, RoomPayload } from "@/types/room";
 import { useTranslation } from "react-i18next";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
 import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
+import FormModalShell from "@/components/common/FormModalShell";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
+import { queryKeys } from "@/lib/queryKeys";
 
 interface Props {
     room?: Room | null;
@@ -20,19 +23,19 @@ export default function RoomFormModal({ room, onClose, role = "director" }: Prop
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!room;
-    const [isMounted, setIsMounted] = useState(false);
 
     const { activeCenter, isCentersLoaded } = useActiveCenterStore();
 
+    const draftKey = isEdit ? `edit-room-${room!.id}-draft` : "room-form-draft";
+    const draft = getFormDraft<{ name: string; capacity: string; branch: string }>(draftKey);
+
     const [formData, setFormData] = useState({
-        name: room?.name ?? "",
-        capacity: room?.capacity ? String(room.capacity) : "",
-        branch: room?.branch ?? "",
+        name: draft?.name ?? (room?.name ?? ""),
+        capacity: draft?.capacity ?? (room?.capacity ? String(room.capacity) : ""),
+        branch: draft?.branch ?? (room?.branch ?? ""),
     });
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    useFormDraftSave(draftKey, formData);
 
     const { mutate: saveRoom, isPending } = useMutation({
         mutationFn: async () => {
@@ -49,7 +52,8 @@ export default function RoomFormModal({ room, onClose, role = "director" }: Prop
         },
         onSuccess: () => {
             toast.success(t(isEdit ? "director.rooms.toast.updated" : "director.rooms.toast.created"));
-            queryClient.invalidateQueries({ queryKey: ["rooms"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.rooms.all });
+            clearFormDraft(draftKey);
             onClose();
         },
         onError: (err: any) => {
@@ -80,19 +84,7 @@ export default function RoomFormModal({ room, onClose, role = "director" }: Prop
     const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${
-                    isMounted ? "opacity-100" : "opacity-0"
-                }`}
-                onClick={onClose}
-            />
-
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-md w-full relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${
-                    isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"
-                }`}
-            >
+        <FormModalShell onClose={onClose} maxWidth="max-w-md">
                 <button
                     type="button"
                     onClick={onClose}
@@ -160,7 +152,6 @@ export default function RoomFormModal({ room, onClose, role = "director" }: Prop
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

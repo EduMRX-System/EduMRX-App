@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import {
   Plus, Search, X, ChevronLeft, ChevronRight, Loader2, AlertCircle,
   Check, ChevronDown, Trash2, Edit2, AlertTriangle,
@@ -11,14 +12,15 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
 } from "recharts";
-import { useQuery } from "@tanstack/react-query";
-import { API } from "@/services/api";
-import { useActiveCenterStore } from "@/store/activeCenterStore";
 import { useDebts, useDebtSummary, useCreateDebt, useUpdateDebt, useDeleteDebt } from "@/hooks/useDebts";
+import { useStudentSearchOptions } from "@/hooks/useStudents";
+import { useGroupSearchOptions } from "@/hooks/useGroups";
 import { type IDebt, type DebtPayload, DEBT_STATUS_OPTIONS, getDebtStatusOption, isOverdue } from "@/types/debt";
 import { formatAmount, formatDate } from "@/types/payment";
 import DatePicker from "@/components/ui/DatePicker";
 import MoneyInput from "@/components/ui/MoneyInput";
+import FormModalShell from "@/components/common/FormModalShell";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
 
 const PAGE_SIZE = 10;
 const PIE_COLORS = ["#f59e0b", "#10b981", "#ef4444"];
@@ -83,25 +85,8 @@ function StudentSelect({ value, label, onChange, placeholder }: {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState({ id: value, name: label });
   const ref = useRef<HTMLDivElement>(null);
-  const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["student-options-debt", search, activeCenter],
-    queryFn: async () => {
-      const res = await API.get("director/students/", {
-        params: { search: search || undefined, center_id: activeCenter || undefined, page_size: 20 },
-      });
-      const d: any = res.data;
-      const list = Array.isArray(d) ? d : d?.results ?? [];
-      return list.map((s: any) => ({
-        id: String(s.id),
-        name: s.user?.full_name ?? s.full_name ?? `${s.first_name ?? ""} ${s.last_name ?? ""}`.trim() ?? String(s.id),
-        phone: s.user?.phone ?? s.phone ?? "",
-      }));
-    },
-    enabled: open,
-    staleTime: 30000,
-  });
+  const { data, isLoading } = useStudentSearchOptions(search, open);
 
   useEffect(() => {
     const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
@@ -152,21 +137,8 @@ function GroupSelect({ value, label, onChange, placeholder }: {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState({ id: value, name: label });
   const ref = useRef<HTMLDivElement>(null);
-  const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["group-options-debt", search, activeCenter],
-    queryFn: async () => {
-      const res = await API.get("director/groups/", {
-        params: { search: search || undefined, center_id: activeCenter || undefined, page_size: 30 },
-      });
-      const d: any = res.data;
-      const list = Array.isArray(d) ? d : d?.results ?? [];
-      return list.map((g: any) => ({ id: String(g.id), name: g.name ?? String(g.id) }));
-    },
-    enabled: open,
-    staleTime: 30000,
-  });
+  const { data, isLoading } = useGroupSearchOptions(search, open);
 
   useEffect(() => {
     const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
@@ -228,12 +200,13 @@ function initDebtForm(d?: IDebt | null): DebtForm {
 
 function DebtFormModal({ debt, onClose }: { debt?: IDebt | null; onClose: () => void }) {
   const { t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-  const [form, setForm] = useState<DebtForm>(() => initDebtForm(debt));
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const isEdit = !!debt;
+  const draftKey = isEdit ? `edit-debt-${debt!.id}-draft` : "debt-form-draft";
+  const draft = getFormDraft<DebtForm>(draftKey);
+  const [form, setForm] = useState<DebtForm>(() => ({ ...initDebtForm(debt), ...draft }));
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  useEffect(() => { setMounted(true); }, []);
+  useFormDraftSave(draftKey, form);
 
   const createMut = useCreateDebt();
   const updateMut = useUpdateDebt();
@@ -269,6 +242,7 @@ function DebtFormModal({ debt, onClose }: { debt?: IDebt | null; onClose: () => 
         await createMut.mutateAsync(payload);
         toast.success(t("director.debts.toast.created"));
       }
+      clearFormDraft(draftKey);
       onClose();
     } catch (err: any) {
       const d = err?.response?.data;
@@ -286,22 +260,26 @@ function DebtFormModal({ debt, onClose }: { debt?: IDebt | null; onClose: () => 
   const errCls = "text-red-400 text-[11px] mt-0.5";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
-      <div className={`bg-surface rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}>
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border-subtle bg-surface">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-warning-bg flex items-center justify-center">
-              <AlertTriangle className="w-5 h-5 text-warning" />
-            </div>
-            <h3 className="text-base font-semibold text-foreground">
-              {isEdit ? t("director.debts.form.title_edit") : t("director.debts.form.title_add")}
-            </h3>
-          </div>
-          <button onClick={onClose} className="text-foreground-subtle hover:text-foreground-muted p-1.5 rounded-lg hover:bg-hover cursor-pointer"><X className="w-5 h-5" /></button>
+    <FormModalShell onClose={onClose} maxWidth="max-w-lg">
+        <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
+          <button
+            type="button"
+            onClick={onClose}
+            className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-warning bg-warning-bg">
+          <AlertTriangle className="w-6 h-6" />
+        </div>
+
+        <h3 className="text-foreground text-[18px] font-semibold mb-4">
+          {isEdit ? t("director.debts.form.title_edit") : t("director.debts.form.title_add")}
+        </h3>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Student + Group */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -348,17 +326,14 @@ function DebtFormModal({ debt, onClose }: { debt?: IDebt | null; onClose: () => 
             </button>
           </div>
         </form>
-      </div>
-    </div>
+    </FormModalShell>
   );
 }
 
 // ── Delete Modal ──────────────────────────────────────────────────
 function DeleteDebtModal({ debt, onClose }: { debt: IDebt; onClose: () => void }) {
   const { t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
   const deleteMut = useDeleteDebt();
-  useEffect(() => { setMounted(true); }, []);
 
   async function handleDelete() {
     try {
@@ -369,9 +344,7 @@ function DeleteDebtModal({ debt, onClose }: { debt: IDebt; onClose: () => void }
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
-      <div className={`bg-surface rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+    <FormModalShell onClose={onClose} variant="center" maxWidth="max-w-sm">
         <div className="w-12 h-12 rounded-full bg-danger-bg flex items-center justify-center mb-4 mx-auto"><Trash2 className="w-6 h-6 text-danger" /></div>
         <h3 className="text-center text-base font-semibold text-foreground mb-2">{t("director.debts.delete.title")}</h3>
         <p className="text-center text-sm text-foreground-muted mb-6">{t("director.debts.delete.desc")}</p>
@@ -382,8 +355,7 @@ function DeleteDebtModal({ debt, onClose }: { debt: IDebt; onClose: () => void }
             {t("common.delete") || "O'chirish"}
           </button>
         </div>
-      </div>
-    </div>
+    </FormModalShell>
   );
 }
 
@@ -632,9 +604,11 @@ export default function DebtsView() {
       </div>
 
       {/* Modals */}
-      {addOpen && <DebtFormModal onClose={() => setAddOpen(false)} />}
-      {editing && <DebtFormModal debt={editing} onClose={() => setEditing(null)} />}
-      {deleting && <DeleteDebtModal debt={deleting} onClose={() => setDeleting(null)} />}
+      <AnimatePresence>
+        {addOpen && <DebtFormModal key="add" onClose={() => setAddOpen(false)} />}
+        {editing && <DebtFormModal key="edit" debt={editing} onClose={() => setEditing(null)} />}
+        {deleting && <DeleteDebtModal key="delete" debt={deleting} onClose={() => setDeleting(null)} />}
+      </AnimatePresence>
     </div>
   );
 }

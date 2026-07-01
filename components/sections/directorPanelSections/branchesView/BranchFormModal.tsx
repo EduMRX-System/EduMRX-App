@@ -12,6 +12,9 @@ import { useUIStore } from "@/store/useUIStore";
 import type { Branch, BranchStatus, BranchPayload } from "@/types/branch";
 import { parseCoordinates } from "@/types/branch";
 import { useTranslation } from "react-i18next";
+import FormModalShell from "@/components/common/FormModalShell";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
+import { queryKeys } from "@/lib/queryKeys";
 
 // ═════════════════════════════════════════════════════════════════
 // PHONE INPUT
@@ -117,19 +120,25 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!branch;
-    const [isMounted, setIsMounted] = useState(false);
 
     const initialCoords = parseCoordinates(branch?.coordinates);
 
+    const draftKey = isEdit ? `edit-branch-${branch!.id}-draft` : "branch-form-draft";
+    const draft = getFormDraft<{
+        name: string; phone: string; address: string; status: BranchStatus; latitude: string; longitude: string;
+    }>(draftKey);
+
     // Form state (oddiy useState — sizning pattern)
     const [formData, setFormData] = useState({
-        name: branch?.name ?? "",
-        phone: branch?.phone ? "998" + branch.phone.replace(/\D/g, "").replace(/^998/, "").slice(0, 9) : "998",
-        address: branch?.address ?? "",
-        status: (branch?.status ?? "active") as BranchStatus,
-        latitude: initialCoords?.lat ?? "",
-        longitude: initialCoords?.lng ?? "",
+        name: draft?.name ?? (branch?.name ?? ""),
+        phone: draft?.phone ?? (branch?.phone ? "998" + branch.phone.replace(/\D/g, "").replace(/^998/, "").slice(0, 9) : "998"),
+        address: draft?.address ?? (branch?.address ?? ""),
+        status: draft?.status ?? ((branch?.status ?? "active") as BranchStatus),
+        latitude: draft?.latitude ?? (initialCoords?.lat ?? ""),
+        longitude: draft?.longitude ?? (initialCoords?.lng ?? ""),
     });
+
+    useFormDraftSave(draftKey, formData);
 
     // Status dropdown
     const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -141,10 +150,12 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
     const placemarkRef = useRef<any>(null);
     const [mapLoading, setMapLoading] = useState(true);
     const [mapError, setMapError] = useState(false);
-    const [coords, setCoords] = useState<{ lat: string; lng: string } | null>(initialCoords);
+    const [coords, setCoords] = useState<{ lat: string; lng: string } | null>(
+        formData.latitude && formData.longitude ? { lat: formData.latitude, lng: formData.longitude } : null,
+    );
 
     // Address search
-    const [addressSearchQuery, setAddressSearchQuery] = useState(branch?.address ?? "");
+    const [addressSearchQuery, setAddressSearchQuery] = useState(formData.address);
     const [isSearchingAddress, setIsSearchingAddress] = useState(false);
     const [addressSuggestions, setAddressSuggestions] = useState<any[]>([]);
     const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -155,7 +166,6 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
 
     // Tashqi klik — dropdownlarni yopish
     useEffect(() => {
-        setIsMounted(true);
         const handleClickOutside = (event: MouseEvent) => {
             if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) setIsStatusOpen(false);
             if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) setAddressSuggestions([]);
@@ -196,8 +206,6 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
 
     // Map init
     useEffect(() => {
-        if (!isMounted) return;
-
         loadYandexMaps()
             .then(() => {
                 if (!mapContainerRef.current) return;
@@ -247,7 +255,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isMounted, updateMarker, theme]);
+    }, [updateMarker, theme]);
 
     // Manzil qidirish (debounce + geocode suggestions)
     const handleAddressSearch = (query: string) => {
@@ -317,7 +325,8 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
         },
         onSuccess: () => {
             toast.success(t(isEdit ? "director.branches.toast.updated" : "director.branches.toast.created"));
-            queryClient.invalidateQueries({ queryKey: ["branches"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.branches.all });
+            clearFormDraft(draftKey);
             onClose();
         },
         onError: (err: any) => {
@@ -346,17 +355,7 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
     const inputCls = "border rounded-lg w-full h-[40px] px-3 text-[14px] outline-none transition-all bg-surface text-foreground border-border focus:border-primary focus:ring-2 focus:ring-primary-ring placeholder:text-foreground-subtle";
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Orqa fon */}
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={onClose}
-            />
-
-            {/* Modal */}
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
-            >
+        <FormModalShell onClose={onClose} maxWidth="max-w-xl">
                 {/* Sticky close */}
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
@@ -518,7 +517,6 @@ export default function BranchFormModal({ branch, onClose }: BranchFormModalProp
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

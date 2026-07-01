@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import {
   Plus, Search, X, ChevronLeft, ChevronRight, Loader2, AlertCircle,
   CreditCard, Wallet, TrendingUp, TrendingDown, Check, ChevronDown,
@@ -11,12 +12,12 @@ import { toast } from "react-toastify";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart,
 } from "recharts";
-import { useQuery } from "@tanstack/react-query";
-import { API } from "@/services/api";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
 import {
   usePayments, usePaymentSummary, useCreatePayment, useUpdatePayment, useDeletePayment,
 } from "@/hooks/usePayments";
+import { useStudentSearchOptions } from "@/hooks/useStudents";
+import { useGroupSearchOptions } from "@/hooks/useGroups";
 import {
   type IPayment, type PaymentPayload, type PaymentPatchPayload,
   PAYMENT_METHOD_OPTIONS, PAYMENT_STATUS_OPTIONS,
@@ -25,6 +26,8 @@ import {
 import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 import DatePicker, { MonthYearPicker } from "@/components/ui/DatePicker";
 import MoneyInput from "@/components/ui/MoneyInput";
+import FormModalShell from "@/components/common/FormModalShell";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
 
 const PAGE_SIZE = 10;
 
@@ -41,25 +44,8 @@ function StudentSelect({
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState({ id: value, name: label });
   const ref = useRef<HTMLDivElement>(null);
-  const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["student-options", search, activeCenter],
-    queryFn: async () => {
-      const res = await API.get("director/students/", {
-        params: { search: search || undefined, center_id: activeCenter || undefined, page_size: 20 },
-      });
-      const d: any = res.data;
-      const list = Array.isArray(d) ? d : d?.results ?? [];
-      return list.map((s: any) => ({
-        id: String(s.id),
-        name: s.user?.full_name ?? s.full_name ?? `${s.first_name ?? ""} ${s.last_name ?? ""}`.trim() ?? String(s.id),
-        phone: s.user?.phone ?? s.phone ?? "",
-      }));
-    },
-    enabled: open,
-    staleTime: 30000,
-  });
+  const { data, isLoading } = useStudentSearchOptions(search, open);
 
   useEffect(() => {
     const h = (e: MouseEvent) => {
@@ -131,21 +117,8 @@ function GroupSelect({
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState({ id: value, name: label });
   const ref = useRef<HTMLDivElement>(null);
-  const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["group-options-pay", search, activeCenter],
-    queryFn: async () => {
-      const res = await API.get("director/groups/", {
-        params: { search: search || undefined, center_id: activeCenter || undefined, page_size: 30 },
-      });
-      const d: any = res.data;
-      const list = Array.isArray(d) ? d : d?.results ?? [];
-      return list.map((g: any) => ({ id: String(g.id), name: g.name ?? String(g.id) }));
-    },
-    enabled: open,
-    staleTime: 30000,
-  });
+  const { data, isLoading } = useGroupSearchOptions(search, open);
 
   useEffect(() => {
     const h = (e: MouseEvent) => {
@@ -307,13 +280,14 @@ function initForm(p?: IPayment | null): FormState {
 
 function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onClose: () => void }) {
   const { t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-  const [form, setForm] = useState<FormState>(() => initForm(payment));
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const isEdit = !!payment;
+  const draftKey = isEdit ? `edit-payment-${payment!.id}-draft` : "payment-form-draft";
+  const draft = getFormDraft<FormState>(draftKey);
+  const [form, setForm] = useState<FormState>(() => ({ ...initForm(payment), ...draft }));
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
-  useEffect(() => { setMounted(true); }, []);
+  useFormDraftSave(draftKey, form);
 
   const createMut = useCreatePayment();
   const updateMut = useUpdatePayment();
@@ -369,6 +343,7 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
         await createMut.mutateAsync(payload);
         toast.success(t("director.payments.toast.created"));
       }
+      clearFormDraft(draftKey);
       onClose();
     } catch (err: any) {
       const d = err?.response?.data;
@@ -389,27 +364,26 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
   const errCls = "text-red-400 text-[11px] mt-0.5";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div
-        className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`}
-        onClick={onClose}
-      />
-      <div className={`bg-surface rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}>
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border-subtle bg-surface">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-primary-soft  flex items-center justify-center">
-              <CreditCard className="w-5 h-5 text-primary" />
-            </div>
-            <h3 className="text-base font-semibold text-foreground">
-              {isEdit ? t("director.payments.form.title_edit") : t("director.payments.form.title_add")}
-            </h3>
-          </div>
-          <button onClick={onClose} className="text-foreground-subtle hover:text-foreground-muted dark:hover:text-foreground p-1.5 rounded-lg hover:bg-hover transition-colors cursor-pointer">
+    <FormModalShell onClose={onClose} maxWidth="max-w-2xl">
+        <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
+          <button
+            type="button"
+            onClick={onClose}
+            className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-primary bg-primary-soft/10">
+          <CreditCard className="w-6 h-6" />
+        </div>
+
+        <h3 className="text-foreground text-[18px] font-semibold mb-4">
+          {isEdit ? t("director.payments.form.title_edit") : t("director.payments.form.title_add")}
+        </h3>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Student + Group */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -539,18 +513,14 @@ function PaymentFormModal({ payment, onClose }: { payment?: IPayment | null; onC
             </button>
           </div>
         </form>
-      </div>
-    </div>
+    </FormModalShell>
   );
 }
 
 // ── Delete Modal ──────────────────────────────────────────────────
 function DeletePaymentModal({ payment, onClose }: { payment: IPayment; onClose: () => void }) {
   const { t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
   const deleteMut = useDeletePayment();
-
-  useEffect(() => { setMounted(true); }, []);
 
   async function handleDelete() {
     try {
@@ -563,9 +533,7 @@ function DeletePaymentModal({ payment, onClose }: { payment: IPayment; onClose: 
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
-      <div className={`bg-surface rounded-xl max-w-sm w-full p-6 relative z-10 shadow-2xl border border-border-subtle transition-all duration-300 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+    <FormModalShell onClose={onClose} variant="center" maxWidth="max-w-sm">
         <div className="w-12 h-12 rounded-full bg-danger-bg flex items-center justify-center mb-4 mx-auto">
           <Trash2 className="w-6 h-6 text-danger" />
         </div>
@@ -580,8 +548,7 @@ function DeletePaymentModal({ payment, onClose }: { payment: IPayment; onClose: 
             {t("common.delete") || "O'chirish"}
           </button>
         </div>
-      </div>
-    </div>
+    </FormModalShell>
   );
 }
 
@@ -874,9 +841,11 @@ export default function PaymentsView() {
       </div>
 
       {/* Modals */}
-      {addOpen && <PaymentFormModal onClose={() => setAddOpen(false)} />}
-      {editing && <PaymentFormModal payment={editing} onClose={() => setEditing(null)} />}
-      {deleting && <DeletePaymentModal payment={deleting} onClose={() => setDeleting(null)} />}
+      <AnimatePresence>
+        {addOpen && <PaymentFormModal key="add" onClose={() => setAddOpen(false)} />}
+        {editing && <PaymentFormModal key="edit" payment={editing} onClose={() => setEditing(null)} />}
+        {deleting && <DeletePaymentModal key="delete" payment={deleting} onClose={() => setDeleting(null)} />}
+      </AnimatePresence>
     </div>
   );
 }

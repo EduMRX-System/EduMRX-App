@@ -11,13 +11,17 @@ import { toast } from "react-toastify";
 import { formatUzPhone, splitFullName, type ITeacher } from "@/types/teacher";
 import { useTranslation } from "react-i18next";
 import ScopeFormFields from "@/components/common/ScopeFormFields";
+import FormModalShell from "@/components/common/FormModalShell";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
 import DatePicker from "@/components/ui/DatePicker";
 import MoneyInput from "@/components/ui/MoneyInput";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
+import { queryKeys } from "@/lib/queryKeys";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
     last_name: yup.string().required("Familiya majburiy"),
+    sex: yup.string().oneOf(["male", "female"], "Jinsini tanlang").required("Jinsi majburiy"),
     phone: yup
         .string()
         .required("Telefon majburiy")
@@ -55,8 +59,7 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!teacher;
-    
-    const [isMounted, setIsMounted] = useState(false);
+
     const [phoneDisplay, setPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
@@ -70,6 +73,9 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
     const initIsPercent = rawSalary.includes("%") || (teacher as any)?.salary_type === "percentage";
     const initSalaryVal = rawSalary.replace(/\D/g, "");
 
+    const draftKey = isEdit ? `edit-teacher-${teacher!.id}-draft` : "teacher-form-draft";
+    const draft = getFormDraft<Partial<Omit<FormData, "password">>>(draftKey);
+
     const {
         register,
         handleSubmit,
@@ -80,26 +86,29 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
         resolver: yupResolver(schema),
         context: { isEdit },
         defaultValues: {
-            first_name: u?.first_name || nameFromFull.first,
-            last_name: u?.last_name || nameFromFull.last,
-            phone: u?.phone || "998",
-            email: u?.email || "",
+            first_name: draft?.first_name ?? (u?.first_name || nameFromFull.first),
+            last_name: draft?.last_name ?? (u?.last_name || nameFromFull.last),
+            sex: draft?.sex ?? ((u as any)?.sex || (teacher as any)?.sex || "male"),
+            phone: draft?.phone ?? (u?.phone || "998"),
+            email: draft?.email ?? (u?.email || ""),
             password: "",
-            branch: (teacher as any)?.branch || "",
-            specialization: teacher?.specialization || "",
-            experience: teacher?.experience ?? 0,
-            salary_type: initIsPercent ? "percentage" : "fixed",
-            salary: initSalaryVal,
-            bio: teacher?.bio || "",
-            date_of_birth: teacher?.date_of_birth ? teacher.date_of_birth.slice(0, 10) : new Date().toISOString().split("T")[0],
+            branch: draft?.branch ?? ((teacher as any)?.branch || ""),
+            specialization: draft?.specialization ?? (teacher?.specialization || ""),
+            experience: draft?.experience ?? (teacher?.experience ?? 0),
+            salary_type: draft?.salary_type ?? (initIsPercent ? "percentage" : "fixed"),
+            salary: draft?.salary ?? initSalaryVal,
+            bio: draft?.bio ?? (teacher?.bio || ""),
+            date_of_birth: draft?.date_of_birth ?? (teacher?.date_of_birth ? teacher.date_of_birth.slice(0, 10) : new Date().toISOString().split("T")[0]),
         },
     });
 
     const dobValue = watch("date_of_birth");
+    const watchedValues = watch();
+    useFormDraftSave(draftKey, { ...watchedValues, password: undefined });
 
     useEffect(() => {
-        setIsMounted(true);
-        if (u?.phone) setPhoneDisplay(formatUzPhone(u.phone));
+        const currentPhone = draft?.phone ?? u?.phone;
+        if (currentPhone) setPhoneDisplay(formatUzPhone(currentPhone));
     }, [u]);
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,7 +137,8 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
         },
         onSuccess: (data: any) => {
             toast.success(data?.message || t(isEdit ? "director.teachers.toast.updated" : "director.teachers.toast.created"));
-            queryClient.invalidateQueries({ queryKey: ["teachers"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.teachers.all });
+            clearFormDraft(draftKey);
             onClose();
         },
         onError: (err: any) => toast.error(err?.response?.data?.message || t("director.teachers.toast.error_generic")),
@@ -142,15 +152,7 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
     const todayISO = new Date().toISOString().split("T")[0];
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={onClose}
-            />
-
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-2xl w-full max-h-[92vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
-            >
+        <FormModalShell onClose={onClose} maxWidth="max-w-2xl">
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
                         type="button"
@@ -182,6 +184,27 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
                             <input {...register("last_name")} placeholder="Abbosov" className={fieldCls(!!errors.last_name)} />
                             {errors.last_name && <p className={errCls}>{errors.last_name.message}</p>}
                         </div>
+                    </div>
+
+                    {/* Jinsi */}
+                    <div>
+                        <label className={labelCls}>{t("director.teachers.form.sex_label")}</label>
+                        <div className="grid grid-cols-2 gap-3">
+                            {(["male", "female"] as const).map((opt) => {
+                                const isSel = watch("sex") === opt;
+                                return (
+                                    <button
+                                        type="button"
+                                        key={opt}
+                                        onClick={() => setValue("sex", opt, { shouldValidate: true })}
+                                        className={`h-10 rounded-lg border text-sm font-semibold transition-colors cursor-pointer ${isSel ? "border-primary bg-primary-soft text-primary" : "border-border bg-surface text-foreground-muted hover:bg-hover"}`}
+                                    >
+                                        {t(`director.teachers.form.sex_${opt}`)}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        {errors.sex && <p className={errCls}>{errors.sex.message}</p>}
                     </div>
 
                     {/* Filial */}
@@ -320,7 +343,6 @@ export default function TeacherFormModal({ teacher, onClose, role = "director" }
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { AlertTriangle, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 import type { Branch } from "@/types/branch";
 import { useTranslation } from "react-i18next";
+import { queryKeys } from "@/lib/queryKeys";
+import FormModalShell from "@/components/common/FormModalShell";
 
 interface Props {
     branch: Branch;
@@ -16,10 +18,8 @@ interface Props {
 export default function DeleteBranchModal({ branch, onClose }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true);
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
         document.addEventListener("keydown", onKey);
         return () => document.removeEventListener("keydown", onKey);
@@ -31,22 +31,14 @@ export default function DeleteBranchModal({ branch, onClose }: Props) {
         },
         onSuccess: () => {
             toast.success(t("director.branches.toast.deleted"));
-            queryClient.invalidateQueries({ queryKey: ["branches"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.branches.all });
             onClose();
         },
         onError: () => toast.error(t("director.branches.toast.delete_error")),
     });
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-300 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={onClose}
-            />
-
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-md w-full relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-300 ${isMounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
-            >
+        <FormModalShell onClose={onClose} variant="center" maxWidth="max-w-md">
                 <button
                     type="button"
                     onClick={onClose}
@@ -88,7 +80,6 @@ export default function DeleteBranchModal({ branch, onClose }: Props) {
                         {t("common.delete")}
                     </button>
                 </div>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

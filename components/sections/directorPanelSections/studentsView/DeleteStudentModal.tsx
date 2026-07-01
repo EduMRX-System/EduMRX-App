@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { X, AlertTriangle, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import type { IStudent } from "@/types/student";
 import { useTranslation } from "react-i18next";
+import { queryKeys } from "@/lib/queryKeys";
+import FormModalShell from "@/components/common/FormModalShell";
 
 interface Props {
     student: IStudent;
@@ -17,10 +19,8 @@ interface Props {
 export default function DeleteStudentModal({ student, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true);
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
         document.addEventListener("keydown", onKey);
         return () => document.removeEventListener("keydown", onKey);
@@ -32,15 +32,15 @@ export default function DeleteStudentModal({ student, onClose, role = "director"
         },
         onSuccess: () => {
             toast.success(t("director.students.toast.deleted"));
-            queryClient.invalidateQueries({ queryKey: ["students-list"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.students.listAll });
             onClose();
         },
         onError: (err: any) => toast.error(err?.response?.data?.message || t("director.students.toast.delete_error")),
     });
 
     return (
-        <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-overlay backdrop-blur-sm transition-opacity duration-200 ${isMounted ? "opacity-100" : "opacity-0"}`}>
-            <div className="w-full max-w-md bg-surface rounded-xl border border-border-subtle shadow-xl overflow-hidden">
+        <FormModalShell onClose={onClose} variant="center" maxWidth="max-w-md">
+            <div className="-m-6 rounded-xl overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle bg-hover/50">
                     <div className="flex items-center gap-2 text-red-600">
@@ -55,7 +55,7 @@ export default function DeleteStudentModal({ student, onClose, role = "director"
                 {/* Body */}
                 <div className="p-5">
                     <p className="text-sm text-foreground-muted leading-relaxed">
-                        {t("director.students.delete.confirm", { name: student.full_name })}
+                        {t("director.students.delete.confirm", { name: [student.user?.first_name, student.user?.last_name].filter(Boolean).join(" ") })}
                     </p>
                     <p className="text-xs text-danger font-medium mt-2 bg-red-50/50 dark:bg-red-950/20 border border-red-100/50 dark:border-red-900/30 rounded-md p-2">
                         {t("director.students.delete.warning")}
@@ -72,6 +72,6 @@ export default function DeleteStudentModal({ student, onClose, role = "director"
                     </button>
                 </div>
             </div>
-        </div>
+        </FormModalShell>
     );
 }

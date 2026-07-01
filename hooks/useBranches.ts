@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { BranchesResponse } from "@/types/branch";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 const BRANCHES_URL = "center/branches/";
 
@@ -15,7 +16,7 @@ export function useBranches({ page = 1, pageSize = 10, search = "" }: BranchList
     const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
     return useQuery<BranchesResponse>({
-        queryKey: ["branches", { page, pageSize, search, centerId: activeCenter }],
+        queryKey: queryKeys.branches.list({ page, pageSize, search, centerId: activeCenter }),
         queryFn: async () => {
             const res = await API.get<BranchesResponse>(BRANCHES_URL, {
                 params: {
@@ -41,7 +42,7 @@ export function useBranchOptions() {
     const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
     return useQuery<BranchOption[]>({
-        queryKey: ["branches", "options", activeCenter],
+        queryKey: queryKeys.branches.options(activeCenter),
         queryFn: async () => {
             const res = await API.get(BRANCHES_URL, {
                 params: {

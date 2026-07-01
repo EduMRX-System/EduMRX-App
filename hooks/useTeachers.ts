@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { ITeacher } from "@/types/teacher";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 export interface TeachersResult {
     results: ITeacher[];
@@ -22,7 +23,7 @@ export function useTeachers({ page = 1, pageSize = 10, search = "", role = "dire
     const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
     return useQuery<TeachersResult>({
-        queryKey: ["teachers", { page, pageSize, search, centerId: activeCenter, branchId: activeBranch, role }],
+        queryKey: queryKeys.teachers.list({ page, pageSize, search, centerId: activeCenter, branchId: activeBranch, role }),
         queryFn: async () => {
             const res = await API.get(`${role}/teachers/`, {
                 params: {

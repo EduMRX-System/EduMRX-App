@@ -13,25 +13,37 @@ function firstWeekday(year: number, month: number) {
   return d === 0 ? 6 : d - 1;
 }
 
-export default function CalendarButton() {
+interface CalButtonProps {
+  externalOpen?: boolean;
+  onExternalClose?: () => void;
+}
+
+export default function CalendarButton({ externalOpen, onExternalClose }: CalButtonProps = {}) {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+  const isControlled = externalOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = isControlled ? externalOpen! : internalOpen;
 
   const today = new Date();
   const [calYear, setCalYear] = useState(today.getFullYear());
   const [calMonth, setCalMonth] = useState(today.getMonth());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+  const handleClose = () => {
+    if (isControlled) onExternalClose?.();
+    else setInternalOpen(false);
+  };
+
   useEffect(() => {
     const handle = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
       const inInput = el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT" || el.isContentEditable;
-      if (e.key === "Escape") { setIsOpen(false); return; }
-      if (!inInput && e.key === "k") setIsOpen(true);
+      if (e.key === "Escape") { handleClose(); return; }
+      if (!isControlled && !inInput && e.key === "k") setInternalOpen(true);
     };
     window.addEventListener("keydown", handle);
     return () => window.removeEventListener("keydown", handle);
-  }, []);
+  }, [isControlled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const monthsRaw = t("director.tools.months", { returnObjects: true });
   const months: string[] = Array.isArray(monthsRaw) ? monthsRaw : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -49,16 +61,18 @@ export default function CalendarButton() {
 
   return (
     <>
-      <button
-        onClick={() => setIsOpen((o) => !o)}
-        className={btnCls}
-        title={`${t("director.tools.calendar")} (K)`}
-        aria-label={t("director.tools.calendar")}
-      >
-        <CalendarDays className="w-[18px] h-[18px]" />
-      </button>
+      {!isControlled && (
+        <button
+          onClick={() => setInternalOpen((o) => !o)}
+          className={btnCls}
+          title={`${t("director.tools.calendar")} (K)`}
+          aria-label={t("director.tools.calendar")}
+        >
+          <CalendarDays className="w-[18px] h-[18px]" />
+        </button>
+      )}
 
-      <RightDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} title={t("director.tools.calendar")}>
+      <RightDrawer isOpen={isOpen} onClose={handleClose} title={t("director.tools.calendar")}>
         <div className="p-3 overflow-y-auto flex-1">
           <div className="flex items-center justify-between mb-2">
             <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-hover text-foreground-muted cursor-pointer transition-colors">

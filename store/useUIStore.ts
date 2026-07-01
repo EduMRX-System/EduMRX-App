@@ -8,25 +8,35 @@ import {
   getThemeCookie, setThemeCookie,
   getAccentThemeCookie, setAccentThemeCookie,
   getDatePickerModeCookie, setDatePickerModeCookie,
+  getDatePickerVariantCookie, setDatePickerVariantCookie,
+  getModalVariantCookie, setModalVariantCookie,
   type AccentTheme,
   type DatePickerMode,
+  type DatePickerVariant,
+  type ModalVariant,
 } from "@/lib/cookies";
 
 interface UIState {
   theme: "light" | "dark";
   accentTheme: AccentTheme;
   datePickerMode: DatePickerMode;
+  datePickerVariant: DatePickerVariant;
+  modalVariant: ModalVariant;
   language: string;
   isSidebarOpen: boolean;
   isSidebarCollapsed: boolean;
+  groupViewMode: "grid" | "list";
 
   setTheme: (theme: "light" | "dark") => void;
   setAccentTheme: (accent: AccentTheme) => void;
   setDatePickerMode: (mode: DatePickerMode) => void;
+  setDatePickerVariant: (variant: DatePickerVariant) => void;
+  setModalVariant: (variant: ModalVariant) => void;
   setLanguage: (lang: string) => void;
   toggleSidebar: () => void;
   setSidebarOpen: (isOpen: boolean) => void;
   setSidebarCollapsed: (isCollapsed: boolean) => void;
+  setGroupViewMode: (mode: "grid" | "list") => void;
 }
 
 export const useUIStore = create<UIState>()(
@@ -35,9 +45,12 @@ export const useUIStore = create<UIState>()(
       theme: getThemeCookie(),
       accentTheme: getAccentThemeCookie(),
       datePickerMode: getDatePickerModeCookie(),
+      datePickerVariant: getDatePickerVariantCookie(),
+      modalVariant: getModalVariantCookie(),
       language: getLangCookie(),
       isSidebarOpen: false,
       isSidebarCollapsed: false,
+      groupViewMode: "grid" as const,
 
       setTheme: (theme) => {
         setThemeCookie(theme);
@@ -60,6 +73,16 @@ export const useUIStore = create<UIState>()(
         set({ datePickerMode: mode });
       },
 
+      setDatePickerVariant: (variant) => {
+        setDatePickerVariantCookie(variant);
+        set({ datePickerVariant: variant });
+      },
+
+      setModalVariant: (variant) => {
+        setModalVariantCookie(variant);
+        set({ modalVariant: variant });
+      },
+
       setLanguage: (language) => {
         setLangCookie(language);
         i18n.changeLanguage(language);
@@ -73,15 +96,22 @@ export const useUIStore = create<UIState>()(
         set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
       setSidebarOpen: (isOpen) => set({ isSidebarOpen: isOpen }),
       setSidebarCollapsed: (isCollapsed) => set({ isSidebarCollapsed: isCollapsed }),
+      setGroupViewMode: (mode) => set({ groupViewMode: mode }),
     }),
     {
       name: "ui-storage",
-      partialize: (state) => ({ isSidebarCollapsed: state.isSidebarCollapsed }),
+      partialize: (state) => ({
+        isSidebarCollapsed: state.isSidebarCollapsed,
+        groupViewMode: state.groupViewMode,
+      }),
       merge: (persistedState, currentState) => ({
         ...currentState,
         isSidebarCollapsed:
           (persistedState as Partial<UIState>)?.isSidebarCollapsed ??
           currentState.isSidebarCollapsed,
+        groupViewMode:
+          (persistedState as Partial<UIState>)?.groupViewMode ??
+          currentState.groupViewMode,
       }),
     },
   ),

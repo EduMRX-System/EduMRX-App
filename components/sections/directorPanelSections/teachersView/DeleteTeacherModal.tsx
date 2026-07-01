@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { AlertTriangle, X, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import type { ITeacher } from "@/types/teacher";
 import { useTranslation } from "react-i18next";
+import { queryKeys } from "@/lib/queryKeys";
+import FormModalShell from "@/components/common/FormModalShell";
 
 interface Props {
     teacher: ITeacher;
@@ -17,10 +19,8 @@ interface Props {
 export default function DeleteTeacherModal({ teacher, onClose, role = "director" }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true);
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
         document.addEventListener("keydown", onKey);
         return () => document.removeEventListener("keydown", onKey);
@@ -32,22 +32,14 @@ export default function DeleteTeacherModal({ teacher, onClose, role = "director"
         },
         onSuccess: () => {
             toast.success(t("director.teachers.toast.deleted"));
-            queryClient.invalidateQueries({ queryKey: ["teachers"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.teachers.all });
             onClose();
         },
         onError: (err: any) => toast.error(err?.response?.data?.message || t("director.teachers.toast.delete_error")),
     });
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-300 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={!isPending ? onClose : undefined}
-            />
-
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-md w-full relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-300 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-8 scale-95"}`}
-            >
+        <FormModalShell onClose={onClose} variant="center" maxWidth="max-w-md">
                 {!isPending && (
                     <button
                         type="button"
@@ -85,7 +77,6 @@ export default function DeleteTeacherModal({ teacher, onClose, role = "director"
                         {isPending ? (<><Loader2 className="w-4 h-4 animate-spin" /> {t("common.deleting")}</>) : t("common.delete")}
                     </button>
                 </div>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

@@ -17,6 +17,7 @@ import {
   User,
   Briefcase,
   Layers,
+  Presentation,
   type LucideIcon,
 } from "lucide-react";
 
@@ -39,6 +40,7 @@ export const isGroup = (e: NavEntry): e is NavGroup =>
 
 export const directorMenu: NavEntry[] = [
   { title: "director.nav.dashboard", href: "/", icon: LayoutDashboard },
+  { title: "director.nav.board", href: "/board", icon: Presentation },
 
   {
       title: "director.nav.learning",

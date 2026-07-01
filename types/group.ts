@@ -1,3 +1,5 @@
+import type { IStudent } from "./student";
+
 export type GroupStatus = "active" | "inactive" | "completed";
 
 // GET /api/v1/director/courses/  (DRF pagination) — "courses" = guruhlar
@@ -17,6 +19,12 @@ export interface Group {
   lesson_days: string; // GET'da string qaytadi
   lesson_start_time: string; // "08:21:42.965Z"
   lesson_end_time: string;
+}
+
+// GET /api/v1/director/groups/{id}/  — detail endpoint
+export interface GroupDetail extends Group {
+  students?: IStudent[] | string[]; // full objects yoki uuid[]
+  branch?: string;
 }
 
 export interface GroupsResponse {
@@ -40,6 +48,7 @@ export interface GroupPayload {
   lesson_end_time: string;
   center?: string;
   branch?: string;
+  students?: string[]; // uuid[]
 }
 
 export const STATUS_OPTIONS: {

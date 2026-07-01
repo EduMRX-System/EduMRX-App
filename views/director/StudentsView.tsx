@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Plus, Search, User, X, ChevronLeft, ChevronRight, Loader2, AlertCircle } from "lucide-react";
 import { useStudents } from "@/hooks/useStudents";
 import type { IStudent } from "@/types/student";
@@ -149,9 +150,11 @@ export default function StudentsView({ role = "director" }: Props) {
             </div>
 
             {/* Modals */}
-            {addOpen && <StudentFormModal onClose={() => setAddOpen(false)} role={role} />}
-            {editing && <StudentFormModal student={editing} onClose={() => setEditing(null)} role={role} />}
-            {deleting && <DeleteStudentModal student={deleting} onClose={() => setDeleting(null)} role={role} />}
+            <AnimatePresence>
+                {addOpen && <StudentFormModal key="add" onClose={() => setAddOpen(false)} role={role} />}
+                {editing && <StudentFormModal key="edit" student={editing} onClose={() => setEditing(null)} role={role} />}
+                {deleting && <DeleteStudentModal key="delete" student={deleting} onClose={() => setDeleting(null)} role={role} />}
+            </AnimatePresence>
         </div>
     );
 }

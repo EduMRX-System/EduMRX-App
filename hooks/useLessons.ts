@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { LessonsResponse } from "@/types/lesson";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 interface ListParams {
     page?: number;
@@ -16,7 +17,7 @@ export function useLessons({ page = 1, pageSize = 10, search = "", date, role = 
     const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
     return useQuery<LessonsResponse>({
-        queryKey: ["lessons", { page, pageSize, search, date, centerId: activeCenter, branchId: activeBranch, role }],
+        queryKey: queryKeys.lessons.list({ page, pageSize, search, date, centerId: activeCenter, branchId: activeBranch, role }),
         queryFn: async () => {
             const res = await API.get<LessonsResponse>(`${role}/lessons/`, {
                 params: {
@@ -45,7 +46,7 @@ export function useGroupOptions(role: "director" | "manager" = "director") {
     const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
     return useQuery<GroupOption[]>({
-        queryKey: ["groups", "options", activeCenter, activeBranch, role],
+        queryKey: queryKeys.groups.options(activeCenter, activeBranch, role),
         queryFn: async () => {
             const res = await API.get(`${role}/groups/`, {
                 params: {

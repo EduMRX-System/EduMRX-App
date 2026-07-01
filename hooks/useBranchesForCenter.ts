@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { BranchInfo } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 export function useBranchesForCenter(centerId: string | null | undefined) {
   return useQuery<BranchInfo[]>({
-    queryKey: ["branches-for-center", centerId],
+    queryKey: queryKeys.branches.forCenter(centerId ?? null),
     queryFn: async () => {
       if (!centerId) return [];
       const res = await API.get("center/branches/", {

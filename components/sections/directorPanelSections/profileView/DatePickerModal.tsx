@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Check, CalendarDays } from "lucide-react";
+import { Check, CalendarDays, Calendar, ListOrdered, Keyboard, type LucideIcon } from "lucide-react";
 import { useUIStore } from "@/store/useUIStore";
 import { useTranslation } from "react-i18next";
 import ModalShell from "./ModalShell";
 import type { DatePickerMode } from "@/lib/cookies";
 
-const DATE_OPTS: { id: DatePickerMode; emoji: string; labelKey: string; descKey: string }[] = [
-  { id: "calendar", emoji: "📅", labelKey: "calendar",    descKey: "calendar_desc" },
-  { id: "select",   emoji: "🔢", labelKey: "select_mode", descKey: "select_desc"   },
-  { id: "text",     emoji: "⌨️", labelKey: "text_mode",   descKey: "text_desc"     },
+const DATE_OPTS: { id: DatePickerMode; icon: LucideIcon; labelKey: string; descKey: string }[] = [
+  { id: "calendar", icon: Calendar,     labelKey: "calendar",    descKey: "calendar_desc" },
+  { id: "select",   icon: ListOrdered,  labelKey: "select_mode", descKey: "select_desc"   },
+  { id: "text",     icon: Keyboard,     labelKey: "text_mode",   descKey: "text_desc"     },
 ];
 
 export default function DatePickerModal({ onClose }: { onClose: () => void }) {
@@ -50,6 +50,7 @@ export default function DatePickerModal({ onClose }: { onClose: () => void }) {
       <div className="grid grid-cols-3 gap-2.5 pb-2">
         {DATE_OPTS.map((opt) => {
           const active = datePickerMode === opt.id;
+          const Icon = opt.icon;
           return (
             <button
               key={opt.id}
@@ -60,7 +61,7 @@ export default function DatePickerModal({ onClose }: { onClose: () => void }) {
                   : "border-border hover:border-border-subtle hover:bg-hover"
               }`}
             >
-              <span className="text-2xl leading-none">{opt.emoji}</span>
+              <Icon className={`w-6 h-6 ${active ? "text-primary" : "text-foreground-muted"}`} />
               <span className={`text-[13px] font-bold leading-tight ${active ? "text-primary" : "text-foreground"}`}>
                 {t(`common.datepicker.${opt.labelKey}`)}
               </span>

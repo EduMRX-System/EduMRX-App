@@ -11,20 +11,29 @@ import {
     useCourseOptions,
     useTeacherOptions,
     useRoomOptions,
+    useGroupDetail,
 } from "@/hooks/useGroups";
+import { useStudentsByGroup } from "@/hooks/useStudents";
+import { useRoomCapacities } from "@/hooks/useRooms";
 import {
     STATUS_OPTIONS,
     WEEKDAYS,
     toHHMM,
     parseLessonDays,
     type Group,
+    type GroupDetail,
     type GroupStatus,
     type GroupPayload,
 } from "@/types/group";
+import type { IStudent } from "@/types/student";
 import SearchSelect from "./SearchSelect";
+import StudentMultiSelect from "./StudentMultiSelect";
 import { useTranslation } from "react-i18next";
 import AsyncBranchSelect from "@/components/common/AsyncBranchSelect";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import FormModalShell from "@/components/common/FormModalShell";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
+import { queryKeys } from "@/lib/queryKeys";
 
 interface Props {
     group?: Group | null;
@@ -36,33 +45,78 @@ export default function GroupFormModal({ group, onClose, role = "director" }: Pr
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!group;
-    const [isMounted, setIsMounted] = useState(false);
 
     const { activeCenter } = useActiveCenterStore();
 
+    const draftKey = isEdit ? `edit-group-${group!.id}-draft` : "group-form-draft";
+    const draft = getFormDraft<{
+        name: string; course: string; teacher: string; room: string; branch: string;
+        status: GroupStatus; start_date: string; end_date: string; lesson_days: number[];
+        lesson_start_time: string; lesson_end_time: string;
+    }>(draftKey);
+
     const [formData, setFormData] = useState({
-        name: group?.name ?? "",
-        course: group?.course ?? "",
-        teacher: group?.teacher ?? "",
-        room: group?.room ?? "",
-        branch: (group as any)?.branch ?? "",
-        status: (group?.status ?? "active") as GroupStatus,
-        start_date: group?.start_date ?? "",
-        end_date: group?.end_date ?? "",
-        lesson_days: parseLessonDays(group?.lesson_days) as number[],
-        lesson_start_time: toHHMM(group?.lesson_start_time),
-        lesson_end_time: toHHMM(group?.lesson_end_time),
+        name: draft?.name ?? (group?.name ?? ""),
+        course: draft?.course ?? (group?.course ?? ""),
+        teacher: draft?.teacher ?? (group?.teacher ?? ""),
+        room: draft?.room ?? (group?.room ?? ""),
+        branch: draft?.branch ?? ((group as any)?.branch ?? ""),
+        status: draft?.status ?? ((group?.status ?? "active") as GroupStatus),
+        start_date: draft?.start_date ?? (group?.start_date ?? ""),
+        end_date: draft?.end_date ?? (group?.end_date ?? ""),
+        lesson_days: draft?.lesson_days ?? (parseLessonDays(group?.lesson_days) as number[]),
+        lesson_start_time: draft?.lesson_start_time ?? toHHMM(group?.lesson_start_time),
+        lesson_end_time: draft?.lesson_end_time ?? toHHMM(group?.lesson_end_time),
     });
+
+    useFormDraftSave(draftKey, formData);
 
     const [isStatusOpen, setIsStatusOpen] = useState(false);
     const statusRef = useRef<HTMLDivElement>(null);
+    const [selectedStudents, setSelectedStudents] = useState<IStudent[]>([]);
+    const [studentsInitialized, setStudentsInitialized] = useState(false);
 
-    const { data: courses = [], isLoading: coursesLoading } = useCourseOptions(true, role);
-    const { data: teachers = [], isLoading: teachersLoading } = useTeacherOptions(true, role);
-    const { data: rooms = [], isLoading: roomsLoading } = useRoomOptions(true, role);
+    const selectedBranch = formData.branch || undefined;
+    const { data: courses = [], isLoading: coursesLoading } = useCourseOptions(true, role, selectedBranch);
+    const { data: teachers = [], isLoading: teachersLoading } = useTeacherOptions(true, role, selectedBranch);
+    const { data: rooms = [], isLoading: roomsLoading } = useRoomOptions(true, role, selectedBranch);
+    const { data: roomCapacities } = useRoomCapacities(role);
+
+    // Edit rejimida: group detail orqali mavjud studentlarni olish
+    const { data: groupDetail } = useGroupDetail(isEdit ? group?.id : undefined, role);
+
+    // Detail'da students: IStudent[] (to'liq ob'ektlar) bormi tekshirish
+    const detailStudents = (groupDetail as GroupDetail | undefined)?.students;
+    const detailHasObjects =
+        Array.isArray(detailStudents) && detailStudents.length > 0 && typeof detailStudents[0] === "object";
+
+    // Fallback: detail'da faqat uuid[] yoki students yo'q bo'lsa — group_id filter orqali olish
+    const needsFallback = isEdit && !!groupDetail && !detailHasObjects && !studentsInitialized;
+    const { data: groupStudents = [], isSuccess: groupStudentsLoaded } = useStudentsByGroup(
+        needsFallback ? group?.id : undefined,
+        role,
+        selectedBranch,
+    );
+
+    // Effect 1: detail'dan to'liq IStudent[] obyektlari kelsa
+    useEffect(() => {
+        if (!isEdit || studentsInitialized || !groupDetail) return;
+        if (detailHasObjects) {
+            setSelectedStudents(detailStudents as IStudent[]);
+            setStudentsInitialized(true);
+        }
+    }, [isEdit, groupDetail, detailHasObjects, detailStudents, studentsInitialized]);
+
+    // Effect 2: uuid[] yoki students yo'q bo'lsa — group_id filter natijasidan
+    useEffect(() => {
+        if (!isEdit || studentsInitialized || !needsFallback || !groupStudentsLoaded) return;
+        setSelectedStudents(groupStudents);
+        setStudentsInitialized(true);
+    }, [isEdit, needsFallback, groupStudents, groupStudentsLoaded, studentsInitialized]);
+
+    const currentRoomCapacity = formData.room ? roomCapacities?.[formData.room] : undefined;
 
     useEffect(() => {
-        setIsMounted(true);
         const onClick = (e: MouseEvent) => {
             if (statusRef.current && !statusRef.current.contains(e.target as Node)) setIsStatusOpen(false);
         };
@@ -80,6 +134,7 @@ export default function GroupFormModal({ group, onClose, role = "director" }: Pr
 
     const { mutate: saveGroup, isPending } = useMutation({
         mutationFn: async () => {
+            const studentIds = selectedStudents.map((s) => s.id);
             const payload: GroupPayload = {
                 name: formData.name,
                 course: formData.course,
@@ -93,6 +148,8 @@ export default function GroupFormModal({ group, onClose, role = "director" }: Pr
                 lesson_end_time: formData.lesson_end_time,
                 ...(activeCenter ? { center: activeCenter } : {}),
                 ...(formData.branch ? { branch: formData.branch } : {}),
+                // POST: always include. PATCH: include if students were initialized (pre-populated or edited)
+                ...((!isEdit || studentsInitialized) ? { students: studentIds } : {}),
             };
             const res = isEdit
                 ? await API.patch(`${role}/groups/${group!.id}/`, payload)
@@ -101,7 +158,8 @@ export default function GroupFormModal({ group, onClose, role = "director" }: Pr
         },
         onSuccess: () => {
             toast.success(t(isEdit ? "director.groups.toast.updated" : "director.groups.toast.created"));
-            queryClient.invalidateQueries({ queryKey: ["groups"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.groups.all });
+            clearFormDraft(draftKey);
             onClose();
         },
         onError: (err: any) => {
@@ -135,15 +193,7 @@ export default function GroupFormModal({ group, onClose, role = "director" }: Pr
     const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={onClose}
-            />
-
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
-            >
+        <FormModalShell onClose={onClose} maxWidth="max-w-2xl">
                 {/* Sticky close */}
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
@@ -311,6 +361,15 @@ export default function GroupFormModal({ group, onClose, role = "director" }: Pr
                         />
                     </div>
 
+                    {/* O'quvchilar */}
+                    <StudentMultiSelect
+                        selected={selectedStudents}
+                        onChange={setSelectedStudents}
+                        role={role}
+                        branchId={selectedBranch}
+                        roomCapacity={currentRoomCapacity}
+                    />
+
                     {/* Tugmalar */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle mt-6">
                         <button
@@ -330,7 +389,6 @@ export default function GroupFormModal({ group, onClose, role = "director" }: Pr
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

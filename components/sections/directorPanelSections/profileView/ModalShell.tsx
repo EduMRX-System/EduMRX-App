@@ -12,6 +12,7 @@ export default function ModalShell({
     children,
     footer,
     onClose,
+    closeOnBackdropClick = false,
 }: {
     icon: React.ReactNode;
     iconBg: string;
@@ -20,6 +21,7 @@ export default function ModalShell({
     children: React.ReactNode;
     footer?: React.ReactNode;
     onClose: () => void;
+    closeOnBackdropClick?: boolean;
 }) {
     useEffect(() => {
         const onEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -38,7 +40,7 @@ export default function ModalShell({
             {/* Backdrop — fixed, doesn't scroll with overlay */}
             <div
                 className="fixed inset-0 bg-overlay backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]"
-                onClick={onClose}
+                onClick={closeOnBackdropClick ? onClose : undefined}
             />
 
             {/* Centering wrapper — scrollable when keyboard opens */}

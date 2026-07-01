@@ -69,7 +69,6 @@ export default function ReasonPopover({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         className={`fixed inset-0 bg-overlay/60 backdrop-blur-[2px] transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`}
-        onClick={onClose}
       />
       <div
         ref={ref}

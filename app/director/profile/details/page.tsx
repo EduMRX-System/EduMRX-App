@@ -1,5 +1,3 @@
-export default function page() {
-  return (
-    <div>page</div>
-  )
-}
+import DirectorDetailsView from "@/views/director/DirectorDetailsView";
+
+export default function Page() { return <DirectorDetailsView />; }

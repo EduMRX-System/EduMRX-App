@@ -105,12 +105,19 @@ function convertCurrency(
 }
 
 // ── Component ─────────────────────────────────────────────────────
-export default function QuickToolsPopover() {
+interface QToolsProps {
+  externalOpen?: boolean;
+  onExternalClose?: () => void;
+}
+
+export default function QuickToolsPopover({ externalOpen, onExternalClose }: QToolsProps = {}) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const userRole = user?.role ?? "guest";
 
-  const [isOpen, setIsOpen] = useState(false);
+  const isControlled = externalOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = isControlled ? externalOpen! : internalOpen;
   const [tab, setTab]       = useState<QTab>("notes");
 
   // ── Notes ────────────────────────────────────────────────────
@@ -245,28 +252,35 @@ export default function QuickToolsPopover() {
     "outline-none focus:border-primary dark:focus:border-primary " +
     "focus:ring-2 focus:ring-primary-ring/50 transition-colors cursor-pointer";
 
+  const handleClose = () => {
+    if (isControlled) onExternalClose?.();
+    else setInternalOpen(false);
+  };
+
   // ── Render ────────────────────────────────────────────────────
   return (
     <>
-      {/* Trigger button */}
-      <button
-        onClick={() => setIsOpen((o) => !o)}
-        aria-label={t("director.tools.quick_tools")}
-        className={`relative w-9 h-9 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${
-          isOpen
-            ? "bg-hover text-foreground"
-            : "text-foreground-muted hover:bg-hover hover:text-foreground dark:hover:text-white"
-        }`}
-      >
-        <StickyNote className="w-5 h-5" />
-        {pendingCount > 0 && (
-          <span className="absolute top-1 right-1 min-w-[14px] h-3.5 px-0.5 rounded-full bg-primary text-primary-fg text-[9px] font-bold flex items-center justify-center border-2 border-surface">
-            {pendingCount > 9 ? "9+" : pendingCount}
-          </span>
-        )}
-      </button>
+      {/* Trigger button — hidden when controlled externally */}
+      {!isControlled && (
+        <button
+          onClick={() => setInternalOpen((o) => !o)}
+          aria-label={t("director.tools.quick_tools")}
+          className={`relative w-9 h-9 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${
+            isOpen
+              ? "bg-hover text-foreground"
+              : "text-foreground-muted hover:bg-hover hover:text-foreground dark:hover:text-white"
+          }`}
+        >
+          <StickyNote className="w-5 h-5" />
+          {pendingCount > 0 && (
+            <span className="absolute top-1 right-1 min-w-[14px] h-3.5 px-0.5 rounded-full bg-primary text-primary-fg text-[9px] font-bold flex items-center justify-center border-2 border-surface">
+              {pendingCount > 9 ? "9+" : pendingCount}
+            </span>
+          )}
+        </button>
+      )}
 
-      <RightDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} title={t("director.tools.quick_tools")}>
+      <RightDrawer isOpen={isOpen} onClose={handleClose} title={t("director.tools.quick_tools")}>
         {/* Tab bar */}
         <div className="flex items-center border-b border-border-subtle shrink-0 px-1 gap-0.5">
           {TABS.map(({ id, icon, label }) => (

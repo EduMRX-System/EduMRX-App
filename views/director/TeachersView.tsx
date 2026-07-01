@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Plus, Search, GraduationCap, ChevronLeft, ChevronRight, Loader2, AlertCircle } from "lucide-react";
 import { useTeachers } from "@/hooks/useTeachers";
 import type { ITeacher } from "@/types/teacher";
 import TeacherFormModal from "@/components/sections/directorPanelSections/teachersView/TeacherFormModal";
 import DeleteTeacherModal from "@/components/sections/directorPanelSections/teachersView/DeleteTeacherModal";
-import TeacherRow from "@/components/sections/directorPanelSections/teachersView/TeacherRow";
+import TeacherRow, { TeacherRowSkeleton } from "@/components/sections/directorPanelSections/teachersView/TeacherRow";
 import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 10;
@@ -71,12 +72,9 @@ export default function TeachersView({ role = "director" }: Props) {
                         </thead>
                         <tbody className="divide-y divide-border-subtle dark:divide-border">
                             {isLoading ? (
-                                <tr>
-                                    <td colSpan={5} className="py-16 text-center">
-                                        <Loader2 className="mx-auto h-7 w-7 animate-spin text-primary" />
-                                        <p className="mt-3 text-sm text-foreground-muted">{t("common.loading")}</p>
-                                    </td>
-                                </tr>
+                                Array.from({ length: PAGE_SIZE }).map((_, i) => (
+                                    <TeacherRowSkeleton key={i} />
+                                ))
                             ) : isError ? (
                                 <tr>
                                     <td colSpan={5} className="py-12 text-center">
@@ -129,9 +127,11 @@ export default function TeachersView({ role = "director" }: Props) {
             </div>
 
             {/* Modals */}
-            {addOpen && <TeacherFormModal onClose={() => setAddOpen(false)} role={role} />}
-            {editing && <TeacherFormModal teacher={editing} onClose={() => setEditing(null)} role={role} />}
-            {deleting && <DeleteTeacherModal teacher={deleting} onClose={() => setDeleting(null)} role={role} />}
+            <AnimatePresence>
+                {addOpen && <TeacherFormModal key="add" onClose={() => setAddOpen(false)} role={role} />}
+                {editing && <TeacherFormModal key="edit" teacher={editing} onClose={() => setEditing(null)} role={role} />}
+                {deleting && <DeleteTeacherModal key="delete" teacher={deleting} onClose={() => setDeleting(null)} role={role} />}
+            </AnimatePresence>
         </div>
     );
 }

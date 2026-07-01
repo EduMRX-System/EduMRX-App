@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Plus, Search, DoorOpen, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { Room } from "@/types/room";
 import { useRooms } from "@/hooks/useRooms";
@@ -118,9 +119,11 @@ export default function RoomsView({ role = "director" }: Props) {
             </div>
 
             {/* Modals */}
-            {addOpen && <RoomFormModal onClose={() => setAddOpen(false)} role={role} />}
-            {editing && <RoomFormModal room={editing} onClose={() => setEditing(null)} role={role} />}
-            {deleting && <DeleteRoomModal room={deleting} onClose={() => setDeleting(null)} role={role} />}
+            <AnimatePresence>
+                {addOpen && <RoomFormModal key="add" onClose={() => setAddOpen(false)} role={role} />}
+                {editing && <RoomFormModal key="edit" room={editing} onClose={() => setEditing(null)} role={role} />}
+                {deleting && <DeleteRoomModal key="delete" room={deleting} onClose={() => setDeleting(null)} role={role} />}
+            </AnimatePresence>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -20,6 +20,8 @@ import {
     Sun,
     Moon,
     ArrowLeft,
+    Loader2,
+    Check,
 } from "lucide-react";
 
 import { getUrlForRole, getCookieOptions } from "@/utils/redirect";
@@ -53,6 +55,17 @@ export default function StudentLoginView({ onBack }: Props) {
     const { login } = useAuthStore();
 
     const [role, setRole] = useState<StudentRole>("student_user");
+    const [rememberMe, setRememberMe] = useState(false);
+
+    useEffect(() => {
+        setRememberMe(localStorage.getItem("rememberMe") === "true");
+    }, []);
+
+    const toggleRememberMe = () => {
+        const next = !rememberMe;
+        setRememberMe(next);
+        localStorage.setItem("rememberMe", String(next));
+    };
 
     const schema = useMemo(() =>
         yup.object({
@@ -310,7 +323,25 @@ export default function StudentLoginView({ onBack }: Props) {
                             <PasswordInput register={register("password")} error={errors.password?.message} />
                         </div>
 
-                        <div className="text-right">
+                        <div className="flex items-center justify-between">
+                            <label className="flex items-center gap-2 cursor-pointer select-none group">
+                                <button
+                                    type="button"
+                                    role="checkbox"
+                                    aria-checked={rememberMe}
+                                    onClick={toggleRememberMe}
+                                    className={`w-[18px] h-[18px] rounded-md border flex items-center justify-center transition-colors ${rememberMe
+                                        ? "bg-primary border-primary"
+                                        : "border-border bg-surface group-hover:border-primary/50"
+                                        }`}
+                                >
+                                    {rememberMe && <Check className="w-3 h-3 text-primary-fg" strokeWidth={3} />}
+                                </button>
+                                <span className="text-xs font-semibold text-foreground-muted group-hover:text-foreground transition-colors">
+                                    {t("auth.common.remember_me")}
+                                </span>
+                            </label>
+
                             <button type="button" className="text-xs font-bold text-primary hover:text-primary-hover transition-colors">
                                 {t("auth.common.forgot_password")}
                             </button>
@@ -324,7 +355,7 @@ export default function StudentLoginView({ onBack }: Props) {
                             className="w-full h-12 bg-primary hover:bg-primary-hover text-primary-fg font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/30 disabled:opacity-60"
                         >
                             {isPending ? (
-                                <div className="w-4 h-4 rounded-full border-2 border-primary-fg/30 border-t-primary-fg animate-spin" />
+                                <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
                                 <>
                                     <Sparkles className="w-4 h-4" />

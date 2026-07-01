@@ -8,6 +8,9 @@ import { toast } from "react-toastify";
 import { STATUS_OPTIONS, type Course, type CourseStatus, type CoursePayload } from "@/types/course";
 import { useTranslation } from "react-i18next";
 import MoneyInput from "@/components/ui/MoneyInput";
+import FormModalShell from "@/components/common/FormModalShell";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
+import { queryKeys } from "@/lib/queryKeys";
 
 interface Props {
     course?: Course | null;
@@ -19,21 +22,26 @@ export default function CourseFormModal({ course, onClose, role = "director" }: 
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!course;
-    const [isMounted, setIsMounted] = useState(false);
+
+    const draftKey = isEdit ? `edit-course-${course!.id}-draft` : "course-form-draft";
+    const draft = getFormDraft<{
+        name: string; description: string; duration_months: string; price: string | number; status: CourseStatus;
+    }>(draftKey);
 
     const [formData, setFormData] = useState({
-        name: course?.name ?? "",
-        description: course?.description ?? "",
-        duration_months: course?.duration_months ? String(course.duration_months) : "",
-        price: course?.price ?? "",
-        status: (course?.status ?? "active") as CourseStatus,
+        name: draft?.name ?? (course?.name ?? ""),
+        description: draft?.description ?? (course?.description ?? ""),
+        duration_months: draft?.duration_months ?? (course?.duration_months ? String(course.duration_months) : ""),
+        price: draft?.price ?? (course?.price ?? ""),
+        status: draft?.status ?? ((course?.status ?? "active") as CourseStatus),
     });
+
+    useFormDraftSave(draftKey, formData);
 
     const [isStatusOpen, setIsStatusOpen] = useState(false);
     const statusRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setIsMounted(true);
         const onClick = (e: MouseEvent) => {
             if (statusRef.current && !statusRef.current.contains(e.target as Node)) setIsStatusOpen(false);
         };
@@ -57,7 +65,8 @@ export default function CourseFormModal({ course, onClose, role = "director" }: 
         },
         onSuccess: () => {
             toast.success(t(isEdit ? "director.courses.toast.updated" : "director.courses.toast.created"));
-            queryClient.invalidateQueries({ queryKey: ["courses"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.courses.all });
+            clearFormDraft(draftKey);
             onClose();
         },
         onError: (err: any) => {
@@ -88,15 +97,7 @@ export default function CourseFormModal({ course, onClose, role = "director" }: 
     const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={onClose}
-            />
-
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
-            >
+        <FormModalShell onClose={onClose} maxWidth="max-w-xl">
                 {/* Sticky close */}
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
@@ -223,7 +224,6 @@ export default function CourseFormModal({ course, onClose, role = "director" }: 
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

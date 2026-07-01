@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { X, Loader2, CalendarDays } from "lucide-react";
@@ -11,6 +11,9 @@ import { useGroupOptions } from "@/hooks/useLessons";
 import { toHHMM, type Lesson, type LessonPayload } from "@/types/lesson";
 import SearchSelect from "@/components/ui/SearchSelect";
 import { useTranslation } from "react-i18next";
+import FormModalShell from "@/components/common/FormModalShell";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
+import { queryKeys } from "@/lib/queryKeys";
 
 interface Props {
     lesson?: Lesson | null;
@@ -22,20 +25,24 @@ export default function LessonFormModal({ lesson, onClose, role = "director" }: 
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!lesson;
-    const [isMounted, setIsMounted] = useState(false);
+
+    const draftKey = isEdit ? `edit-lesson-${lesson!.id}-draft` : "lesson-form-draft";
+    const draft = getFormDraft<{
+        group: string; date: string; start_time: string; end_time: string; topic: string; notes: string;
+    }>(draftKey);
 
     const [formData, setFormData] = useState({
-        group: lesson?.group ?? "",
-        date: lesson?.date ?? new Date().toISOString().split("T")[0],
-        start_time: toHHMM(lesson?.start_time),
-        end_time: toHHMM(lesson?.end_time),
-        topic: lesson?.topic ?? "",
-        notes: lesson?.notes ?? "",
+        group: draft?.group ?? (lesson?.group ?? ""),
+        date: draft?.date ?? (lesson?.date ?? new Date().toISOString().split("T")[0]),
+        start_time: draft?.start_time ?? toHHMM(lesson?.start_time),
+        end_time: draft?.end_time ?? toHHMM(lesson?.end_time),
+        topic: draft?.topic ?? (lesson?.topic ?? ""),
+        notes: draft?.notes ?? (lesson?.notes ?? ""),
     });
 
-    const { data: groups = [], isLoading: groupsLoading } = useGroupOptions(role);
+    useFormDraftSave(draftKey, formData);
 
-    useEffect(() => { setIsMounted(true); }, []);
+    const { data: groups = [], isLoading: groupsLoading } = useGroupOptions(role);
 
     const { mutate: saveLesson, isPending } = useMutation({
         mutationFn: async () => {
@@ -53,7 +60,8 @@ export default function LessonFormModal({ lesson, onClose, role = "director" }: 
         },
         onSuccess: () => {
             toast.success(t(isEdit ? "director.lessons.toast.updated" : "director.lessons.toast.created"));
-            queryClient.invalidateQueries({ queryKey: ["lessons"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.lessons.all });
+            clearFormDraft(draftKey);
             onClose();
         },
         onError: (err: any) => {
@@ -82,15 +90,7 @@ export default function LessonFormModal({ lesson, onClose, role = "director" }: 
     const labelCls = "text-[14px] text-foreground-muted mb-1 block font-semibold";
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={onClose}
-            />
-
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
-            >
+        <FormModalShell onClose={onClose} maxWidth="max-w-xl">
                 <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
                     <button
                         type="button"
@@ -183,7 +183,6 @@ export default function LessonFormModal({ lesson, onClose, role = "director" }: 
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+        </FormModalShell>
     );
 }

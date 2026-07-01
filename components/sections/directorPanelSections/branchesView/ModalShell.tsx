@@ -9,6 +9,7 @@ interface Props {
   onClose: () => void;
   children: React.ReactNode;
   maxWidth?: string;
+  closeOnBackdropClick?: boolean;
 }
 
 export default function ModalShell({
@@ -17,6 +18,7 @@ export default function ModalShell({
   onClose,
   children,
   maxWidth = "max-w-lg",
+  closeOnBackdropClick = false,
 }: Props) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -33,7 +35,7 @@ export default function ModalShell({
       {/* Backdrop — fixed so it doesn't scroll with content */}
       <div
         className="fixed inset-0 bg-overlay backdrop-blur-sm"
-        onClick={onClose}
+        onClick={closeOnBackdropClick ? onClose : undefined}
       />
       {/* Centering wrapper — min-h-full keeps it scrollable when keyboard opens */}
       <div className="flex min-h-full items-end sm:items-center justify-center p-0 sm:p-4">

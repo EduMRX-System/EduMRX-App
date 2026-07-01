@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { IExpenseCategory } from "@/types/expense";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 const CAT_URL = "/expense-categories/";
 
@@ -16,7 +17,7 @@ export function useExpenseCategories() {
   const activeCenter = useActiveCenterStore((s) => s.activeCenter);
 
   return useQuery<CategoriesResult>({
-    queryKey: ["expense-categories", activeCenter],
+    queryKey: queryKeys.expenses.categories(activeCenter),
     queryFn: async () => {
       const res = await API.get(CAT_URL, {
         params: { center_id: activeCenter || undefined, page_size: 100 },
@@ -39,7 +40,7 @@ export function useCreateExpenseCategory() {
   return useMutation({
     mutationFn: (payload: { name: string; icon?: string }) =>
       API.post(CAT_URL, payload).then((r) => r.data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["expense-categories"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.expenses.categoriesAll }),
   });
 }
 
@@ -48,7 +49,7 @@ export function useUpdateExpenseCategory() {
   return useMutation({
     mutationFn: ({ id, ...payload }: { id: string; name: string; icon?: string }) =>
       API.patch(`${CAT_URL}${id}/`, payload).then((r) => r.data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["expense-categories"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.expenses.categoriesAll }),
   });
 }
 
@@ -56,6 +57,6 @@ export function useDeleteExpenseCategory() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => API.delete(`${CAT_URL}${id}/`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["expense-categories"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.expenses.categoriesAll }),
   });
 }

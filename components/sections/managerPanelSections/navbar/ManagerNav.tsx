@@ -4,8 +4,9 @@ import { Fragment, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "framer-motion";
 import { useUIStore } from "@/store/useUIStore";
 import { LogoIcons } from "@/constants/icons";
 import {
@@ -40,65 +41,119 @@ export default function ManagerNav({ onNavigate }: NavProps) {
     setOpen((prev) => (prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]));
 
   return (
-    <aside
-      className={`h-full flex flex-col bg-surface border-r border-border transition-all duration-300 ${
-        collapsed ? "w-20" : "w-64"
-      }`}
+    <motion.aside
+      initial={false}
+      animate={{ width: collapsed ? 80 : 256 }}
+      transition={{ type: "spring", stiffness: 300, damping: 35 }}
+      className="h-full flex flex-col bg-surface border-r border-border overflow-hidden"
     >
+      {/* HEADER */}
       <div
-        className={`flex items-center shrink-0 transition-all duration-300 ${
+        className={`flex items-center shrink-0 ${
           collapsed ? "px-3 py-6 justify-center" : "p-6 justify-between gap-3"
         }`}
       >
-        {!collapsed && (
-          <div className="flex items-center gap-3 overflow-hidden">
-            <Image
-              src={theme === "dark" ? LogoIcons.logoDark : LogoIcons.logo}
-              alt="EduMRX Logo"
-              priority
-            />
-          </div>
-        )}
+        <AnimatePresence initial={false}>
+          {!collapsed && (
+            <motion.div
+              key="logo"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="flex items-center gap-3 overflow-hidden"
+            >
+              <Image
+                src={theme === "dark" ? LogoIcons.logoDark : LogoIcons.logo}
+                alt="EduMRX Logo"
+                priority
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <button
           onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
-          className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-border text-foreground-muted hover:bg-hover dark:hover:bg-surface-raised hover:text-foreground transition-all duration-200 cursor-pointer shrink-0"
+          className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg border border-border text-foreground-muted hover:bg-hover dark:hover:bg-surface-raised hover:text-foreground transition-colors duration-200 cursor-pointer shrink-0"
           title={collapsed ? t("manager.nav.expand") : t("manager.nav.collapse")}
         >
-          {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+          <motion.div
+            animate={{ rotate: collapsed ? 0 : 180 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </motion.div>
         </button>
       </div>
 
+      {/* NAV BODY */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden pb-4">
-        {collapsed
-          ? managerMenu.map((entry, i) =>
-              isGroup(entry) ? (
-                <Fragment key={entry.title}>
-                  {i > 0 && <div className="my-2 mx-3 border-t border-border-subtle" />}
-                  {entry.children.map((c) => (
-                    <NavItemLink key={c.href} item={c} active={isActive(c.href)} collapsed onNavigate={onNavigate} />
-                  ))}
-                </Fragment>
-              ) : (
-                <NavItemLink key={entry.href} item={entry} active={isActive(entry.href)} collapsed onNavigate={onNavigate} />
-              )
-            )
-          : managerMenu.map((entry) =>
-              isGroup(entry) ? (
-                <GroupItem
-                  key={entry.title}
-                  group={entry}
-                  open={open.includes(entry.title)}
-                  onToggle={() => toggle(entry.title)}
-                  isActive={isActive}
-                  onNavigate={onNavigate}
-                />
-              ) : (
-                <NavItemLink key={entry.href} item={entry} active={isActive(entry.href)} onNavigate={onNavigate} />
-              )
-            )}
+        <AnimatePresence mode="wait" initial={false}>
+          {collapsed ? (
+            <motion.div
+              key="collapsed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.12 }}
+            >
+              {managerMenu.map((entry, i) =>
+                isGroup(entry) ? (
+                  <Fragment key={entry.title}>
+                    {i > 0 && <div className="my-2 mx-3 border-t border-border-subtle" />}
+                    {entry.children.map((c) => (
+                      <NavItemLink
+                        key={c.href}
+                        item={c}
+                        active={isActive(c.href)}
+                        collapsed
+                        onNavigate={onNavigate}
+                      />
+                    ))}
+                  </Fragment>
+                ) : (
+                  <NavItemLink
+                    key={entry.href}
+                    item={entry}
+                    active={isActive(entry.href)}
+                    collapsed
+                    onNavigate={onNavigate}
+                  />
+                )
+              )}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="expanded"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.12 }}
+            >
+              {managerMenu.map((entry) =>
+                isGroup(entry) ? (
+                  <GroupItem
+                    key={entry.title}
+                    group={entry}
+                    open={open.includes(entry.title)}
+                    onToggle={() => toggle(entry.title)}
+                    isActive={isActive}
+                    onNavigate={onNavigate}
+                  />
+                ) : (
+                  <NavItemLink
+                    key={entry.href}
+                    item={entry}
+                    active={isActive(entry.href)}
+                    onNavigate={onNavigate}
+                  />
+                )
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
-    </aside>
+    </motion.aside>
   );
 }
 
@@ -124,7 +179,7 @@ function NavItemLink({
       title={collapsed ? t(item.title) : undefined}
       className={`
         group relative flex items-center rounded-xl
-        transition-all duration-200 font-medium mb-1
+        transition-colors duration-200 font-medium mb-1
         ${nested ? "text-[13px]" : "text-sm"}
         ${collapsed ? "mx-2 px-0 py-3 justify-center" : nested ? "mx-3 pl-11 pr-4 py-2.5 gap-3" : "mx-3 px-4 py-3 gap-4"}
         ${
@@ -134,12 +189,14 @@ function NavItemLink({
         }
       `}
     >
-      <Icon className={`${nested ? "w-[18px] h-[18px]" : "w-5 h-5"} shrink-0 ${active ? "" : "opacity-70 group-hover:opacity-100"}`} />
+      <Icon
+        className={`${nested ? "w-[18px] h-[18px]" : "w-5 h-5"} shrink-0 ${
+          active ? "" : "opacity-70 group-hover:opacity-100"
+        }`}
+      />
 
       {!collapsed && (
-        <span className="whitespace-nowrap overflow-hidden transition-all duration-300 w-auto opacity-100">
-          {t(item.title)}
-        </span>
+        <span className="whitespace-nowrap overflow-hidden">{t(item.title)}</span>
       )}
 
       {collapsed && (
@@ -176,7 +233,7 @@ function GroupItem({
         onClick={onToggle}
         className={`
           group relative flex items-center rounded-xl
-          transition-all w-[90%] duration-200 text-sm font-medium mx-3 px-4 py-3 gap-4
+          transition-colors w-[90%] duration-200 text-sm font-medium mx-3 px-4 py-3 gap-4
           ${
             hasActiveChild && !open
               ? "text-primary"
@@ -186,14 +243,28 @@ function GroupItem({
       >
         <Icon className="w-5 h-5 shrink-0 opacity-70 group-hover:opacity-100" />
         <span className="flex-1 text-left whitespace-nowrap">{t(group.title)}</span>
-        <ChevronDown className={`w-4 h-4 shrink-0 text-foreground-subtle transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown
+          className={`w-4 h-4 shrink-0 text-foreground-subtle transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
       </button>
 
-      <div className={`grid transition-[grid-template-rows] duration-200 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+      <div
+        className={`grid transition-[grid-template-rows] duration-200 ease-out ${
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
         <div className="overflow-hidden">
           <div className="mt-1">
             {group.children.map((c) => (
-              <NavItemLink key={c.href} item={c} active={isActive(c.href)} nested onNavigate={onNavigate} />
+              <NavItemLink
+                key={c.href}
+                item={c}
+                active={isActive(c.href)}
+                nested
+                onNavigate={onNavigate}
+              />
             ))}
           </div>
         </div>

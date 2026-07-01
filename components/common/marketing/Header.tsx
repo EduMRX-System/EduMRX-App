@@ -163,7 +163,8 @@ export default function Header() {
                             {mounted && (
                                 <button
                                     onClick={() => setTheme(theme == "dark" ? "light" : "dark")}
-                                    className="p-2 rounded-lg text-foreground-muted hover:bg-hover transition-colors"
+                                    className="relative w-8 h-8 flex items-center justify-center rounded-lg text-foreground-muted hover:bg-hover transition-colors"
+                                    aria-label="Toggle dark mode"
                                 >
                                     <AnimatePresence mode="wait">
                                         <motion.div
@@ -172,6 +173,7 @@ export default function Header() {
                                             animate={{ rotate: 0, opacity: 1 }}
                                             exit={{ rotate: 90, opacity: 0 }}
                                             transition={{ duration: 0.2 }}
+                                            className="absolute inset-0 flex items-center justify-center"
                                         >
                                             {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                                         </motion.div>

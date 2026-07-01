@@ -464,7 +464,8 @@
       "calendar_desc": "Oylik ko'rinish",
       "select_desc": "Kun / Oy / Yil",
       "text_desc": "Qo'lda yozish"
-    }
+    },
+    "all": "Barchasi"
   },
   "auth": {
     "common": {
@@ -473,6 +474,7 @@
       "phone_label": "Telefon raqami",
       "password_label": "Parol",
       "forgot_password": "Parolni unutdingizmi?",
+      "remember_me": "Meni eslab qol",
       "submit": "Tizimga kirish",
       "legal_prefix": "Tizimga kirish orqali siz bizning",
       "legal_terms": "shartlar",
@@ -579,6 +581,7 @@
   "director": {
     "nav": {
       "dashboard": "Dashboard",
+      "board": "Doska",
       "learning": "O'quv",
       "students": "O'quvchilar",
       "teachers": "O'qituvchilar",
@@ -602,6 +605,12 @@
       "collapse": "Yig'ish",
       "expand": "Yoyish",
       "my_centers": "Mening markazlarim"
+    },
+    "board": {
+      "load_error": "Doska ochilmadi. Internet aloqasini tekshirib, qayta urinib ko'ring.",
+      "retry": "Qayta urinish",
+      "fullscreen_enter": "To'liq ekran",
+      "fullscreen_exit": "To'liq ekrandan chiqish"
     },
     "dashboard": {
       "title": "Xush kelibsiz 👋",
@@ -694,6 +703,9 @@
         "title_add": "Yangi menejer qo'shish",
         "title_edit": "Menejerni tahrirlash",
         "branch_placeholder": "Filialni tanlang...",
+        "sex_label": "Jinsi *",
+        "sex_male": "Erkak",
+        "sex_female": "Ayol",
         "password_label": "Parol",
         "password_label_edit": "Parol (o'zgartirish uchun)",
         "password_placeholder_edit": "Bo'sh qoldirsangiz o'zgarmaydi",
@@ -885,6 +897,28 @@
         "error_time": "Dars vaqtini kiriting",
         "error_generic": "Xatolik yuz berdi",
         "delete_error": "O'chirishda xatolik yuz berdi"
+      },
+      "filter": {
+        "odd_days": "Toq kunlar",
+        "even_days": "Juft kunlar"
+      },
+      "card": {
+        "no_teacher": "O'qituvchi belgilanmagan",
+        "no_room": "Xona belgilanmagan",
+        "students": "ta o'quvchi"
+      },
+      "view": {
+        "grid": "Katak ko'rinish",
+        "list": "Ro'yxat ko'rinish"
+      },
+      "students": {
+        "label": "O'quvchilar (ixtiyoriy)",
+        "search_placeholder": "Ism yoki telefon bo'yicha qidirish...",
+        "type_to_search": "Qidirish uchun harf kiriting",
+        "not_found": "O'quvchi topilmadi",
+        "over_capacity": "Xona sig'imi: {{capacity}}, tanlandi: {{selected}} — {{over}} ta ortiqcha",
+        "count_suffix": "ta",
+        "selected_count": "{{count}} ta tanlandi"
       }
     },
     "lessons": {
@@ -955,6 +989,9 @@
         "title_add": "Yangi o'qituvchi qo'shish",
         "title_edit": "O'qituvchini tahrirlash",
         "branch_placeholder": "Filialni tanlang...",
+        "sex_label": "Jinsi *",
+        "sex_male": "Erkak",
+        "sex_female": "Ayol",
         "dob_label": "Tug'ilgan sana *",
         "specialization_label": "Mutaxassislik *",
         "experience_label": "Tajriba (yil) *",
@@ -994,6 +1031,10 @@
         "title_add": "Yangi talaba qo'shish",
         "title_edit": "Talabani tahrirlash",
         "branch_placeholder": "Filialni tanlang...",
+        "sex_label": "Jinsi *",
+        "sex_male": "Erkak",
+        "sex_female": "Ayol",
+        "parent_phone_label": "Ota-ona telefon raqami *",
         "dob_label": "Tug'ilgan sana *",
         "note_label": "Izoh (ixtiyoriy)",
         "note_placeholder": "Talaba haqida qo'shimcha...",
@@ -1293,6 +1334,28 @@
         "modal_title": "Sana kiritish usuli",
         "modal_desc": "Sana tanlaganda qaysi usul ochilishini tanlang"
       },
+      "datepickerVariant": {
+        "title": "Sana oynasi ko'rinishi",
+        "desc": "Sana tanlash oynasi qanday ochilishini tanlang",
+        "modal_title": "Sana oynasi ko'rinishi",
+        "modal_desc": "Calendar bosilganda oyna qanday ochilishini tanlang",
+        "anchor": "Standart",
+        "anchor_desc": "Maydon yonida",
+        "center": "Markazda",
+        "center_desc": "Modal oyna",
+        "right": "O'ngdan",
+        "right_desc": "Drawer panel"
+      },
+      "modalVariant": {
+        "title": "Modal ko'rinishi",
+        "desc": "Forma oynalari qanday ochilishini tanlang",
+        "modal_title": "Modal ko'rinishi",
+        "modal_desc": "Qo'shish/tahrirlash oynalari qanday ochilishini tanlang",
+        "center": "Markazda",
+        "center_desc": "Modal oyna",
+        "right": "O'ngdan",
+        "right_desc": "Drawer panel"
+      },
       "language": {
         "title": "Til",
         "desc": "Interfeys tilini tanlang",
@@ -1326,6 +1389,42 @@
         "page_subtitle": "Filiallarimiz Dushanbadan-Shanbagacha, 9:00 dan 20:00 gacha ishlaydi",
         "map_placeholder": "Xarita",
         "map_coming_soon": "Yandex Maps tez orada ulanadi"
+      },
+      "center": {
+        "title": "Markaz ma'lumotlari",
+        "desc": "Markaz nomi, aloqa va manzil ma'lumotlarini tahrirlang",
+        "logo_upload": "Logo yuklash",
+        "name_label": "Markaz nomi",
+        "address_label": "Manzil",
+        "map_title": "Joylashuv",
+        "kpi": {
+          "students": "O'quvchilar",
+          "teachers": "O'qituvchilar",
+          "managers": "Menejerlar",
+          "branches": "Filiallar",
+          "groups": "Guruhlar"
+        },
+        "readonly_title": "Faqat ko'rish uchun",
+        "slug_label": "Slug",
+        "status_label": "Holat",
+        "plan_label": "Tarif",
+        "director_label": "Direktor",
+        "students_count_label": "O'quvchilar soni",
+        "subscription_label": "Obuna tugash sanasi",
+        "toast": {
+          "updated": "Markaz ma'lumotlari saqlandi",
+          "error": "Saqlashda xatolik yuz berdi"
+        }
+      },
+      "details": {
+        "title": "Shaxsiy ma'lumotlar",
+        "avatar_upload": "Rasm yuklash",
+        "first_name_label": "Ism",
+        "last_name_label": "Familiya",
+        "toast": {
+          "updated": "Ma'lumotlar saqlandi",
+          "error": "Saqlashda xatolik yuz berdi"
+        }
       },
       "logout": {
         "title": "Chiqish",
@@ -1509,7 +1608,23 @@
   "header": {
     "page": "Sahifa",
     "user_name": "Foydalanuvchi",
-    "admin": "Admin"
+    "admin": "Admin",
+    "hide_sidebar": "Yon panelni yashirish",
+    "show_sidebar": "Yon panelni ko'rsatish",
+    "search": {
+      "placeholder": "Ism yoki telefon raqami...",
+      "type_hint": "Qidirish uchun yozing",
+      "not_found": "Natija topilmadi",
+      "title": "O'quvchi qidirish"
+    },
+    "profile_menu": {
+      "profile": "Profil",
+      "dashboard": "Bosh sahifa",
+      "settings": "Sozlamalar",
+      "logout": "Chiqish",
+      "dark_mode": "Tungi rejim",
+      "theme": "Rang"
+    }
   },
   "notifications": {
     "title": "Bildirishnomalar"

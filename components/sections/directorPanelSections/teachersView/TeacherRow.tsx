@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Phone, Mail, Briefcase, Star, Wallet, Edit3, Trash2 } from "lucide-react";
 import { formatPhoneView, type ITeacher } from "@/types/teacher";
 import { useTranslation } from "react-i18next";
+import Skeleton from "@/components/common/Skeleton";
 
 function formatSalary(salary?: string): string {
     if (!salary) return "—";
@@ -20,9 +21,11 @@ interface Props {
 
 export default function TeacherRow({ teacher, onEdit, onDelete }: Props) {
     const { t } = useTranslation();
-    // GET'da user nested; eski flat shaklni ham qo'llaymiz
     const u = teacher.user ?? (teacher as any);
     const initial = (u.full_name || "N").charAt(0).toUpperCase();
+
+    console.log(u);
+    
 
     return (
         <tr className="transition-colors hover:bg-hover/50">
@@ -37,7 +40,7 @@ export default function TeacherRow({ teacher, onEdit, onDelete }: Props) {
                         )}
                     </div>
                     <div className="min-w-0">
-                        <div className="font-semibold text-foreground leading-tight">{u.full_name}</div>
+                        <div className="font-semibold text-foreground leading-tight">{u?.first_name} {u?.last_name}</div>
                         <div className="text-[11px] text-foreground-subtle mt-0.5">ID: {teacher.id.slice(0, 8)}</div>
                     </div>
                 </div>
@@ -96,6 +99,53 @@ export default function TeacherRow({ teacher, onEdit, onDelete }: Props) {
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>
+                </div>
+            </td>
+        </tr>
+    );
+}
+
+/* ─── Skeleton qatori (jadval ustunlariga mos) ─── */
+export function TeacherRowSkeleton() {
+    return (
+        <tr>
+            {/* Teacher */}
+            <td className="py-4 px-5">
+                <div className="flex items-center gap-3">
+                    <Skeleton variant="circle" className="w-10 h-10" />
+                    <div className="min-w-0 space-y-1.5">
+                        <Skeleton variant="text" className="w-32" />
+                        <Skeleton variant="text" className="w-16 h-2.5" />
+                    </div>
+                </div>
+            </td>
+
+            {/* Contact */}
+            <td className="py-4 px-5">
+                <div className="space-y-1.5">
+                    <Skeleton variant="text" className="w-28" />
+                    <Skeleton variant="text" className="w-36" />
+                </div>
+            </td>
+
+            {/* Specialization / Experience */}
+            <td className="py-4 px-5">
+                <div className="space-y-1.5">
+                    <Skeleton variant="text" className="w-24" />
+                    <Skeleton variant="text" className="w-20" />
+                </div>
+            </td>
+
+            {/* Maosh */}
+            <td className="py-4 px-5">
+                <Skeleton variant="text" className="w-24" />
+            </td>
+
+            {/* Actions */}
+            <td className="py-4 px-5">
+                <div className="flex items-center justify-end gap-2">
+                    <Skeleton variant="block" className="w-8 h-8 rounded-lg" />
+                    <Skeleton variant="block" className="w-8 h-8 rounded-lg" />
                 </div>
             </td>
         </tr>

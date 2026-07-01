@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, CSSProperties } from "react";
 import { Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -83,6 +83,9 @@ function ScrollCol({
   );
 }
 
+const POPUP_WIDTH = 220;
+const POPUP_HEIGHT = 320; // approximate max height
+
 export default function TimePicker({
   value,
   onChange,
@@ -98,7 +101,10 @@ export default function TimePicker({
   const [selH, setSelH] = useState(parsed?.h ?? 9);
   const [selM, setSelM] = useState(parsed?.m ?? 0);
   const [textInput, setTextInput] = useState(value || "");
-  const ref = useRef<HTMLDivElement>(null);
+  const [popupStyle, setPopupStyle] = useState<CSSProperties>({});
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (value) {
@@ -113,15 +119,43 @@ export default function TimePicker({
     }
   }, [value]);
 
+  // Close on outside click — popup is still a DOM child of wrapperRef so contains() works
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
+
+  // close on scroll — popup position is computed once via getBoundingClientRect at open time,
+  // so it drifts away from the trigger if an ancestor (e.g. a scrollable modal body) scrolls
+  useEffect(() => {
+    if (!open) return;
+    const handler = () => setOpen(false);
+    window.addEventListener("scroll", handler, true);
+    return () => window.removeEventListener("scroll", handler, true);
+  }, [open]);
+
+  const calcPopupStyle = (): CSSProperties => {
+    if (!buttonRef.current) return {};
+    const rect = buttonRef.current.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom - 8;
+    const rawLeft = rect.left;
+    const left = Math.max(8, Math.min(rawLeft, window.innerWidth - POPUP_WIDTH - 8));
+
+    if (spaceBelow >= POPUP_HEIGHT || rect.top < POPUP_HEIGHT) {
+      return { top: rect.bottom + 4, left };
+    }
+    return { top: Math.max(8, rect.top - POPUP_HEIGHT - 4), left };
+  };
+
+  const handleOpen = () => {
+    if (!open) setPopupStyle(calcPopupStyle());
+    setOpen((o) => !o);
+  };
 
   const commit = useCallback(
     (h: number, m: number) => {
@@ -132,15 +166,8 @@ export default function TimePicker({
     [onChange]
   );
 
-  const handleHour = (h: number) => {
-    setSelH(h);
-    commit(h, selM);
-  };
-
-  const handleMin = (m: number) => {
-    setSelM(m);
-    commit(selH, m);
-  };
+  const handleHour = (h: number) => { setSelH(h); commit(h, selM); };
+  const handleMin = (m: number) => { setSelM(m); commit(selH, m); };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const masked = applyMask(e.target.value);
@@ -154,9 +181,7 @@ export default function TimePicker({
   };
 
   const handleTextBlur = () => {
-    if (!isValidTime(textInput) && value) {
-      setTextInput(value);
-    }
+    if (!isValidTime(textInput) && value) setTextInput(value);
   };
 
   const displayText = value || "";
@@ -166,7 +191,7 @@ export default function TimePicker({
   } ${open ? "border-primary ring-2 ring-primary-ring" : ""}`;
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={wrapperRef}>
       {label && (
         <label className="text-[14px] text-foreground-muted mb-1 block font-semibold">
           {label}
@@ -175,8 +200,9 @@ export default function TimePicker({
       )}
 
       <button
+        ref={buttonRef}
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={handleOpen}
         className={triggerCls}
       >
         <span className={displayText ? "text-foreground font-mono" : "text-foreground-subtle"}>
@@ -185,8 +211,12 @@ export default function TimePicker({
         <Clock className="w-4 h-4 text-foreground-subtle shrink-0" />
       </button>
 
+      {/* fixed popup — does not affect modal scroll height */}
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-[220px] bg-surface border border-border rounded-xl shadow-xl z-[60] p-3 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div
+          style={popupStyle}
+          className="fixed z-[9999] w-[220px] bg-surface border border-border rounded-xl shadow-xl p-3 animate-in fade-in slide-in-from-top-2 duration-200"
+        >
           {/* Text input */}
           <input
             type="text"

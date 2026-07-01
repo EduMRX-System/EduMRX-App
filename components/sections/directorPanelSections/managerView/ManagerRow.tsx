@@ -14,7 +14,7 @@ interface Props {
 export default function ManagerRow({ manager, onEdit, onDelete }: Props) {
     const { t } = useTranslation();
     const u = manager.user ?? (manager as any);
-    const initial = (u.full_name || "M").charAt(0).toUpperCase();
+    const initial = (u.first_name + " " + u.last_name || "Manager").charAt(0).toUpperCase();
 
     return (
         <tr className="transition-colors hover:bg-hover/50">
@@ -23,13 +23,13 @@ export default function ManagerRow({ manager, onEdit, onDelete }: Props) {
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-hover border border-border flex items-center justify-center overflow-hidden shrink-0">
                         {u.avatar ? (
-                            <Image src={u.avatar} alt={u.full_name} width={40} height={40} className="w-full h-full object-cover" />
+                            <Image src={u.avatar} alt={u.first_name + " " + u.last_name} width={40} height={40} className="w-full h-full object-cover" />
                         ) : (
                             <span className="font-semibold text-foreground-muted text-sm">{initial}</span>
                         )}
                     </div>
                     <div className="min-w-0">
-                        <div className="font-semibold text-foreground leading-tight">{u.full_name}</div>
+                        <div className="font-semibold text-foreground leading-tight">{u.first_name + " " + u.last_name}</div>
                         <div className="text-[11px] text-foreground-subtle mt-0.5">ID: {manager.id.slice(0, 8)}</div>
                     </div>
                 </div>

@@ -87,16 +87,28 @@ function calcReducer(state: CalcState, action: CalcAction): CalcState {
   }
 }
 
-export default function CalculatorButton() {
+interface CalcButtonProps {
+  externalOpen?: boolean;
+  onExternalClose?: () => void;
+}
+
+export default function CalculatorButton({ externalOpen, onExternalClose }: CalcButtonProps = {}) {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+  const isControlled = externalOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = isControlled ? externalOpen! : internalOpen;
   const [calc, dispatch] = useReducer(calcReducer, INIT);
+
+  const handleClose = () => {
+    if (isControlled) onExternalClose?.();
+    else setInternalOpen(false);
+  };
 
   useEffect(() => {
     const handle = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
       const inInput = el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT" || el.isContentEditable;
-      if (e.key === "Escape") { setIsOpen(false); return; }
+      if (e.key === "Escape") { handleClose(); return; }
       if (isOpen && !inInput) {
         if (/^[0-9]$/.test(e.key)) { dispatch({ type: "DIGIT", digit: e.key }); return; }
         if (e.key === ".") { dispatch({ type: "DOT" }); return; }
@@ -108,11 +120,11 @@ export default function CalculatorButton() {
         if (e.key === "Backspace") { dispatch({ type: "BACKSPACE" }); return; }
         if (e.key === "Delete") { dispatch({ type: "CLEAR" }); return; }
       }
-      if (!inInput && e.key === "c") { setIsOpen(true); }
+      if (!isControlled && !inInput && e.key === "c") { setInternalOpen(true); }
     };
     window.addEventListener("keydown", handle);
     return () => window.removeEventListener("keydown", handle);
-  }, [isOpen]);
+  }, [isOpen, isControlled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const base = "flex items-center justify-center h-[50px] rounded-xl text-[15px] font-semibold transition-all duration-100 active:scale-95 select-none cursor-pointer";
   const btnNum = `${base} bg-surface text-foreground border border-border hover:bg-hover`;
@@ -127,16 +139,18 @@ export default function CalculatorButton() {
 
   return (
     <>
-      <button
-        onClick={() => setIsOpen((o) => !o)}
-        className={btnCls}
-        title={`${t("director.tools.calculator")} (C)`}
-        aria-label={t("director.tools.calculator")}
-      >
-        <Calculator className="w-[18px] h-[18px]" />
-      </button>
+      {!isControlled && (
+        <button
+          onClick={() => setInternalOpen((o) => !o)}
+          className={btnCls}
+          title={`${t("director.tools.calculator")} (C)`}
+          aria-label={t("director.tools.calculator")}
+        >
+          <Calculator className="w-[18px] h-[18px]" />
+        </button>
+      )}
 
-      <RightDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} title={t("director.tools.calculator")}>
+      <RightDrawer isOpen={isOpen} onClose={handleClose} title={t("director.tools.calculator")}>
         <div className="p-3 space-y-2 overflow-y-auto flex-1">
           <div className="bg-surface-raised rounded-xl px-4 py-3 min-h-[70px] flex flex-col justify-end items-end border border-border-subtle">
             {calc.history && (

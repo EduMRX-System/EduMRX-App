@@ -1,6 +1,6 @@
 // PasswordInput.tsx
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 
 interface PasswordInputProps {
     register: any;
@@ -13,11 +13,12 @@ export const PasswordInput = ({ register, error }: PasswordInputProps) => {
     return (
         <div>
             <div className="relative flex items-center">
+                <Lock className="absolute left-3 w-4 h-4 text-foreground-subtle pointer-events-none" />
                 <input
                     {...register}
                     type={show ? "text" : "password"}
                     placeholder="••••••••"
-                    className={`w-full h-[44px] px-3 pr-10 rounded-xl text-sm outline-none transition-all
+                    className={`w-full h-[44px] pl-10 pr-10 rounded-xl text-sm outline-none transition-all
             bg-surface
             text-foreground
             placeholder:text-foreground-subtle
@@ -29,7 +30,7 @@ export const PasswordInput = ({ register, error }: PasswordInputProps) => {
                 <button
                     type="button"
                     onClick={() => setShow(!show)}
-                    className="absolute right-3 text-foreground-subtle hover:text-foreground-muted transition-colors"
+                    className="absolute right-3 text-foreground-subtle hover:text-primary transition-colors cursor-pointer"
                 >
                     {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Plus, Search, BookOpen, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import CourseRow from "@/components/sections/directorPanelSections/coursesView/CourseRow";
 import CourseFormModal from "@/components/sections/directorPanelSections/coursesView/CourseFormModal";
@@ -125,9 +126,11 @@ export default function CoursesView({ role = "director" }: Props) {
             </div>
 
             {/* Modals */}
-            {addOpen && <CourseFormModal onClose={() => setAddOpen(false)} role={role} />}
-            {editing && <CourseFormModal course={editing} onClose={() => setEditing(null)} role={role} />}
-            {deleting && <DeleteCourseModal course={deleting} onClose={() => setDeleting(null)} role={role} />}
+            <AnimatePresence>
+                {addOpen && <CourseFormModal key="add" onClose={() => setAddOpen(false)} role={role} />}
+                {editing && <CourseFormModal key="edit" course={editing} onClose={() => setEditing(null)} role={role} />}
+                {deleting && <DeleteCourseModal key="delete" course={deleting} onClose={() => setDeleting(null)} role={role} />}
+            </AnimatePresence>
         </div>
     );
 }

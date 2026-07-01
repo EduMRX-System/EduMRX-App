@@ -52,7 +52,6 @@ export default function HomeworkPopover({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         className={`fixed inset-0 bg-overlay/60 backdrop-blur-[2px] transition-opacity ${mounted ? "opacity-100" : "opacity-0"}`}
-        onClick={onClose}
       />
       <div className={`bg-surface rounded-2xl shadow-2xl border border-border-subtle w-full max-w-xs relative z-10 transition-all duration-200 ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
         {/* Header */}

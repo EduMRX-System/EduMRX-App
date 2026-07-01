@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Plus, Search, UserCog, ChevronLeft, ChevronRight, Loader2, AlertCircle } from "lucide-react";
 import { useManagers } from "@/hooks/useManagers";
 import type { IManager } from "@/types/manager";
@@ -124,9 +125,11 @@ export default function ManagersView() {
             </div>
 
             {/* Modals */}
-            {addOpen && <ManagerFormModal onClose={() => setAddOpen(false)} />}
-            {editing && <ManagerFormModal manager={editing} onClose={() => setEditing(null)} />}
-            {deleting && <DeleteManagerModal manager={deleting} onClose={() => setDeleting(null)} />}
+            <AnimatePresence>
+                {addOpen && <ManagerFormModal key="add" onClose={() => setAddOpen(false)} />}
+                {editing && <ManagerFormModal key="edit" manager={editing} onClose={() => setEditing(null)} />}
+                {deleting && <DeleteManagerModal key="delete" manager={deleting} onClose={() => setDeleting(null)} />}
+            </AnimatePresence>
         </div>
     );
 }

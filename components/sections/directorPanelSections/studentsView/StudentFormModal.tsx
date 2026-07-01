@@ -13,17 +13,29 @@ import { toast } from "react-toastify";
 import { STATUS_OPTIONS, formatUzPhone, splitFullName, type IStudent } from "@/types/student";
 import { useTranslation } from "react-i18next";
 import ScopeFormFields from "@/components/common/ScopeFormFields";
+import FormModalShell from "@/components/common/FormModalShell";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
 import DatePicker from "@/components/ui/DatePicker";
+import { getFormDraft, useFormDraftSave, clearFormDraft } from "@/hooks/useFormDraft";
+import { queryKeys } from "@/lib/queryKeys";
 
 const schema = yup.object({
     first_name: yup.string().required("Ism majburiy"),
     last_name: yup.string().required("Familiya majburiy"),
+    sex: yup.string().oneOf(["male", "female"], "Jinsini tanlang").required("Jinsi majburiy"),
     phone: yup
         .string()
         .required("Telefon majburiy")
         .test("phone-complete", "Telefon to'liq emas", (val) => (val?.replace(/\D/g, "") ?? "").length === 12),
-    email: yup.string().email("Email noto'g'ri").required("Email majburiy"),
+    parent_phone: yup
+        .string()
+        .required("Ota-ona telefon raqami majburiy")
+        .test("phone-complete", "Telefon to'liq emas", (val) => (val?.replace(/\D/g, "") ?? "").length === 12),
+    email: yup
+        .string()
+        .transform((value) => (value && value.trim().length > 0 ? value : undefined))
+        .email("Email noto'g'ri")
+        .optional(),
     password: yup.string().when("$isEdit", {
         is: false,
         then: (s) => s.required("Parol majburiy").min(6, "Kamida 6 belgi"),
@@ -51,19 +63,22 @@ export default function StudentFormModal({ student, onClose, role = "director" }
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const isEdit = !!student;
-    
-    const [isMounted, setIsMounted] = useState(false);
+
     const [phoneDisplay, setPhoneDisplay] = useState("");
+    const [parentPhoneDisplay, setParentPhoneDisplay] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    
+
     const [isStatusOpen, setIsStatusOpen] = useState(false);
     const statusRef = useRef<HTMLDivElement>(null);
-    
+
     const { activeCenter, isCentersLoaded } = useActiveCenterStore();
-    
+
     const u = student?.user;
-    const fullName = u?.full_name || (student as any)?.full_name || "";
+    const fullName = [u?.first_name, u?.last_name].filter(Boolean).join(" ");
     const nameFromFull = splitFullName(fullName);
+
+    const draftKey = isEdit ? `edit-student-${student!.id}-draft` : "student-form-draft";
+    const draft = getFormDraft<Partial<Omit<FormData, "password">>>(draftKey);
 
     const {
         register,
@@ -75,25 +90,30 @@ export default function StudentFormModal({ student, onClose, role = "director" }
         resolver: yupResolver(schema),
         context: { isEdit },
         defaultValues: {
-            first_name: u?.first_name || (student as any)?.first_name || nameFromFull.first,
-            last_name: u?.last_name || (student as any)?.last_name || nameFromFull.last,
-            phone: u?.phone || (student as any)?.phone || "998",
-            email: u?.email || (student as any)?.email || "",
-            password: "", // Dastlab doim bo'sh turadi
-            branch: (student as any)?.branch || "",
-            date_of_birth: student?.date_of_birth || u?.date_of_birth ? (student?.date_of_birth || u?.date_of_birth)?.slice(0, 10) : new Date().toISOString().split("T")[0],
-            notes: student?.notes || "",
-            status: (student?.status === "inactive" ? "inactive" : "active"),
+            first_name: draft?.first_name ?? (u?.first_name || nameFromFull.first),
+            last_name: draft?.last_name ?? (u?.last_name || nameFromFull.last),
+            sex: draft?.sex ?? (u?.sex || "male"),
+            phone: draft?.phone ?? (u?.phone || "998"),
+            parent_phone: draft?.parent_phone ?? (student?.parent_phone || "998"),
+            email: draft?.email ?? (u?.email || ""),
+            password: "", // Dastlab doim bo'sh turadi (parol draftga saqlanmaydi)
+            branch: draft?.branch ?? (student?.branch || ""),
+            date_of_birth: draft?.date_of_birth ?? (student?.date_of_birth ? (student?.date_of_birth)?.slice(0, 10) : new Date().toISOString().split("T")[0]),
+            notes: draft?.notes ?? (student?.notes || ""),
+            status: draft?.status ?? (student?.status === "inactive" ? "inactive" : "active"),
         },
     });
 
     const dobValue = watch("date_of_birth");
+    const watchedValues = watch();
+    useFormDraftSave(draftKey, { ...watchedValues, password: undefined });
 
     useEffect(() => {
-        setIsMounted(true);
-        const currentPhone = u?.phone || (student as any)?.phone;
+        const currentPhone = draft?.phone ?? u?.phone;
         if (currentPhone) setPhoneDisplay(formatUzPhone(currentPhone));
-        
+        const currentParentPhone = draft?.parent_phone ?? student?.parent_phone;
+        if (currentParentPhone) setParentPhoneDisplay(formatUzPhone(currentParentPhone));
+
         const onClick = (e: MouseEvent) => {
             if (statusRef.current && !statusRef.current.contains(e.target as Node)) setIsStatusOpen(false);
         };
@@ -101,21 +121,25 @@ export default function StudentFormModal({ student, onClose, role = "director" }
         return () => document.removeEventListener("mousedown", onClick);
     }, [student, u]);
 
-    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const raw = e.target.value.replace(/\D/g, "");
-        const local = (raw.startsWith("998") ? raw.slice(3) : raw).slice(0, 9);
-        setPhoneDisplay(formatUzPhone(local));
-        setValue("phone", "998" + local, { shouldValidate: true });
-    };
+    const makePhoneHandler = (field: "phone" | "parent_phone", setDisplay: (v: string) => void) =>
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const raw = e.target.value.replace(/\D/g, "");
+            const local = (raw.startsWith("998") ? raw.slice(3) : raw).slice(0, 9);
+            setDisplay(formatUzPhone(local));
+            setValue(field, "998" + local, { shouldValidate: true });
+        };
+
+    const handlePhoneChange = makePhoneHandler("phone", setPhoneDisplay);
+    const handleParentPhoneChange = makePhoneHandler("parent_phone", setParentPhoneDisplay);
 
     const { mutate: saveStudent, isPending } = useMutation({
         mutationFn: async (body: FormData) => {
             if (!activeCenter) throw new Error(t("center.no_active_center"));
             const { password, ...rest } = body;
-            
+
             // Asosiy yuboriladigan payload (password dan tashqari)
             const payload: any = { ...rest, center: activeCenter };
-            
+
             // 🟢 Agar parol maydoniga nimadir yozilgan bo'lsa, uni qo'shamiz (bo'sh bo'lsa serverga yuborilmaydi)
             if (password && password.trim().length > 0) {
                 payload.password = password;
@@ -127,7 +151,8 @@ export default function StudentFormModal({ student, onClose, role = "director" }
         },
         onSuccess: (data: any) => {
             toast.success(data?.message || t(isEdit ? "director.students.toast.updated" : "director.students.toast.created"));
-            queryClient.invalidateQueries({ queryKey: ["students-list"] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.students.listAll });
+            clearFormDraft(draftKey);
             onClose();
         },
         onError: (err: any) => {
@@ -154,162 +179,184 @@ export default function StudentFormModal({ student, onClose, role = "director" }
     const todayISO = new Date().toISOString().split("T")[0];
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-                className={`fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity duration-500 ${isMounted ? "opacity-100" : "opacity-0"}`}
-                onClick={onClose}
-            />
+        <FormModalShell onClose={onClose} maxWidth="max-w-xl">
+            <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
+                >
+                    <X className="w-5 h-5" />
+                </button>
+            </div>
 
-            <div
-                className={`bg-surface p-6 rounded-xl max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-border-subtle transform transition-all duration-500 ease-out ${isMounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-12 scale-95"}`}
-            >
-                <div className="sticky top-0 z-50 h-0 w-full flex justify-end items-start pointer-events-none">
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        className="pointer-events-auto -mt-2 -mr-2 text-foreground-subtle hover:text-foreground p-1.5 rounded-lg bg-surface/90 backdrop-blur-sm border border-border shadow-md cursor-pointer transition-colors"
-                    >
-                        <X className="w-5 h-5" />
-                    </button>
+            <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-primary bg-primary-soft/10">
+                <User className="w-6 h-6" />
+            </div>
+
+            <h3 className="text-foreground text-[18px] font-semibold mb-4">
+                {isEdit ? t("director.students.form.title_edit") : t("director.students.form.title_add")}
+            </h3>
+
+            <form onSubmit={handleSubmit((d) => saveStudent(d))} className="space-y-4">
+                {/* Ism + Familiya */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label className={labelCls}>{t("common.first_name")} *</label>
+                        <input {...register("first_name")} placeholder="Ali" className={fieldCls(!!errors.first_name)} />
+                        {errors.first_name && <p className={errCls}>{errors.first_name.message}</p>}
+                    </div>
+                    <div>
+                        <label className={labelCls}>{t("common.last_name")} *</label>
+                        <input {...register("last_name")} placeholder="Valiyev" className={fieldCls(!!errors.last_name)} />
+                        {errors.last_name && <p className={errCls}>{errors.last_name.message}</p>}
+                    </div>
                 </div>
 
-                <div className="mb-[10px] border border-border shadow-sm w-[44px] h-[44px] rounded-lg flex justify-center items-center text-primary bg-primary-soft/10">
-                    <User className="w-6 h-6" />
-                </div>
-
-                <h3 className="text-foreground text-[18px] font-semibold mb-4">
-                    {isEdit ? t("director.students.form.title_edit") : t("director.students.form.title_add")}
-                </h3>
-
-                <form onSubmit={handleSubmit((d) => saveStudent(d))} className="space-y-4">
-                    {/* Ism + Familiya */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className={labelCls}>{t("common.first_name")} *</label>
-                            <input {...register("first_name")} placeholder="Ali" className={fieldCls(!!errors.first_name)} />
-                            {errors.first_name && <p className={errCls}>{errors.first_name.message}</p>}
-                        </div>
-                        <div>
-                            <label className={labelCls}>{t("common.last_name")} *</label>
-                            <input {...register("last_name")} placeholder="Valiyev" className={fieldCls(!!errors.last_name)} />
-                            {errors.last_name && <p className={errCls}>{errors.last_name.message}</p>}
-                        </div>
-                    </div>
-
-                    {/* Telefon + Email */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className={labelCls}>{t("common.phone")} *</label>
-                            <div className="relative flex items-center">
-                                <span className="absolute left-3 text-sm font-semibold text-foreground pointer-events-none select-none">+998</span>
-                                <input type="tel" value={phoneDisplay} onChange={handlePhoneChange} placeholder="90-123-45-67" className={`${fieldCls(!!errors.phone)} pl-[55px]`} />
-                            </div>
-                            {errors.phone && <p className={errCls}>{errors.phone.message}</p>}
-                        </div>
-                        <div>
-                            <label className={labelCls}>{t("common.email")} *</label>
-                            <input {...register("email")} type="email" placeholder="student@example.com" className={fieldCls(!!errors.email)} />
-                            {errors.email && <p className={errCls}>{errors.email.message}</p>}
-                        </div>
-                    </div>
-
-                    {/* Parol va Tug'ilgan sana */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* Parolni endi Edit qilganda ham ko'rsatamiz */}
-                        <div>
-                            <label className={labelCls}>
-                                {t("common.password")} {!isEdit ? "*" : <span className="text-foreground-subtle font-normal text-xs ml-1">(Ixtiyoriy)</span>}
-                            </label>
-                            <div className="relative flex items-center">
-                                <input {...register("password")} type={showPassword ? "text" : "password"} placeholder="••••••" className={`${fieldCls(!!errors.password)} pr-10`} />
-                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-foreground-subtle hover:text-foreground cursor-pointer">
-                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {/* Jinsi */}
+                <div>
+                    <label className={labelCls}>{t("director.students.form.sex_label")}</label>
+                    <div className="grid grid-cols-2 gap-3">
+                        {(["male", "female"] as const).map((opt) => {
+                            const isSel = watch("sex") === opt;
+                            return (
+                                <button
+                                    type="button"
+                                    key={opt}
+                                    onClick={() => setValue("sex", opt, { shouldValidate: true })}
+                                    className={`h-10 rounded-lg border text-sm font-semibold transition-colors cursor-pointer ${isSel ? "border-primary bg-primary-soft text-primary" : "border-border bg-surface text-foreground-muted hover:bg-hover"}`}
+                                >
+                                    {t(`director.students.form.sex_${opt}`)}
                                 </button>
-                            </div>
-                            {errors.password && <p className={errCls}>{errors.password.message}</p>}
+                            );
+                        })}
+                    </div>
+                    {errors.sex && <p className={errCls}>{errors.sex.message}</p>}
+                </div>
+
+                {/* Telefon + Email */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label className={labelCls}>{t("common.phone")} *</label>
+                        <div className="relative flex items-center">
+                            <span className="absolute left-3 text-sm font-semibold text-foreground pointer-events-none select-none">+998</span>
+                            <input type="tel" value={phoneDisplay} onChange={handlePhoneChange} placeholder="90-123-45-67" className={`${fieldCls(!!errors.phone)} pl-[55px]`} />
                         </div>
-                        
-                        <DatePicker
-                            value={dobValue || ""}
-                            onChange={(v) => setValue("date_of_birth", v, { shouldValidate: true })}
-                            label={`${t("director.students.form.dob_label")} *`}
-                            error={errors.date_of_birth?.message}
-                            required
-                            min="1950-01-01"
-                            max={todayISO}
+                        {errors.phone && <p className={errCls}>{errors.phone.message}</p>}
+                    </div>
+                    <div>
+                        <label className={labelCls}>{t("common.email")}</label>
+                        <input {...register("email")} type="email" placeholder="student@example.com" className={fieldCls(!!errors.email)} />
+                        {errors.email && <p className={errCls}>{errors.email.message}</p>}
+                    </div>
+                </div>
+
+                {/* Ota-ona telefon raqami */}
+                <div>
+                    <label className={labelCls}>{t("director.students.form.parent_phone_label")}</label>
+                    <div className="relative flex items-center">
+                        <span className="absolute left-3 text-sm font-semibold text-foreground pointer-events-none select-none">+998</span>
+                        <input type="tel" value={parentPhoneDisplay} onChange={handleParentPhoneChange} placeholder="90-123-45-67" className={`${fieldCls(!!errors.parent_phone)} pl-[55px]`} />
+                    </div>
+                    {errors.parent_phone && <p className={errCls}>{errors.parent_phone.message}</p>}
+                </div>
+
+                {/* Parol va Tug'ilgan sana */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Parolni endi Edit qilganda ham ko'rsatamiz */}
+                    <div>
+                        <label className={labelCls}>
+                            {t("common.password")} {!isEdit ? "*" : <span className="text-foreground-subtle font-normal text-xs ml-1">(Ixtiyoriy)</span>}
+                        </label>
+                        <div className="relative flex items-center">
+                            <input {...register("password")} type={showPassword ? "text" : "password"} placeholder="••••••" className={`${fieldCls(!!errors.password)} pr-10`} />
+                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 text-foreground-subtle hover:text-foreground cursor-pointer">
+                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            </button>
+                        </div>
+                        {errors.password && <p className={errCls}>{errors.password.message}</p>}
+                    </div>
+
+                    <DatePicker
+                        value={dobValue || ""}
+                        onChange={(v) => setValue("date_of_birth", v, { shouldValidate: true })}
+                        label={`${t("director.students.form.dob_label")} *`}
+                        error={errors.date_of_birth?.message}
+                        required
+                        min="1950-01-01"
+                        max={todayISO}
+                    />
+                </div>
+
+                {/* Filial selection */}
+                <ScopeFormFields
+                    branchValue={watch("branch")}
+                    onBranchChange={(id) => setValue("branch", id, { shouldValidate: true })}
+                    branchError={(errors as any).branch?.message}
+                />
+
+                {/* Status selection */}
+                <div>
+                    <div ref={statusRef} className="relative">
+                        <label className={labelCls}>{t("director.students.form.status_label")}</label>
+                        <div
+                            onClick={() => setIsStatusOpen(!isStatusOpen)}
+                            className="border border-border rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-surface text-foreground"
+                        >
+                            <div className="flex items-center gap-2">
+                                <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
+                                <span>{t(`common.${currentStatus.value}`)}</span>
+                            </div>
+                            <ChevronDown className={`w-4 h-4 text-foreground-subtle transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
+                        </div>
+                        {isStatusOpen && (
+                            <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
+                                {STATUS_OPTIONS.map((option) => {
+                                    const isSel = option.value === watch("status");
+                                    return (
+                                        <div
+                                            key={option.value}
+                                            onClick={() => { setValue("status", option.value, { shouldValidate: true }); setIsStatusOpen(false); }}
+                                            className={`px-3 py-2.5 text-sm cursor-pointer transition-colors flex items-center justify-between ${isSel ? "bg-primary-soft text-primary font-medium" : "text-foreground hover:bg-hover"}`}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <span className={`w-2 h-2 rounded-full ${option.color}`} />
+                                                {t(`common.${option.value}`)}
+                                            </div>
+                                            {isSel && <Check className="w-4 h-4 text-primary" />}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Izoh */}
+                <div>
+                    <label className={labelCls}>{t("director.students.form.note_label")}</label>
+                    <div className="relative">
+                        <Notebook className="absolute left-3 top-3 w-4 h-4 text-foreground-subtle pointer-events-none" />
+                        <textarea
+                            {...register("notes")}
+                            rows={2}
+                            placeholder={t("director.students.form.note_placeholder")}
+                            className="border rounded-lg w-full pl-10 pr-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-surface text-foreground border-border focus:border-primary"
                         />
                     </div>
+                </div>
 
-                    {/* Filial selection */}
-                    <ScopeFormFields
-                        branchValue={watch("branch")}
-                        onBranchChange={(id) => setValue("branch", id, { shouldValidate: true })}
-                        branchError={(errors as any).branch?.message}
-                    />
-
-                    {/* Status selection */}
-                    <div>
-                        <div ref={statusRef} className="relative">
-                            <label className={labelCls}>{t("director.students.form.status_label")}</label>
-                            <div
-                                onClick={() => setIsStatusOpen(!isStatusOpen)}
-                                className="border border-border rounded-lg w-full h-[40px] px-3 text-[14px] flex items-center justify-between cursor-pointer bg-surface text-foreground"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <span className={`w-2 h-2 rounded-full ${currentStatus.color}`} />
-                                    <span>{t(`common.${currentStatus.value}`)}</span>
-                                </div>
-                                <ChevronDown className={`w-4 h-4 text-foreground-subtle transition-transform ${isStatusOpen ? "rotate-180" : ""}`} />
-                            </div>
-                            {isStatusOpen && (
-                                <div className="absolute left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-xl z-50 overflow-hidden flex flex-col">
-                                    {STATUS_OPTIONS.map((option) => {
-                                        const isSel = option.value === watch("status");
-                                        return (
-                                            <div
-                                                key={option.value}
-                                                onClick={() => { setValue("status", option.value, { shouldValidate: true }); setIsStatusOpen(false); }}
-                                                className={`px-3 py-2.5 text-sm cursor-pointer transition-colors flex items-center justify-between ${isSel ? "bg-primary-soft text-primary font-medium" : "text-foreground hover:bg-hover"}`}
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <span className={`w-2 h-2 rounded-full ${option.color}`} />
-                                                    {t(`common.${option.value}`)}
-                                                </div>
-                                                {isSel && <Check className="w-4 h-4 text-primary" />}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Izoh */}
-                    <div>
-                        <label className={labelCls}>{t("director.students.form.note_label")}</label>
-                        <div className="relative">
-                            <Notebook className="absolute left-3 top-3 w-4 h-4 text-foreground-subtle pointer-events-none" />
-                            <textarea
-                                {...register("notes")}
-                                rows={2}
-                                placeholder={t("director.students.form.note_placeholder")}
-                                className="border rounded-lg w-full pl-10 pr-3 py-2.5 text-[14px] outline-none transition-all resize-none bg-surface text-foreground border-border focus:border-primary"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Pastki tugmalar */}
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle mt-6">
-                        <button type="button" onClick={onClose} className="h-10 px-4 border border-border bg-surface text-foreground hover:bg-hover text-sm font-semibold rounded-lg cursor-pointer transition-colors">
-                            {t("common.cancel")}
-                        </button>
-                        <button type="submit" disabled={isPending || !activeCenter} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
-                            {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-                            {isEdit ? t("common.save") : t("common.create")}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                {/* Pastki tugmalar */}
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle mt-6">
+                    <button type="button" onClick={onClose} className="h-10 px-4 border border-border bg-surface text-foreground hover:bg-hover text-sm font-semibold rounded-lg cursor-pointer transition-colors">
+                        {t("common.cancel")}
+                    </button>
+                    <button type="submit" disabled={isPending || !activeCenter} className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-primary hover:bg-primary-hover text-primary-fg text-sm font-semibold rounded-lg disabled:opacity-60 cursor-pointer transition-colors">
+                        {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
+                        {isEdit ? t("common.save") : t("common.create")}
+                    </button>
+                </div>
+            </form>
+        </FormModalShell>
     );
 }

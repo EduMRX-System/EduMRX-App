@@ -25,15 +25,15 @@ const statusStyles: Record<string, string> = {
 export default function StudentItem({ student, onEdit, onDelete }: Props) {
     const { t } = useTranslation();
     const router = useRouter();
-    
-    // JSON dagi strukturaga asosan ma'lumotlarni user obyektidan olish (fallback qilib o'zidan ham qidiriladi)
+
     const u = student.user;
-    const fullName = u?.full_name || (student as any).full_name || "Noma'lum";
-    const avatar = u?.avatar || (student as any).avatar;
-    const phone = u?.phone || (student as any).phone || "";
-    const email = u?.email || (student as any).email || "—";
-    
-    const initial = fullName.slice(0, 2).toUpperCase() || "ST";
+    const firstName = u?.first_name || "Noma'lum";
+    const lastName = u?.last_name || "";
+    const avatar = u?.avatar;
+    const phone = u?.phone || "";
+    const email = u?.email || "—";
+
+    const initial = firstName.slice(0, 2).toUpperCase() || "ST";
 
     return (
         <tr
@@ -45,14 +45,14 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-primary-soft border border-primary/20 flex items-center justify-center font-semibold text-primary shrink-0 uppercase text-xs overflow-hidden">
                         {avatar ? (
-                            <Image src={avatar} alt={fullName} width={36} height={36} className="w-full h-full object-cover rounded-full" />
+                            <Image src={avatar} alt={firstName} width={36} height={36} className="w-full h-full object-cover rounded-full" />
                         ) : (
                             <span>{initial}</span>
                         )}
                     </div>
                     <div>
                         <div className="font-semibold text-foreground leading-tight flex items-center gap-2">
-                            {fullName}
+                            {firstName} {lastName}
                             {student.status && (
                                 <span className={`text-[10px] px-1.5 py-0.5 rounded-sm border uppercase font-bold tracking-wide ${statusStyles[student.status] || statusStyles.inactive}`}>
                                     {student.status}
@@ -60,7 +60,7 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
                             )}
                         </div>
                         <div className="text-xs text-foreground-subtle mt-0.5 font-medium">
-                            ID: {student.student_id || student.id.slice(0, 8)}
+                            ID: {student?.user?.id || student.id.slice(0, 8)}
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
             <td className="py-4 px-5">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-primary-soft/60 text-primary border border-primary/20">
                     <GraduationCap className="w-3.5 h-3.5" />
-                    {student.center_name || "—"}
+                    {student.branch_name || "—"}
                 </span>
             </td>
 
@@ -92,7 +92,7 @@ export default function StudentItem({ student, onEdit, onDelete }: Props) {
             <td className="py-4 px-5">
                 <div className="flex items-center gap-1.5 text-xs text-foreground-muted font-medium">
                     <Calendar className="w-3.5 h-3.5 text-foreground-subtle" />
-                    <span>{student.date_of_birth || u?.date_of_birth || "—"}</span>
+                    <span>{student.date_of_birth || student?.date_of_birth || "—"}</span>
                 </div>
             </td>
 

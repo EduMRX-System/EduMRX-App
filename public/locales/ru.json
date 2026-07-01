@@ -464,7 +464,8 @@
       "calendar_desc": "Месячный вид",
       "select_desc": "День / Месяц / Год",
       "text_desc": "Ввод вручную"
-    }
+    },
+    "all": "Все"
   },
   "auth": {
     "common": {
@@ -473,6 +474,7 @@
       "phone_label": "Номер телефона",
       "password_label": "Пароль",
       "forgot_password": "Забыли пароль?",
+      "remember_me": "Запомнить меня",
       "submit": "Войти",
       "legal_prefix": "Входя в систему, вы принимаете наши",
       "legal_terms": "условия",
@@ -579,6 +581,7 @@
   "director": {
     "nav": {
       "dashboard": "Дашборд",
+      "board": "Доска",
       "learning": "Учёба",
       "students": "Ученики",
       "teachers": "Преподаватели",
@@ -602,6 +605,12 @@
       "collapse": "Свернуть",
       "expand": "Развернуть",
       "my_centers": "Мои центры"
+    },
+    "board": {
+      "load_error": "Не удалось открыть доску. Проверьте интернет-соединение и попробуйте снова.",
+      "retry": "Повторить",
+      "fullscreen_enter": "Полный экран",
+      "fullscreen_exit": "Выйти из полноэкранного режима"
     },
     "dashboard": {
       "title": "Добро пожаловать 👋",
@@ -694,6 +703,9 @@
         "title_add": "Добавить менеджера",
         "title_edit": "Редактировать менеджера",
         "branch_placeholder": "Выберите филиал...",
+        "sex_label": "Пол *",
+        "sex_male": "Мужской",
+        "sex_female": "Женский",
         "password_label": "Пароль",
         "password_label_edit": "Пароль (для изменения)",
         "password_placeholder_edit": "Оставьте пустым, чтобы не менять",
@@ -885,6 +897,28 @@
         "error_time": "Введите время занятий",
         "error_generic": "Произошла ошибка",
         "delete_error": "Ошибка при удалении"
+      },
+      "filter": {
+        "odd_days": "Нечётные дни",
+        "even_days": "Чётные дни"
+      },
+      "card": {
+        "no_teacher": "Учитель не назначен",
+        "no_room": "Комната не назначена",
+        "students": "студентов"
+      },
+      "view": {
+        "grid": "Вид сетки",
+        "list": "Вид списка"
+      },
+      "students": {
+        "label": "Студенты (необязательно)",
+        "search_placeholder": "Поиск по имени или телефону...",
+        "type_to_search": "Введите символы для поиска",
+        "not_found": "Студент не найден",
+        "over_capacity": "Вместимость: {{capacity}}, выбрано: {{selected}} — {{over}} лишних",
+        "count_suffix": "чел.",
+        "selected_count": "Выбрано: {{count}}"
       }
     },
     "lessons": {
@@ -955,6 +989,9 @@
         "title_add": "Добавить преподавателя",
         "title_edit": "Редактировать преподавателя",
         "branch_placeholder": "Выберите филиал...",
+        "sex_label": "Пол *",
+        "sex_male": "Мужской",
+        "sex_female": "Женский",
         "dob_label": "Дата рождения *",
         "specialization_label": "Специализация *",
         "experience_label": "Опыт (лет) *",
@@ -994,6 +1031,10 @@
         "title_add": "Добавить студента",
         "title_edit": "Редактировать студента",
         "branch_placeholder": "Выберите филиал...",
+        "sex_label": "Пол *",
+        "sex_male": "Мужской",
+        "sex_female": "Женский",
+        "parent_phone_label": "Телефон родителя *",
         "dob_label": "Дата рождения *",
         "note_label": "Примечание (необязательно)",
         "note_placeholder": "Дополнительная информация о студенте...",
@@ -1293,6 +1334,28 @@
         "modal_title": "Способ ввода даты",
         "modal_desc": "Выберите режим открытия при выборе даты"
       },
+      "datepickerVariant": {
+        "title": "Вид окна выбора даты",
+        "desc": "Выберите, как открывается окно выбора даты",
+        "modal_title": "Вид окна выбора даты",
+        "modal_desc": "Выберите, как открывается окно при нажатии",
+        "anchor": "Стандартно",
+        "anchor_desc": "Рядом с полем",
+        "center": "По центру",
+        "center_desc": "Модальное окно",
+        "right": "Справа",
+        "right_desc": "Боковая панель"
+      },
+      "modalVariant": {
+        "title": "Вид модальных окон",
+        "desc": "Выберите, как открываются окна форм",
+        "modal_title": "Вид модальных окон",
+        "modal_desc": "Выберите, как открываются окна добавления/редактирования",
+        "center": "По центру",
+        "center_desc": "Модальное окно",
+        "right": "Справа",
+        "right_desc": "Боковая панель"
+      },
       "language": {
         "title": "Язык",
         "desc": "Выберите язык интерфейса",
@@ -1326,6 +1389,42 @@
         "page_subtitle": "Наши филиалы работают с понедельника по субботу, с 9:00 до 20:00",
         "map_placeholder": "Карта",
         "map_coming_soon": "Yandex Maps скоро будет подключён"
+      },
+      "center": {
+        "title": "Данные центра",
+        "desc": "Редактируйте название, контакты и адрес центра",
+        "logo_upload": "Загрузить лого",
+        "name_label": "Название центра",
+        "address_label": "Адрес",
+        "map_title": "Расположение",
+        "kpi": {
+          "students": "Студенты",
+          "teachers": "Преподаватели",
+          "managers": "Менеджеры",
+          "branches": "Филиалы",
+          "groups": "Группы"
+        },
+        "readonly_title": "Только для просмотра",
+        "slug_label": "Slug",
+        "status_label": "Статус",
+        "plan_label": "Тариф",
+        "director_label": "Директор",
+        "students_count_label": "Количество студентов",
+        "subscription_label": "Дата окончания подписки",
+        "toast": {
+          "updated": "Данные центра сохранены",
+          "error": "Ошибка при сохранении"
+        }
+      },
+      "details": {
+        "title": "Личные данные",
+        "avatar_upload": "Загрузить фото",
+        "first_name_label": "Имя",
+        "last_name_label": "Фамилия",
+        "toast": {
+          "updated": "Данные сохранены",
+          "error": "Ошибка при сохранении"
+        }
       },
       "logout": {
         "title": "Выход",
@@ -1509,7 +1608,23 @@
   "header": {
     "page": "Страница",
     "user_name": "Пользователь",
-    "admin": "Администратор"
+    "admin": "Администратор",
+    "hide_sidebar": "Скрыть панель",
+    "show_sidebar": "Показать панель",
+    "search": {
+      "placeholder": "Имя или номер телефона...",
+      "type_hint": "Введите для поиска",
+      "not_found": "Ничего не найдено",
+      "title": "Поиск студента"
+    },
+    "profile_menu": {
+      "profile": "Профиль",
+      "dashboard": "Главная",
+      "settings": "Настройки",
+      "logout": "Выйти",
+      "dark_mode": "Тёмная тема",
+      "theme": "Цвет"
+    }
   },
   "notifications": {
     "title": "Уведомления"

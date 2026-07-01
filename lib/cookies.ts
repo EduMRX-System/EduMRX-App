@@ -106,6 +106,39 @@ export function setDatePickerModeCookie(mode: DatePickerMode): void {
   document.cookie = `date_picker_mode=${mode}; ${sharedOpts()}`;
 }
 
+// ─── Date Picker Variant cookie ───────────────────────────
+// Note: "anchor" remains a valid value for components/ui/DatePicker.tsx's per-instance
+// `variant` prop override, but is no longer offered as a choice in the Profile settings
+// modal — existing users with "anchor" saved fall back to "center" here.
+export type DatePickerVariant = "anchor" | "center" | "right";
+
+export function getDatePickerVariantCookie(): DatePickerVariant {
+  const v = getCookie("date_picker_variant");
+  if (v === "center" || v === "right") return v;
+  return "center";
+}
+
+export function setDatePickerVariantCookie(variant: DatePickerVariant): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `date_picker_variant=${variant}; ${sharedOpts()}`;
+}
+
+// ─── Modal Variant cookie ──────────────────────────────────
+// Controls the open animation/position for FormModalShell-based form modals
+// across the app (Markazda / O'ngdan), independent of DatePickerVariant above.
+export type ModalVariant = "center" | "right";
+
+export function getModalVariantCookie(): ModalVariant {
+  const v = getCookie("modal_variant");
+  if (v === "center" || v === "right") return v;
+  return "right";
+}
+
+export function setModalVariantCookie(variant: ModalVariant): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `modal_variant=${variant}; ${sharedOpts()}`;
+}
+
 // ─── Active Branch cookie ─────────────────────────────────
 export function getActiveBranchCookie(): string | null {
   return getCookie("active_branch");

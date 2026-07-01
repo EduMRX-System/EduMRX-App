@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { IPayment, PaymentPayload, PaymentPatchPayload, PaymentSummary } from "@/types/payment";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 const PAYMENTS_URL = "/payments/";
 
@@ -33,10 +34,7 @@ export function usePayments({
   const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
   return useQuery<PaymentsResult>({
-    queryKey: [
-      "payments-list",
-      { page, pageSize, search, status, method, centerId: activeCenter, branchId: branchId || activeBranch },
-    ],
+    queryKey: queryKeys.payments.list({ page, pageSize, search, status, method, centerId: activeCenter, branchId: branchId || activeBranch }),
     queryFn: async () => {
       const res = await API.get(PAYMENTS_URL, {
         params: {
@@ -67,7 +65,7 @@ export function usePaymentSummary() {
   const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
   return useQuery<PaymentSummary>({
-    queryKey: ["payments-summary", { centerId: activeCenter, branchId: activeBranch }],
+    queryKey: queryKeys.payments.summary(activeCenter, activeBranch),
     queryFn: async () => {
       try {
         const res = await API.get("/payments/summary/", {
@@ -91,8 +89,8 @@ export function useCreatePayment() {
     mutationFn: (payload: PaymentPayload) =>
       API.post(PAYMENTS_URL, payload).then((r) => r.data),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["payments-list"] });
-      qc.invalidateQueries({ queryKey: ["payments-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.payments.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.payments.summaryAll });
     },
   });
 }
@@ -103,8 +101,8 @@ export function useUpdatePayment() {
     mutationFn: ({ id, ...payload }: PaymentPatchPayload & { id: string }) =>
       API.patch(`${PAYMENTS_URL}${id}/`, payload).then((r) => r.data),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["payments-list"] });
-      qc.invalidateQueries({ queryKey: ["payments-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.payments.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.payments.summaryAll });
     },
   });
 }
@@ -114,8 +112,8 @@ export function useDeletePayment() {
   return useMutation({
     mutationFn: (id: string) => API.delete(`${PAYMENTS_URL}${id}/`),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["payments-list"] });
-      qc.invalidateQueries({ queryKey: ["payments-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.payments.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.payments.summaryAll });
     },
   });
 }

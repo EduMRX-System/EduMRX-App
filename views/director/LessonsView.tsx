@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Plus, Search, CalendarDays, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useLessons } from "@/hooks/useLessons";
 import type { Lesson } from "@/types/lesson";
@@ -116,9 +117,11 @@ export default function LessonsView({ role = "director" }: Props) {
             </div>
 
             {/* Modals */}
-            {addOpen && <LessonFormModal onClose={() => setAddOpen(false)} role={role} />}
-            {editing && <LessonFormModal lesson={editing} onClose={() => setEditing(null)} role={role} />}
-            {deleting && <DeleteLessonModal lesson={deleting} onClose={() => setDeleting(null)} role={role} />}
+            <AnimatePresence>
+                {addOpen && <LessonFormModal key="add" onClose={() => setAddOpen(false)} role={role} />}
+                {editing && <LessonFormModal key="edit" lesson={editing} onClose={() => setEditing(null)} role={role} />}
+                {deleting && <DeleteLessonModal key="delete" lesson={deleting} onClose={() => setDeleting(null)} role={role} />}
+            </AnimatePresence>
         </div>
     );
 }

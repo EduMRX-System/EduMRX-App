@@ -1,3 +1,5 @@
+export type TeacherSex = "male" | "female";
+
 export interface TeacherUser {
   id: string;
   phone: string;
@@ -6,6 +8,7 @@ export interface TeacherUser {
   full_name: string;
   avatar?: string | null;
   email: string;
+  sex?: TeacherSex;
 }
 
 // GET /api/v1/director/teachers/ (DRF) — user nested
@@ -16,6 +19,7 @@ export interface ITeacher {
   experience?: number;
   salary?: string;
   created_at?: string;
+  sex?: TeacherSex;
 
   // edit prefill / back-compat (GET'da bo'lmasligi mumkin):
   centers?: string;
@@ -33,6 +37,7 @@ export interface TeacherPayload {
   last_name: string;
   phone: string;
   email: string;
+  sex: TeacherSex;
   password?: string;
   centers: string; // branch id shu yerga yuboriladi
   specialization: string;

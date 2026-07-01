@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import type { IDebt, DebtPayload } from "@/types/debt";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 const DEBTS_URL = "/debts/";
 
@@ -42,10 +43,7 @@ export function useDebts({
   const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
   return useQuery<DebtsResult>({
-    queryKey: [
-      "debts-list",
-      { page, pageSize, search, status, centerId: activeCenter, branchId: branchId || activeBranch },
-    ],
+    queryKey: queryKeys.debts.list({ page, pageSize, search, status, centerId: activeCenter, branchId: branchId || activeBranch }),
     queryFn: async () => {
       const res = await API.get(DEBTS_URL, {
         params: {
@@ -75,16 +73,28 @@ export function useDebtSummary() {
   const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
   return useQuery<DebtSummary>({
-    queryKey: ["debts-summary", { centerId: activeCenter, branchId: activeBranch }],
+    queryKey: queryKeys.debts.summary(activeCenter, activeBranch),
     queryFn: async () => {
       try {
-        const res = await API.get("/debts/summary/", {
+        const res = await API.get("/payments/summary/", {
           params: {
             center_id: activeCenter || undefined,
             branch_id: activeBranch || undefined,
           },
         });
-        return (res.data as DebtSummary) ?? {};
+        const d: any = res.data ?? {};
+        // PaymentSummaryView qaytargan fieldlarni DebtSummary'ga map qilish:
+        // overdue/pending to'lovlar → qarz statistikasi
+        return {
+          total_amount: d.total_amount,
+          unpaid_amount: d.pending_amount ?? d.pending,
+          overdue_amount: d.overdue_amount ?? d.overdue,
+          total_count: d.total_count,
+          unpaid_count: d.pending_count,
+          overdue_count: d.count_overdue ?? d.overdue_count,
+          monthly_data: d.monthly_data,
+          // by_status: /payments/summary/ da yo'q — pie chart ko'rinmaydi
+        } as DebtSummary;
       } catch {
         return {};
       }
@@ -99,8 +109,8 @@ export function useCreateDebt() {
     mutationFn: (payload: DebtPayload) =>
       API.post(DEBTS_URL, payload).then((r) => r.data),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["debts-list"] });
-      qc.invalidateQueries({ queryKey: ["debts-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.debts.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.debts.summaryAll });
     },
   });
 }
@@ -111,8 +121,8 @@ export function useUpdateDebt() {
     mutationFn: ({ id, ...payload }: Partial<DebtPayload> & { id: string }) =>
       API.patch(`${DEBTS_URL}${id}/`, payload).then((r) => r.data),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["debts-list"] });
-      qc.invalidateQueries({ queryKey: ["debts-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.debts.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.debts.summaryAll });
     },
   });
 }
@@ -122,8 +132,8 @@ export function useDeleteDebt() {
   return useMutation({
     mutationFn: (id: string) => API.delete(`${DEBTS_URL}${id}/`),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["debts-list"] });
-      qc.invalidateQueries({ queryKey: ["debts-summary"] });
+      qc.invalidateQueries({ queryKey: queryKeys.debts.listAll });
+      qc.invalidateQueries({ queryKey: queryKeys.debts.summaryAll });
     },
   });
 }

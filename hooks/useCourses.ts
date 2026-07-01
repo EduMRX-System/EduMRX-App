@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
 import { CoursesResponse } from "@/types/course";
 import { useActiveCenterStore } from "@/store/activeCenterStore";
+import { queryKeys } from "@/lib/queryKeys";
 
 interface ListParams {
     page?: number;
@@ -15,7 +16,7 @@ export function useCourses({ page = 1, pageSize = 10, search = "", role = "direc
     const activeBranch = useActiveCenterStore((s) => s.activeBranch);
 
     return useQuery({
-        queryKey: ["courses", { page, pageSize, search, centerId: activeCenter, branchId: activeBranch, role }],
+        queryKey: queryKeys.courses.list({ page, pageSize, search, centerId: activeCenter, branchId: activeBranch, role }),
         queryFn: async () => {
             const res = await API.get<CoursesResponse>(`${role}/courses/`, {
                 params: {
